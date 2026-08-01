@@ -2,17 +2,18 @@ import { useEffect, useRef, useState } from 'react'
 import {
   Github, Linkedin, Mail, Phone, ExternalLink, ArrowUpRight, Download,
 } from 'lucide-react'
+import './index.css'
 
 /* ------------------------------------------------------------------ */
 /* content                                                             */
 /* ------------------------------------------------------------------ */
 
-const ROLES = ['Fullstack Developer', 'Frontend Developer', 'React Developer', 'Java Developer']
+const ROLES = ['Fullstack Developer', 'Frontend Developer', 'React Developer', 'Software Developer']
 
 const NAV = [
   { id: 'about', label: 'Overview' },
   { id: 'work', label: 'Work' },
-  { id: 'craft', label: 'Stack' },
+  { id: 'craft', label: 'Skills' },
   { id: 'journey', label: 'History' },
   { id: 'resume', label: 'Sheet' },
   { id: 'contact', label: 'Contact' },
@@ -55,12 +56,55 @@ const PROJECTS = [
   },
 ]
 
+// Same skills listed on the resume, grouped in plain English so a
+// non-technical reader can still follow what each group covers.
 const SKILL_GROUPS = [
-  { label: 'Interface', items: ['React.js', 'JSX', 'HTML5', 'CSS3', 'Flexbox', 'CSS Grid', 'Responsive Design'] },
-  { label: 'Language', items: ['JavaScript (ES6+)', 'Java', 'SQL'] },
-  { label: 'Server', items: ['Spring Boot', 'Spring Data JPA', 'REST APIs'] },
-  { label: 'Toolbox', items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Vercel', 'Render'] },
-  { label: 'Foundations', items: ['OOP', 'Data Structures & Algorithms', 'UI/UX Principles', 'RBAC'] },
+  {
+    id: '01',
+    label: 'Languages I code in',
+    hint: 'The core languages behind everything else on this page',
+    items: ['Java', 'JavaScript (ES6+)', 'SQL'],
+  },
+  {
+    id: '02',
+    label: 'Building what you see',
+    hint: 'Front-end — the part of the app people click, scroll, and read',
+    items: [
+      'HTML5', 'CSS3', 'React.js', 'JSX', 'React Components',
+      'Responsive Design', 'Mobile-First Design', 'DOM Handling',
+      'Flexbox', 'CSS Grid', 'Cross-Browser Support', 'Performance Tuning',
+    ],
+  },
+  {
+    id: '03',
+    label: 'Running things behind the scenes',
+    hint: 'Back-end — servers, endpoints, and the logic that powers the app',
+    items: ['Spring Boot', 'Spring Data JPA', 'REST APIs', 'JSON', 'Groq API'],
+  },
+  {
+    id: '04',
+    label: 'Storing data',
+    hint: 'Where information lives and how it gets created, read, updated, deleted',
+    items: ['MySQL', 'Firebase Realtime Database', 'CRUD Operations'],
+  },
+  {
+    id: '05',
+    label: 'Logins & access',
+    hint: 'Keeping accounts secure and controlling who can do what',
+    items: ['Firebase Authentication', 'User Authentication', 'Role-Based Access (RBAC)'],
+  },
+  {
+    id: '06',
+    label: 'Tools I work in daily',
+    hint: 'Editors, version control, and where projects get deployed',
+    items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Vercel', 'Render'],
+  },
+  {
+    id: '07',
+    label: 'How I think about problems',
+    hint: 'The fundamentals every project above is built on',
+    items: ['Object-Oriented Programming', 'Data Structures & Algorithms', 'UI/UX Principles'],
+  },
 ]
 
 // newest first — reads naturally as REV B (latest) then REV A
@@ -189,9 +233,36 @@ function useCountUp(target, duration = 1100) {
   return [ref, n, inView]
 }
 
+// Tracks scroll progress through the page, 0 → 1.
+function useScrollProgress() {
+  const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement
+      const scrollable = h.scrollHeight - h.clientHeight
+      setProgress(scrollable > 0 ? Math.min(1, h.scrollTop / scrollable) : 0)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  return progress
+}
+
 /* ------------------------------------------------------------------ */
 /* small components                                                    */
 /* ------------------------------------------------------------------ */
+
+// Signature element — a plotting line at the very top of the page that
+// draws itself in as you scroll, like a pen tracing a drawing sheet.
+function PlotLine({ progress }) {
+  return (
+    <div className="plot-line-track" aria-hidden="true">
+      <div className="plot-line-fill" style={{ transform: `scaleX(${progress})` }} />
+      <span className="plot-line-bit" style={{ left: `${progress * 100}%` }} />
+    </div>
+  )
+}
 
 // Section header styled as a drafted sheet label with a dimension-line rule.
 function SheetHeader({ index, eyebrow, title }) {
@@ -247,6 +318,25 @@ function ProjectSheet({ project, index }) {
   )
 }
 
+// One row of the "bill of materials" style skills table.
+function SkillRow({ group, index }) {
+  return (
+    <Reveal delay={index * 60} className="bom-row">
+      <span className="bom-id">{group.id}</span>
+      <div className="bom-body">
+        <div className="bom-heading">
+          <span className="bom-label">{group.label}</span>
+          <span className="bom-count">{String(group.items.length).padStart(2, '0')} items</span>
+        </div>
+        <p className="bom-hint">{group.hint}</p>
+        <span className="bom-items">
+          {group.items.map((it) => <span className="bom-chip" key={it}>{it}</span>)}
+        </span>
+      </div>
+    </Reveal>
+  )
+}
+
 // Cursor-following crosshair, confined to the hero.
 function Crosshair() {
   const vRef = useRef(null)
@@ -278,12 +368,13 @@ function Crosshair() {
 export default function App() {
   const typed = useTypewriter(ROLES)
   const active = useActiveSection()
+  const progress = useScrollProgress()
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
     <div className="bp-root">
-      <style>{CSS}</style>
+      <PlotLine progress={progress} />
 
       <nav className="site-nav">
         <div className="site-nav-inner wrap">
@@ -370,16 +461,15 @@ export default function App() {
       </section>
 
       <section id="craft" className="wrap section">
-        <SheetHeader index="03" eyebrow="Bill of materials" title="What I reach for" />
+        <SheetHeader index="03" eyebrow="Bill of materials" title="What I work with" />
+        <Reveal delay={60}>
+          <p className="body-text bom-intro">
+            Everything below is on my résumé too — grouped here in plain language
+            so it&rsquo;s clear what each skill is actually for.
+          </p>
+        </Reveal>
         <div className="bom-table">
-          {SKILL_GROUPS.map((g, i) => (
-            <Reveal delay={i * 60} key={g.label} className="bom-row">
-              <span className="bom-label">{g.label}</span>
-              <span className="bom-items">
-                {g.items.map((it) => <span className="bom-chip" key={it}>{it}</span>)}
-              </span>
-            </Reveal>
-          ))}
+          {SKILL_GROUPS.map((g, i) => <SkillRow group={g} index={i} key={g.id} />)}
         </div>
       </section>
 
@@ -461,214 +551,3 @@ export default function App() {
     </div>
   )
 }
-
-/* ------------------------------------------------------------------ */
-/* styles — light blueprint / technical drafting theme                 */
-/* ------------------------------------------------------------------ */
-
-const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
-
-.bp-root {
-  --paper: #eef1f6;
-  --paper-2: #e3e8f1;
-  --card: #f7f9fc;
-  --ink: #12151c;
-  --ink-dim: #4b5566;
-  --ink-faint: #8892a6;
-  --blue: #2547ff;
-  --blue-soft: rgba(37,71,255,0.08);
-  --blue-dim: rgba(37,71,255,0.35);
-  --red: #d63a2e;
-  --line: rgba(18,21,28,0.14);
-  --line-strong: rgba(18,21,28,0.4);
-
-  --display: 'IBM Plex Mono', ui-monospace, monospace;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--sans);
-  min-height: 100vh;
-  position: relative;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 44px 44px;
-}
-
-.bp-root * { box-sizing: border-box; }
-.bp-root a { color: inherit; }
-.bp-root button { font-family: inherit; cursor: pointer; }
-.bp-root :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
-.bp-root .wrap { max-width: 1040px; margin: 0 auto; padding: 0 1.5rem; position: relative; }
-
-@media (prefers-reduced-motion: reduce) {
-  .bp-root * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-}
-
-/* nav */
-.site-nav { position: sticky; top: 0; z-index: 50; background: rgba(238,241,246,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-.site-nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 1.5rem; }
-.logo { background: none; border: none; padding: 0; font-family: var(--display); font-weight: 700; font-size: 1rem; color: var(--ink); letter-spacing: 0.02em; }
-.logo-tag { color: var(--blue); font-weight: 500; }
-.nav-links { display: flex; align-items: center; gap: 1.8rem; overflow-x: auto; }
-.nav-links button { background: none; border: none; font-family: var(--display); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; padding: 0.4rem 0; transition: color 0.15s; }
-.nav-links button:hover { color: var(--ink); }
-.nav-links button.active { color: var(--blue); }
-.hire-btn { font-family: var(--display); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.02em; color: var(--paper); background: var(--ink); padding: 0.55rem 1.1rem; text-decoration: none; white-space: nowrap; transition: background 0.15s, transform 0.15s; }
-.hire-btn:hover { background: var(--blue); transform: translateY(-1px); }
-
-/* crosshair */
-.crosshair-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.crosshair-v, .crosshair-h { position: absolute; background: var(--blue-dim); pointer-events: none; will-change: transform; }
-.crosshair-v { top: 0; bottom: 0; left: 0; width: 1px; }
-.crosshair-h { left: 0; right: 0; top: 0; height: 1px; }
-.hero { pointer-events: auto; }
-.hero .hero-inner { pointer-events: none; }
-.hero .hero-inner * { pointer-events: auto; }
-
-/* hero */
-.hero { position: relative; padding: 4.5rem 0 4rem; overflow: hidden; border-bottom: 1px solid var(--line); }
-.hero-inner { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start; position: relative; z-index: 1; }
-.eyebrow { font-family: var(--display); font-size: 0.76rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin: 0 0 1.3rem; }
-.hero-name { font-family: var(--display); font-weight: 700; font-size: clamp(3rem, 9vw, 5.6rem); line-height: 0.95; letter-spacing: -0.01em; margin: 0 0 1rem; color: var(--ink); }
-.hero-role { font-family: var(--display); font-size: 1.02rem; color: var(--ink-dim); margin: 0 0 1.2rem; }
-.role-arrow { color: var(--blue); }
-.cursor { display: inline-block; width: 8px; height: 1em; background: var(--blue); margin-left: 3px; vertical-align: -2px; animation: blink 1s step-end infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-.hero-desc { color: var(--ink-dim); font-size: 1.02rem; line-height: 1.75; max-width: 48ch; margin: 0 0 2rem; }
-.hero-cta { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-
-.btn { font-family: var(--display); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em; padding: 0.8rem 1.4rem; border: 1px solid var(--line-strong); display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; background: var(--card); color: var(--ink); transition: transform 0.15s, border-color 0.15s, background 0.15s, color 0.15s; }
-.btn.ghost:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
-.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.btn.primary:hover { background: var(--blue); border-color: var(--blue); transform: translateY(-2px); }
-.btn.large { padding: 0.9rem 1.7rem; }
-
-/* title block — signature element */
-.hero-right { display: flex; justify-content: center; }
-.title-block { width: min(340px, 90vw); background: var(--card); border: 1px solid var(--line-strong); position: relative; }
-.title-block::before, .title-block::after { content: ''; position: absolute; width: 12px; height: 12px; border: 1px solid var(--ink); }
-.title-block::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-.title-block::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
-.tb-row.tb-head { font-family: var(--display); font-size: 0.76rem; font-weight: 600; letter-spacing: 0.03em; padding: 0.75rem 1rem; border-bottom: 1px solid var(--line-strong); background: var(--ink); color: var(--paper); }
-.tb-grid { display: grid; grid-template-columns: 1fr 1fr; }
-.tb-cell { padding: 0.7rem 1rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 0.15rem; }
-.tb-cell:nth-child(2n) { border-right: none; }
-.tb-cell.tb-wide { grid-column: span 2; }
-.tb-k { font-family: var(--display); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
-.tb-v { font-family: var(--display); font-size: 0.86rem; font-weight: 500; color: var(--ink); }
-.tb-live { display: inline-flex; align-items: center; gap: 0.4rem; }
-.tb-live i { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); flex-shrink: 0; }
-.tb-links { display: flex; gap: 0.5rem; padding: 0.75rem 1rem; }
-.tb-links a { width: 32px; height: 32px; border: 1px solid var(--line-strong); display: flex; align-items: center; justify-content: center; color: var(--ink-dim); transition: border-color 0.15s, color 0.15s; }
-.tb-links a:hover { border-color: var(--blue); color: var(--blue); }
-
-/* stats */
-.stats-row { display: flex; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
-.stat-block { flex: 1 1 160px; padding: 1.6rem 1.5rem; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 0.3rem; }
-.stat-block:last-child { border-right: none; }
-.stat-value { font-family: var(--display); font-size: 2rem; font-weight: 700; color: var(--ink); }
-.stat-label { font-size: 0.82rem; color: var(--ink-faint); }
-
-/* sections */
-.section { padding: 4rem 0; border-bottom: 1px solid var(--line); }
-.section:last-of-type { border-bottom: none; }
-.sheet-head { margin-bottom: 2.4rem; }
-.sheet-index { font-family: var(--display); font-size: 0.78rem; color: var(--blue-dim); margin: 0; }
-.sheet-eyebrow { font-family: var(--display); font-size: 0.76rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin: 0.2rem 0 0.9rem; order: -1; }
-.sheet-title { font-family: var(--display); font-weight: 700; font-size: clamp(1.7rem, 3.4vw, 2.3rem); margin: 0.2rem 0 0.9rem; letter-spacing: -0.01em; color: var(--ink); }
-.sheet-title.small { font-size: 1.4rem; margin-bottom: 0.5rem; }
-.mini-label { font-family: var(--display); font-size: 0.76rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin: 0 0 1rem; }
-.mini-label.center { text-align: center; }
-
-.dim-line { display: flex; align-items: center; gap: 0.4rem; height: 1px; background: var(--line-strong); position: relative; transform: scaleX(0); transform-origin: left; transition: transform 0.9s cubic-bezier(.2,.7,.2,1); }
-.reveal.in .dim-line { transform: scaleX(1); }
-.dim-tick { width: 1px; height: 8px; background: var(--line-strong); position: absolute; top: -3.5px; }
-.dim-tick:first-child { left: 0; }
-.dim-tick:last-child { right: 0; }
-
-.body-text { font-size: 1.06rem; line-height: 1.85; color: var(--ink-dim); max-width: 64ch; }
-
-/* project sheets */
-.sheet-grid { display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
-.sheet-card { position: relative; background: var(--card); border: 1px solid var(--line-strong); padding: 1.5rem 1.4rem 1.7rem; transition: transform 0.2s, box-shadow 0.2s; }
-.sheet-card:hover { transform: translateY(-3px); box-shadow: 6px 6px 0 var(--line-strong); }
-.sheet-card.marked { border-color: var(--blue); }
-.sheet-card.marked:hover { box-shadow: 6px 6px 0 var(--blue-dim); }
-.sheet-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-.sheet-tab { font-family: var(--display); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; color: var(--ink-faint); }
-.sheet-flag { font-family: var(--display); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue); border: 1px solid var(--blue); padding: 0.2rem 0.5rem; }
-.sheet-card-title { font-family: var(--display); font-size: 1.3rem; font-weight: 700; margin: 0 0 0.3rem; color: var(--ink); }
-.sheet-card-tag { font-size: 0.78rem; color: var(--ink-faint); margin: 0 0 0.9rem; }
-.sheet-card-desc { color: var(--ink-dim); font-size: 0.93rem; line-height: 1.65; margin: 0 0 1.1rem; }
-.spec-list { margin: 0 0 0.8rem; padding-top: 0.8rem; border-top: 1px dashed var(--line-strong); }
-.spec-list dt { font-family: var(--display); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.35rem; }
-.spec-list dd { margin: 0; font-size: 0.86rem; color: var(--ink-dim); line-height: 1.6; }
-.sheet-card-note { font-size: 0.78rem; color: var(--ink-faint); line-height: 1.6; margin: 0.6rem 0 0; }
-.sheet-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
-.sheet-link { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--display); font-size: 0.76rem; font-weight: 600; color: var(--ink); text-decoration: none; padding: 0.4rem 0.7rem; border: 1px solid var(--line-strong); transition: border-color 0.15s, color 0.15s; }
-.sheet-link:hover { border-color: var(--blue); color: var(--blue); }
-
-/* bill of materials table */
-.bom-table { border-top: 1px solid var(--line-strong); }
-.bom-row { display: grid; grid-template-columns: 1fr; gap: 0.6rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
-.bom-label { font-family: var(--display); font-size: 0.76rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--blue); }
-.bom-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.bom-chip { font-size: 0.83rem; padding: 0.35rem 0.75rem; background: var(--card); border: 1px solid var(--line); color: var(--ink-dim); transition: border-color 0.15s, color 0.15s; }
-.bom-chip:hover { border-color: var(--blue); color: var(--ink); }
-
-/* revision history */
-.rev-log { border-top: 1px solid var(--line-strong); margin-bottom: 2.6rem; }
-.rev-row { display: grid; grid-template-columns: 70px 1fr; gap: 1rem; padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
-.rev-tag { font-family: var(--display); font-size: 0.8rem; font-weight: 700; color: var(--blue); }
-.rev-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-.rev-head h3 { font-family: var(--display); font-weight: 700; font-size: 1.05rem; margin: 0; color: var(--ink); }
-.rev-time { font-family: var(--display); font-size: 0.76rem; color: var(--ink-faint); }
-.rev-meta { color: var(--ink-faint); font-size: 0.84rem; margin: 0.2rem 0 0.6rem; }
-.rev-body ul { margin: 0; padding-left: 1.1rem; color: var(--ink-dim); font-size: 0.9rem; line-height: 1.7; }
-
-.two-col { display: grid; grid-template-columns: 1fr; gap: 2.2rem; }
-.plain-list { list-style: none; margin: 0; padding: 0; }
-.plain-list li { padding: 0.85rem 0; border-bottom: 1px solid var(--line); }
-.plain-list li:last-child { border-bottom: none; }
-.plain-title { font-weight: 600; font-size: 0.96rem; color: var(--ink); }
-.plain-sub { color: var(--ink-dim); font-size: 0.85rem; margin-top: 0.15rem; }
-.plain-meta { color: var(--ink-faint); font-size: 0.76rem; margin-top: 0.25rem; font-family: var(--display); }
-.cert-row { color: var(--ink-dim); font-size: 0.9rem; padding: 0.85rem 0; border-bottom: 1px solid var(--line); }
-.cert-row:last-child { border-bottom: none; }
-
-/* resume */
-.resume-panel { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; padding: 2rem 2rem; background: var(--card); border: 1px solid var(--line-strong); }
-.resume-sub { color: var(--ink-dim); font-size: 0.9rem; margin: 0.4rem 0 0; max-width: 40ch; }
-
-/* contact */
-.contact-section { text-align: center; padding-bottom: 4.5rem; }
-.contact-title { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.05; margin: 0 0 1.1rem; color: var(--ink); }
-.contact-sub { color: var(--ink-dim); font-size: 1rem; max-width: 46ch; margin: 0 auto 2rem; }
-.contact-links { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
-.contact-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1rem; border: 1px solid var(--line-strong); background: var(--card); font-size: 0.84rem; color: var(--ink-dim); text-decoration: none; transition: border-color 0.15s, color 0.15s, transform 0.15s; }
-.contact-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
-
-/* title-block footer strip */
-.title-strip { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem; padding: 1.1rem 1.5rem; font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.03em; color: var(--ink-faint); border-top: 1px solid var(--line-strong); max-width: 1040px; margin: 0 auto; }
-
-/* reveal */
-.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.in { opacity: 1; transform: translateY(0); }
-
-@media (min-width: 720px) {
-  .two-col { grid-template-columns: 1fr 1fr; }
-}
-@media (min-width: 1000px) {
-  .hero-inner { grid-template-columns: 1.2fr 0.8fr; }
-  .sheet-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 560px) {
-  .nav-links { gap: 1rem; }
-  .nav-links button { font-size: 0.7rem; }
-  .hire-btn { display: none; }
-  .stat-block { border-right: none; border-bottom: 1px solid var(--line); }
-}
-`
