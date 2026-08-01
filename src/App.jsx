@@ -1,75 +1,68 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import {
-  Github, Linkedin, Mail, Phone, ArrowUpRight, Download, ArrowRight,
+  Github, Linkedin, Mail, Phone, ArrowUpRight, ArrowRight,
+  Code2, Server, Database, Wrench, Award, GraduationCap,
 } from 'lucide-react'
 import './index.css'
 
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
 /* content                                                             */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
 
-// File lives at /public/Rahul_S_Fullstack Developer.pdf in the repo.
-// Vite/CRA only auto-serve a folder named "public" (lowercase) — rename it
-// from "Public" if that's how it currently sits in GitHub, or the link
-// below will 404 even though the code itself is correct.
-const RESUME_PATH = '/Rahul_S_Fullstack%20Developer.pdf'
-
-const ROLES = ['Fullstack Developer', 'Frontend Developer']
+const ROLES = [
+  'React Developer',
+  'Frontend Developer',
+  'Software Developer',
+  'Java Full Stack Developer',
+]
 
 const NAV = [
-  { id: 'work', label: 'Work' },
-  { id: 'capabilities', label: 'Capabilities' },
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'certifications', label: 'Certifications' },
+  { id: 'stack', label: 'Tech Stack' },
   { id: 'contact', label: 'Contact' },
 ]
 
-const STATS = [
-  { value: 2, label: 'Internships' },
-  { value: 3, label: 'Products shipped' },
-  { value: 2026, label: 'Graduating class' },
+const SKILLS = [
+  'React', 'JavaScript', 'HTML', 'CSS', 'Tailwind CSS',
+  'Java', 'Spring Boot', 'MySQL', 'REST API', 'Git', 'GitHub',
 ]
 
-const PROJECTS = [
+// Order here is the real order a request travels through the app —
+// screen, then server, then database, then the tools holding it together.
+const STACK_LAYERS = [
   {
-    id: '01',
-    title: 'ShopSphere',
-    tag: 'Full-stack e-commerce platform',
-    desc: 'A complete storefront — browsing, search, cart, wishlist, and order tracking on the front end, with an admin console behind it for managing products, users, and inventory.',
-    tech: ['React.js', 'Spring Boot', 'Spring Data JPA', 'MySQL', 'REST APIs'],
-    note: 'The backend sleeps on Render\u2019s free tier — wake it first (30\u201360s), then open the live site.',
-    links: [
-      { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
-      { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
-    ],
-    featured: true,
+    icon: Code2,
+    title: 'What you see',
+    subtitle: 'Frontend',
+    items: ['React', 'Tailwind CSS', 'HTML', 'CSS'],
+    blurb: 'The screens, buttons, and pages a person actually touches.',
   },
   {
-    id: '02',
-    title: 'AI Exam Companion',
-    tag: 'Exam preparation tool',
-    desc: 'Mock tests with instant scoring, backed by a Groq-powered chatbot that explains the concept behind a wrong answer instead of just marking it wrong.',
-    tech: ['JavaScript (ES6+)', 'Firebase Auth', 'Groq API', 'HTML5', 'CSS3'],
-    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+    icon: Server,
+    title: 'What runs it',
+    subtitle: 'Backend',
+    items: ['Java', 'Spring Boot', 'REST API'],
+    blurb: 'The logic behind the screen, answering every request.',
   },
   {
-    id: '03',
-    title: 'Portfolio, v1',
-    tag: 'Personal site',
-    desc: 'An earlier version of this site — reusable React components for projects, skills, and contact, laid out with Flexbox and Grid to hold up on any screen.',
-    tech: ['React.js', 'Vite', 'JavaScript (ES6+)', 'CSS3'],
+    icon: Database,
+    title: 'Where data lives',
+    subtitle: 'Database',
+    items: ['MySQL'],
+    blurb: 'Where everything gets saved, and read back later.',
   },
-]
-
-// Same skills as the résumé, in plain English so a non-technical reader
-// can tell what each group is actually for.
-const SKILL_GROUPS = [
-  { label: 'Languages', hint: 'The core languages behind everything else here', items: ['Java', 'JavaScript (ES6+)', 'SQL'] },
-  { label: 'Building interfaces', hint: 'The part of the app people click, scroll, and read', items: ['HTML5', 'CSS3', 'React.js', 'JSX', 'Responsive Design', 'Mobile-First Design', 'DOM Handling', 'Flexbox', 'CSS Grid', 'Cross-Browser Support'] },
-  { label: 'Server side', hint: 'Endpoints and the logic that powers the app', items: ['Spring Boot', 'Spring Data JPA', 'REST APIs', 'JSON', 'Groq API'] },
-  { label: 'Data', hint: 'Where information lives, and how it gets read & written', items: ['MySQL', 'Firebase Realtime Database', 'CRUD Operations'] },
-  { label: 'Accounts & access', hint: 'Keeping logins secure, controlling who can do what', items: ['Firebase Authentication', 'User Authentication', 'Role-Based Access (RBAC)'] },
-  { label: 'Everyday tools', hint: 'Editors, version control, and where things get deployed', items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Vercel', 'Render'] },
-  { label: 'Foundations', hint: 'The thinking every project above is built on', items: ['Object-Oriented Programming', 'Data Structures & Algorithms', 'UI/UX Principles'] },
+  {
+    icon: Wrench,
+    title: 'How I build it',
+    subtitle: 'Tools',
+    items: ['Git', 'GitHub'],
+    blurb: 'Version control and the place the code lives online.',
+  },
 ]
 
 const EXPERIENCE = [
@@ -79,21 +72,59 @@ const EXPERIENCE = [
     time: '2026',
     place: 'Bengaluru',
     points: [
-      'Built responsive, accessible pages with HTML5, CSS3 (Flexbox/Grid) and modern JavaScript',
-      'Wired React.js up to REST APIs to fetch and render live data',
-      'Shipped frontend apps to Vercel and Render, checked across browsers',
+      'Built pages that work well on every screen size, using HTML, CSS, and JavaScript',
+      'Connected React pages to real APIs to show live data',
+      'Put finished projects online and checked them on different browsers',
     ],
   },
   {
-    role: 'AI/ML & Python Intern',
+    role: 'AI / ML & Python Intern',
     company: 'KNOWX Innovations',
     time: '2023',
     place: 'Bengaluru',
     points: [
-      'Built Python applications covering data preprocessing and basic model testing',
-      'Worked alongside the dev team on code maintenance and support',
+      'Built small Python programs to clean data and test simple models',
+      'Worked with the team on fixing bugs and keeping code running smoothly',
     ],
   },
+]
+
+const PROJECTS = [
+  {
+    id: '01',
+    title: 'ShopSphere',
+    tag: 'Full-stack online store',
+    desc: 'A complete online shop — people can browse, search, add to cart, and track orders. Behind it, there is an admin panel to manage products, users, and stock.',
+    tech: ['React', 'Spring Boot', 'MySQL', 'REST API'],
+    note: 'The server sleeps to save costs. Give it 30–60 seconds to wake up before the live site loads fully.',
+    links: [
+      { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
+      { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
+    ],
+    featured: true,
+  },
+  {
+    id: '02',
+    title: 'AI Exam Companion',
+    tag: 'Exam practice app',
+    desc: 'A practice test app that scores you right away. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
+    tech: ['JavaScript', 'Firebase', 'Groq API'],
+    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+  },
+  {
+    id: '03',
+    title: 'Personal Portfolio',
+    tag: 'An earlier version of this site',
+    desc: 'My first portfolio site — built to be fast, clean, and easy to read on any device.',
+    tech: ['React', 'Vite', 'CSS'],
+  },
+]
+
+const CERTS = [
+  { name: 'Introduction to Java', by: 'Infosys Springboard' },
+  { name: 'Cloud Computing', by: 'Infosys Springboard' },
+  { name: 'Software Engineering', by: 'Infosys Springboard' },
+  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future' },
 ]
 
 const EDUCATION = [
@@ -101,64 +132,32 @@ const EDUCATION = [
   { school: 'PVP Polytechnic', degree: 'Diploma, Information Science and Engineering', time: '2020 – 2023 · Bengaluru' },
 ]
 
-const CERTS = [
-  'Introduction to Java — Infosys Springboard',
-  'Cloud Computing — Infosys Springboard',
-  'Software Engineering — Infosys Springboard',
-  'AI and Green Skills — Edunet Foundation, Skills4Future',
-]
+/* ================================================================== */
+/* hooks                                                                */
+/* ================================================================== */
 
-/* ------------------------------------------------------------------ */
-/* hooks                                                               */
-/* ------------------------------------------------------------------ */
-
-function useTypewriter(words, typeSpeed = 55, deleteSpeed = 30, pause = 1400) {
+function useTypewriter(words, typeSpeed = 60, deleteSpeed = 32, pause = 1300) {
   const [text, setText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     const current = words[wordIndex % words.length]
-    let timeout
+    let t
     if (!deleting && text === current) {
-      timeout = setTimeout(() => setDeleting(true), pause)
+      t = setTimeout(() => setDeleting(true), pause)
     } else if (deleting && text === '') {
       setDeleting(false)
       setWordIndex((i) => (i + 1) % words.length)
     } else {
-      timeout = setTimeout(() => {
-        setText((t) => (deleting ? current.slice(0, t.length - 1) : current.slice(0, t.length + 1)))
+      t = setTimeout(() => {
+        setText((s) => (deleting ? current.slice(0, s.length - 1) : current.slice(0, s.length + 1)))
       }, deleting ? deleteSpeed : typeSpeed)
     }
-    return () => clearTimeout(timeout)
+    return () => clearTimeout(t)
   }, [text, deleting, wordIndex, words, typeSpeed, deleteSpeed, pause])
 
   return text
-}
-
-function useReveal() {
-  const ref = useRef(null)
-  const [inView, setInView] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
-      { threshold: 0.15 }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-  return [ref, inView]
-}
-
-function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
-  const [ref, inView] = useReveal()
-  return (
-    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
-    </Tag>
-  )
 }
 
 function useActiveSection() {
@@ -166,7 +165,7 @@ function useActiveSection() {
   useEffect(() => {
     const sections = NAV.map((n) => document.getElementById(n.id)).filter(Boolean)
     const obs = new IntersectionObserver(
-      (entries) => { entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) }) },
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) }),
       { rootMargin: '-40% 0px -50% 0px' }
     )
     sections.forEach((s) => obs.observe(s))
@@ -175,266 +174,506 @@ function useActiveSection() {
   return active
 }
 
-function useCountUp(target, duration = 1100) {
-  const [ref, inView] = useReveal()
-  const [n, setN] = useState(0)
+function useScrolledPast(threshold = 40) {
+  const [past, setPast] = useState(false)
   useEffect(() => {
-    if (!inView) return
-    let raf
-    const start = performance.now()
-    const tick = (t) => {
-      const p = Math.min(1, (t - start) / duration)
-      const eased = 1 - Math.pow(1 - p, 3)
-      setN(Math.round(target * eased))
-      if (p < 1) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [inView, target, duration])
-  return [ref, n, inView]
-}
-
-function useScrollProgress() {
-  const [progress, setProgress] = useState(0)
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement
-      const scrollable = h.scrollHeight - h.clientHeight
-      setProgress(scrollable > 0 ? Math.min(1, h.scrollTop / scrollable) : 0)
-    }
+    const onScroll = () => setPast(window.scrollY > threshold)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-  return progress
+  }, [threshold])
+  return past
 }
 
-/* ------------------------------------------------------------------ */
-/* small components                                                    */
-/* ------------------------------------------------------------------ */
+function useCursorGlow() {
+  const ref = useRef(null)
+  useEffect(() => {
+    const move = (e) => {
+      if (ref.current) {
+        ref.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`
+      }
+    }
+    window.addEventListener('mousemove', move)
+    return () => window.removeEventListener('mousemove', move)
+  }, [])
+  return ref
+}
 
-function SectionHead({ index, title, kicker }) {
+/* ================================================================== */
+/* small pieces                                                        */
+/* ================================================================== */
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
+  }),
+}
+
+function Reveal({ children, className = '', delay = 0, as = 'div' }) {
+  const Tag = motion[as] || motion.div
   return (
-    <Reveal className="sec-head">
-      <span className="sec-watermark" aria-hidden="true">{index}</span>
-      <p className="sec-kicker">{kicker}</p>
-      <h2 className="sec-title">{title}</h2>
-    </Reveal>
+    <Tag
+      className={className}
+      variants={fadeUp}
+      custom={delay}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      {children}
+    </Tag>
   )
 }
 
-function StatBlock({ stat, index }) {
-  const [ref, n, inView] = useCountUp(stat.value)
+function Eyebrow({ children }) {
   return (
-    <div ref={ref} className={`stat-block reveal ${inView ? 'in' : ''}`} style={{ transitionDelay: `${index * 90}ms` }}>
-      <span className="stat-value">{n}</span>
-      <span className="stat-label">{stat.label}</span>
+    <p className="font-mono text-[0.7rem] tracking-[0.25em] uppercase text-gold mb-3">
+      {children}
+    </p>
+  )
+}
+
+function Particles({ count = 22 }) {
+  const particles = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        size: 2 + Math.random() * 3,
+        duration: 10 + Math.random() * 12,
+        delay: Math.random() * 14,
+        drift: (Math.random() - 0.5) * 80,
+      })),
+    [count]
+  )
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((p) => (
+        <span
+          key={p.id}
+          className="particle"
+          style={{
+            left: `${p.left}%`,
+            width: p.size,
+            height: p.size,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+            '--drift': `${p.drift}px`,
+          }}
+        />
+      ))}
     </div>
   )
 }
 
-function ProjectCard({ project, index }) {
+/* a small circular monogram — the recurring luxury "seal" motif */
+function Seal({ size = 40 }) {
   return (
-    <Reveal delay={index * 100} className={`project-card ${project.featured ? 'featured' : ''}`}>
-      <span className="project-index">{project.id}</span>
-      <div className="project-body">
-        <div className="project-heading">
-          <h3>{project.title}</h3>
-          {project.featured && <span className="project-flag">Featured</span>}
-        </div>
-        <p className="project-tag">{project.tag}</p>
-        <p className="project-desc">{project.desc}</p>
-        <div className="project-tech">
-          {project.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
-        </div>
-        {project.note && <p className="project-note">{project.note}</p>}
-        {project.links && (
-          <div className="project-links">
-            {project.links.map((l) => (
-              <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
-                {l.label} <ArrowUpRight size={14} />
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-    </Reveal>
+    <div
+      className="relative rounded-full border border-gold/50 flex items-center justify-center font-display text-gold shrink-0"
+      style={{ width: size, height: size, fontSize: size * 0.4 }}
+    >
+      <span className="absolute inset-[3px] rounded-full border border-gold/20" />
+      RS
+    </div>
   )
 }
 
-function SkillGroup({ group, index }) {
-  return (
-    <Reveal delay={index * 70} className="skill-row">
-      <div className="skill-row-head">
-        <h3>{group.label}</h3>
-        <p>{group.hint}</p>
-      </div>
-      <div className="skill-pills">
-        {group.items.map((it) => <span key={it} className="skill-pill">{it}</span>)}
-      </div>
-    </Reveal>
-  )
-}
-
-function ExperienceRow({ entry, index }) {
-  return (
-    <Reveal delay={index * 100} className="timeline-row">
-      <div className="timeline-marker">
-        <span className="timeline-year">{entry.time}</span>
-        <span className="timeline-dot" />
-      </div>
-      <div className="timeline-body">
-        <h3>{entry.role}</h3>
-        <p className="timeline-meta">{entry.company} · {entry.place}</p>
-        <ul>{entry.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
-      </div>
-    </Reveal>
-  )
-}
-
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
 /* app                                                                  */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
 
 export default function App() {
   const typed = useTypewriter(ROLES)
   const active = useActiveSection()
-  const progress = useScrollProgress()
+  const scrolled = useScrolledPast()
+  const glowRef = useCursorGlow()
+  const { scrollYProgress } = useScroll()
+  const heroFade = useTransform(scrollYProgress, [0, 0.12], [1, 0])
+  const heroShift = useTransform(scrollYProgress, [0, 0.12], [0, 40])
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
-    <div className="ed-root">
-      <div className="progress-track" aria-hidden="true">
-        <div className="progress-fill" style={{ transform: `scaleX(${progress})` }} />
-      </div>
+    <div className="bg-base text-ink font-body min-h-screen selection:bg-gold/30">
+      <div ref={glowRef} className="cursor-glow" />
 
-      <nav className="site-nav">
-        <div className="wrap site-nav-inner">
-          <button className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-            Rahul S
+      {/* ---------------- navbar ---------------- */}
+      <nav
+        className={`fixed top-0 inset-x-0 z-50 transition-colors duration-500 ${
+          scrolled ? 'bg-base/85 backdrop-blur-md border-b border-gold/15' : 'bg-transparent'
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+          <button
+            className="flex items-center gap-3"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+          >
+            <Seal size={36} />
+            <span className="font-display text-lg tracking-wide hidden sm:block">Rahul S</span>
           </button>
-          <div className="nav-links">
+
+          <div className="hidden md:flex items-center gap-8">
             {NAV.map((n) => (
-              <button key={n.id} className={active === n.id ? 'active' : ''} onClick={() => scrollTo(n.id)}>
+              <button
+                key={n.id}
+                onClick={() => scrollTo(n.id)}
+                className={`nav-link font-mono text-xs tracking-[0.15em] uppercase text-dim hover:text-ink transition-colors ${
+                  active === n.id ? 'active text-ink' : ''
+                }`}
+              >
                 {n.label}
               </button>
             ))}
           </div>
-          <a className="nav-cta" href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
-            <Download size={14} /> Résumé
-          </a>
+
+          <button
+            onClick={() => scrollTo('contact')}
+            className="shimmer font-mono text-xs tracking-[0.1em] uppercase border border-gold/50 text-gold rounded-full px-5 py-2 hover:bg-gold/10 transition-colors"
+          >
+            Contact
+          </button>
         </div>
       </nav>
 
-      <header className="hero wrap">
-        <p className="eyebrow">Available for full-stack &amp; frontend roles</p>
-        <h1 className="hero-name">
-          Building interfaces<br />
-          people <em>actually enjoy</em><br />
-          using.
-        </h1>
-        <div className="hero-role">
-          <span className="role-mark">{typed}</span><span className="cursor" />
-        </div>
-        <p className="hero-desc">
-          I&rsquo;m Rahul — a final-year Computer Science student who&rsquo;d rather ship
-          something real than just study the theory behind it. I build fast React interfaces
-          and back them with real Spring Boot APIs, front to back.
-        </p>
-        <div className="hero-cta">
-          <button className="btn primary" onClick={() => scrollTo('work')}>See my work <ArrowRight size={15} /></button>
-          <a className="btn ghost" href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
-            <Download size={15} /> Download résumé
-          </a>
-        </div>
+      {/* ---------------- hero ---------------- */}
+      <header className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 gold-wash overflow-hidden">
+        <Particles />
+        <motion.div style={{ opacity: heroFade, y: heroShift }} className="relative z-10 max-w-3xl">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="font-mono text-xs tracking-[0.3em] uppercase text-gold mb-6"
+          >
+            Open to full-stack &amp; frontend roles
+          </motion.p>
 
-        <div className="hero-socials">
-          <a href="mailto:Srinivasrahul838@gmail.com" aria-label="Email"><Mail size={16} /></a>
-          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={16} /></a>
-          <a href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={16} /></a>
-        </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="font-display text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.05] mb-6"
+          >
+            Hi, I&rsquo;m <span className="text-gold">Rahul</span>
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="font-mono text-base sm:text-lg text-dim mb-10 h-7"
+          >
+            {typed}
+            <span className="type-cursor" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.45 }}
+            className="flex flex-wrap items-center justify-center gap-4"
+          >
+            <button
+              onClick={() => scrollTo('projects')}
+              className="shimmer group inline-flex items-center gap-2 bg-gold text-base font-semibold text-sm px-7 py-3.5 rounded-full shadow-goldLg hover:brightness-110 transition-all"
+            >
+              View Projects
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button
+              onClick={() => scrollTo('contact')}
+              className="shimmer inline-flex items-center gap-2 border border-gold/50 text-gold font-semibold text-sm px-7 py-3.5 rounded-full hover:bg-gold/10 transition-colors"
+            >
+              Contact Me
+            </button>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="absolute bottom-10 flex flex-col items-center gap-2 text-dim"
+        >
+          <span className="font-mono text-[0.65rem] tracking-[0.2em] uppercase">Scroll</span>
+          <span className="w-px h-10 bg-gradient-to-b from-gold to-transparent" />
+        </motion.div>
       </header>
 
-      <section className="wrap stats-row">
-        {STATS.map((s, i) => <StatBlock stat={s} index={i} key={s.label} />)}
-      </section>
-
-      <section id="work" className="wrap section">
-        <SectionHead index="01" kicker="Selected work" title="Things I've shipped" />
-        <div className="project-list">
-          {PROJECTS.map((p, i) => <ProjectCard project={p} index={i} key={p.id} />)}
-        </div>
-      </section>
-
-      <section id="capabilities" className="wrap section">
-        <SectionHead index="02" kicker="Capabilities" title="What I work with" />
-        <Reveal delay={60}><p className="body-text intro">Same skills as my résumé, grouped in plain language so it's clear what each one is actually for.</p></Reveal>
-        <div className="skill-list">
-          {SKILL_GROUPS.map((g, i) => <SkillGroup group={g} index={i} key={g.label} />)}
-        </div>
-      </section>
-
-      <section id="experience" className="wrap section">
-        <SectionHead index="03" kicker="Path so far" title="How I got here" />
-        <div className="timeline">
-          {EXPERIENCE.map((e, i) => <ExperienceRow entry={e} index={i} key={e.company} />)}
-        </div>
-
-        <div className="two-col">
-          <Reveal>
-            <p className="mini-label">Education</p>
-            <ul className="plain-list">
-              {EDUCATION.map((ed) => (
-                <li key={ed.school}>
-                  <div className="plain-title">{ed.school}</div>
-                  <div className="plain-sub">{ed.degree}</div>
-                  <div className="plain-meta">{ed.time}</div>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-          <Reveal delay={90}>
-            <p className="mini-label">Certifications</p>
-            <ul className="plain-list">
-              {CERTS.map((c) => <li key={c} className="cert-row">{c}</li>)}
-            </ul>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="wrap section resume-section">
+      {/* ---------------- about ---------------- */}
+      <section id="about" className="relative max-w-4xl mx-auto px-6 py-28">
         <Reveal>
-          <div className="resume-band">
-            <div>
-              <p className="mini-label">Résumé</p>
-              <h2 className="sec-title small">Want the paper trail?</h2>
-              <p className="resume-sub">Everything above, in one PDF you can forward to a hiring manager.</p>
-            </div>
-            <a className="btn primary large" href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
-              <Download size={16} /> Download résumé
-            </a>
+          <Eyebrow>About me</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-6">
+            A builder, not just a student
+          </h2>
+        </Reveal>
+        <Reveal delay={1}>
+          <p className="text-dim text-lg leading-relaxed max-w-2xl">
+            I&rsquo;m a final-year Computer Science student who likes finishing things, not just
+            planning them. I build the part you see with React, and the part that makes it work
+            with Java and Spring Boot. I care about clean, simple code, and about making
+            something people genuinely enjoy using — from the first click to the last.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ---------------- skills ---------------- */}
+      <section id="skills" className="relative max-w-5xl mx-auto px-6 py-20">
+        <Reveal>
+          <Eyebrow>Skills</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-10">
+            What I work with
+          </h2>
+        </Reveal>
+        <div className="flex flex-wrap gap-3">
+          {SKILLS.map((s, i) => (
+            <Reveal key={s} delay={i}>
+              <span className="glass rounded-full px-5 py-2.5 text-sm text-ink/90 hover:border-gold/60 hover:shadow-gold transition-all inline-block cursor-default">
+                {s}
+              </span>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------- experience ---------------- */}
+      <section id="experience" className="relative max-w-4xl mx-auto px-6 py-20">
+        <Reveal>
+          <Eyebrow>Experience</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-12">
+            How I got here
+          </h2>
+        </Reveal>
+
+        <div className="relative border-l border-gold/25 pl-8 space-y-14">
+          {EXPERIENCE.map((e, i) => (
+            <Reveal key={e.company} delay={i} className="relative">
+              <span className="absolute -left-[2.55rem] top-1.5 w-3 h-3 rounded-full bg-gold shadow-[0_0_12px_2px_rgba(212,175,55,0.6)]" />
+              <p className="font-mono text-xs tracking-[0.15em] uppercase text-gold mb-2">{e.time}</p>
+              <h3 className="font-display text-xl font-semibold mb-1">{e.role}</h3>
+              <p className="text-dim text-sm mb-4">{e.company} · {e.place}</p>
+              <ul className="space-y-2">
+                {e.points.map((pt) => (
+                  <li key={pt} className="text-ink/80 text-sm leading-relaxed flex gap-2">
+                    <span className="text-gold mt-1.5">◆</span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={2} className="mt-16">
+          <div className="flex items-center gap-2 mb-6">
+            <GraduationCap size={18} className="text-gold" />
+            <p className="font-mono text-xs tracking-[0.15em] uppercase text-dim">Education</p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {EDUCATION.map((ed) => (
+              <div key={ed.school} className="glass rounded-2xl p-6">
+                <p className="font-display text-lg font-semibold mb-1">{ed.school}</p>
+                <p className="text-dim text-sm mb-2">{ed.degree}</p>
+                <p className="font-mono text-xs text-gold">{ed.time}</p>
+              </div>
+            ))}
           </div>
         </Reveal>
       </section>
 
-      <section id="contact" className="wrap section contact-section">
+      {/* ---------------- projects ---------------- */}
+      <section id="projects" className="relative max-w-5xl mx-auto px-6 py-20">
         <Reveal>
-          <p className="mini-label center">Get in touch</p>
-          <h2 className="contact-title">Let&rsquo;s build<br />something good.</h2>
-          <p className="contact-sub">Open to full-stack and frontend roles — based in Bengaluru, happy to work remote.</p>
-          <div className="contact-links">
-            <a className="contact-link" href="mailto:Srinivasrahul838@gmail.com"><Mail size={15} /> Srinivasrahul838@gmail.com</a>
-            <a className="contact-link" href="tel:+917337634886"><Phone size={15} /> 7337634886</a>
-            <a className="contact-link" href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer"><Linkedin size={15} /> LinkedIn</a>
-            <a className="contact-link" href="https://github.com/" target="_blank" rel="noopener noreferrer"><Github size={15} /> GitHub</a>
-          </div>
+          <Eyebrow>Featured projects</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-12">
+            Things I&rsquo;ve built
+          </h2>
+        </Reveal>
+
+        <div className="space-y-6">
+          {PROJECTS.map((p, i) => (
+            <Reveal key={p.id} delay={i}>
+              <div
+                className={`glass rounded-2xl p-8 grid sm:grid-cols-[56px_1fr] gap-5 hover:shadow-gold hover:-translate-y-1 transition-all duration-300 ${
+                  p.featured ? 'border-gold/45' : ''
+                }`}
+              >
+                <span className="font-display text-2xl text-gold/70">{p.id}</span>
+                <div>
+                  <div className="flex items-center flex-wrap gap-3 mb-1">
+                    <h3 className="font-display text-2xl font-semibold">{p.title}</h3>
+                    {p.featured && (
+                      <span className="font-mono text-[0.65rem] tracking-[0.1em] uppercase text-gold border border-gold/40 rounded-full px-3 py-1">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gold/80 text-sm mb-3">{p.tag}</p>
+                  <p className="text-dim leading-relaxed mb-4 max-w-xl">{p.desc}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {p.tech.map((t) => (
+                      <span key={t} className="font-mono text-xs text-dim border border-gold/20 rounded-full px-3 py-1">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  {p.note && (
+                    <p className="text-xs text-gold/80 bg-gold/5 border-l-2 border-gold/50 rounded-r-lg px-3 py-2 mb-4 max-w-xl">
+                      {p.note}
+                    </p>
+                  )}
+                  {p.links && (
+                    <div className="flex flex-wrap gap-3">
+                      {p.links.map((l) => (
+                        <a
+                          key={l.label}
+                          href={l.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-medium border border-gold/40 rounded-full px-4 py-2 hover:text-gold hover:border-gold transition-colors"
+                        >
+                          {l.label} <ArrowUpRight size={14} />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------- certifications ---------------- */}
+      <section id="certifications" className="relative max-w-4xl mx-auto px-6 py-20">
+        <Reveal>
+          <Eyebrow>Certifications</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-10">
+            Always learning something new
+          </h2>
+        </Reveal>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {CERTS.map((c, i) => (
+            <Reveal key={c.name} delay={i}>
+              <div className="glass rounded-xl p-5 flex items-start gap-3 hover:border-gold/50 transition-colors h-full">
+                <Award size={18} className="text-gold mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-medium text-ink/90">{c.name}</p>
+                  <p className="text-dim text-sm">{c.by}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------- tech stack ---------------- */}
+      <section id="stack" className="relative max-w-5xl mx-auto px-6 py-20">
+        <Reveal>
+          <Eyebrow>Tech stack</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-3">
+            How a request travels through my apps
+          </h2>
+          <p className="text-dim mb-12 max-w-2xl">
+            Top to bottom — from the screen you tap, to the server that answers, to the database
+            that remembers, held together by the tools I build with every day.
+          </p>
+        </Reveal>
+
+        <div className="space-y-4">
+          {STACK_LAYERS.map((layer, i) => {
+            const Icon = layer.icon
+            return (
+              <Reveal key={layer.title} delay={i}>
+                <div className="glass rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5 hover:shadow-gold transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
+                    <Icon size={20} className="text-gold" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-gold mb-1">{layer.subtitle}</p>
+                    <h3 className="font-display text-xl font-semibold mb-1">{layer.title}</h3>
+                    <p className="text-dim text-sm">{layer.blurb}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 sm:justify-end sm:max-w-xs">
+                    {layer.items.map((it) => (
+                      <span key={it} className="font-mono text-xs text-ink/80 border border-gold/25 rounded-full px-3 py-1">
+                        {it}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {i < STACK_LAYERS.length - 1 && (
+                  <div className="w-px h-4 bg-gold/25 mx-auto" />
+                )}
+              </Reveal>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* ---------------- contact ---------------- */}
+      <section id="contact" className="relative max-w-3xl mx-auto px-6 py-28 text-center">
+        <Reveal>
+          <Eyebrow>Get in touch</Eyebrow>
+          <h2 className="font-display text-4xl sm:text-5xl font-semibold mb-5 leading-tight">
+            Let&rsquo;s build <span className="text-gold">something good.</span>
+          </h2>
+          <p className="text-dim mb-10 max-w-lg mx-auto">
+            Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.
+          </p>
+        </Reveal>
+
+        <Reveal delay={1} className="glass rounded-2xl p-8 grid sm:grid-cols-2 gap-4 text-left">
+          <a
+            href="mailto:Srinivasrahul838@gmail.com"
+            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
+          >
+            <Mail size={17} className="text-gold shrink-0" />
+            <span className="text-sm text-ink/90 truncate">Srinivasrahul838@gmail.com</span>
+          </a>
+          <a
+            href="tel:+917337634886"
+            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
+          >
+            <Phone size={17} className="text-gold shrink-0" />
+            <span className="text-sm text-ink/90">+91 73376 34886</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/rahul-s-6460b1238"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
+          >
+            <Linkedin size={17} className="text-gold shrink-0" />
+            <span className="text-sm text-ink/90">LinkedIn</span>
+          </a>
+          <a
+            href="https://github.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
+          >
+            <Github size={17} className="text-gold shrink-0" />
+            <span className="text-sm text-ink/90">GitHub</span>
+          </a>
         </Reveal>
       </section>
 
-      <footer className="site-footer">
-        <span>© {new Date().getFullYear()} Rahul S</span>
-        <span>Designed &amp; built with React</span>
+      {/* ---------------- footer ---------------- */}
+      <footer className="border-t border-gold/15">
+        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Seal size={28} />
+            <span className="font-mono text-xs text-dim">© {new Date().getFullYear()} Rahul S</span>
+          </div>
+          <span className="font-mono text-xs text-dim">Built with React, Tailwind &amp; Framer Motion</span>
+        </div>
       </footer>
     </div>
   )
