@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  Github, Linkedin, Mail, Phone, ExternalLink, ArrowUpRight, Download,
+  Github, Linkedin, Mail, Phone, ExternalLink, Download, GitBranch, Check, Terminal,
 } from 'lucide-react'
 import './index.css'
 
@@ -8,108 +8,76 @@ import './index.css'
 /* content                                                             */
 /* ------------------------------------------------------------------ */
 
-const ROLES = ['Fullstack Developer', 'Frontend Developer', 'React Developer', 'Software Developer']
+const RESUME_PATH = '/RAHUL_S_Fullstack Developer.pdf'
+
+// Only the two roles the site should present.
+const ROLES = ['Fullstack Developer', 'Frontend Developer']
 
 const NAV = [
-  { id: 'about', label: 'Overview' },
-  { id: 'work', label: 'Work' },
-  { id: 'craft', label: 'Skills' },
-  { id: 'journey', label: 'History' },
-  { id: 'resume', label: 'Sheet' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'about', label: 'about', ext: 'jsx', dot: 'jsx' },
+  { id: 'work', label: 'projects', ext: '', dot: 'dir' },
+  { id: 'craft', label: 'skills', ext: 'json', dot: 'json' },
+  { id: 'journey', label: 'changelog', ext: 'log', dot: 'log' },
+  { id: 'resume', label: 'resume', ext: 'pdf', dot: 'pdf' },
+  { id: 'contact', label: 'contact', ext: 'js', dot: 'js' },
 ]
 
 const STATS = [
-  { value: 2, suffix: '', label: 'Internships completed' },
-  { value: 3, suffix: '', label: 'Products shipped' },
-  { value: 2026, suffix: '', label: 'B.E. Computer Science' },
+  { value: 2, label: 'internships' },
+  { value: 3, label: 'projects shipped' },
+  { value: 2026, label: 'graduating class' },
 ]
 
 const PROJECTS = [
   {
-    id: 'A',
-    title: 'ShopSphere',
+    id: 'shopsphere',
+    file: 'shopsphere.tsx',
     tag: 'E-commerce platform',
+    status: 'deployed',
     desc: 'A full-stack storefront — browsing, search, cart, wishlist, and order tracking on the front end, with an admin console behind it for managing products, users, and inventory.',
     tech: ['React.js', 'Spring Boot', 'Spring Data JPA', 'MySQL', 'REST APIs'],
-    note: 'The backend sleeps on Render\u2019s free tier. Wake it first — it takes 30\u201360s — then open the live site.',
+    note: 'Backend sleeps on Render\u2019s free tier — wake it first (30\u201360s), then open the site.',
     links: [
-      { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
-      { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
+      { label: 'backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
+      { label: 'live', href: 'https://shopsphere-8m8f.vercel.app/' },
     ],
     featured: true,
   },
   {
-    id: 'B',
-    title: 'AI Exam Companion',
+    id: 'exam-companion',
+    file: 'ai-exam-companion.js',
     tag: 'Exam prep tool',
+    status: 'deployed',
     desc: 'Mock tests with instant scoring, backed by a Groq-powered chatbot that explains the concept behind a wrong answer instead of just marking it wrong.',
     tech: ['JavaScript (ES6+)', 'Firebase Auth', 'Groq API', 'HTML5', 'CSS3'],
-    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+    links: [{ label: 'live', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
   },
   {
-    id: 'C',
-    title: 'Portfolio, v1',
+    id: 'portfolio-v1',
+    file: 'portfolio-v1.jsx',
     tag: 'Personal site',
+    status: 'archived',
     desc: 'The previous version of this site — reusable React components for projects, skills, and contact, laid out with Flexbox and Grid to hold up on any screen.',
     tech: ['React.js', 'Vite', 'JavaScript (ES6+)', 'CSS3'],
   },
 ]
 
-// Same skills listed on the resume, grouped in plain English so a
-// non-technical reader can still follow what each group covers.
+// Same skills as the résumé, grouped the way a package.json would group
+// dependencies — plain-English keys so a non-technical reader still gets it.
 const SKILL_GROUPS = [
-  {
-    id: '01',
-    label: 'Languages I code in',
-    hint: 'The core languages behind everything else on this page',
-    items: ['Java', 'JavaScript (ES6+)', 'SQL'],
-  },
-  {
-    id: '02',
-    label: 'Building what you see',
-    hint: 'Front-end — the part of the app people click, scroll, and read',
-    items: [
-      'HTML5', 'CSS3', 'React.js', 'JSX', 'React Components',
-      'Responsive Design', 'Mobile-First Design', 'DOM Handling',
-      'Flexbox', 'CSS Grid', 'Cross-Browser Support', 'Performance Tuning',
-    ],
-  },
-  {
-    id: '03',
-    label: 'Running things behind the scenes',
-    hint: 'Back-end — servers, endpoints, and the logic that powers the app',
-    items: ['Spring Boot', 'Spring Data JPA', 'REST APIs', 'JSON', 'Groq API'],
-  },
-  {
-    id: '04',
-    label: 'Storing data',
-    hint: 'Where information lives and how it gets created, read, updated, deleted',
-    items: ['MySQL', 'Firebase Realtime Database', 'CRUD Operations'],
-  },
-  {
-    id: '05',
-    label: 'Logins & access',
-    hint: 'Keeping accounts secure and controlling who can do what',
-    items: ['Firebase Authentication', 'User Authentication', 'Role-Based Access (RBAC)'],
-  },
-  {
-    id: '06',
-    label: 'Tools I work in daily',
-    hint: 'Editors, version control, and where projects get deployed',
-    items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Vercel', 'Render'],
-  },
-  {
-    id: '07',
-    label: 'How I think about problems',
-    hint: 'The fundamentals every project above is built on',
-    items: ['Object-Oriented Programming', 'Data Structures & Algorithms', 'UI/UX Principles'],
-  },
+  { key: 'languages', hint: 'core languages behind everything else here', items: ['Java', 'JavaScript (ES6+)', 'SQL'] },
+  { key: 'frontend', hint: 'the part of the app people click, scroll, and read', items: ['HTML5', 'CSS3', 'React.js', 'JSX', 'Responsive Design', 'Mobile-First Design', 'DOM Handling', 'Flexbox', 'CSS Grid', 'Cross-Browser Support', 'Performance Tuning'] },
+  { key: 'backend', hint: 'servers, endpoints, and the logic that powers the app', items: ['Spring Boot', 'Spring Data JPA', 'REST APIs', 'JSON', 'Groq API'] },
+  { key: 'database', hint: 'where information lives, and how it gets read & written', items: ['MySQL', 'Firebase Realtime Database', 'CRUD Operations'] },
+  { key: 'auth', hint: 'keeping accounts secure, controlling who can do what', items: ['Firebase Authentication', 'User Authentication', 'Role-Based Access (RBAC)'] },
+  { key: 'tooling', hint: 'editors, version control, and where things get deployed', items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Vercel', 'Render'] },
+  { key: 'fundamentals', hint: 'the thinking every project above is built on', items: ['Object-Oriented Programming', 'Data Structures & Algorithms', 'UI/UX Principles'] },
 ]
 
-// newest first — reads naturally as REV B (latest) then REV A
+// newest first — reads like a commit log, most recent at the top
 const EXPERIENCE = [
   {
+    hash: 'b4f2a91',
     rev: 'B',
     role: 'Web Development Intern',
     company: 'MR Tech Lab',
@@ -122,6 +90,7 @@ const EXPERIENCE = [
     ],
   },
   {
+    hash: '7a103cd',
     rev: 'A',
     role: 'AI/ML & Python Intern',
     company: 'KNOWX Innovations',
@@ -213,7 +182,6 @@ function useActiveSection() {
   return active
 }
 
-// Counts up once the element scrolls into view.
 function useCountUp(target, duration = 1100) {
   const [ref, inView] = useReveal()
   const [n, setN] = useState(0)
@@ -233,7 +201,6 @@ function useCountUp(target, duration = 1100) {
   return [ref, n, inView]
 }
 
-// Tracks scroll progress through the page, 0 → 1.
 function useScrollProgress() {
   const [progress, setProgress] = useState(0)
   useEffect(() => {
@@ -253,25 +220,11 @@ function useScrollProgress() {
 /* small components                                                    */
 /* ------------------------------------------------------------------ */
 
-// Signature element — a plotting line at the very top of the page that
-// draws itself in as you scroll, like a pen tracing a drawing sheet.
-function PlotLine({ progress }) {
+function SectionHead({ index, comment, title }) {
   return (
-    <div className="plot-line-track" aria-hidden="true">
-      <div className="plot-line-fill" style={{ transform: `scaleX(${progress})` }} />
-      <span className="plot-line-bit" style={{ left: `${progress * 100}%` }} />
-    </div>
-  )
-}
-
-// Section header styled as a drafted sheet label with a dimension-line rule.
-function SheetHeader({ index, eyebrow, title }) {
-  return (
-    <Reveal className="sheet-head">
-      <p className="sheet-index">{index}</p>
-      <h2 className="sheet-title">{title}</h2>
-      <p className="sheet-eyebrow">{eyebrow}</p>
-      <div className="dim-line"><span className="dim-tick" /><span className="dim-tick" /></div>
+    <Reveal className="sec-head">
+      <p className="sec-comment">// {String(index).padStart(2, '0')} — {comment}</p>
+      <h2 className="sec-title">{title}</h2>
     </Reveal>
   )
 }
@@ -280,36 +233,43 @@ function StatBlock({ stat, index }) {
   const [ref, n, inView] = useCountUp(stat.value)
   return (
     <div ref={ref} className={`stat-block reveal ${inView ? 'in' : ''}`} style={{ transitionDelay: `${index * 80}ms` }}>
-      <span className="stat-value">{n}{stat.suffix}</span>
+      <span className="stat-value">{n}</span>
       <span className="stat-label">{stat.label}</span>
     </div>
   )
 }
 
-function ProjectSheet({ project, index }) {
+function StackImport({ tech }) {
   return (
-    <Reveal delay={index * 90} className={`sheet-card ${project.featured ? 'marked' : ''}`}>
-      <div className="sheet-card-head">
-        <span className="sheet-tab">SHEET {project.id}</span>
-        {project.featured && <span className="sheet-flag">Primary build</span>}
+    <p className="stack-import">
+      <span className="tok-kw">import</span> {'{ '}
+      {tech.map((t, i) => (
+        <span key={t}>
+          <span className="tok-str">'{t}'</span>{i < tech.length - 1 ? ', ' : ''}
+        </span>
+      ))}
+      {' }'} <span className="tok-kw">from</span> <span className="tok-str">'./stack'</span>
+    </p>
+  )
+}
+
+function ProjectFile({ project, index }) {
+  return (
+    <Reveal delay={index * 90} className={`file-card ${project.featured ? 'marked' : ''}`}>
+      <div className="file-card-top">
+        <span className={`status-dot ${project.status}`} aria-hidden="true" />
+        <span className="file-name">{project.file}</span>
+        {project.featured && <span className="file-flag">primary</span>}
       </div>
-      <h3 className="sheet-card-title">{project.title}</h3>
-      <p className="sheet-card-tag">{project.tag}</p>
-      <p className="sheet-card-desc">{project.desc}</p>
-      <dl className="spec-list">
-        <dt>Stack</dt>
-        <dd>
-          {project.tech.map((t, i) => (
-            <span key={t}>{t}{i < project.tech.length - 1 ? ' · ' : ''}</span>
-          ))}
-        </dd>
-      </dl>
-      {project.note && <p className="sheet-card-note">Note — {project.note}</p>}
+      <p className="file-tag">{project.tag}</p>
+      <p className="file-comment">/* {project.desc} */</p>
+      <StackImport tech={project.tech} />
+      {project.note && <p className="file-note">// NOTE: {project.note}</p>}
       {project.links && (
-        <div className="sheet-links">
+        <div className="file-links">
           {project.links.map((l) => (
-            <a className="sheet-link" href={l.href} target="_blank" rel="noopener noreferrer" key={l.label}>
-              {l.label} <ArrowUpRight size={13} />
+            <a className="run-link" href={l.href} target="_blank" rel="noopener noreferrer" key={l.label}>
+              <span className="run-glyph">▶</span> {l.label}
             </a>
           ))}
         </div>
@@ -318,46 +278,38 @@ function ProjectSheet({ project, index }) {
   )
 }
 
-// One row of the "bill of materials" style skills table.
-function SkillRow({ group, index }) {
+function SkillGroup({ group, index }) {
   return (
-    <Reveal delay={index * 60} className="bom-row">
-      <span className="bom-id">{group.id}</span>
-      <div className="bom-body">
-        <div className="bom-heading">
-          <span className="bom-label">{group.label}</span>
-          <span className="bom-count">{String(group.items.length).padStart(2, '0')} items</span>
-        </div>
-        <p className="bom-hint">{group.hint}</p>
-        <span className="bom-items">
-          {group.items.map((it) => <span className="bom-chip" key={it}>{it}</span>)}
-        </span>
+    <Reveal delay={index * 60} className="dep-row">
+      <div className="dep-key-line">
+        <span className="tok-str">"{group.key}"</span><span className="tok-punc">: [</span>
       </div>
+      <p className="dep-hint">// {group.hint}</p>
+      <div className="dep-items">
+        {group.items.map((it, i) => (
+          <span className="dep-item" key={it}>
+            <span className="tok-str">"{it}"</span>{i < group.items.length - 1 ? <span className="tok-punc">,</span> : ''}
+          </span>
+        ))}
+      </div>
+      <span className="tok-punc">]</span><span className="tok-punc">,</span>
     </Reveal>
   )
 }
 
-// Cursor-following crosshair, confined to the hero.
-function Crosshair() {
-  const vRef = useRef(null)
-  const hRef = useRef(null)
-  const wrapRef = useRef(null)
-
-  const onMove = (e) => {
-    const wrap = wrapRef.current
-    if (!wrap) return
-    const rect = wrap.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    if (vRef.current) vRef.current.style.transform = `translateX(${x}px)`
-    if (hRef.current) hRef.current.style.transform = `translateY(${y}px)`
-  }
-
+function CommitRow({ entry, index }) {
   return (
-    <div className="crosshair-wrap" ref={wrapRef} onMouseMove={onMove}>
-      <div className="crosshair-v" ref={vRef} />
-      <div className="crosshair-h" ref={hRef} />
-    </div>
+    <Reveal delay={index * 90} className="commit-row">
+      <div className="commit-meta">
+        <span className="commit-hash">commit {entry.hash}</span>
+        <span className="commit-rev">rev {entry.rev}</span>
+      </div>
+      <p className="commit-date">Date: {entry.time} · {entry.place}</p>
+      <h3 className="commit-msg">{entry.role} @ {entry.company}</h3>
+      <ul className="commit-diff">
+        {entry.points.map((pt) => <li key={pt}><span className="diff-plus">+</span> {pt}</li>)}
+      </ul>
+    </Reveal>
   )
 }
 
@@ -373,131 +325,118 @@ export default function App() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
-    <div className="bp-root">
-      <PlotLine progress={progress} />
-
-      <nav className="site-nav">
-        <div className="site-nav-inner wrap">
-          <button className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-            RS<span className="logo-tag">/01</span>
-          </button>
-          <div className="nav-links">
-            {NAV.map((n) => (
-              <button key={n.id} className={active === n.id ? 'active' : ''} onClick={() => scrollTo(n.id)}>
-                {n.label}
-              </button>
-            ))}
+    <div className="ide-root">
+      {/* titlebar */}
+      <div className="titlebar">
+        <div className="titlebar-inner wrap">
+          <div className="tl-dots" aria-hidden="true"><i className="d-red" /><i className="d-amber" /><i className="d-green" /></div>
+          <span className="tl-path">rahul-s <span className="tl-sep">/</span> portfolio <span className="tl-sep">/</span> {active}.{NAV.find((n) => n.id === active)?.ext || 'jsx'}</span>
+          <div className="tl-icons">
+            <a href="mailto:Srinivasrahul838@gmail.com" aria-label="Email"><Mail size={14} /></a>
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={14} /></a>
+            <a href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={14} /></a>
           </div>
-          <a className="hire-btn" href="mailto:Srinivasrahul838@gmail.com">Get in touch</a>
         </div>
+      </div>
+
+      {/* tab bar / nav */}
+      <nav className="tabbar">
+        <div className="tabbar-inner wrap">
+          {NAV.map((n) => (
+            <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
+              <span className={`tab-dot dot-${n.dot}`} aria-hidden="true" />
+              {n.label}{n.ext && <span className="tab-ext">.{n.ext}</span>}
+            </button>
+          ))}
+        </div>
+        <div className="scan-bar" aria-hidden="true"><div className="scan-fill" style={{ transform: `scaleX(${progress})` }} /></div>
       </nav>
 
-      <header id="about" className="hero">
-        <Crosshair />
-        <div className="hero-inner wrap">
-          <div className="hero-left">
-            <p className="eyebrow">Status — Available for hire</p>
-            <h1 className="hero-name">Rahul S</h1>
-            <p className="hero-role">
-              <span className="role-arrow">→</span> {typed}<span className="cursor" />
-            </p>
-            <p className="hero-desc">
-              Final-year Computer Science student who&rsquo;d rather ship something real
-              than just study the theory behind it. I build fast React interfaces and back
-              them with real Spring Boot APIs — the fullstack loop, front to back.
-            </p>
-            <div className="hero-cta">
-              <button className="btn primary" onClick={() => scrollTo('work')}>View project sheets</button>
-              <a className="btn ghost" href="/Rahul_S_FullStack_Resume.pdf" target="_blank" rel="noopener noreferrer">
-                <Download size={15} /> Résumé
-              </a>
-            </div>
-          </div>
-
-          <div className="hero-right">
-            <div className="title-block">
-              <div className="tb-row tb-head">
-                <span>Rahul S — Portfolio</span>
-              </div>
-              <div className="tb-grid">
-                <div className="tb-cell"><span className="tb-k">Dwg No.</span><span className="tb-v">2026&#8209;RS</span></div>
-                <div className="tb-cell"><span className="tb-k">Scale</span><span className="tb-v">1:1</span></div>
-                <div className="tb-cell"><span className="tb-k">Location</span><span className="tb-v">Bengaluru, IN</span></div>
-                <div className="tb-cell"><span className="tb-k">Status</span><span className="tb-v tb-live"><i /> Active</span></div>
-                <div className="tb-cell tb-wide"><span className="tb-k">Role</span><span className="tb-v">Fullstack Developer</span></div>
-                <div className="tb-cell tb-wide"><span className="tb-k">Rev</span><span className="tb-v">B — {new Date().getFullYear()}</span></div>
-              </div>
-              <div className="tb-links">
-                <a href="mailto:Srinivasrahul838@gmail.com" aria-label="Email"><Mail size={15} /></a>
-                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={15} /></a>
-                <a href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={15} /></a>
-              </div>
-            </div>
+      {/* hero — rendered as an open code file */}
+      <header id="about" className="hero wrap">
+        <div className="code-gutter" aria-hidden="true">
+          {Array.from({ length: 11 }, (_, i) => <span key={i}>{i + 1}</span>)}
+        </div>
+        <div className="code-body">
+          <p className="eyebrow-comment">// status: available for hire</p>
+          <p className="code-line"><span className="tok-kw">const</span> <span className="tok-var">developer</span> <span className="tok-punc">=</span> <span className="tok-punc">{'{'}</span></p>
+          <p className="code-line indent"><span className="tok-key">name</span><span className="tok-punc">:</span> <span className="tok-str">"Rahul S"</span><span className="tok-punc">,</span></p>
+          <p className="code-line indent">
+            <span className="tok-key">role</span><span className="tok-punc">:</span> <span className="tok-str">"{typed}<span className="cursor" />"</span><span className="tok-punc">,</span>
+          </p>
+          <p className="code-line indent"><span className="tok-key">based_in</span><span className="tok-punc">:</span> <span className="tok-str">"Bengaluru, IN"</span><span className="tok-punc">,</span></p>
+          <p className="code-line indent"><span className="tok-key">focus</span><span className="tok-punc">:</span> <span className="tok-str">"React front ends, Spring Boot APIs"</span><span className="tok-punc">,</span></p>
+          <p className="code-line"><span className="tok-punc">{'}'}</span></p>
+          <p className="hero-desc">
+            Final-year Computer Science student who&rsquo;d rather ship something real than just
+            study the theory behind it. I build fast React interfaces and back them with real
+            Spring Boot APIs — the fullstack loop, front to back.
+          </p>
+          <div className="hero-cta">
+            <button className="btn primary" onClick={() => scrollTo('work')}><Terminal size={14} /> view --projects</button>
+            <a className="btn ghost" href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
+              <Download size={14} /> résumé.pdf
+            </a>
           </div>
         </div>
       </header>
 
+      {/* stats */}
       <section className="wrap stats-row">
         {STATS.map((s, i) => <StatBlock stat={s} index={i} key={s.label} />)}
       </section>
 
+      {/* overview */}
       <section className="wrap section">
-        <SheetHeader index="01" eyebrow="Overview" title="The short version" />
+        <SectionHead index={1} comment="overview" title="The short version" />
         <Reveal delay={80}>
           <p className="body-text">
             I spend most of my time in React, but I&rsquo;m just as comfortable wiring up a
-            Spring Boot API or shaping a MySQL schema. I like the fullstack loop —
-            designing the interface, building the endpoint it calls, and watching the data
-            move between the two — more than any single layer on its own.
+            Spring Boot API or shaping a MySQL schema. I like the fullstack loop — designing the
+            interface, building the endpoint it calls, and watching the data move between the
+            two — more than any single layer on its own.
           </p>
         </Reveal>
       </section>
 
+      {/* projects */}
       <section id="work" className="wrap section">
-        <SheetHeader index="02" eyebrow="Project sheets" title="Things I&rsquo;ve shipped" />
-        <div className="sheet-grid">
-          {PROJECTS.map((p, i) => <ProjectSheet project={p} index={i} key={p.id} />)}
+        <SectionHead index={2} comment="projects" title="Things I've shipped" />
+        <div className="file-grid">
+          {PROJECTS.map((p, i) => <ProjectFile project={p} index={i} key={p.id} />)}
         </div>
       </section>
 
+      {/* skills */}
       <section id="craft" className="wrap section">
-        <SheetHeader index="03" eyebrow="Bill of materials" title="What I work with" />
+        <SectionHead index={3} comment="skills.json" title="What I work with" />
         <Reveal delay={60}>
           <p className="body-text bom-intro">
-            Everything below is on my résumé too — grouped here in plain language
-            so it&rsquo;s clear what each skill is actually for.
+            Same skills as my résumé — grouped like a dependency list, with a plain-English
+            note on what each group is actually for.
           </p>
         </Reveal>
-        <div className="bom-table">
-          {SKILL_GROUPS.map((g, i) => <SkillRow group={g} index={i} key={g.id} />)}
+        <div className="dep-block">
+          <p className="dep-open"><span className="tok-punc">{'{'}</span></p>
+          {SKILL_GROUPS.map((g, i) => <SkillGroup group={g} index={i} key={g.key} />)}
+          <p className="dep-close"><span className="tok-punc">{'}'}</span></p>
         </div>
       </section>
 
+      {/* changelog / experience */}
       <section id="journey" className="wrap section">
-        <SheetHeader index="04" eyebrow="Revision history" title="How I got here" />
-        <div className="rev-log">
-          {EXPERIENCE.map((e, i) => (
-            <Reveal delay={i * 90} key={e.company} className="rev-row">
-              <span className="rev-tag">REV {e.rev}</span>
-              <div className="rev-body">
-                <div className="rev-head">
-                  <h3>{e.role}</h3>
-                  <span className="rev-time">{e.time}</span>
-                </div>
-                <p className="rev-meta">{e.company} · {e.place}</p>
-                <ul>{e.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
-              </div>
-            </Reveal>
-          ))}
+        <SectionHead index={4} comment="changelog" title="How I got here" />
+        <div className="commit-log">
+          {EXPERIENCE.map((e, i) => <CommitRow entry={e} index={i} key={e.hash} />)}
         </div>
 
         <div className="two-col">
           <Reveal>
-            <p className="mini-label">Education</p>
+            <p className="mini-label">education</p>
             <ul className="plain-list">
               {EDUCATION.map((ed) => (
                 <li key={ed.school}>
-                  <div className="plain-title">{ed.school}</div>
+                  <div className="plain-title"><Check size={13} className="check-ico" /> {ed.school}</div>
                   <div className="plain-sub">{ed.degree}</div>
                   <div className="plain-meta">{ed.time}</div>
                 </li>
@@ -505,33 +444,40 @@ export default function App() {
             </ul>
           </Reveal>
           <Reveal delay={90}>
-            <p className="mini-label">Certifications</p>
+            <p className="mini-label">certifications</p>
             <ul className="plain-list">
-              {CERTS.map((c) => <li key={c} className="cert-row">{c}</li>)}
+              {CERTS.map((c) => (
+                <li key={c} className="cert-row"><Check size={13} className="check-ico" /> {c}</li>
+              ))}
             </ul>
           </Reveal>
         </div>
       </section>
 
+      {/* resume */}
       <section id="resume" className="wrap section">
         <Reveal>
-          <div className="resume-panel">
-            <div>
-              <p className="mini-label">05 — Sheet request</p>
-              <h2 className="sheet-title small">Want the paper trail?</h2>
-              <p className="resume-sub">Everything above, in one PDF you can forward to a hiring manager.</p>
+          <div className="terminal-panel">
+            <div className="terminal-panel-top">
+              <div className="tl-dots" aria-hidden="true"><i className="d-red" /><i className="d-amber" /><i className="d-green" /></div>
+              <span className="terminal-title">resume.sh</span>
             </div>
-            <a className="btn primary large" href="/Rahul_S_FullStack_Resume.pdf" target="_blank" rel="noopener noreferrer">
-              <ExternalLink size={16} /> View résumé
-            </a>
+            <div className="terminal-body">
+              <p><span className="prompt">$</span> curl -O rahul-s.dev/resume.pdf</p>
+              <p className="term-out">Everything above, packed into one PDF you can forward to a hiring manager.</p>
+              <a className="btn primary large" href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
+                <ExternalLink size={16} /> download resume.pdf
+              </a>
+            </div>
           </div>
         </Reveal>
       </section>
 
+      {/* contact */}
       <section id="contact" className="wrap section contact-section">
         <Reveal>
-          <p className="mini-label center">06 — Contact</p>
-          <h2 className="contact-title">Let&rsquo;s build<br />something.</h2>
+          <p className="eyebrow-comment center">// 06 — contact.js</p>
+          <h2 className="contact-title">$ open --new-project</h2>
           <p className="contact-sub">Open to full-stack and frontend roles — based in Bengaluru, happy to work remote.</p>
           <div className="contact-links">
             <a className="contact-link" href="mailto:Srinivasrahul838@gmail.com"><Mail size={15} /> Srinivasrahul838@gmail.com</a>
@@ -542,11 +488,11 @@ export default function App() {
         </Reveal>
       </section>
 
-      <footer className="title-strip">
-        <span>Drawn by — Rahul S</span>
-        <span>Sheet 1 of 1</span>
-        <span>Scale — NTS</span>
-        <span>Rev — {new Date().getFullYear()}</span>
+      {/* status bar */}
+      <footer className="statusbar">
+        <span><GitBranch size={12} /> main</span>
+        <span className="status-mid">Rahul S · Fullstack &amp; Frontend Developer</span>
+        <span>UTF-8 · LF · Ln {Math.max(1, Math.round(progress * 100))}, Col 1</span>
       </footer>
     </div>
   )
