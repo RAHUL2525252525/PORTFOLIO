@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  Github, Linkedin, Mail, Phone, ArrowUpRight, Terminal,
+  Github, Linkedin, Mail, Phone, ArrowUpRight, Sparkles,
   Code2, Server, Database, Wrench, Award, GraduationCap,
 } from 'lucide-react'
 import './index.css'
@@ -16,17 +16,14 @@ const ROLES = [
   'Java Full Stack Developer',
 ]
 
-// The page is a rolled-out drawing set — every section is a numbered sheet,
-// the way a real blueprint index lists SHEET 01, 02, 03... The number carries
-// real information here (position in the set), not decoration.
 const NAV = [
-  { id: 'about', no: '01', label: 'About' },
-  { id: 'skills', no: '02', label: 'Skills' },
-  { id: 'experience', no: '03', label: 'Experience' },
-  { id: 'projects', no: '04', label: 'Projects' },
-  { id: 'certifications', no: '05', label: 'Certs' },
-  { id: 'stack', no: '06', label: 'Stack' },
-  { id: 'contact', no: '07', label: 'Contact' },
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'certifications', label: 'Certs' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'contact', label: 'Contact' },
 ]
 
 const SKILLS = [
@@ -95,7 +92,7 @@ const PROJECTS = [
   {
     id: '01',
     title: 'ShopSphere',
-    tag: '// full-stack online store',
+    tag: 'a full-stack online store',
     desc: 'A complete online shop — people can browse, search, add to cart, and track orders. Behind it, there is an admin panel to manage products, users, and stock.',
     tech: ['React', 'Spring Boot', 'MySQL', 'REST API'],
     note: 'The server sleeps to save costs. Give it 30–60 seconds to wake up before the live site loads fully.',
@@ -108,7 +105,7 @@ const PROJECTS = [
   {
     id: '02',
     title: 'AI Exam Companion',
-    tag: '// exam practice app',
+    tag: 'an exam practice app',
     desc: 'A practice test app that scores you right away. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
     tech: ['JavaScript', 'Firebase', 'Groq API'],
     links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
@@ -116,7 +113,7 @@ const PROJECTS = [
   {
     id: '03',
     title: 'Personal Portfolio',
-    tag: '// an earlier version of this site',
+    tag: 'an earlier version of this site',
     desc: 'My first portfolio site — built to be fast, clean, and easy to read on any device.',
     tech: ['React', 'Vite', 'CSS'],
   },
@@ -132,6 +129,13 @@ const CERTS = [
 const EDUCATION = [
   { school: 'Dr. ACS College of Engineering', degree: 'B.E., Computer Science and Engineering', time: '2023 – 2026 · Bengaluru' },
   { school: 'PVP Polytechnic', degree: 'Diploma, Information Science and Engineering', time: '2020 – 2023 · Bengaluru' },
+]
+
+const CONTACTS = [
+  { icon: Mail, label: 'Email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
+  { icon: Phone, label: 'Phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
+  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
+  { icon: Github, label: 'GitHub', value: 'github.com', href: 'https://github.com/' },
 ]
 
 /* ================================================================== */
@@ -178,10 +182,10 @@ function useReveal() {
   return [ref, inView]
 }
 
-function Reveal({ children, className = '', delay = 0, as: Tag = 'div', style = {} }) {
+function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
   const [ref, inView] = useReveal()
   return (
-    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms`, ...style }}>
+    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
       {children}
     </Tag>
   )
@@ -216,22 +220,39 @@ function useScrolledPast(threshold = 30) {
 /* small pieces                                                        */
 /* ================================================================== */
 
-function SheetStrip({ no, name }) {
+function Eyebrow({ index }) {
   return (
-    <div className="sheet-strip">
-      <span className="sheet-strip-no">SHEET {no}</span>
-      <span className="sheet-strip-name">{name}</span>
+    <div className="eyebrow-row">
+      <span className="eyebrow-index">{index}</span>
+      <span className="eyebrow-line" />
     </div>
   )
 }
 
-function SheetHeader({ no, children }) {
+// The signature element: a slowly rotating wax-seal / bottle-cap badge with
+// text set on a circular path, sitting beside the headline like a stamp.
+function SealBadge() {
   return (
-    <div className="sheet-header">
-      <span className="sheet-no">SHEET {no}/07</span>
-      <span className="sheet-rule" />
+    <div className="seal-wrap" aria-hidden="true">
+      <div className="seal">
+        <svg viewBox="0 0 200 200" width="100%" height="100%">
+          <g className="seal-ring">
+            <path id="sealCircle" fill="none" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />
+            <text fontFamily="Space Mono, monospace" fontSize="11.2" letterSpacing="2.5" fill="#4a2416">
+              <textPath href="#sealCircle" startOffset="0%">
+                OPEN TO WORK • FULL-STACK DEVELOPER • OPEN TO WORK •
+              </textPath>
+            </text>
+          </g>
+        </svg>
+        <div className="seal-center"><span>RS</span></div>
+      </div>
     </div>
   )
+}
+
+function Scallop({ flip }) {
+  return <div className={`scallop ${flip ? 'flip' : ''}`} aria-hidden="true" />
 }
 
 /* ================================================================== */
@@ -247,79 +268,76 @@ export default function App() {
 
   return (
     <div>
-      <div className="grid-bg" aria-hidden="true" />
-      <div className="reg-marks" aria-hidden="true">
-        <span className="reg-mark tl" /><span className="reg-mark tr" />
-        <span className="reg-mark bl" /><span className="reg-mark br" />
-      </div>
+      <div className="grain" aria-hidden="true" />
 
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-            <span className="logo-mark">RS</span>
+            <span className="logo-seal">RS</span>
             <span className="logo-text">rahul<span className="dim">.dev</span></span>
           </button>
 
           <div className="tab-bar">
             {NAV.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
-                <span className="tab-no">{n.no}</span>
                 {n.label}
               </button>
             ))}
           </div>
 
-          <button className="btn ghost" style={{ padding: '0.5rem 1.1rem', fontSize: '0.72rem' }} onClick={() => scrollTo('contact')}>
-            Contact
+          <button className="btn ghost" style={{ padding: '0.55rem 1.2rem', fontSize: '0.85rem' }} onClick={() => scrollTo('contact')}>
+            Say hi
           </button>
         </div>
       </nav>
 
-      {/* ---------------- hero (cover sheet) ---------------- */}
+      {/* ---------------- hero ---------------- */}
       <header id="hero" className="hero">
-        <div className="hero-inner">
-          <div className="hero-eyebrow">
-            <span>DRAWING NO. RS—2026 &nbsp;·&nbsp; REV. 03</span>
-            <span className="status"><span className="pulse" />OPEN TO WORK</span>
+        <div className="hero-grid">
+          <div>
+            <Reveal>
+              <div className="hero-eyebrow">
+                <span className="pulse" />
+                open to work · Bengaluru, India
+              </div>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <h1 className="hero-name">Hi, I&rsquo;m Rahul<em>.</em></h1>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <p className="hero-role">{typed}<span className="type-cursor" /></p>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <p className="hero-desc">
+                I&rsquo;m a final-year Computer Science student. I like building real, working apps —
+                the part you click with React, and the part that makes it work with Java and
+                Spring Boot.
+              </p>
+            </Reveal>
+
+            <Reveal delay={260}>
+              <div className="hero-cta">
+                <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
+                <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
+              </div>
+            </Reveal>
           </div>
 
-          <Reveal>
-            <h1 className="hero-name">Rahul <span className="accent">S.</span></h1>
-          </Reveal>
-
-          <Reveal delay={80}>
-            <div className="dim-line">
-              <span className="dim-tick" />
-              <span className="dim-rule" />
-              <span className="dim-label">{typed}<span className="type-cursor" /></span>
-              <span className="dim-rule" />
-              <span className="dim-tick" />
-            </div>
-          </Reveal>
-
-          <Reveal delay={140}>
-            <p className="hero-desc">
-              I&rsquo;m a final-year Computer Science student. I like building real, working apps —
-              the part you click with React, and the part that makes it work with Java and
-              Spring Boot.
-            </p>
-          </Reveal>
-
-          <Reveal delay={200}>
-            <div className="hero-cta">
-              <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
-              <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
-            </div>
-          </Reveal>
+          <Reveal delay={200}><SealBadge /></Reveal>
         </div>
       </header>
+
+      <Scallop />
 
       {/* ---------------- about ---------------- */}
       <section id="about" className="wrap section">
         <Reveal>
-          <SheetHeader no="01" />
-          <h2 className="sec-title">A builder, not just a <span className="accent">student</span></h2>
+          <Eyebrow index="01" />
+          <h2 className="sec-title">A builder, not just a <em>student</em></h2>
         </Reveal>
         <Reveal delay={100}>
           <p className="about-text">
@@ -335,8 +353,8 @@ export default function App() {
       {/* ---------------- skills ---------------- */}
       <section id="skills" className="wrap section">
         <Reveal>
-          <SheetHeader no="02" />
-          <h2 className="sec-title">What I work <span className="accent">with</span></h2>
+          <Eyebrow index="02" />
+          <h2 className="sec-title">What I work <em>with</em></h2>
         </Reveal>
         <div className="skill-cloud">
           {SKILLS.map((s, i) => (
@@ -350,29 +368,27 @@ export default function App() {
       {/* ---------------- experience ---------------- */}
       <section id="experience" className="wrap section">
         <Reveal>
-          <SheetHeader no="03" />
-          <h2 className="sec-title">How I got <span className="accent">here</span></h2>
+          <Eyebrow index="03" />
+          <h2 className="sec-title">How I got <em>here</em></h2>
         </Reveal>
 
-        <div className="panel log-list" style={{ marginTop: '2rem' }}>
+        <div className="timeline">
           {EXPERIENCE.map((e, i) => (
-            <Reveal key={e.company} delay={i * 100} as="div" className="log-item">
-              <span className="log-time">{e.time}</span>
-              <div>
-                <h3 className="log-role">{e.role}</h3>
-                <p className="log-meta">{e.company} · {e.place}</p>
-                <ul className="log-points">
-                  {e.points.map((pt) => <li key={pt}>{pt}</li>)}
-                </ul>
-              </div>
+            <Reveal key={e.company} delay={i * 100} as="div" className="timeline-item">
+              <span className="timeline-dot" />
+              <p className="tl-time">{e.time} · {e.place}</p>
+              <h3 className="tl-role">{e.role}</h3>
+              <p className="tl-meta">{e.company}</p>
+              <ul className="tl-points">
+                {e.points.map((pt) => <li key={pt}>{pt}</li>)}
+              </ul>
             </Reveal>
           ))}
         </div>
 
         <Reveal delay={100}>
           <div className="edu-label">
-            <GraduationCap size={16} color="var(--cyan)" />
-            <span className="sheet-strip-name" style={{ fontFamily: 'var(--mono)', fontSize: '0.72rem', color: 'var(--ink-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Education</span>
+            <GraduationCap size={15} color="var(--cherry)" /> Education
           </div>
           <div className="edu-grid">
             {EDUCATION.map((ed) => (
@@ -389,35 +405,32 @@ export default function App() {
       {/* ---------------- projects ---------------- */}
       <section id="projects" className="wrap section">
         <Reveal>
-          <SheetHeader no="04" />
-          <h2 className="sec-title">Things I&rsquo;ve <span className="accent">built</span></h2>
+          <Eyebrow index="04" />
+          <h2 className="sec-title">Things I&rsquo;ve <em>built</em></h2>
         </Reveal>
 
-        <div className="project-list" style={{ marginTop: '2rem' }}>
+        <div className="project-list">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} delay={i * 100} className="panel project-card">
-              <SheetStrip no={`04.${p.id}`} name={`${p.title.toLowerCase().replace(/\s+/g, '-')}${p.featured ? '.featured' : ''}`} />
-              <div className="project-body">
-                <div className="project-heading">
-                  <h3>{p.title}</h3>
-                  {p.featured && <span className="project-flag">Featured</span>}
-                </div>
-                <p className="project-tag">{p.tag}</p>
-                <p className="project-desc">{p.desc}</p>
-                <div className="project-tech">
-                  {p.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
-                </div>
-                {p.note && <p className="project-note">{p.note}</p>}
-                {p.links && (
-                  <div className="project-links">
-                    {p.links.map((l) => (
-                      <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
-                        {l.label} <ArrowUpRight size={13} />
-                      </a>
-                    ))}
-                  </div>
-                )}
+              {p.featured && <span className="project-flag">Featured</span>}
+              <div className="project-heading">
+                <h3>{p.title}</h3>
               </div>
+              <p className="project-tag">{p.tag}</p>
+              <p className="project-desc">{p.desc}</p>
+              <div className="project-tech">
+                {p.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
+              </div>
+              {p.note && <p className="project-note">{p.note}</p>}
+              {p.links && (
+                <div className="project-links">
+                  {p.links.map((l) => (
+                    <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
+                      {l.label} <ArrowUpRight size={13} />
+                    </a>
+                  ))}
+                </div>
+              )}
             </Reveal>
           ))}
         </div>
@@ -426,13 +439,13 @@ export default function App() {
       {/* ---------------- certifications ---------------- */}
       <section id="certifications" className="wrap section">
         <Reveal>
-          <SheetHeader no="05" />
-          <h2 className="sec-title">Always learning <span className="accent">something new</span></h2>
+          <Eyebrow index="05" />
+          <h2 className="sec-title">Always learning <em>something new</em></h2>
         </Reveal>
-        <div className="cert-grid" style={{ marginTop: '1.5rem' }}>
+        <div className="cert-grid">
           {CERTS.map((c, i) => (
             <Reveal key={c.name} delay={i * 80} className="panel cert-card">
-              <Award size={17} color="var(--orange)" style={{ marginTop: '2px', flexShrink: 0 }} />
+              <span className="cert-icon"><Award size={16} color="var(--cherry)" /></span>
               <div>
                 <p className="cert-name">{c.name}</p>
                 <p className="cert-by">{c.by}</p>
@@ -442,36 +455,35 @@ export default function App() {
         </div>
       </section>
 
-      {/* ---------------- tech stack — schematic pipeline (signature) ---------------- */}
+      {/* ---------------- tech stack pipeline ---------------- */}
       <section id="stack" className="wrap section">
         <Reveal>
-          <SheetHeader no="06" />
-          <h2 className="sec-title">How a request travels through my <span className="accent">apps</span></h2>
+          <Eyebrow index="06" />
+          <h2 className="sec-title">How a request travels through my <em>apps</em></h2>
           <p className="sec-desc">
             Top to bottom — from the screen you tap, to the server that answers, to the database
-            that remembers, held together by the tools I build with every day. The signal below
-            traces that same path.
+            that remembers, held together by the tools I build with every day.
           </p>
         </Reveal>
 
-        <Reveal delay={80} className="schematic">
+        <Reveal delay={80} className="pipeline">
           {STACK_LAYERS.map((layer, i) => {
             const Icon = layer.icon
             return (
               <div key={layer.title}>
-                <div className="schem-node">
-                  <div className="schem-port"><Icon size={19} color="var(--cyan)" /></div>
-                  <div className="schem-body">
-                    <p className="schem-sub">{layer.subtitle}</p>
-                    <h3 className="schem-title">{layer.title}</h3>
-                    <p className="schem-blurb">{layer.blurb}</p>
-                    <div className="schem-items">
+                <div className="pipe-node">
+                  <div className="pipe-icon"><Icon size={19} color="var(--cherry)" /></div>
+                  <div className="pipe-body panel">
+                    <p className="pipe-sub">{layer.subtitle}</p>
+                    <h3 className="pipe-title">{layer.title}</h3>
+                    <p className="pipe-blurb">{layer.blurb}</p>
+                    <div className="pipe-items">
                       {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
                     </div>
                   </div>
                 </div>
                 {i < STACK_LAYERS.length - 1 && (
-                  <div className="schem-connector">
+                  <div className="pipe-connector">
                     <span className="wire"><span className="wire-line" style={{ animationDelay: `${i * -0.9}s` }} /></span>
                   </div>
                 )}
@@ -481,48 +493,32 @@ export default function App() {
         </Reveal>
       </section>
 
-      {/* ---------------- contact — title block ---------------- */}
+      <Scallop flip />
+
+      {/* ---------------- contact ---------------- */}
       <section id="contact" className="wrap section">
         <Reveal>
-          <SheetHeader no="07" />
-          <h2 className="contact-title">Let&rsquo;s build <span className="accent">something good.</span></h2>
+          <Eyebrow index="07" />
+          <h2 className="contact-title">Let&rsquo;s build <em>something good.</em></h2>
           <p className="sec-desc">Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.</p>
         </Reveal>
 
-        <Reveal delay={100} className="panel title-block">
-          <div className="tb-row">
-            <span className="tb-key">Drawn by</span>
-            <span className="tb-val">Rahul S</span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">Title</span>
-            <span className="tb-val">Full-Stack Developer — Portfolio</span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">Status</span>
-            <span className="tb-val"><span className="tb-status"><span className="pulse" />Open to work</span></span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">Email</span>
-            <span className="tb-val"><a href="mailto:Srinivasrahul838@gmail.com"><Mail size={14} /> Srinivasrahul838@gmail.com <ArrowUpRight size={12} className="arr" /></a></span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">Phone</span>
-            <span className="tb-val"><a href="tel:+917337634886"><Phone size={14} /> +91 73376 34886 <ArrowUpRight size={12} className="arr" /></a></span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">LinkedIn</span>
-            <span className="tb-val"><a href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer"><Linkedin size={14} /> linkedin.com/in/rahul-s <ArrowUpRight size={12} className="arr" /></a></span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">GitHub</span>
-            <span className="tb-val"><a href="https://github.com/" target="_blank" rel="noopener noreferrer"><Github size={14} /> github.com <ArrowUpRight size={12} className="arr" /></a></span>
-          </div>
-          <div className="tb-row">
-            <span className="tb-key">Sheet</span>
-            <span className="tb-val" style={{ fontFamily: 'var(--mono)', fontSize: '0.82rem', color: 'var(--ink-dim)' }}>07 of 07 — Rev. 2026</span>
-          </div>
-        </Reveal>
+        <div className="contact-grid">
+          {CONTACTS.map((c, i) => {
+            const Icon = c.icon
+            return (
+              <Reveal key={c.label} delay={i * 70} as="a" className="panel contact-card" style={{}}>
+                <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', width: '100%' }}>
+                  <span className="contact-icon"><Icon size={17} /></span>
+                  <span>
+                    <p className="contact-label">{c.label}</p>
+                    <p className="contact-value">{c.value}</p>
+                  </span>
+                </a>
+              </Reveal>
+            )
+          })}
+        </div>
       </section>
 
       {/* ---------------- footer ---------------- */}
@@ -530,7 +526,7 @@ export default function App() {
         <div className="wrap footer-inner">
           <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
           <span className="footer-meta" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Terminal size={13} /> drafted with React
+            <Sparkles size={13} /> built with React
           </span>
         </div>
       </footer>
