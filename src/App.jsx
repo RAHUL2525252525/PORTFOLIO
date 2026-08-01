@@ -16,16 +16,17 @@ const ROLES = [
   'Java Full Stack Developer',
 ]
 
-// Each section is framed as a file you'd see in a real project folder —
-// the dot color matches the "file type" the way an editor's tab bar would.
+// The page is a rolled-out drawing set — every section is a numbered sheet,
+// the way a real blueprint index lists SHEET 01, 02, 03... The number carries
+// real information here (position in the set), not decoration.
 const NAV = [
-  { id: 'about', label: 'about.md', dot: 'var(--blue)' },
-  { id: 'skills', label: 'skills.json', dot: 'var(--yellow)' },
-  { id: 'experience', label: 'experience.log', dot: 'var(--green)' },
-  { id: 'projects', label: 'projects/', dot: 'var(--purple)' },
-  { id: 'certifications', label: 'certs.yml', dot: 'var(--orange)' },
-  { id: 'stack', label: 'stack.config', dot: 'var(--red)' },
-  { id: 'contact', label: 'contact.sh', dot: 'var(--green)' },
+  { id: 'about', no: '01', label: 'About' },
+  { id: 'skills', no: '02', label: 'Skills' },
+  { id: 'experience', no: '03', label: 'Experience' },
+  { id: 'projects', no: '04', label: 'Projects' },
+  { id: 'certifications', no: '05', label: 'Certs' },
+  { id: 'stack', no: '06', label: 'Stack' },
+  { id: 'contact', no: '07', label: 'Contact' },
 ]
 
 const SKILLS = [
@@ -177,10 +178,10 @@ function useReveal() {
   return [ref, inView]
 }
 
-function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
+function Reveal({ children, className = '', delay = 0, as: Tag = 'div', style = {} }) {
   const [ref, inView] = useReveal()
   return (
-    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms`, ...style }}>
       {children}
     </Tag>
   )
@@ -215,23 +216,21 @@ function useScrolledPast(threshold = 30) {
 /* small pieces                                                        */
 /* ================================================================== */
 
-function WindowChrome({ title }) {
+function SheetStrip({ no, name }) {
   return (
-    <div className="chrome-bar">
-      <span className="dot red" />
-      <span className="dot yellow" />
-      <span className="dot green" />
-      <span className="chrome-title">{title}</span>
+    <div className="sheet-strip">
+      <span className="sheet-strip-no">SHEET {no}</span>
+      <span className="sheet-strip-name">{name}</span>
     </div>
   )
 }
 
-function FileLabel({ dot, children }) {
+function SheetHeader({ no, children }) {
   return (
-    <p className="file-label">
-      <span className="tab-dot" style={{ background: dot }} />
-      {children}
-    </p>
+    <div className="sheet-header">
+      <span className="sheet-no">SHEET {no}/07</span>
+      <span className="sheet-rule" />
+    </div>
   )
 }
 
@@ -249,6 +248,10 @@ export default function App() {
   return (
     <div>
       <div className="grid-bg" aria-hidden="true" />
+      <div className="reg-marks" aria-hidden="true">
+        <span className="reg-mark tl" /><span className="reg-mark tr" />
+        <span className="reg-mark bl" /><span className="reg-mark br" />
+      </div>
 
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
@@ -261,56 +264,61 @@ export default function App() {
           <div className="tab-bar">
             {NAV.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
-                <span className="tab-dot" style={{ background: n.dot }} />
+                <span className="tab-no">{n.no}</span>
                 {n.label}
               </button>
             ))}
           </div>
 
-          <button className="btn ghost" style={{ padding: '0.5rem 1rem', fontSize: '0.78rem' }} onClick={() => scrollTo('contact')}>
-            contact.sh
+          <button className="btn ghost" style={{ padding: '0.5rem 1.1rem', fontSize: '0.72rem' }} onClick={() => scrollTo('contact')}>
+            Contact
           </button>
         </div>
       </nav>
 
-      {/* ---------------- hero ---------------- */}
+      {/* ---------------- hero (cover sheet) ---------------- */}
       <header id="hero" className="hero">
-        <div className="hero-grid">
-          <div>
-            <div className="hero-eyebrow">
-              <span className="pulse" />
-              open_to_work: true
-            </div>
+        <div className="hero-inner">
+          <div className="hero-eyebrow">
+            <span>DRAWING NO. RS—2026 &nbsp;·&nbsp; REV. 03</span>
+            <span className="status"><span className="pulse" />OPEN TO WORK</span>
+          </div>
 
-            <div className="panel code-window">
-              <WindowChrome title="rahul.jsx" />
-              <div className="code-body">
-                <div className="code-line"><span className="line-no">1</span><span><span className="tok-key">const</span> <span className="tok-purple">developer</span> <span className="tok-punc">=</span> <span className="tok-punc">{'{'}</span></span></div>
-                <div className="code-line"><span className="line-no">2</span><span>&nbsp;&nbsp;name<span className="tok-punc">:</span> <span className="tok-str">"Rahul S"</span><span className="tok-punc">,</span></span></div>
-                <div className="code-line"><span className="line-no">3</span><span>&nbsp;&nbsp;role<span className="tok-punc">:</span> <span className="tok-str">"{typed}<span className="type-cursor" />"</span><span className="tok-punc">,</span></span></div>
-                <div className="code-line"><span className="line-no">4</span><span>&nbsp;&nbsp;base<span className="tok-punc">:</span> <span className="tok-str">"Bengaluru, India"</span><span className="tok-punc">,</span></span></div>
-                <div className="code-line"><span className="line-no">5</span><span><span className="tok-punc">{'}'}</span></span></div>
-              </div>
-            </div>
+          <Reveal>
+            <h1 className="hero-name">Rahul <span className="accent">S.</span></h1>
+          </Reveal>
 
+          <Reveal delay={80}>
+            <div className="dim-line">
+              <span className="dim-tick" />
+              <span className="dim-rule" />
+              <span className="dim-label">{typed}<span className="type-cursor" /></span>
+              <span className="dim-rule" />
+              <span className="dim-tick" />
+            </div>
+          </Reveal>
+
+          <Reveal delay={140}>
             <p className="hero-desc">
               I&rsquo;m a final-year Computer Science student. I like building real, working apps —
               the part you click with React, and the part that makes it work with Java and
               Spring Boot.
             </p>
+          </Reveal>
 
+          <Reveal delay={200}>
             <div className="hero-cta">
               <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
               <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
             </div>
-          </div>
+          </Reveal>
         </div>
       </header>
 
       {/* ---------------- about ---------------- */}
       <section id="about" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--blue)">about.md</FileLabel>
+          <SheetHeader no="01" />
           <h2 className="sec-title">A builder, not just a <span className="accent">student</span></h2>
         </Reveal>
         <Reveal delay={100}>
@@ -327,7 +335,7 @@ export default function App() {
       {/* ---------------- skills ---------------- */}
       <section id="skills" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--yellow)">skills.json</FileLabel>
+          <SheetHeader no="02" />
           <h2 className="sec-title">What I work <span className="accent">with</span></h2>
         </Reveal>
         <div className="skill-cloud">
@@ -342,7 +350,7 @@ export default function App() {
       {/* ---------------- experience ---------------- */}
       <section id="experience" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--green)">experience.log</FileLabel>
+          <SheetHeader no="03" />
           <h2 className="sec-title">How I got <span className="accent">here</span></h2>
         </Reveal>
 
@@ -362,9 +370,9 @@ export default function App() {
         </div>
 
         <Reveal delay={100}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '3rem', marginBottom: '0' }}>
-            <GraduationCap size={16} color="var(--blue)" />
-            <span className="file-label" style={{ margin: 0 }}>education</span>
+          <div className="edu-label">
+            <GraduationCap size={16} color="var(--cyan)" />
+            <span className="sheet-strip-name" style={{ fontFamily: 'var(--mono)', fontSize: '0.72rem', color: 'var(--ink-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Education</span>
           </div>
           <div className="edu-grid">
             {EDUCATION.map((ed) => (
@@ -381,14 +389,14 @@ export default function App() {
       {/* ---------------- projects ---------------- */}
       <section id="projects" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--purple)">projects/</FileLabel>
+          <SheetHeader no="04" />
           <h2 className="sec-title">Things I&rsquo;ve <span className="accent">built</span></h2>
         </Reveal>
 
         <div className="project-list" style={{ marginTop: '2rem' }}>
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} delay={i * 100} className="panel project-card">
-              <WindowChrome title={`${p.title.toLowerCase().replace(/\s+/g, '-')}${p.featured ? '.featured' : ''}.jsx`} />
+              <SheetStrip no={`04.${p.id}`} name={`${p.title.toLowerCase().replace(/\s+/g, '-')}${p.featured ? '.featured' : ''}`} />
               <div className="project-body">
                 <div className="project-heading">
                   <h3>{p.title}</h3>
@@ -418,7 +426,7 @@ export default function App() {
       {/* ---------------- certifications ---------------- */}
       <section id="certifications" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--orange)">certs.yml</FileLabel>
+          <SheetHeader no="05" />
           <h2 className="sec-title">Always learning <span className="accent">something new</span></h2>
         </Reveal>
         <div className="cert-grid" style={{ marginTop: '1.5rem' }}>
@@ -434,65 +442,85 @@ export default function App() {
         </div>
       </section>
 
-      {/* ---------------- tech stack ---------------- */}
+      {/* ---------------- tech stack — schematic pipeline (signature) ---------------- */}
       <section id="stack" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--red)">stack.config</FileLabel>
+          <SheetHeader no="06" />
           <h2 className="sec-title">How a request travels through my <span className="accent">apps</span></h2>
           <p className="sec-desc">
             Top to bottom — from the screen you tap, to the server that answers, to the database
-            that remembers, held together by the tools I build with every day.
+            that remembers, held together by the tools I build with every day. The signal below
+            traces that same path.
           </p>
         </Reveal>
 
-        <div className="panel stack-list">
+        <Reveal delay={80} className="schematic">
           {STACK_LAYERS.map((layer, i) => {
             const Icon = layer.icon
             return (
-              <Reveal key={layer.title} delay={i * 90} as="div" className="stack-row">
-                <div className="stack-icon"><Icon size={19} color="var(--blue)" /></div>
-                <div>
-                  <p className="stack-sub">{layer.subtitle}</p>
-                  <h3 className="stack-title">{layer.title}</h3>
-                  <p className="stack-blurb">{layer.blurb}</p>
-                  <div className="stack-items">
-                    {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
+              <div key={layer.title}>
+                <div className="schem-node">
+                  <div className="schem-port"><Icon size={19} color="var(--cyan)" /></div>
+                  <div className="schem-body">
+                    <p className="schem-sub">{layer.subtitle}</p>
+                    <h3 className="schem-title">{layer.title}</h3>
+                    <p className="schem-blurb">{layer.blurb}</p>
+                    <div className="schem-items">
+                      {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
+                    </div>
                   </div>
                 </div>
-              </Reveal>
+                {i < STACK_LAYERS.length - 1 && (
+                  <div className="schem-connector">
+                    <span className="wire"><span className="wire-line" style={{ animationDelay: `${i * -0.9}s` }} /></span>
+                  </div>
+                )}
+              </div>
             )
           })}
-        </div>
+        </Reveal>
       </section>
 
-      {/* ---------------- contact ---------------- */}
+      {/* ---------------- contact — title block ---------------- */}
       <section id="contact" className="wrap section">
         <Reveal>
-          <FileLabel dot="var(--green)">contact.sh</FileLabel>
+          <SheetHeader no="07" />
           <h2 className="contact-title">Let&rsquo;s build <span className="accent">something good.</span></h2>
           <p className="sec-desc">Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.</p>
         </Reveal>
 
-        <Reveal delay={100} className="panel code-window" style={{ marginTop: '0.5rem' }}>
-          <WindowChrome title="contact.sh — zsh" />
-          <div className="terminal-body">
-            <p className="term-line"><span className="term-prompt">$</span>whoami</p>
-            <p className="term-line" style={{ color: 'var(--text)' }}>Rahul S — full-stack developer, open to work</p>
-            <p className="term-line" style={{ marginTop: '0.6rem' }}><span className="term-prompt">$</span>cat contact.txt</p>
-            <div className="contact-links">
-              <a className="contact-link" href="mailto:Srinivasrahul838@gmail.com">
-                <Mail size={15} /> Srinivasrahul838@gmail.com <ArrowUpRight size={12} className="arr" />
-              </a>
-              <a className="contact-link" href="tel:+917337634886">
-                <Phone size={15} /> +91 73376 34886 <ArrowUpRight size={12} className="arr" />
-              </a>
-              <a className="contact-link" href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer">
-                <Linkedin size={15} /> linkedin.com/in/rahul-s <ArrowUpRight size={12} className="arr" />
-              </a>
-              <a className="contact-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">
-                <Github size={15} /> github.com <ArrowUpRight size={12} className="arr" />
-              </a>
-            </div>
+        <Reveal delay={100} className="panel title-block">
+          <div className="tb-row">
+            <span className="tb-key">Drawn by</span>
+            <span className="tb-val">Rahul S</span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">Title</span>
+            <span className="tb-val">Full-Stack Developer — Portfolio</span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">Status</span>
+            <span className="tb-val"><span className="tb-status"><span className="pulse" />Open to work</span></span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">Email</span>
+            <span className="tb-val"><a href="mailto:Srinivasrahul838@gmail.com"><Mail size={14} /> Srinivasrahul838@gmail.com <ArrowUpRight size={12} className="arr" /></a></span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">Phone</span>
+            <span className="tb-val"><a href="tel:+917337634886"><Phone size={14} /> +91 73376 34886 <ArrowUpRight size={12} className="arr" /></a></span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">LinkedIn</span>
+            <span className="tb-val"><a href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer"><Linkedin size={14} /> linkedin.com/in/rahul-s <ArrowUpRight size={12} className="arr" /></a></span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">GitHub</span>
+            <span className="tb-val"><a href="https://github.com/" target="_blank" rel="noopener noreferrer"><Github size={14} /> github.com <ArrowUpRight size={12} className="arr" /></a></span>
+          </div>
+          <div className="tb-row">
+            <span className="tb-key">Sheet</span>
+            <span className="tb-val" style={{ fontFamily: 'var(--mono)', fontSize: '0.82rem', color: 'var(--ink-dim)' }}>07 of 07 — Rev. 2026</span>
           </div>
         </Reveal>
       </section>
@@ -502,7 +530,7 @@ export default function App() {
         <div className="wrap footer-inner">
           <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
           <span className="footer-meta" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Terminal size={13} /> built with React
+            <Terminal size={13} /> drafted with React
           </span>
         </div>
       </footer>
