@@ -6,7 +6,7 @@ import {
 import './index.css'
 
 /* ================================================================== */
-/* content                                                             */
+/* content — kept in plain, simple words                               */
 /* ================================================================== */
 
 const ROLES = [
@@ -19,7 +19,7 @@ const ROLES = [
 const NAV = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
+  { id: 'experience', label: 'Work' },
   { id: 'projects', label: 'Projects' },
   { id: 'certifications', label: 'Certs' },
   { id: 'stack', label: 'Stack' },
@@ -31,22 +31,21 @@ const SKILLS = [
   'Java', 'Spring Boot', 'MySQL', 'REST API', 'Git', 'GitHub',
 ]
 
-// Order is the real order a request travels through the app —
-// screen first, then server, then database, then the tools tying it together.
+// Real order a request travels: screen, then server, then database, then tools.
 const STACK_LAYERS = [
   {
     icon: Code2,
     title: 'What you see',
     subtitle: 'Frontend',
     items: ['React', 'Tailwind CSS', 'HTML', 'CSS'],
-    blurb: 'The screens, buttons, and pages a person actually touches.',
+    blurb: 'The screens and buttons a person taps.',
   },
   {
     icon: Server,
     title: 'What runs it',
     subtitle: 'Backend',
     items: ['Java', 'Spring Boot', 'REST API'],
-    blurb: 'The logic behind the screen, answering every request.',
+    blurb: 'The logic behind the screen. It answers every request.',
   },
   {
     icon: Database,
@@ -60,7 +59,7 @@ const STACK_LAYERS = [
     title: 'How I build it',
     subtitle: 'Tools',
     items: ['Git', 'GitHub'],
-    blurb: 'Version control and the place the code lives online.',
+    blurb: 'Version control, and where the code lives online.',
   },
 ]
 
@@ -93,9 +92,9 @@ const PROJECTS = [
     id: '01',
     title: 'ShopSphere',
     tag: 'a full-stack online store',
-    desc: 'A complete online shop — people can browse, search, add to cart, and track orders. Behind it, there is an admin panel to manage products, users, and stock.',
+    desc: 'A complete online shop. People can browse, search, add to cart, and track orders. Behind it, an admin panel manages products, users, and stock.',
     tech: ['React', 'Spring Boot', 'MySQL', 'REST API'],
-    note: 'The server sleeps to save costs. Give it 30–60 seconds to wake up before the live site loads fully.',
+    note: 'The server sleeps to save cost. Give it 30–60 seconds to wake up before the live site loads fully.',
     links: [
       { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
       { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
@@ -114,7 +113,7 @@ const PROJECTS = [
     id: '03',
     title: 'Personal Portfolio',
     tag: 'an earlier version of this site',
-    desc: 'My first portfolio site — built to be fast, clean, and easy to read on any device.',
+    desc: 'My first portfolio site. Built to be fast, clean, and easy to read on any device.',
     tech: ['React', 'Vite', 'CSS'],
   },
 ]
@@ -220,39 +219,15 @@ function useScrolledPast(threshold = 30) {
 /* small pieces                                                        */
 /* ================================================================== */
 
+// section marker: a gold-ringed medallion with the sheet number, joined by
+// a thin gold thread that runs to the section title — the through-line motif.
 function Eyebrow({ index }) {
   return (
     <div className="eyebrow-row">
-      <span className="eyebrow-index">{index}</span>
-      <span className="eyebrow-line" />
+      <span className="medallion">{index}</span>
+      <span className="thread" />
     </div>
   )
-}
-
-// The signature element: a slowly rotating wax-seal / bottle-cap badge with
-// text set on a circular path, sitting beside the headline like a stamp.
-function SealBadge() {
-  return (
-    <div className="seal-wrap" aria-hidden="true">
-      <div className="seal">
-        <svg viewBox="0 0 200 200" width="100%" height="100%">
-          <g className="seal-ring">
-            <path id="sealCircle" fill="none" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />
-            <text fontFamily="Space Mono, monospace" fontSize="11.2" letterSpacing="2.5" fill="#4a2416">
-              <textPath href="#sealCircle" startOffset="0%">
-                OPEN TO WORK • FULL-STACK DEVELOPER • OPEN TO WORK •
-              </textPath>
-            </text>
-          </g>
-        </svg>
-        <div className="seal-center"><span>RS</span></div>
-      </div>
-    </div>
-  )
-}
-
-function Scallop({ flip }) {
-  return <div className={`scallop ${flip ? 'flip' : ''}`} aria-hidden="true" />
 }
 
 /* ================================================================== */
@@ -263,18 +238,28 @@ export default function App() {
   const typed = useTypewriter(ROLES)
   const active = useActiveSection()
   const scrolled = useScrolledPast()
+  const heroRef = useRef(null)
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
+  // gold spotlight that follows the pointer in the hero — a quiet, premium touch
+  const handleHeroMove = (e) => {
+    const el = heroRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    el.style.setProperty('--x', `${e.clientX - rect.left}px`)
+    el.style.setProperty('--y', `${e.clientY - rect.top}px`)
+  }
+
   return (
     <div>
-      <div className="grain" aria-hidden="true" />
+      <div className="vignette" aria-hidden="true" />
 
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-            <span className="logo-seal">RS</span>
+            <span className="logo-ring">R</span>
             <span className="logo-text">rahul<span className="dim">.dev</span></span>
           </button>
 
@@ -286,52 +271,50 @@ export default function App() {
             ))}
           </div>
 
-          <button className="btn ghost" style={{ padding: '0.55rem 1.2rem', fontSize: '0.85rem' }} onClick={() => scrollTo('contact')}>
+          <button className="btn ghost" style={{ padding: '0.6rem 1.3rem', fontSize: '0.74rem' }} onClick={() => scrollTo('contact')}>
             Say hi
           </button>
         </div>
       </nav>
 
       {/* ---------------- hero ---------------- */}
-      <header id="hero" className="hero">
-        <div className="hero-grid">
-          <div>
-            <Reveal>
-              <div className="hero-eyebrow">
-                <span className="pulse" />
-                open to work · Bengaluru, India
-              </div>
-            </Reveal>
+      <header id="hero" className="hero" ref={heroRef} onMouseMove={handleHeroMove}>
+        <div className="hero-spotlight" aria-hidden="true" />
+        <div className="hero-inner">
+          <Reveal>
+            <div className="hero-eyebrow">
+              <span className="pulse" />
+              Open to work · Bengaluru, India
+            </div>
+          </Reveal>
 
-            <Reveal delay={80}>
-              <h1 className="hero-name">Hi, I&rsquo;m Rahul<em>.</em></h1>
-            </Reveal>
+          <Reveal delay={80}>
+            <h1 className="hero-name">Hi, I&rsquo;m <span className="shine">Rahul</span>.</h1>
+          </Reveal>
 
-            <Reveal delay={140}>
-              <p className="hero-role">{typed}<span className="type-cursor" /></p>
-            </Reveal>
+          <Reveal delay={140}>
+            <div className="hero-role">
+              <span className="rule" />
+              <span className="role-text">{typed}<span className="type-cursor" /></span>
+            </div>
+          </Reveal>
 
-            <Reveal delay={200}>
-              <p className="hero-desc">
-                I&rsquo;m a final-year Computer Science student. I like building real, working apps —
-                the part you click with React, and the part that makes it work with Java and
-                Spring Boot.
-              </p>
-            </Reveal>
+          <Reveal delay={200}>
+            <p className="hero-desc">
+              I&rsquo;m in my final year of a Computer Science degree. I like to build real apps
+              that work — the part you see and click, made with React, and the part that makes
+              it run, made with Java and Spring Boot.
+            </p>
+          </Reveal>
 
-            <Reveal delay={260}>
-              <div className="hero-cta">
-                <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
-                <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal delay={200}><SealBadge /></Reveal>
+          <Reveal delay={260}>
+            <div className="hero-cta">
+              <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
+              <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
+            </div>
+          </Reveal>
         </div>
       </header>
-
-      <Scallop />
 
       {/* ---------------- about ---------------- */}
       <section id="about" className="wrap section">
@@ -341,11 +324,11 @@ export default function App() {
         </Reveal>
         <Reveal delay={100}>
           <p className="about-text">
-            I&rsquo;d rather ship something real than only study the theory behind it. I build the
-            screens people use with <strong>React</strong>, and the logic behind them with{' '}
-            <strong>Java</strong> and <strong>Spring Boot</strong>. I care about clean, simple
-            code, and about making things that people actually enjoy using — from the first click
-            to the last.
+            I&rsquo;d rather make something real than only study the theory. I build the screens
+            people use with <strong>React</strong>, and the logic behind them with{' '}
+            <strong>Java</strong> and <strong>Spring Boot</strong>. I like clean, simple code,
+            and I care about making things people actually enjoy using — from the first click to
+            the last.
           </p>
         </Reveal>
       </section>
@@ -388,7 +371,7 @@ export default function App() {
 
         <Reveal delay={100}>
           <div className="edu-label">
-            <GraduationCap size={15} color="var(--cherry)" /> Education
+            <GraduationCap size={15} color="var(--gold)" /> Education
           </div>
           <div className="edu-grid">
             {EDUCATION.map((ed) => (
@@ -412,9 +395,9 @@ export default function App() {
         <div className="project-list">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} delay={i * 100} className="panel project-card">
-              {p.featured && <span className="project-flag">Featured</span>}
               <div className="project-heading">
                 <h3>{p.title}</h3>
+                {p.featured && <span className="project-flag">Featured</span>}
               </div>
               <p className="project-tag">{p.tag}</p>
               <p className="project-desc">{p.desc}</p>
@@ -445,7 +428,7 @@ export default function App() {
         <div className="cert-grid">
           {CERTS.map((c, i) => (
             <Reveal key={c.name} delay={i * 80} className="panel cert-card">
-              <span className="cert-icon"><Award size={16} color="var(--cherry)" /></span>
+              <span className="cert-icon"><Award size={16} color="var(--gold)" /></span>
               <div>
                 <p className="cert-name">{c.name}</p>
                 <p className="cert-by">{c.by}</p>
@@ -459,10 +442,10 @@ export default function App() {
       <section id="stack" className="wrap section">
         <Reveal>
           <Eyebrow index="06" />
-          <h2 className="sec-title">How a request travels through my <em>apps</em></h2>
+          <h2 className="sec-title">How a request moves through my <em>apps</em></h2>
           <p className="sec-desc">
-            Top to bottom — from the screen you tap, to the server that answers, to the database
-            that remembers, held together by the tools I build with every day.
+            Top to bottom — the screen you tap, the server that answers, the database that
+            remembers, held together by the tools I use every day.
           </p>
         </Reveal>
 
@@ -472,7 +455,7 @@ export default function App() {
             return (
               <div key={layer.title}>
                 <div className="pipe-node">
-                  <div className="pipe-icon"><Icon size={19} color="var(--cherry)" /></div>
+                  <div className="pipe-icon"><Icon size={19} color="var(--gold)" /></div>
                   <div className="pipe-body panel">
                     <p className="pipe-sub">{layer.subtitle}</p>
                     <h3 className="pipe-title">{layer.title}</h3>
@@ -493,8 +476,6 @@ export default function App() {
         </Reveal>
       </section>
 
-      <Scallop flip />
-
       {/* ---------------- contact ---------------- */}
       <section id="contact" className="wrap section">
         <Reveal>
@@ -507,8 +488,8 @@ export default function App() {
           {CONTACTS.map((c, i) => {
             const Icon = c.icon
             return (
-              <Reveal key={c.label} delay={i * 70} as="a" className="panel contact-card" style={{}}>
-                <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', width: '100%' }}>
+              <Reveal key={c.label} delay={i * 70} as="div" className="panel contact-card">
+                <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%' }}>
                   <span className="contact-icon"><Icon size={17} /></span>
                   <span>
                     <p className="contact-label">{c.label}</p>
