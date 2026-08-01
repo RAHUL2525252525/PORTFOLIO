@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   Github, Linkedin, Mail, Phone, ArrowUpRight, ArrowRight,
   Code2, Server, Database, Wrench, Award, GraduationCap,
@@ -160,6 +159,31 @@ function useTypewriter(words, typeSpeed = 60, deleteSpeed = 32, pause = 1300) {
   return text
 }
 
+function useReveal() {
+  const ref = useRef(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
+      { threshold: 0.15 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return [ref, inView]
+}
+
+function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
+  const [ref, inView] = useReveal()
+  return (
+    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </Tag>
+  )
+}
+
 function useActiveSection() {
   const [active, setActive] = useState('')
   useEffect(() => {
@@ -203,40 +227,7 @@ function useCursorGlow() {
 /* small pieces                                                        */
 /* ================================================================== */
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
-  }),
-}
-
-function Reveal({ children, className = '', delay = 0, as = 'div' }) {
-  const Tag = motion[as] || motion.div
-  return (
-    <Tag
-      className={className}
-      variants={fadeUp}
-      custom={delay}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
-    >
-      {children}
-    </Tag>
-  )
-}
-
-function Eyebrow({ children }) {
-  return (
-    <p className="font-mono text-[0.7rem] tracking-[0.25em] uppercase text-gold mb-3">
-      {children}
-    </p>
-  )
-}
-
-function Particles({ count = 22 }) {
+function Particles({ count = 20 }) {
   const particles = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
@@ -250,7 +241,7 @@ function Particles({ count = 22 }) {
     [count]
   )
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
       {particles.map((p) => (
         <span
           key={p.id}
@@ -269,17 +260,8 @@ function Particles({ count = 22 }) {
   )
 }
 
-/* a small circular monogram — the recurring luxury "seal" motif */
-function Seal({ size = 40 }) {
-  return (
-    <div
-      className="relative rounded-full border border-gold/50 flex items-center justify-center font-display text-gold shrink-0"
-      style={{ width: size, height: size, fontSize: size * 0.4 }}
-    >
-      <span className="absolute inset-[3px] rounded-full border border-gold/20" />
-      RS
-    </div>
-  )
+function Seal() {
+  return <div className="seal">RS</div>
 }
 
 /* ================================================================== */
@@ -291,130 +273,63 @@ export default function App() {
   const active = useActiveSection()
   const scrolled = useScrolledPast()
   const glowRef = useCursorGlow()
-  const { scrollYProgress } = useScroll()
-  const heroFade = useTransform(scrollYProgress, [0, 0.12], [1, 0])
-  const heroShift = useTransform(scrollYProgress, [0, 0.12], [0, 40])
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
-    <div className="bg-base text-ink font-body min-h-screen selection:bg-gold/30">
+    <div>
       <div ref={glowRef} className="cursor-glow" />
 
       {/* ---------------- navbar ---------------- */}
-      <nav
-        className={`fixed top-0 inset-x-0 z-50 transition-colors duration-500 ${
-          scrolled ? 'bg-base/85 backdrop-blur-md border-b border-gold/15' : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <button
-            className="flex items-center gap-3"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            aria-label="Back to top"
-          >
-            <Seal size={36} />
-            <span className="font-display text-lg tracking-wide hidden sm:block">Rahul S</span>
+      <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
+        <div className="wrap nav-inner">
+          <button className="logo-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
+            <Seal />
+            <span className="logo-text">Rahul S</span>
           </button>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="nav-links">
             {NAV.map((n) => (
-              <button
-                key={n.id}
-                onClick={() => scrollTo(n.id)}
-                className={`nav-link font-mono text-xs tracking-[0.15em] uppercase text-dim hover:text-ink transition-colors ${
-                  active === n.id ? 'active text-ink' : ''
-                }`}
-              >
+              <button key={n.id} className={`nav-link ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
                 {n.label}
               </button>
             ))}
           </div>
 
-          <button
-            onClick={() => scrollTo('contact')}
-            className="shimmer font-mono text-xs tracking-[0.1em] uppercase border border-gold/50 text-gold rounded-full px-5 py-2 hover:bg-gold/10 transition-colors"
-          >
-            Contact
-          </button>
+          <button className="nav-cta shimmer" onClick={() => scrollTo('contact')}>Contact</button>
         </div>
       </nav>
 
       {/* ---------------- hero ---------------- */}
-      <header className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 gold-wash overflow-hidden">
+      <header className="hero">
         <Particles />
-        <motion.div style={{ opacity: heroFade, y: heroShift }} className="relative z-10 max-w-3xl">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="font-mono text-xs tracking-[0.3em] uppercase text-gold mb-6"
-          >
-            Open to full-stack &amp; frontend roles
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-display text-5xl sm:text-6xl md:text-7xl font-semibold leading-[1.05] mb-6"
-          >
-            Hi, I&rsquo;m <span className="text-gold">Rahul</span>
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="font-mono text-base sm:text-lg text-dim mb-10 h-7"
-          >
-            {typed}
-            <span className="type-cursor" />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.45 }}
-            className="flex flex-wrap items-center justify-center gap-4"
-          >
-            <button
-              onClick={() => scrollTo('projects')}
-              className="shimmer group inline-flex items-center gap-2 bg-gold text-base font-semibold text-sm px-7 py-3.5 rounded-full shadow-goldLg hover:brightness-110 transition-all"
-            >
-              View Projects
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        <div className="hero-inner">
+          <p className="eyebrow">Open to full-stack &amp; frontend roles</p>
+          <h1 className="hero-name">Hi, I&rsquo;m <span className="gold-text">Rahul</span></h1>
+          <p className="hero-role">{typed}<span className="type-cursor" /></p>
+          <div className="hero-cta">
+            <button className="btn primary shimmer" onClick={() => scrollTo('projects')}>
+              View Projects <ArrowRight size={16} />
             </button>
-            <button
-              onClick={() => scrollTo('contact')}
-              className="shimmer inline-flex items-center gap-2 border border-gold/50 text-gold font-semibold text-sm px-7 py-3.5 rounded-full hover:bg-gold/10 transition-colors"
-            >
+            <button className="btn ghost shimmer" onClick={() => scrollTo('contact')}>
               Contact Me
             </button>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-10 flex flex-col items-center gap-2 text-dim"
-        >
-          <span className="font-mono text-[0.65rem] tracking-[0.2em] uppercase">Scroll</span>
-          <span className="w-px h-10 bg-gradient-to-b from-gold to-transparent" />
-        </motion.div>
+          </div>
+        </div>
+        <div className="scroll-cue">
+          <span>Scroll</span>
+          <span className="scroll-line" />
+        </div>
       </header>
 
       {/* ---------------- about ---------------- */}
-      <section id="about" className="relative max-w-4xl mx-auto px-6 py-28">
+      <section id="about" className="wrap section-tight">
         <Reveal>
-          <Eyebrow>About me</Eyebrow>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-6">
-            A builder, not just a student
-          </h2>
+          <p className="eyebrow-sm">About me</p>
+          <h2 className="sec-title">A builder, not just a student</h2>
         </Reveal>
-        <Reveal delay={1}>
-          <p className="text-dim text-lg leading-relaxed max-w-2xl">
+        <Reveal delay={100}>
+          <p className="about-text">
             I&rsquo;m a final-year Computer Science student who likes finishing things, not just
             planning them. I build the part you see with React, and the part that makes it work
             with Java and Spring Boot. I care about clean, simple code, and about making
@@ -424,63 +339,52 @@ export default function App() {
       </section>
 
       {/* ---------------- skills ---------------- */}
-      <section id="skills" className="relative max-w-5xl mx-auto px-6 py-20">
+      <section id="skills" className="wrap section-tight">
         <Reveal>
-          <Eyebrow>Skills</Eyebrow>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-10">
-            What I work with
-          </h2>
+          <p className="eyebrow-sm">Skills</p>
+          <h2 className="sec-title">What I work with</h2>
         </Reveal>
-        <div className="flex flex-wrap gap-3">
+        <div className="skill-cloud">
           {SKILLS.map((s, i) => (
-            <Reveal key={s} delay={i}>
-              <span className="glass rounded-full px-5 py-2.5 text-sm text-ink/90 hover:border-gold/60 hover:shadow-gold transition-all inline-block cursor-default">
-                {s}
-              </span>
+            <Reveal key={s} delay={i * 40} as="span" className="glass skill-pill">
+              {s}
             </Reveal>
           ))}
         </div>
       </section>
 
       {/* ---------------- experience ---------------- */}
-      <section id="experience" className="relative max-w-4xl mx-auto px-6 py-20">
+      <section id="experience" className="wrap section-tight">
         <Reveal>
-          <Eyebrow>Experience</Eyebrow>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-12">
-            How I got here
-          </h2>
+          <p className="eyebrow-sm">Experience</p>
+          <h2 className="sec-title">How I got here</h2>
         </Reveal>
 
-        <div className="relative border-l border-gold/25 pl-8 space-y-14">
+        <div className="timeline" style={{ marginTop: '3rem' }}>
           {EXPERIENCE.map((e, i) => (
-            <Reveal key={e.company} delay={i} className="relative">
-              <span className="absolute -left-[2.55rem] top-1.5 w-3 h-3 rounded-full bg-gold shadow-[0_0_12px_2px_rgba(212,175,55,0.6)]" />
-              <p className="font-mono text-xs tracking-[0.15em] uppercase text-gold mb-2">{e.time}</p>
-              <h3 className="font-display text-xl font-semibold mb-1">{e.role}</h3>
-              <p className="text-dim text-sm mb-4">{e.company} · {e.place}</p>
-              <ul className="space-y-2">
-                {e.points.map((pt) => (
-                  <li key={pt} className="text-ink/80 text-sm leading-relaxed flex gap-2">
-                    <span className="text-gold mt-1.5">◆</span>
-                    <span>{pt}</span>
-                  </li>
-                ))}
+            <Reveal key={e.company} delay={i * 100} className="timeline-item">
+              <span className="timeline-dot" />
+              <p className="timeline-year">{e.time}</p>
+              <h3 className="timeline-role">{e.role}</h3>
+              <p className="timeline-meta">{e.company} · {e.place}</p>
+              <ul className="timeline-list">
+                {e.points.map((pt) => <li key={pt}>{pt}</li>)}
               </ul>
             </Reveal>
           ))}
         </div>
 
-        <Reveal delay={2} className="mt-16">
-          <div className="flex items-center gap-2 mb-6">
-            <GraduationCap size={18} className="text-gold" />
-            <p className="font-mono text-xs tracking-[0.15em] uppercase text-dim">Education</p>
+        <Reveal delay={100}>
+          <div className="edu-head" style={{ marginTop: '3.5rem' }}>
+            <GraduationCap size={18} color="var(--gold)" />
+            <span className="eyebrow-sm" style={{ margin: 0 }}>Education</span>
           </div>
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="edu-grid">
             {EDUCATION.map((ed) => (
-              <div key={ed.school} className="glass rounded-2xl p-6">
-                <p className="font-display text-lg font-semibold mb-1">{ed.school}</p>
-                <p className="text-dim text-sm mb-2">{ed.degree}</p>
-                <p className="font-mono text-xs text-gold">{ed.time}</p>
+              <div key={ed.school} className="glass edu-card">
+                <p className="edu-school">{ed.school}</p>
+                <p className="edu-degree">{ed.degree}</p>
+                <p className="edu-time">{ed.time}</p>
               </div>
             ))}
           </div>
@@ -488,62 +392,36 @@ export default function App() {
       </section>
 
       {/* ---------------- projects ---------------- */}
-      <section id="projects" className="relative max-w-5xl mx-auto px-6 py-20">
+      <section id="projects" className="wrap section-tight">
         <Reveal>
-          <Eyebrow>Featured projects</Eyebrow>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-12">
-            Things I&rsquo;ve built
-          </h2>
+          <p className="eyebrow-sm">Featured projects</p>
+          <h2 className="sec-title">Things I&rsquo;ve built</h2>
         </Reveal>
 
-        <div className="space-y-6">
+        <div className="project-list" style={{ marginTop: '2rem' }}>
           {PROJECTS.map((p, i) => (
-            <Reveal key={p.id} delay={i}>
-              <div
-                className={`glass rounded-2xl p-8 grid sm:grid-cols-[56px_1fr] gap-5 hover:shadow-gold hover:-translate-y-1 transition-all duration-300 ${
-                  p.featured ? 'border-gold/45' : ''
-                }`}
-              >
-                <span className="font-display text-2xl text-gold/70">{p.id}</span>
-                <div>
-                  <div className="flex items-center flex-wrap gap-3 mb-1">
-                    <h3 className="font-display text-2xl font-semibold">{p.title}</h3>
-                    {p.featured && (
-                      <span className="font-mono text-[0.65rem] tracking-[0.1em] uppercase text-gold border border-gold/40 rounded-full px-3 py-1">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-gold/80 text-sm mb-3">{p.tag}</p>
-                  <p className="text-dim leading-relaxed mb-4 max-w-xl">{p.desc}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {p.tech.map((t) => (
-                      <span key={t} className="font-mono text-xs text-dim border border-gold/20 rounded-full px-3 py-1">
-                        {t}
-                      </span>
+            <Reveal key={p.id} delay={i * 100} className={`glass project-card ${p.featured ? 'featured' : ''}`}>
+              <div>
+                <span className="project-index">{p.id}</span>
+                <div className="project-heading">
+                  <h3>{p.title}</h3>
+                  {p.featured && <span className="project-flag">Featured</span>}
+                </div>
+                <p className="project-tag">{p.tag}</p>
+                <p className="project-desc">{p.desc}</p>
+                <div className="project-tech">
+                  {p.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
+                </div>
+                {p.note && <p className="project-note">{p.note}</p>}
+                {p.links && (
+                  <div className="project-links">
+                    {p.links.map((l) => (
+                      <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
+                        {l.label} <ArrowUpRight size={14} />
+                      </a>
                     ))}
                   </div>
-                  {p.note && (
-                    <p className="text-xs text-gold/80 bg-gold/5 border-l-2 border-gold/50 rounded-r-lg px-3 py-2 mb-4 max-w-xl">
-                      {p.note}
-                    </p>
-                  )}
-                  {p.links && (
-                    <div className="flex flex-wrap gap-3">
-                      {p.links.map((l) => (
-                        <a
-                          key={l.label}
-                          href={l.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium border border-gold/40 rounded-full px-4 py-2 hover:text-gold hover:border-gold transition-colors"
-                        >
-                          {l.label} <ArrowUpRight size={14} />
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </Reveal>
           ))}
@@ -551,22 +429,18 @@ export default function App() {
       </section>
 
       {/* ---------------- certifications ---------------- */}
-      <section id="certifications" className="relative max-w-4xl mx-auto px-6 py-20">
+      <section id="certifications" className="wrap section-tight">
         <Reveal>
-          <Eyebrow>Certifications</Eyebrow>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-10">
-            Always learning something new
-          </h2>
+          <p className="eyebrow-sm">Certifications</p>
+          <h2 className="sec-title">Always learning something new</h2>
         </Reveal>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="cert-grid" style={{ marginTop: '1.5rem' }}>
           {CERTS.map((c, i) => (
-            <Reveal key={c.name} delay={i}>
-              <div className="glass rounded-xl p-5 flex items-start gap-3 hover:border-gold/50 transition-colors h-full">
-                <Award size={18} className="text-gold mt-0.5 shrink-0" />
-                <div>
-                  <p className="font-medium text-ink/90">{c.name}</p>
-                  <p className="text-dim text-sm">{c.by}</p>
-                </div>
+            <Reveal key={c.name} delay={i * 80} className="glass cert-card">
+              <Award size={18} color="var(--gold)" style={{ marginTop: '2px', flexShrink: 0 }} />
+              <div>
+                <p className="cert-name">{c.name}</p>
+                <p className="cert-by">{c.by}</p>
               </div>
             </Reveal>
           ))}
@@ -574,105 +448,71 @@ export default function App() {
       </section>
 
       {/* ---------------- tech stack ---------------- */}
-      <section id="stack" className="relative max-w-5xl mx-auto px-6 py-20">
+      <section id="stack" className="wrap section-tight">
         <Reveal>
-          <Eyebrow>Tech stack</Eyebrow>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold mb-3">
-            How a request travels through my apps
-          </h2>
-          <p className="text-dim mb-12 max-w-2xl">
+          <p className="eyebrow-sm">Tech stack</p>
+          <h2 className="sec-title">How a request travels through my apps</h2>
+          <p className="sec-desc">
             Top to bottom — from the screen you tap, to the server that answers, to the database
             that remembers, held together by the tools I build with every day.
           </p>
         </Reveal>
 
-        <div className="space-y-4">
+        <div className="stack-list">
           {STACK_LAYERS.map((layer, i) => {
             const Icon = layer.icon
             return (
-              <Reveal key={layer.title} delay={i}>
-                <div className="glass rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5 hover:shadow-gold transition-all duration-300">
-                  <div className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
-                    <Icon size={20} className="text-gold" />
+              <div key={layer.title}>
+                <Reveal delay={i * 100} className="glass stack-row">
+                  <div className="stack-icon"><Icon size={20} color="var(--gold)" /></div>
+                  <div>
+                    <p className="stack-sub">{layer.subtitle}</p>
+                    <h3 className="stack-title">{layer.title}</h3>
+                    <p className="stack-blurb">{layer.blurb}</p>
                   </div>
-                  <div className="flex-1">
-                    <p className="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-gold mb-1">{layer.subtitle}</p>
-                    <h3 className="font-display text-xl font-semibold mb-1">{layer.title}</h3>
-                    <p className="text-dim text-sm">{layer.blurb}</p>
+                  <div className="stack-items">
+                    {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
                   </div>
-                  <div className="flex flex-wrap gap-2 sm:justify-end sm:max-w-xs">
-                    {layer.items.map((it) => (
-                      <span key={it} className="font-mono text-xs text-ink/80 border border-gold/25 rounded-full px-3 py-1">
-                        {it}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                {i < STACK_LAYERS.length - 1 && (
-                  <div className="w-px h-4 bg-gold/25 mx-auto" />
-                )}
-              </Reveal>
+                </Reveal>
+                {i < STACK_LAYERS.length - 1 && <div className="stack-connector" />}
+              </div>
             )
           })}
         </div>
       </section>
 
       {/* ---------------- contact ---------------- */}
-      <section id="contact" className="relative max-w-3xl mx-auto px-6 py-28 text-center">
+      <section id="contact" className="wrap section-tight contact-section">
         <Reveal>
-          <Eyebrow>Get in touch</Eyebrow>
-          <h2 className="font-display text-4xl sm:text-5xl font-semibold mb-5 leading-tight">
-            Let&rsquo;s build <span className="text-gold">something good.</span>
-          </h2>
-          <p className="text-dim mb-10 max-w-lg mx-auto">
-            Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.
-          </p>
+          <p className="eyebrow-sm">Get in touch</p>
+          <h2 className="contact-title">Let&rsquo;s build <span className="gold-text">something good.</span></h2>
+          <p className="contact-sub">Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.</p>
         </Reveal>
 
-        <Reveal delay={1} className="glass rounded-2xl p-8 grid sm:grid-cols-2 gap-4 text-left">
-          <a
-            href="mailto:Srinivasrahul838@gmail.com"
-            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
-          >
-            <Mail size={17} className="text-gold shrink-0" />
-            <span className="text-sm text-ink/90 truncate">Srinivasrahul838@gmail.com</span>
+        <Reveal delay={100} className="glass contact-grid">
+          <a className="contact-link" href="mailto:Srinivasrahul838@gmail.com">
+            <Mail size={17} color="var(--gold)" /><span>Srinivasrahul838@gmail.com</span>
           </a>
-          <a
-            href="tel:+917337634886"
-            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
-          >
-            <Phone size={17} className="text-gold shrink-0" />
-            <span className="text-sm text-ink/90">+91 73376 34886</span>
+          <a className="contact-link" href="tel:+917337634886">
+            <Phone size={17} color="var(--gold)" /><span>+91 73376 34886</span>
           </a>
-          <a
-            href="https://www.linkedin.com/in/rahul-s-6460b1238"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
-          >
-            <Linkedin size={17} className="text-gold shrink-0" />
-            <span className="text-sm text-ink/90">LinkedIn</span>
+          <a className="contact-link" href="https://www.linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noopener noreferrer">
+            <Linkedin size={17} color="var(--gold)" /><span>LinkedIn</span>
           </a>
-          <a
-            href="https://github.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl border border-gold/20 px-4 py-3 hover:border-gold/60 hover:shadow-gold transition-all"
-          >
-            <Github size={17} className="text-gold shrink-0" />
-            <span className="text-sm text-ink/90">GitHub</span>
+          <a className="contact-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+            <Github size={17} color="var(--gold)" /><span>GitHub</span>
           </a>
         </Reveal>
       </section>
 
       {/* ---------------- footer ---------------- */}
-      <footer className="border-t border-gold/15">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Seal size={28} />
-            <span className="font-mono text-xs text-dim">© {new Date().getFullYear()} Rahul S</span>
+      <footer className="site-footer">
+        <div className="wrap footer-inner">
+          <div className="footer-brand">
+            <Seal />
+            <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
           </div>
-          <span className="font-mono text-xs text-dim">Built with React, Tailwind &amp; Framer Motion</span>
+          <span className="footer-meta">Built with React</span>
         </div>
       </footer>
     </div>
