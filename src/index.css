@@ -320,7 +320,7 @@ strong { color: var(--ink); font-weight: 700; }
 .manifest-row .ok { color: var(--ok) !important; }
 
 /* ================================================================== */
-/* DECLARATION                                                        */
+/* DECLARATION — about                                                */
 /* ================================================================== */
 
 .decl-grid { max-width: 1180px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; }
@@ -342,7 +342,7 @@ strong { color: var(--ink); font-weight: 700; }
 .decl-tally span { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* ================================================================== */
-/* CARGO MANIFEST — packing list + container yard                     */
+/* CARGO MANIFEST — skills                                            */
 /* ================================================================== */
 
 .packing-list { max-width: 1180px; margin: 0 auto 50px; padding: 0 24px; }
@@ -421,7 +421,7 @@ strong { color: var(--ink); font-weight: 700; }
 .c-tool { background: linear-gradient(180deg, var(--c-tool), var(--c-tool-dark)); }
 
 /* ================================================================== */
-/* SHIPMENTS — project rail                                            */
+/* SHIPMENTS — projects rail                                           */
 /* ================================================================== */
 
 .rail-controls { display: flex; gap: 8px; }
@@ -506,7 +506,7 @@ strong { color: var(--ink); font-weight: 700; }
 }
 
 /* ================================================================== */
-/* TRACKING HISTORY                                                    */
+/* TRACKING — experience & education                                  */
 /* ================================================================== */
 
 .tracking-list { max-width: 1180px; margin: 0 auto 46px; padding: 0 24px; }
@@ -633,7 +633,7 @@ strong { color: var(--ink); font-weight: 700; }
 .footer span { display: flex; align-items: center; gap: 6px; }
 
 /* ================================================================== */
-/* REVEAL                                                              */
+/* REVEAL ANIMATIONS                                                   */
 /* ================================================================== */
 
 .crate-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
@@ -644,7 +644,7 @@ strong { color: var(--ink); font-weight: 700; }
 }
 
 /* ================================================================== */
-/* RESPONSIVE                                                          */
+/* RESPONSIVE DESIGN                                                   */
 /* ================================================================== */
 
 @media (max-width: 900px) {
