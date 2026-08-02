@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import {
   Github, Linkedin, Mail, Phone, ArrowUpRight, Sparkles,
   Code2, Server, Database, Wrench, Award, GraduationCap,
-  MapPin, Briefcase, Rocket, Download, Menu, X,
+  MapPin, Briefcase, Rocket, Download, Menu, X, ChevronRight,
+  ExternalLink, Star, Zap, Layers, Palette,
 } from 'lucide-react'
 import './index.css'
 
@@ -43,7 +44,6 @@ const SKILL_BARS = [
 
 const SKILL_TAGS = ['React', 'JavaScript', 'HTML', 'CSS', 'Tailwind CSS', 'Java', 'Spring Boot', 'MySQL', 'REST API', 'Git', 'GitHub']
 
-// Real order a request travels: screen, then server, then database, then tools.
 const STACK_LAYERS = [
   { icon: Code2, title: 'What you see', subtitle: 'Frontend', items: ['React', 'Tailwind CSS', 'HTML', 'CSS'], blurb: 'The screens and buttons a person taps.' },
   { icon: Server, title: 'What runs it', subtitle: 'Backend', items: ['Java', 'Spring Boot', 'REST API'], blurb: 'The logic behind the screen. It answers every request.' },
@@ -249,12 +249,14 @@ export default function App() {
   }
 
   return (
-    <div>
+    <div className="app">
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => scrollTo('hero')} aria-label="Back to top">
-            <span className="logo-mark">RS</span>
+            <div className="logo-glow">
+              <span className="logo-mark">RS</span>
+            </div>
             <span className="logo-text">Rahul S</span>
           </button>
 
@@ -262,16 +264,17 @@ export default function App() {
             {NAV.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
                 {n.label}
+                <span className="tab-indicator" />
               </button>
             ))}
           </div>
 
           <button className="btn primary nav-cta" onClick={() => scrollTo('contact')}>
-            <Download size={14} /> Say hello
+            <Download size={16} /> <span>Say hello</span>
           </button>
 
           <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Toggle menu">
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
@@ -288,40 +291,58 @@ export default function App() {
 
       {/* ---------------- hero ---------------- */}
       <header id="hero" className="hero">
-        <div className="hero-decor" aria-hidden="true">
-          <span className="ring ring-a" />
+        <div className="hero-bg">
+          <div className="gradient-orb orb-1" />
+          <div className="gradient-orb orb-2" />
+          <div className="gradient-orb orb-3" />
         </div>
 
         <div className="wrap hero-inner">
-          <div className="hero-copy">
+          <div className="hero-content">
             <Reveal>
-              <div className="hero-eyebrow">
-                <span className="pulse" /> Open to work · Bengaluru, India
+              <div className="hero-badge">
+                <span className="badge-pulse" />
+                <Sparkles size={14} />
+                <span>Open to work · Bengaluru, India</span>
               </div>
             </Reveal>
 
             <Reveal delay={80}>
-              <h1 className="hero-name">Hi, I&rsquo;m<br /><span className="accent">Rahul S</span></h1>
+              <h1 className="hero-title">
+                <span className="greeting">Hi, I'm</span>
+                <br />
+                <span className="name-gradient">Rahul S</span>
+              </h1>
             </Reveal>
 
             <Reveal delay={140}>
-              <div className="hero-role">
-                <span className="role-text">{typed}</span><span className="type-cursor" />
+              <div className="hero-role-wrapper">
+                <span className="role-label">I build</span>
+                <div className="role-text-container">
+                  <span className="role-text">{typed}</span>
+                  <span className="type-cursor" />
+                </div>
               </div>
             </Reveal>
 
             <Reveal delay={200}>
-              <p className="hero-desc">
-                I&rsquo;m in my final year of a Computer Science degree. I like to build real
-                apps that work — the part you see and click, made with React, and the part
-                that makes it run, made with Java and Spring Boot.
+              <p className="hero-description">
+                Final-year Computer Science student passionate about building real-world applications.
+                I craft intuitive user interfaces with <strong className="highlight">React</strong> and power them
+                with robust backends using <strong className="highlight">Java & Spring Boot</strong>.
               </p>
             </Reveal>
 
             <Reveal delay={260}>
-              <div className="hero-cta">
-                <button className="btn primary" onClick={() => scrollTo('projects')}>View my work <ArrowUpRight size={15} /></button>
-                <button className="btn ghost" onClick={() => scrollTo('contact')}>Let&rsquo;s talk</button>
+              <div className="hero-actions">
+                <button className="btn primary btn-lg" onClick={() => scrollTo('projects')}>
+                  <span>View my work</span>
+                  <ArrowUpRight size={18} />
+                </button>
+                <button className="btn outline btn-lg" onClick={() => scrollTo('contact')}>
+                  <span>Let's talk</span>
+                  <ChevronRight size={18} />
+                </button>
               </div>
             </Reveal>
 
@@ -330,8 +351,16 @@ export default function App() {
                 {CONTACTS.slice(2).map((c) => {
                   const Icon = c.icon
                   return (
-                    <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="social-btn" aria-label={c.label}>
-                      <Icon size={16} />
+                    <a 
+                      key={c.label} 
+                      href={c.href} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="social-btn" 
+                      aria-label={c.label}
+                    >
+                      <Icon size={20} />
+                      <span className="social-tooltip">{c.label}</span>
                     </a>
                   )
                 })}
@@ -339,55 +368,79 @@ export default function App() {
             </Reveal>
           </div>
 
-          <Reveal delay={180} className="hero-panel-wrap">
-            <div className="facts-panel">
-              <p className="facts-kicker"><Sparkles size={13} /> Currently</p>
-              <p className="facts-headline">Final-year CS student, building full-stack products.</p>
-              <div className="facts-list">
-                <div className="facts-row">
-                  <span className="facts-num">03</span>
-                  <span className="facts-label">Live projects shipped</span>
+          <Reveal delay={180} className="hero-stats-wrap">
+            <div className="stats-glass">
+              <div className="stats-header">
+                <Zap size={18} className="stats-icon" />
+                <span>Quick Stats</span>
+              </div>
+              <div className="stats-grid">
+                <div className="stat-item">
+                  <span className="stat-number">03</span>
+                  <span className="stat-desc">Live projects</span>
                 </div>
-                <div className="facts-row">
-                  <span className="facts-num">02</span>
-                  <span className="facts-label">Internships completed</span>
+                <div className="stat-item">
+                  <span className="stat-number">02</span>
+                  <span className="stat-desc">Internships</span>
                 </div>
-                <div className="facts-row">
-                  <span className="facts-num">04</span>
-                  <span className="facts-label">Certifications earned</span>
+                <div className="stat-item">
+                  <span className="stat-number">04</span>
+                  <span className="stat-desc">Certifications</span>
                 </div>
               </div>
-              <div className="facts-foot">
-                <span className="facts-dot" /> Open to full-time roles
+              <div className="stats-footer">
+                <span className="status-dot" /> 
+                <span>Available for full-time roles</span>
               </div>
             </div>
           </Reveal>
+        </div>
+
+        <div className="scroll-indicator">
+          <div className="mouse">
+            <div className="wheel" />
+          </div>
+          <span>Scroll to explore</span>
         </div>
       </header>
 
       {/* ---------------- about ---------------- */}
       <section id="about" className="wrap section">
         <Reveal><Eyebrow>About me</Eyebrow></Reveal>
-        <div className="about-grid">
+        <div className="about-layout">
           <Reveal delay={60}>
-            <h2 className="sec-title">A builder, not just a <em>student</em></h2>
-            <p className="about-text">
-              I&rsquo;d rather make something real than only study the theory. I build the
-              screens people use with <strong>React</strong>, and the logic behind them with{' '}
-              <strong>Java</strong> and <strong>Spring Boot</strong>. I like clean, simple code,
-              and I care about making things people actually enjoy using — from the first click
-              to the last.
-            </p>
+            <div className="about-content">
+              <h2 className="section-title">
+                <span className="title-accent">A builder</span>, not just a student
+              </h2>
+              <p className="about-text">
+                I believe in learning by doing. Rather than just studying theory, I build 
+                production-ready applications that solve real problems. My expertise spans 
+                the full stack — from crafting pixel-perfect, responsive interfaces with{' '}
+                <strong className="tech-highlight">React</strong> to architecting scalable 
+                backend systems with <strong className="tech-highlight">Java</strong> and{' '}
+                <strong className="tech-highlight">Spring Boot</strong>.
+              </p>
+              <p className="about-text">
+                I write clean, maintainable code and focus on creating seamless user 
+                experiences. Every project is an opportunity to learn something new and 
+                push the boundaries of what I can build.
+              </p>
+            </div>
           </Reveal>
 
-          <div className="about-cards">
+          <div className="about-cards-grid">
             {ABOUT_CARDS.map((c, i) => {
               const Icon = c.icon
               return (
-                <Reveal key={c.label} delay={100 + i * 60} className="panel about-card">
-                  <span className="about-icon"><Icon size={17} /></span>
-                  <p className="about-label">{c.label}</p>
-                  {c.lines.map((l) => <p key={l} className="about-line">{l}</p>)}
+                <Reveal key={c.label} delay={100 + i * 60} className="glass-card about-card">
+                  <div className="card-icon-wrapper">
+                    <Icon size={20} />
+                  </div>
+                  <div className="card-content">
+                    <h4 className="card-title">{c.label}</h4>
+                    {c.lines.map((l) => <p key={l} className="card-text">{l}</p>)}
+                  </div>
                 </Reveal>
               )
             })}
@@ -396,21 +449,27 @@ export default function App() {
       </section>
 
       {/* ---------------- skills ---------------- */}
-      <section id="skills" className="section section-tint">
+      <section id="skills" className="section section-alt">
         <div className="wrap">
           <Reveal><Eyebrow>Skills</Eyebrow></Reveal>
-          <Reveal delay={60}><h2 className="sec-title">Technologies I work <em>with</em></h2></Reveal>
+          <Reveal delay={60}>
+            <h2 className="section-title">
+              Technologies I work <span className="title-accent">with</span>
+            </h2>
+          </Reveal>
 
-          <div className="skills-grid">
-            <Reveal delay={100} className="skill-tags">
+          <div className="skills-layout">
+            <Reveal delay={100} className="skills-tech-cloud">
               {SKILL_TAGS.map((s, i) => (
-                <span key={s} className="tag-pill" style={{ transitionDelay: `${i * 30}ms` }}>{s}</span>
+                <span key={s} className="tech-badge" style={{ transitionDelay: `${i * 40}ms` }}>
+                  {s}
+                </span>
               ))}
             </Reveal>
 
-            <div className="bars">
+            <div className="skills-progress">
               {SKILL_BARS.map((b, i) => (
-                <Bar key={b.name} label={b.name} level={b.level} delay={i * 90} />
+                <Bar key={b.name} label={b.name} level={b.level} delay={i * 100} />
               ))}
             </div>
           </div>
@@ -420,27 +479,44 @@ export default function App() {
       {/* ---------------- projects ---------------- */}
       <section id="projects" className="wrap section">
         <Reveal><Eyebrow>Projects</Eyebrow></Reveal>
-        <Reveal delay={60}><h2 className="sec-title">Things I&rsquo;ve <em>built</em></h2></Reveal>
+        <Reveal delay={60}>
+          <h2 className="section-title">
+            Things I've <span className="title-accent">built</span>
+          </h2>
+        </Reveal>
 
-        <div className="project-grid">
+        <div className="projects-grid">
           {PROJECTS.map((p, i) => (
-            <Reveal key={p.id} delay={i * 100} className="panel project-card">
-              <div className="project-head">
-                <span className="project-num">{p.id}</span>
-                {p.featured && <span className="project-flag">Featured</span>}
+            <Reveal key={p.id} delay={i * 120} className="project-card glass-card">
+              <div className="project-header">
+                <span className="project-id">{p.id}</span>
+                {p.featured && (
+                  <span className="featured-badge">
+                    <Star size={12} /> Featured
+                  </span>
+                )}
               </div>
               <h3 className="project-title">{p.title}</h3>
-              <p className="project-tag">{p.tag}</p>
-              <p className="project-desc">{p.desc}</p>
-              <div className="project-tech">
-                {p.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
+              <p className="project-tagline">{p.tag}</p>
+              <p className="project-description">{p.desc}</p>
+              <div className="project-tech-stack">
+                {p.tech.map((t) => (
+                  <span key={t} className="tech-tag">{t}</span>
+                ))}
               </div>
               {p.note && <p className="project-note">{p.note}</p>}
               {p.links && (
-                <div className="project-links">
+                <div className="project-actions">
                   {p.links.map((l) => (
-                    <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
-                      {l.label} <ArrowUpRight size={13} />
+                    <a 
+                      key={l.label} 
+                      className="project-link" 
+                      href={l.href} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <span>{l.label}</span>
+                      <ExternalLink size={14} />
                     </a>
                   ))}
                 </div>
@@ -454,32 +530,39 @@ export default function App() {
       <section className="wrap section">
         <Reveal><Eyebrow>Architecture</Eyebrow></Reveal>
         <Reveal delay={60}>
-          <h2 className="sec-title">How a request moves through my <em>apps</em></h2>
-          <p className="sec-desc">
-            Top to bottom — the screen you tap, the server that answers, the database that
-            remembers, held together by the tools I use every day.
+          <h2 className="section-title">
+            How a request moves through my <span className="title-accent">apps</span>
+          </h2>
+          <p className="section-subtitle">
+            From the screen you tap to the database that remembers — here's the complete journey.
           </p>
         </Reveal>
 
-        <Reveal delay={100} className="pipeline">
+        <Reveal delay={100} className="pipeline-flow">
           {STACK_LAYERS.map((layer, i) => {
             const Icon = layer.icon
             return (
-              <div key={layer.title}>
-                <div className="pipe-node">
-                  <div className="pipe-icon"><Icon size={19} /></div>
-                  <div className="pipe-body panel">
-                    <p className="pipe-sub">{layer.subtitle}</p>
-                    <h3 className="pipe-title">{layer.title}</h3>
-                    <p className="pipe-blurb">{layer.blurb}</p>
-                    <div className="pipe-items">
-                      {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
+              <div key={layer.title} className="pipeline-item">
+                <div className="pipeline-node">
+                  <div className="node-icon">
+                    <Icon size={22} />
+                  </div>
+                  <div className="node-content glass-card">
+                    <span className="node-subtitle">{layer.subtitle}</span>
+                    <h3 className="node-title">{layer.title}</h3>
+                    <p className="node-description">{layer.blurb}</p>
+                    <div className="node-tech">
+                      {layer.items.map((it) => (
+                        <span key={it} className="tech-pill">{it}</span>
+                      ))}
                     </div>
                   </div>
                 </div>
                 {i < STACK_LAYERS.length - 1 && (
-                  <div className="pipe-connector">
-                    <span className="wire"><span className="wire-line" style={{ animationDelay: `${i * -0.9}s` }} /></span>
+                  <div className="pipeline-connector">
+                    <div className="connector-line">
+                      <div className="flow-particle" style={{ animationDelay: `${i * -0.8}s` }} />
+                    </div>
                   </div>
                 )}
               </div>
@@ -492,35 +575,59 @@ export default function App() {
       <section id="experience" className="section section-dark">
         <div className="wrap">
           <Reveal><Eyebrow>Experience</Eyebrow></Reveal>
-          <Reveal delay={60}><h2 className="sec-title light">How I got <em>here</em></h2></Reveal>
+          <Reveal delay={60}>
+            <h2 className="section-title light">
+              How I got <span className="title-accent">here</span>
+            </h2>
+          </Reveal>
 
-          <div className="exp-grid">
+          <div className="experience-timeline">
             {EXPERIENCE.map((e, i) => {
               const Icon = e.icon
               return (
-                <Reveal key={e.company} delay={i * 100} className="panel exp-card">
-                  <span className="exp-icon"><Icon size={18} /></span>
-                  <p className="exp-time">{e.time} · {e.place}</p>
-                  <h3 className="exp-role">{e.role}</h3>
-                  <p className="exp-meta">{e.company}</p>
-                  <ul className="exp-points">
-                    {e.points.map((pt) => <li key={pt}>{pt}</li>)}
-                  </ul>
+                <Reveal key={e.company} delay={i * 100} className="timeline-item">
+                  <div className="timeline-marker">
+                    <div className="marker-dot" />
+                    {i < EXPERIENCE.length - 1 && <div className="marker-line" />}
+                  </div>
+                  <div className="timeline-content glass-card dark">
+                    <div className="timeline-header">
+                      <div className="timeline-icon">
+                        <Icon size={20} />
+                      </div>
+                      <div className="timeline-meta">
+                        <span className="timeline-time">{e.time}</span>
+                        <span className="timeline-place">{e.place}</span>
+                      </div>
+                    </div>
+                    <h3 className="timeline-role">{e.role}</h3>
+                    <p className="timeline-company">{e.company}</p>
+                    <ul className="timeline-points">
+                      {e.points.map((pt) => (
+                        <li key={pt}>{pt}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </Reveal>
               )
             })}
           </div>
 
           <Reveal delay={120}>
-            <div className="edu-label"><GraduationCap size={15} /> Education</div>
-            <div className="edu-grid">
-              {EDUCATION.map((ed) => (
-                <div key={ed.school} className="panel edu-card">
-                  <p className="edu-school">{ed.school}</p>
-                  <p className="edu-degree">{ed.degree}</p>
-                  <p className="edu-time">{ed.time}</p>
-                </div>
-              ))}
+            <div className="education-section">
+              <div className="section-label">
+                <GraduationCap size={18} /> 
+                <span>Education</span>
+              </div>
+              <div className="education-grid">
+                {EDUCATION.map((ed) => (
+                  <div key={ed.school} className="edu-card glass-card">
+                    <h4 className="edu-school">{ed.school}</h4>
+                    <p className="edu-degree">{ed.degree}</p>
+                    <p className="edu-time">{ed.time}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
@@ -529,14 +636,20 @@ export default function App() {
       {/* ---------------- certifications ---------------- */}
       <section className="wrap section">
         <Reveal><Eyebrow>Certifications</Eyebrow></Reveal>
-        <Reveal delay={60}><h2 className="sec-title">Always learning <em>something new</em></h2></Reveal>
-        <div className="cert-grid">
+        <Reveal delay={60}>
+          <h2 className="section-title">
+            Always learning <span className="title-accent">something new</span>
+          </h2>
+        </Reveal>
+        <div className="certifications-grid">
           {CERTS.map((c, i) => (
-            <Reveal key={c.name} delay={i * 80} className="panel cert-card">
-              <span className="cert-icon"><Award size={16} /></span>
-              <div>
-                <p className="cert-name">{c.name}</p>
-                <p className="cert-by">{c.by}</p>
+            <Reveal key={c.name} delay={i * 80} className="cert-card glass-card">
+              <div className="cert-icon-wrapper">
+                <Award size={20} />
+              </div>
+              <div className="cert-info">
+                <h4 className="cert-name">{c.name}</h4>
+                <p className="cert-issuer">{c.by}</p>
               </div>
             </Reveal>
           ))}
@@ -548,22 +661,33 @@ export default function App() {
         <div className="wrap">
           <Reveal><Eyebrow>Contact</Eyebrow></Reveal>
           <Reveal delay={60}>
-            <h2 className="sec-title light">Let&rsquo;s build <em>something good.</em></h2>
-            <p className="sec-desc light">Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.</p>
+            <h2 className="section-title light">
+              Let's build <span className="title-accent">something great</span>
+            </h2>
+            <p className="section-subtitle light">
+              Open to full-stack and frontend roles. Based in Bengaluru, available for remote work.
+            </p>
           </Reveal>
 
           <div className="contact-grid">
             {CONTACTS.map((c, i) => {
               const Icon = c.icon
               return (
-                <Reveal key={c.label} delay={i * 70} className="panel contact-card">
-                  <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="contact-link">
-                    <span className="contact-icon"><Icon size={17} /></span>
-                    <span>
-                      <p className="contact-label">{c.label}</p>
-                      <p className="contact-value">{c.value}</p>
-                    </span>
-                    <ArrowUpRight size={15} className="contact-arrow" />
+                <Reveal key={c.label} delay={i * 70} className="contact-card glass-card">
+                  <a 
+                    href={c.href} 
+                    target={c.href.startsWith('http') ? '_blank' : undefined} 
+                    rel="noopener noreferrer" 
+                    className="contact-link"
+                  >
+                    <div className="contact-icon-wrapper">
+                      <Icon size={20} />
+                    </div>
+                    <div className="contact-info">
+                      <span className="contact-label">{c.label}</span>
+                      <span className="contact-value">{c.value}</span>
+                    </div>
+                    <ArrowUpRight size={16} className="contact-arrow" />
                   </a>
                 </Reveal>
               )
@@ -574,9 +698,18 @@ export default function App() {
 
       {/* ---------------- footer ---------------- */}
       <footer className="site-footer">
-        <div className="wrap footer-inner">
-          <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
-          <span className="footer-meta footer-built"><Sparkles size={13} /> built with React</span>
+        <div className="wrap footer-content">
+          <div className="footer-brand">
+            <span className="footer-logo">RS</span>
+            <span className="footer-name">Rahul S</span>
+          </div>
+          <div className="footer-meta">
+            <span>© {new Date().getFullYear()} Rahul S</span>
+            <span className="footer-divider">•</span>
+            <span>
+              <Sparkles size={14} /> Built with React
+            </span>
+          </div>
         </div>
       </footer>
     </div>
