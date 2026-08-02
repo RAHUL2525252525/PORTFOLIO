@@ -4,7 +4,7 @@ import {
   Code2, Server, Database, Wrench, Award, GraduationCap,
   MapPin, Briefcase, Rocket, Download, Menu, X, ChevronRight,
   ExternalLink, Star, Zap, Layers, Palette, Globe, Shield,
-  Cpu, Terminal, Box, Hexagon, Circle, Square,
+  Cpu, Network, ArrowRight, Play, CheckCircle2,
 } from 'lucide-react'
 import './index.css'
 
@@ -29,10 +29,10 @@ const NAV = [
 ]
 
 const ABOUT_CARDS = [
-  { icon: GraduationCap, label: 'Education', lines: ['B.E. Computer Science', 'ACS College of Engineering', '2023 – 2026'] },
-  { icon: MapPin, label: 'Location', lines: ['Bengaluru, India', 'Available for', 'opportunities'] },
-  { icon: Mail, label: 'Email', lines: ['Srinivasrahul838', '@gmail.com'] },
-  { icon: Briefcase, label: 'Availability', lines: ['Full time', 'Open to work'] },
+  { icon: GraduationCap, label: 'Education', lines: ['B.E. Computer Science', 'ACS College of Engineering', '2023 – 2026'], color: 'from-blue-500 to-cyan-500' },
+  { icon: MapPin, label: 'Location', lines: ['Bengaluru, India', 'Available for', 'opportunities'], color: 'from-purple-500 to-pink-500' },
+  { icon: Mail, label: 'Email', lines: ['Srinivasrahul838', '@gmail.com'], color: 'from-orange-500 to-red-500' },
+  { icon: Briefcase, label: 'Availability', lines: ['Full time', 'Open to work'], color: 'from-green-500 to-emerald-500' },
 ]
 
 const SKILL_BARS = [
@@ -96,6 +96,7 @@ const PROJECTS = [
       { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
     ],
     featured: true,
+    stats: { users: '500+', products: '100+', orders: '50+' },
   },
   {
     id: '02',
@@ -104,6 +105,7 @@ const PROJECTS = [
     desc: 'A practice test app that scores you right away. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
     tech: ['JavaScript', 'Firebase', 'Groq API'],
     links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+    stats: { questions: '200+', accuracy: '95%', ai: 'Powered' },
   },
   {
     id: '03',
@@ -111,22 +113,43 @@ const PROJECTS = [
     tag: 'an earlier version of this site',
     desc: 'My first portfolio site. Built to be fast, clean, and easy to read on any device.',
     tech: ['React', 'Vite', 'CSS'],
+    stats: { views: '1K+', speed: '100', score: 'A+' },
   },
 ]
 
 const CERTS = [
-  { name: 'Introduction to Java', by: 'Infosys Springboard' },
-  { name: 'Cloud Computing', by: 'Infosys Springboard' },
-  { name: 'Software Engineering', by: 'Infosys Springboard' },
-  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future' },
+  { name: 'Introduction to Java', by: 'Infosys Springboard', icon: Cpu },
+  { name: 'Cloud Computing', by: 'Infosys Springboard', icon: Cloud },
+  { name: 'Software Engineering', by: 'Infosys Springboard', icon: Code2 },
+  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future', icon: Globe },
 ]
 
 const CONTACTS = [
-  { icon: Mail, label: 'Email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
-  { icon: Phone, label: 'Phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
-  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
-  { icon: Github, label: 'GitHub', value: 'github.com', href: 'https://github.com/' },
+  { icon: Mail, label: 'Email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com', color: 'from-pink-500 to-rose-500' },
+  { icon: Phone, label: 'Phone', value: '+91 73376 34886', href: 'tel:+917337634886', color: 'from-blue-500 to-cyan-500' },
+  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238', color: 'from-blue-600 to-blue-400' },
+  { icon: Github, label: 'GitHub', value: 'github.com', href: 'https://github.com/', color: 'from-gray-400 to-gray-600' },
 ]
+
+// Add Cloud icon
+function Cloud({ size = 24, ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M17.5 19c0-1.7-1.3-3-3-3h-1.1c-.1-2.9-2.5-5.2-5.4-5.2-2.5 0-4.6 1.8-5.2 4.2C1.2 15.5 0 17.1 0 19c0 2.2 1.8 4 4 4h13.5c2.2 0 4-1.8 4-4z" />
+    </svg>
+  )
+}
 
 /* ================================================================== */
 /* hooks                                                                */
@@ -213,7 +236,7 @@ function useScrolledPast(threshold = 30) {
 function Eyebrow({ children }) {
   return (
     <div className="eyebrow-row">
-      <span className="eyebrow-dot" />
+      <span className="eyebrow-glow" />
       <span className="eyebrow-text">{children}</span>
     </div>
   )
@@ -228,7 +251,9 @@ function Bar({ label, level, delay }) {
         <span className="bar-pct">{level}%</span>
       </div>
       <div className="bar-track">
-        <div className="bar-fill" style={{ width: inView ? `${level}%` : '0%', transitionDelay: `${delay}ms` }} />
+        <div className="bar-fill" style={{ width: inView ? `${level}%` : '0%', transitionDelay: `${delay}ms` }}>
+          <div className="bar-glow" />
+        </div>
       </div>
     </div>
   )
@@ -243,6 +268,15 @@ export default function App() {
   const active = useActiveSection()
   const scrolled = useScrolledPast()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -251,27 +285,18 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* ---------------- animated background ---------------- */}
-      <div className="mesh-gradient-bg">
-        <div className="mesh-blob mesh-blob-1" />
-        <div className="mesh-blob mesh-blob-2" />
-        <div className="mesh-blob mesh-blob-3" />
-        <div className="mesh-blob mesh-blob-4" />
-      </div>
-
-      {/* ---------------- floating shapes ---------------- */}
-      <div className="floating-shapes" aria-hidden="true">
-        <div className="shape shape-1"><Hexagon size={24} /></div>
-        <div className="shape shape-2"><Circle size={16} /></div>
-        <div className="shape shape-3"><Square size={20} /></div>
-        <div className="shape shape-4"><Hexagon size={18} /></div>
+      {/* background gradient orbs */}
+      <div className="bg-orbs">
+        <div className="orb orb-1" />
+        <div className="orb orb-2" />
+        <div className="orb orb-3" />
       </div>
 
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => scrollTo('hero')} aria-label="Back to top">
-            <div className="logo-3d">
+            <div className="logo-glow">
               <span className="logo-mark">RS</span>
             </div>
             <span className="logo-text">Rahul S</span>
@@ -281,14 +306,13 @@ export default function App() {
             {NAV.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
                 {n.label}
-                <span className="tab-glow" />
+                <span className="tab-indicator" />
               </button>
             ))}
           </div>
 
           <button className="btn primary nav-cta" onClick={() => scrollTo('contact')}>
             <Download size={16} /> <span>Say hello</span>
-            <span className="btn-shine" />
           </button>
 
           <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Toggle menu">
@@ -310,123 +334,102 @@ export default function App() {
       {/* ---------------- hero ---------------- */}
       <header id="hero" className="hero">
         <div className="wrap hero-inner">
-          <div className="hero-grid">
-            <div className="hero-main">
-              <Reveal>
-                <div className="hero-badge">
-                  <span className="badge-pulse" />
-                  <Sparkles size={14} />
-                  <span>Open to work · Bengaluru, India</span>
-                </div>
-              </Reveal>
+          <div className="hero-content">
+            <Reveal>
+              <div className="hero-badge">
+                <span className="badge-pulse" />
+                <Sparkles size={14} />
+                <span>Open to work · Bengaluru, India</span>
+              </div>
+            </Reveal>
 
-              <Reveal delay={80}>
-                <h1 className="hero-title">
-                  <span className="greeting">Hi, I'm</span>
-                  <br />
-                  <span className="name-gradient">Rahul S</span>
-                </h1>
-              </Reveal>
+            <Reveal delay={80}>
+              <h1 className="hero-title">
+                <span className="greeting">Hi, I'm</span>
+                <br />
+                <span className="name-gradient">Rahul S</span>
+              </h1>
+            </Reveal>
 
-              <Reveal delay={140}>
-                <div className="hero-role-wrapper">
-                  <span className="role-label">I build</span>
-                  <div className="role-text-container">
-                    <span className="role-text">{typed}</span>
-                    <span className="type-cursor" />
-                  </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={200}>
-                <p className="hero-description">
-                  Final-year Computer Science student passionate about building real-world applications.
-                  I craft intuitive user interfaces with <strong className="highlight">React</strong> and power them
-                  with robust backends using <strong className="highlight">Java & Spring Boot</strong>.
-                </p>
-              </Reveal>
-
-              <Reveal delay={260}>
-                <div className="hero-actions">
-                  <button className="btn primary btn-lg" onClick={() => scrollTo('projects')}>
-                    <span>View my work</span>
-                    <ArrowUpRight size={18} />
-                    <span className="btn-shine" />
-                  </button>
-                  <button className="btn outline btn-lg" onClick={() => scrollTo('contact')}>
-                    <span>Let's talk</span>
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
-              </Reveal>
-
-              <Reveal delay={320}>
-                <div className="hero-socials">
-                  {CONTACTS.slice(2).map((c) => {
-                    const Icon = c.icon
-                    return (
-                      <a 
-                        key={c.label} 
-                        href={c.href} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="social-btn" 
-                        aria-label={c.label}
-                      >
-                        <Icon size={20} />
-                        <span className="social-tooltip">{c.label}</span>
-                      </a>
-                    )
-                  })}
-                </div>
-              </Reveal>
-            </div>
-
-            <Reveal delay={180} className="hero-bento">
-              <div className="bento-grid">
-                <div className="bento-card bento-large">
-                  <div className="bento-header">
-                    <Zap size={18} className="bento-icon" />
-                    <span>Quick Stats</span>
-                  </div>
-                  <div className="bento-stats">
-                    <div className="bento-stat">
-                      <span className="bento-stat-num">03</span>
-                      <span className="bento-stat-label">Projects</span>
-                    </div>
-                    <div className="bento-stat">
-                      <span className="bento-stat-num">02</span>
-                      <span className="bento-stat-label">Internships</span>
-                    </div>
-                    <div className="bento-stat">
-                      <span className="bento-stat-num">04</span>
-                      <span className="bento-stat-label">Certs</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bento-card bento-small">
-                  <div className="bento-icon-wrapper">
-                    <Terminal size={24} />
-                  </div>
-                  <div className="bento-content">
-                    <span className="bento-label">Stack</span>
-                    <span className="bento-value">Full-Stack</span>
-                  </div>
-                </div>
-
-                <div className="bento-card bento-small">
-                  <div className="bento-icon-wrapper">
-                    <Globe size={24} />
-                  </div>
-                  <div className="bento-content">
-                    <span className="bento-label">Location</span>
-                    <span className="bento-value">Bengaluru</span>
-                  </div>
+            <Reveal delay={140}>
+              <div className="hero-role-wrapper">
+                <span className="role-label">I build</span>
+                <div className="role-text-container">
+                  <span className="role-text">{typed}</span>
+                  <span className="type-cursor" />
                 </div>
               </div>
             </Reveal>
+
+            <Reveal delay={200}>
+              <p className="hero-description">
+                Final-year Computer Science student passionate about building real-world applications.
+                I craft intuitive user interfaces with <strong className="highlight">React</strong> and power them
+                with robust backends using <strong className="highlight">Java & Spring Boot</strong>.
+              </p>
+            </Reveal>
+
+            <Reveal delay={260}>
+              <div className="hero-actions">
+                <button className="btn primary btn-lg" onClick={() => scrollTo('projects')}>
+                  <span>View my work</span>
+                  <ArrowUpRight size={18} />
+                </button>
+                <button className="btn outline btn-lg" onClick={() => scrollTo('contact')}>
+                  <span>Let's talk</span>
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            </Reveal>
+
+            <Reveal delay={320}>
+              <div className="hero-socials">
+                {CONTACTS.slice(2).map((c) => {
+                  const Icon = c.icon
+                  return (
+                    <a 
+                      key={c.label} 
+                      href={c.href} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="social-btn" 
+                      aria-label={c.label}
+                    >
+                      <Icon size={20} />
+                      <span className="social-tooltip">{c.label}</span>
+                    </a>
+                  )
+                })}
+              </div>
+            </Reveal>
           </div>
+
+          <Reveal delay={180} className="hero-stats-wrap">
+            <div className="stats-glass">
+              <div className="stats-header">
+                <Zap size={18} className="stats-icon" />
+                <span>Quick Stats</span>
+              </div>
+              <div className="stats-grid">
+                <div className="stat-item">
+                  <span className="stat-number">03</span>
+                  <span className="stat-desc">Live projects</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-number">02</span>
+                  <span className="stat-desc">Internships</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-number">04</span>
+                  <span className="stat-desc">Certifications</span>
+                </div>
+              </div>
+              <div className="stats-footer">
+                <span className="status-dot" /> 
+                <span>Available for full-time roles</span>
+              </div>
+            </div>
+          </Reveal>
         </div>
 
         <div className="scroll-indicator">
@@ -466,11 +469,12 @@ export default function App() {
             {ABOUT_CARDS.map((c, i) => {
               const Icon = c.icon
               return (
-                <Reveal key={c.label} delay={100 + i * 60} className="glass-card about-card">
-                  <div className="card-icon-wrapper">
-                    <Icon size={20} />
-                  </div>
+                <Reveal key={c.label} delay={100 + i * 60} className="bento-card about-card">
+                  <div className={`card-gradient ${c.color}`} />
                   <div className="card-content">
+                    <div className="card-icon-wrapper">
+                      <Icon size={20} />
+                    </div>
                     <h4 className="card-title">{c.label}</h4>
                     {c.lines.map((l) => <p key={l} className="card-text">{l}</p>)}
                   </div>
@@ -521,7 +525,6 @@ export default function App() {
         <div className="projects-grid">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} delay={i * 120} className="project-card glass-card">
-              <div className="project-glow" />
               <div className="project-header">
                 <span className="project-id">{p.id}</span>
                 {p.featured && (
@@ -533,6 +536,14 @@ export default function App() {
               <h3 className="project-title">{p.title}</h3>
               <p className="project-tagline">{p.tag}</p>
               <p className="project-description">{p.desc}</p>
+              <div className="project-stats">
+                {Object.entries(p.stats).map(([key, value]) => (
+                  <div key={key} className="project-stat">
+                    <span className="stat-value">{value}</span>
+                    <span className="stat-label">{key}</span>
+                  </div>
+                ))}
+              </div>
               <div className="project-tech-stack">
                 {p.tech.map((t) => (
                   <span key={t} className="tech-tag">{t}</span>
@@ -676,17 +687,20 @@ export default function App() {
           </h2>
         </Reveal>
         <div className="certifications-grid">
-          {CERTS.map((c, i) => (
-            <Reveal key={c.name} delay={i * 80} className="cert-card glass-card">
-              <div className="cert-icon-wrapper">
-                <Award size={20} />
-              </div>
-              <div className="cert-info">
-                <h4 className="cert-name">{c.name}</h4>
-                <p className="cert-issuer">{c.by}</p>
-              </div>
-            </Reveal>
-          ))}
+          {CERTS.map((c, i) => {
+            const Icon = c.icon || Award
+            return (
+              <Reveal key={c.name} delay={i * 80} className="cert-card glass-card">
+                <div className="cert-icon-wrapper">
+                  <Icon size={20} />
+                </div>
+                <div className="cert-info">
+                  <h4 className="cert-name">{c.name}</h4>
+                  <p className="cert-issuer">{c.by}</p>
+                </div>
+              </Reveal>
+            )
+          })}
         </div>
       </section>
 
@@ -714,6 +728,7 @@ export default function App() {
                     rel="noopener noreferrer" 
                     className="contact-link"
                   >
+                    <div className={`contact-gradient ${c.color}`} />
                     <div className="contact-icon-wrapper">
                       <Icon size={20} />
                     </div>
