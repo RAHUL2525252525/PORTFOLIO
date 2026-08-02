@@ -1,152 +1,225 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Folder, ChevronRight, Download, Mail, Github, Linkedin, 
-  ExternalLink, MapPin, Phone, Award, Layers, ShieldCheck, 
-  CheckCircle2, Box, Cpu, Database, Wrench, FileText, Menu, X 
-} from 'lucide-react';
-import './index.css';
+import { useEffect, useRef, useState } from 'react'
+import {
+  Ship, Package, PackageCheck, Truck, Warehouse, Stamp, Barcode,
+  Mail, Phone, Github, Linkedin, ArrowRight, ArrowUpRight, ExternalLink,
+  ChevronLeft, ChevronRight, Menu, X, CheckCircle2, Briefcase,
+  GraduationCap, MapPin, Boxes,
+} from 'lucide-react'
+import './index.css'
 
-const App = () => {
-  const [activeTab, setActiveTab] = useState('manifest');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+/* ================================================================== */
+/* content — a bill of lading for one developer                        */
+/* ================================================================== */
 
-  // Auto-scroll reveal setup
+const TABS = [
+  { id: 'cover', label: 'Cover' },
+  { id: 'declaration', label: 'Declaration' },
+  { id: 'cargo', label: 'Cargo manifest' },
+  { id: 'shipments', label: 'Shipments' },
+  { id: 'tracking', label: 'Tracking' },
+  { id: 'label', label: 'Shipping label' },
+]
+
+const PACKING_LIST = [
+  { no: '01', desc: 'Frontend', contents: 'React · JavaScript · Tailwind CSS · HTML · CSS' },
+  { no: '02', desc: 'Backend', contents: 'Java · Spring Boot · REST API' },
+  { no: '03', desc: 'Database', contents: 'MySQL' },
+  { no: '04', desc: 'Tooling', contents: 'Git · GitHub' },
+]
+
+const CONTAINERS = [
+  { code: 'FRONTEND', sub: 'What a person sees and taps', items: ['React', 'Tailwind', 'HTML/CSS'], cls: 'c-front' },
+  { code: 'BACKEND', sub: 'Carries the load, answers every request', items: ['Java', 'Spring Boot', 'REST API'], cls: 'c-back' },
+  { code: 'DATABASE', sub: 'Where everything is stored and read back', items: ['MySQL'], cls: 'c-data' },
+  { code: 'TOOLING', sub: 'How it all gets versioned and shipped', items: ['Git', 'GitHub'], cls: 'c-tool' },
+]
+
+const SHIPMENTS = [
+  {
+    id: 'RS-2026-01', title: 'ShopSphere', tag: 'Full-stack online store',
+    desc: 'A complete online shop — browse, search, cart, and track orders. An admin panel behind it manages products, users, and stock.',
+    contents: ['React', 'Spring Boot', 'MySQL', 'REST API'],
+    note: 'Server sleeps to save cost — allow 30–60s to wake on first load.',
+    links: [{ label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' }, { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' }],
+    fragile: true,
+    values: [['500+', 'users'], ['100+', 'products'], ['50+', 'orders']],
+  },
+  {
+    id: 'RS-2026-02', title: 'AI Exam Companion', tag: 'Exam practice app',
+    desc: 'A practice test app that scores instantly. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
+    contents: ['JavaScript', 'Firebase', 'Groq API'],
+    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+    values: [['200+', 'questions'], ['95%', 'accuracy'], ['live', 'ai reply']],
+  },
+  {
+    id: 'RS-2023-03', title: 'Personal Portfolio', tag: 'Earlier shipment of this site',
+    desc: 'My first portfolio build. Built to be fast, legible, and consistent on any device.',
+    contents: ['React', 'Vite', 'CSS'],
+    values: [['1K+', 'views'], ['100', 'speed'], ['A+', 'score']],
+  },
+]
+
+const TRACKING_EVENTS = [
+  { status: 'IN TRANSIT', date: '2026', role: 'Web Development Intern', place: 'MR Tech Lab, Bengaluru', points: [
+    'Built pages that hold up on every screen size, in HTML, CSS, and JavaScript',
+    'Connected React pages to real APIs to show live data',
+    'Shipped finished projects and checked them across browsers',
+  ] },
+  { status: 'DEPARTED', date: '2023', role: 'AI / ML & Python Intern', place: 'KNOWX Innovations, Bengaluru', points: [
+    'Built small Python programs to clean data and test simple models',
+    'Worked with the team fixing bugs and keeping code running smoothly',
+  ] },
+]
+
+const PORTS_OF_CALL = [
+  { school: 'Dr. ACS College of Engineering', degree: 'B.E., Computer Science and Engineering', time: '2023 – 2026 · Bengaluru' },
+  { school: 'PVP Polytechnic', degree: 'Diploma, Information Science and Engineering', time: '2020 – 2023 · Bengaluru' },
+]
+
+const SEALS = [
+  { name: 'Introduction to Java', by: 'Infosys Springboard' },
+  { name: 'Cloud Computing', by: 'Infosys Springboard' },
+  { name: 'Software Engineering', by: 'Infosys Springboard' },
+  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future' },
+]
+
+const LABEL_FIELDS = [
+  { icon: Mail, label: 'EMAIL', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
+  { icon: Phone, label: 'PHONE', value: '+91 73376 34886', href: 'tel:+917337634886' },
+  { icon: Linkedin, label: 'LINKEDIN', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
+  { icon: Github, label: 'GITHUB', value: 'github.com', href: 'https://github.com/' },
+]
+
+/* ================================================================== */
+/* hooks                                                                */
+/* ================================================================== */
+
+function useReveal() {
+  const ref = useRef(null)
+  const [inView, setInView] = useState(false)
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-        }
-      });
-    }, { threshold: 0.1 });
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
+      { threshold: 0.15 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return [ref, inView]
+}
 
-    document.querySelectorAll('.crate-in').forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, [activeTab]);
+function Crate({ children, className = '', delay = 0, as: Tag = 'div' }) {
+  const [ref, inView] = useReveal()
+  return (
+    <Tag ref={ref} className={`crate-in ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </Tag>
+  )
+}
+
+function useActiveTab(ids) {
+  const [active, setActive] = useState(ids[0])
+  useEffect(() => {
+    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean)
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) }),
+      { rootMargin: '-35% 0px -55% 0px' }
+    )
+    sections.forEach((s) => obs.observe(s))
+    return () => obs.disconnect()
+  }, [ids])
+  return active
+}
+
+/* a CSS-only barcode: bars of varying width, purely decorative */
+function BarcodeStrip() {
+  const bars = [2, 1, 3, 1, 1, 2, 4, 1, 2, 1, 3, 2, 1, 1, 4, 2, 1, 3, 1, 2, 1, 1, 3, 2, 4, 1]
+  return (
+    <div className="barcode" aria-hidden="true">
+      {bars.map((w, i) => (
+        <span key={i} style={{ width: `${w * 2}px` }} />
+      ))}
+    </div>
+  )
+}
+
+/* ================================================================== */
+/* app                                                                  */
+/* ================================================================== */
+
+export default function App() {
+  const ids = TABS.map((t) => t.id)
+  const active = useActiveTab(ids)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const railRef = useRef(null)
 
   const scrollTo = (id) => {
-    setActiveTab(id);
-    setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setMenuOpen(false)
+  }
+  const scrollRail = (dir) => railRef.current?.scrollBy({ left: dir * 400, behavior: 'smooth' })
 
   return (
-    <div className="cargo-portfolio">
-      {/* ================================================================== */}
-      /* TOP BAR — Folder Tabs Header                                        */
-      /* ================================================================== */}
+    <div className="dock">
+      {/* ---------------- top bar: folder tabs ---------------- */}
       <header className="topbar">
-        <div className="topbar-inner wrap">
-          <button className="brand" onClick={() => scrollTo('manifest')}>
-            <Box size={20} />
-            <span>MANIFEST // RAHUL S</span>
+        <div className="wrap topbar-inner">
+          <button className="brand" onClick={() => scrollTo('cover')}>
+            <Ship size={18} /> <span>RAHUL&nbsp;S.</span>
           </button>
-
           <nav className="tabs">
-            {[
-              { id: 'manifest', label: '01. OVERVIEW' },
-              { id: 'declaration', label: '02. DECLARATION' },
-              { id: 'skills', label: '03. SKILLS & CONTAINERS' },
-              { id: 'shipments', label: '04. FEATURED PROJECTS' },
-              { id: 'tracking', label: '05. TRACKING & HISTORY' },
-              { id: 'label', label: '06. SHIPPING LABEL' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                className={`tab ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => scrollTo(tab.id)}
-              >
-                {tab.label}
+            {TABS.map((t) => (
+              <button key={t.id} className={`tab ${active === t.id ? 'active' : ''}`} onClick={() => scrollTo(t.id)}>
+                {t.label}
               </button>
             ))}
           </nav>
-
-          <button className="menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          <button className="btn stamp-btn" onClick={() => scrollTo('label')}>Hire me</button>
+          <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Toggle menu">
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
-
-        {mobileMenuOpen && (
+        {menuOpen && (
           <div className="mobile-menu">
-            {[
-              { id: 'manifest', label: '01. OVERVIEW' },
-              { id: 'declaration', label: '02. DECLARATION' },
-              { id: 'skills', label: '03. SKILLS & CONTAINERS' },
-              { id: 'shipments', label: '04. FEATURED PROJECTS' },
-              { id: 'tracking', label: '05. TRACKING & HISTORY' },
-              { id: 'label', label: '06. SHIPPING LABEL' }
-            ].map(tab => (
-              <button key={tab.id} onClick={() => scrollTo(tab.id)}>
-                {tab.label}
-              </button>
-            ))}
+            {TABS.map((t) => <button key={t.id} onClick={() => scrollTo(t.id)}>{t.label}</button>)}
           </div>
         )}
       </header>
 
       <main className="main">
-        {/* ================================================================== */}
-        /* 01. COVER / OVERVIEW                                                */
-        /* ================================================================== */}
-        <section id="manifest" className="manifest">
-          <div className="cover wrap">
-            <div className="manifest-strip">
-              <span>BILL OF LADING #2026-RS</span>
-              <span>ORIGIN: BANGALORE, KA</span>
-              <span>DESTINATION: OPEN TO OPPORTUNITIES</span>
+        {/* ============== COVER — bill of lading ============== */}
+        <section id="cover" className="manifest cover">
+          <div className="manifest-strip">
+            <span>BILL OF LADING</span>
+            <span>TRACKING NO. RS-2026-088</span>
+          </div>
+
+          <div className="cover-grid">
+            <div>
+              <h1 className="cover-name">RAHUL S.</h1>
+              <p className="cover-role">FULL-STACK DEVELOPER</p>
+              <p className="cover-desc">
+                Final-year Computer Science student who builds full products, not prototypes —
+                interfaces in <strong>React</strong>, backends in <strong>Java &amp; Spring Boot</strong>,
+                three shipments standing and live right now.
+              </p>
+              <div className="cover-actions">
+                <button className="btn primary" onClick={() => scrollTo('shipments')}>See shipments <ArrowRight size={15} /></button>
+                <button className="btn outline" onClick={() => scrollTo('label')}>Contact</button>
+              </div>
+              <div className="contents-line">
+                <Package size={13} /> CONTENTS — 03 LIVE SHIPMENTS · 02 DELIVERIES · 04 SEALS
+              </div>
             </div>
 
-            <div className="cover-grid">
-              <div>
-                <h1 className="cover-name">RAHUL S</h1>
-                <div className="cover-role">FULLSTACK & FRONTEND SOFTWARE DEVELOPER</div>
-                <p className="cover-desc">
-                  Performance-driven Software Developer with hands-on experience in building responsive, 
-                  scalable web applications using React.js, Java, Spring Boot, and MySQL. Skilled in REST API design, 
-                  Firebase Authentication, dynamic UI components, and modern deployment workflows.
-                </p>
-
-                <div className="cover-actions">
-                  <a href="#label" onClick={(e) => { e.preventDefault(); scrollTo('label'); }} className="btn primary">
-                    <Mail size={16} /> CONTACT DEVELOPER
-                  </a>
-                  <a href="https://github.com/in/rahul-s-6460b1238" target="_blank" rel="noreferrer" className="btn outline">
-                    <Github size={16} /> GITHUB PROFILE
-                  </a>
-                </div>
-
-                <div className="contents-line">
-                  <ShieldCheck size={14} /> STATUS: VERIFIED / READY FOR DEPLOYMENT
-                </div>
-              </div>
-
-              <div className="stamp-wrap">
-                <div className="rubber-stamp">
-                  INSPECTED & APPROVED<br />
-                  <span>FULL STACK CERTIFIED</span>
-                </div>
-
-                <div className="manifest-box">
-                  <div className="manifest-row">
-                    <span>PRIMARY FOCUS</span>
-                    <span>React.js / Spring Boot</span>
-                  </div>
-                  <div className="manifest-row">
-                    <span>DEGREE</span>
-                    <span>B.E. Computer Science</span>
-                  </div>
-                  <div className="manifest-row">
-                    <span>EXPERIENCE</span>
-                    <span>Web & AI/ML Internships</span>
-                  </div>
-                  <div className="manifest-row">
-                    <span>AVAILABILITY</span>
-                    <span className="ok">IMMEDIATE</span>
-                  </div>
-                </div>
+            <div className="stamp-wrap">
+              <div className="rubber-stamp">AVAILABLE<br />FOR HIRE</div>
+              <div className="manifest-box">
+                <div className="manifest-row"><span>ORIGIN</span><span>Bengaluru, IN</span></div>
+                <div className="manifest-row"><span>STATUS</span><span className="ok">● READY TO SHIP</span></div>
+                <div className="manifest-row"><span>INCOTERM</span><span>REMOTE / ONSITE</span></div>
               </div>
             </div>
           </div>
@@ -154,434 +227,207 @@ const App = () => {
 
         <div className="tape" />
 
-        {/* ================================================================== */}
-        /* 02. DECLARATION                                                     */
-        /* ================================================================== */}
-        <section id="declaration" className="manifest section-alt">
-          <div className="manifest-head">
-            <div className="mini-label"><FileText size={14} /> STATEMENT OF PURPOSE</div>
-            <h2 className="manifest-title">02. DEVELOPER DECLARATION</h2>
-          </div>
+        {/* ============== DECLARATION — about ============== */}
+        <section id="declaration" className="manifest">
+          <ManifestHead no="02" title="Declaration of contents" sub="How I work, on the record." />
 
-          <div className="decl-grid wrap">
-            <div className="decl-card crate-in">
-              <span className="decl-tag">SUMMARY</span>
-              <p>
-                Passionate about building end-to-end web applications with modular UI architecture and clean backend RESTful services. 
-                Proficient in state management, DOM manipulation, responsive layouts (Flexbox/CSS Grid), and database design.
-              </p>
+          <div className="decl-grid">
+            <Crate className="decl-card">
+              <span className="decl-tag">NOTE</span>
+              <p>I believe in learning by doing — every shipment on this manifest is one I built end to end,
+              and can walk you through <span className="hi">line by line.</span></p>
+            </Crate>
+            <Crate delay={80} className="decl-card">
+              <span className="decl-tag">DECLARED VALUE</span>
+              <p>My work spans the full stack — pixel-accurate, responsive interfaces in <strong>React</strong>,
+              backed by systems in <strong>Java</strong> and <strong>Spring Boot</strong>. I write code meant
+              to be read by other people, and I care about the seconds between a click and a response.</p>
               <div className="decl-tally">
-                <div>
-                  <b>3+</b>
-                  <span>MAJOR PROJECTS</span>
-                </div>
-                <div>
-                  <b>2</b>
-                  <span>INTERNSHIPS</span>
-                </div>
-                <div>
-                  <b>4+</b>
-                  <span>CERTIFICATIONS</span>
-                </div>
+                <div><b>03</b><span>Live shipments</span></div>
+                <div><b>02</b><span>Deliveries</span></div>
+                <div><b>04</b><span>Seals</span></div>
               </div>
-            </div>
-
-            <div className="decl-card crate-in">
-              <span className="decl-tag">LANGUAGES & SPOKEN</span>
-              <p>
-                Equipped with strong problem-solving ability, hands-on understanding of Object-Oriented Programming (OOP) and Data Structures & Algorithms (DSA).
-              </p>
-              <br />
-              <div className="manifest-row">
-                <span>ENGLISH</span>
-                <span>Working Knowledge</span>
-              </div>
-              <div className="manifest-row">
-                <span>KANNADA</span>
-                <span className="ok">Fluent</span>
-              </div>
-            </div>
+            </Crate>
           </div>
         </section>
 
-        <div className="tape reverse" />
+        {/* ============== CARGO MANIFEST — skills ============== */}
+        <section id="cargo" className="manifest section-alt">
+          <ManifestHead no="03" title="Cargo manifest" sub="Packing list for a full-stack build." />
 
-        {/* ================================================================== */}
-        /* 03. SKILLS & CONTAINERS                                             */
-        /* ================================================================== */}
-        <section id="skills" className="manifest">
-          <div className="manifest-head">
-            <div className="mini-label"><Layers size={14} /> TECHNICAL INVENTORY</div>
-            <h2 className="manifest-title">03. CARGO MANIFEST & SKILLS YARD</h2>
-          </div>
+          <Crate className="packing-list">
+            <div className="pl-row pl-head"><span>NO.</span><span>DESCRIPTION</span><span>CONTENTS</span></div>
+            {PACKING_LIST.map((row) => (
+              <div key={row.no} className="pl-row">
+                <span className="pl-no">{row.no}</span>
+                <span className="pl-desc">{row.desc}</span>
+                <span className="pl-contents">{row.contents}</span>
+              </div>
+            ))}
+          </Crate>
 
-          {/* Packing List Table */}
-          <div className="packing-list wrap crate-in">
-            <div className="pl-row pl-head">
-              <span>ITEM</span>
-              <span>CATEGORY</span>
-              <span>CONTENTS / SPECIFICATIONS</span>
-            </div>
-            <div className="pl-row">
-              <span className="pl-no">01</span>
-              <span className="pl-desc">LANGUAGES</span>
-              <span className="pl-contents">Java, JavaScript (ES6+), SQL, HTML5, CSS3</span>
-            </div>
-            <div className="pl-row">
-              <span className="pl-no">02</span>
-              <span className="pl-desc">FRAMEWORKS</span>
-              <span className="pl-contents">React.js, JSX, Spring Boot, Spring Data JPA</span>
-            </div>
-            <div className="pl-row">
-              <span className="pl-no">03</span>
-              <span className="pl-desc">DATABASE & AUTH</span>
-              <span className="pl-contents">MySQL, Firebase Realtime Database, Firebase Auth, RBAC</span>
-            </div>
-            <div className="pl-row">
-              <span className="pl-no">04</span>
-              <span className="pl-desc">TOOLS & DEPLOY</span>
-              <span className="pl-contents">Git, GitHub, VS Code, IntelliJ IDEA, Vite, Vercel, Render</span>
-            </div>
-          </div>
-
-          {/* Container Stack */}
-          <div className="yard wrap">
-            <div className="yard-label"><Box size={14} /> FREIGHT CONTAINERS BY DOMAIN</div>
-            
+          <Crate delay={100} className="yard">
+            <div className="yard-label"><Warehouse size={14} /><span>CONTAINER YARD — THE FULL STACK</span></div>
             <div className="yard-stack">
-              <div className="container c-front crate-in">
-                <div className="container-ridges" />
-                <div className="container-door" />
-                <div className="container-corner tl" /><div className="container-corner tr" />
-                <div className="container-corner bl" /><div className="container-corner br" />
-                <div className="container-face">
-                  <div className="container-code">CONT-FRONTEND // FE-01</div>
-                  <p>React.js, JavaScript (ES6+), JSX, DOM Manipulation, Responsive Web Design, Flexbox, CSS Grid, Mobile-First Design, Cross-Browser Compatibility, Performance Optimization, UI/UX Principles</p>
-                  <div className="container-items">
-                    <span>React.js</span><span>ES6+</span><span>CSS Grid</span><span>Flexbox</span><span>UI/UX</span>
+              {CONTAINERS.map((c) => (
+                <div key={c.code} className={`container ${c.cls}`}>
+                  <div className="container-ridges" />
+                  <div className="container-corner tl" /><div className="container-corner tr" />
+                  <div className="container-corner bl" /><div className="container-corner br" />
+                  <div className="container-face">
+                    <div className="container-code">{c.code}</div>
+                    <p>{c.sub}</p>
+                    <div className="container-items">{c.items.map((i) => <span key={i}>{i}</span>)}</div>
                   </div>
+                  <div className="container-door" />
                 </div>
-              </div>
-
-              <div className="container c-back crate-in">
-                <div className="container-ridges" />
-                <div className="container-door" />
-                <div className="container-corner tl" /><div className="container-corner tr" />
-                <div className="container-corner bl" /><div className="container-corner br" />
-                <div className="container-face">
-                  <div className="container-code">CONT-BACKEND // BE-02</div>
-                  <p>Java, Spring Boot, Spring Data JPA, REST APIs, OOP, Data Structures & Algorithms (DSA), MySQL, CRUD Operations, Dynamic API Integration, Groq API, Firebase Auth, RBAC</p>
-                  <div className="container-items">
-                    <span>Java</span><span>Spring Boot</span><span>REST APIs</span><span>MySQL</span><span>Groq API</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container c-tool crate-in">
-                <div className="container-ridges" />
-                <div className="container-door" />
-                <div className="container-corner tl" /><div className="container-corner tr" />
-                <div className="container-corner bl" /><div className="container-corner br" />
-                <div className="container-face">
-                  <div className="container-code">CONT-DEVOPS // TL-03</div>
-                  <p>Git, GitHub, VS Code, IntelliJ IDEA, Vite, Vercel, Render, JSON workflows</p>
-                  <div className="container-items">
-                    <span>Git</span><span>GitHub</span><span>Vite</span><span>Vercel</span><span>Render</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
-        </section>
-
-        <div className="tape" />
-
-        {/* ================================================================== */}
-        /* 04. FEATURED PROJECTS / SHIPMENTS                                  */
-        /* ================================================================== */
-        <section id="shipments" className="manifest section-alt">
-          <div className="manifest-head-row wrap">
-            <div className="manifest-head">
-              <div className="mini-label"><Box size={14} /> DELIVERED CARGO</div>
-              <h2 className="manifest-title">04. FEATURED SHIPMENTS (PROJECTS)</h2>
-            </div>
-          </div>
-
-          <div className="rail wrap">
-            {/* Project 1 */}
-            <div className="crate-card fragile crate-in">
-              <div className="crate-top">
-                <span className="crate-id"><Box size={14} /> CRATE #01</span>
-                <span className="fragile-flag">FULL STACK</span>
-              </div>
-              <h3 className="crate-title">ShopSphere</h3>
-              <div className="crate-tag">E-COMMERCE WEB APPLICATION</div>
-              <p className="crate-desc">
-                Full-stack e-commerce solution with product browsing, search, cart, wishlist, user auth, order management, and an Admin Dashboard with full CRUD operations.
-              </p>
-              <div className="crate-values">
-                <div>
-                  <b>FRONTEND</b>
-                  <span>React.js + CSS3</span>
-                </div>
-                <div>
-                  <b>BACKEND</b>
-                  <span>Spring Boot + JPA</span>
-                </div>
-                <div>
-                  <b>DB</b>
-                  <span>MySQL</span>
-                </div>
-              </div>
-              <div className="crate-contents">
-                <span className="crate-contents-label">STACK:</span>
-                <span>React.js</span><span>Spring Boot</span><span>MySQL</span><span>REST API</span>
-              </div>
-              <div className="crate-note">
-                * Note: Render free tier backend requires 30-60s wake-up time upon cold start.
-              </div>
-            </div>
-
-            {/* Project 2 */}
-            <div className="crate-card crate-in">
-              <div className="crate-top">
-                <span className="crate-id"><Box size={14} /> CRATE #02</span>
-                <span className="fragile-flag">AI INTEGRATED</span>
-              </div>
-              <h3 className="crate-title">AI Exam Companion</h3>
-              <div className="crate-tag">EXAM PREPARATION PLATFORM</div>
-              <p className="crate-desc">
-                Interactive mock testing web application featuring instant score calculation, answer validation, concept explanations, and an AI Chatbot powered by Groq API.
-              </p>
-              <div className="crate-values">
-                <div>
-                  <b>AI CORE</b>
-                  <span>Groq API</span>
-                </div>
-                <div>
-                  <b>AUTH</b>
-                  <span>Firebase Auth</span>
-                </div>
-                <div>
-                  <b>UI</b>
-                  <span>HTML5 / JS (ES6+)</span>
-                </div>
-              </div>
-              <div className="crate-contents">
-                <span className="crate-contents-label">STACK:</span>
-                <span>JavaScript</span><span>Groq API</span><span>Firebase</span><span>JSON</span>
-              </div>
-            </div>
-
-            {/* Project 3 */}
-            <div className="crate-card crate-in">
-              <div className="crate-top">
-                <span className="crate-id"><Box size={14} /> CRATE #03</span>
-                <span className="fragile-flag">FRONTEND</span>
-              </div>
-              <h3 className="crate-title">Portfolio Website</h3>
-              <div className="crate-tag">PERSONAL BRANDING PLATFORM</div>
-              <p className="crate-desc">
-                Responsive developer portfolio created with reusable React components, modern CSS layouts (Flexbox/Grid), smooth navigation, and deployed on Vercel via Git pipelines.
-              </p>
-              <div className="crate-values">
-                <div>
-                  <b>BUILD</b>
-                  <span>Vite + React</span>
-                </div>
-                <div>
-                  <b>DEPLOY</b>
-                  <span>Vercel</span>
-                </div>
-                <div>
-                  <b>DESIGN</b>
-                  <span>Flexbox / Grid</span>
-                </div>
-              </div>
-              <div className="crate-contents">
-                <span className="crate-contents-label">STACK:</span>
-                <span>React.js</span><span>Vite</span><span>CSS3</span><span>Vercel</span>
-              </div>
-            </div>
-          </div>
+          </Crate>
         </section>
 
         <div className="tape reverse" />
 
-        {/* ================================================================== */}
-        /* 05. TRACKING & HISTORY                                              */
-        /* ================================================================== */
-        <section id="tracking" className="manifest">
-          <div className="manifest-head">
-            <div className="mini-label"><Cpu size={14} /> CAREER LOGISTICS</div>
-            <h2 className="manifest-title">05. TRACKING & WORK HISTORY</h2>
-          </div>
-
-          <div className="tracking-list wrap">
-            {/* Internship 1 */}
-            <div className="tracking-row crate-in">
-              <div className="tracking-rail">
-                <div className="tracking-dot done"><CheckCircle2 size={16} /></div>
-                <div className="tracking-line" />
-              </div>
-              <div className="tracking-body">
-                <div className="tracking-top">
-                  <span className="tracking-status done">LOCATION: BENGALURU</span>
-                  <span className="tracking-date">2026</span>
-                </div>
-                <div className="tracking-role">
-                  <strong>Web Development Intern</strong> — <span>MR Tech Lab</span>
-                </div>
-                <ul>
-                  <li>Developed responsive and accessible web pages using HTML5, CSS3 (Flexbox/Grid), and JavaScript (ES6+).</li>
-                  <li>Integrated REST APIs with React.js to fetch and display dynamic data seamlessly.</li>
-                  <li>Deployed frontend applications on Vercel and Render while maintaining cross-browser compatibility.</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Internship 2 */}
-            <div className="tracking-row final crate-in">
-              <div className="tracking-rail">
-                <div className="tracking-dot done"><CheckCircle2 size={16} /></div>
-              </div>
-              <div className="tracking-body">
-                <div className="tracking-top">
-                  <span className="tracking-status done">LOCATION: BENGALURU</span>
-                  <span className="tracking-date">2023</span>
-                </div>
-                <div className="tracking-role">
-                  <strong>AI/ML & Python Intern</strong> — <span>KNOWX Innovations</span>
-                </div>
-                <ul>
-                  <li>Worked on Python-based applications, data preprocessing, and basic model testing for AI/ML projects.</li>
-                  <li>Collaborated with engineering teams to maintain code quality, support testing, and software development lifecycle activities.</li>
-                </ul>
-              </div>
+        {/* ============== SHIPMENTS — projects ============== */}
+        <section id="shipments" className="manifest">
+          <div className="manifest-head-row">
+            <ManifestHead no="04" title="Shipments" sub="Three builds, uncrated." />
+            <div className="rail-controls">
+              <button onClick={() => scrollRail(-1)} aria-label="Scroll left"><ChevronLeft size={16} /></button>
+              <button onClick={() => scrollRail(1)} aria-label="Scroll right"><ChevronRight size={16} /></button>
             </div>
           </div>
 
-          {/* Academic Ports */}
-          <div className="ports-block wrap crate-in">
-            <div className="yard-label"><Award size={14} /> EDUCATIONWAY BILLS</div>
-            <div className="ports-row">
-              <div className="port-card">
-                <h4>Bachelor of Engineering (B.E.) — CS & Engineering</h4>
-                <p>Dr. ACS College of Engineering, Bengaluru</p>
-                <span>2023 – 2026</span>
-              </div>
-              <div className="port-card">
-                <h4>Diploma in Information Science and Engineering</h4>
-                <p>PVP Polytechnic, Bengaluru</p>
-                <span>2020 – 2023</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Certifications */}
-          <div className="seals-block wrap crate-in">
-            <div className="yard-label"><ShieldCheck size={14} /> CERTIFICATIONS & SEALS</div>
-            <div className="seals-row">
-              <div className="seal">
-                <CheckCircle2 className="seal-check" size={18} />
-                <div>
-                  <h5>Introduction to Java</h5>
-                  <span>Infosys Springboard</span>
+          <div className="rail" ref={railRef}>
+            {SHIPMENTS.map((s) => (
+              <article key={s.id} className={`crate-card ${s.fragile ? 'fragile' : ''}`}>
+                <div className="crate-top">
+                  <span className="crate-id"><Barcode size={12} /> {s.id}</span>
+                  {s.fragile && <span className="fragile-flag">FRAGILE — FEATURED</span>}
                 </div>
-              </div>
-              <div className="seal">
-                <CheckCircle2 className="seal-check" size={18} />
-                <div>
-                  <h5>Cloud Computing</h5>
-                  <span>Infosys Springboard</span>
+                <h3 className="crate-title">{s.title}</h3>
+                <p className="crate-tag">{s.tag}</p>
+                <p className="crate-desc">{s.desc}</p>
+                <div className="crate-values">
+                  {s.values.map(([v, k]) => (<div key={k}><b>{v}</b><span>{k}</span></div>))}
                 </div>
-              </div>
-              <div className="seal">
-                <CheckCircle2 className="seal-check" size={18} />
-                <div>
-                  <h5>Software Engineering</h5>
-                  <span>Infosys Springboard</span>
-                </div>
-              </div>
-              <div className="seal">
-                <CheckCircle2 className="seal-check" size={18} />
-                <div>
-                  <h5>AI and Green Skills</h5>
-                  <span>Edunet Foundation (Skills4Future)</span>
-                </div>
-              </div>
+                <div className="crate-contents"><span className="crate-contents-label">CONTENTS:</span>{s.contents.map((t) => <span key={t}>{t}</span>)}</div>
+                {s.note && <p className="crate-note">⚠ {s.note}</p>}
+                {s.links && (
+                  <div className="crate-links">
+                    {s.links.map((l) => (
+                      <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer">{l.label} <ExternalLink size={12} /></a>
+                    ))}
+                  </div>
+                )}
+              </article>
+            ))}
+            <div className="crate-end">
+              <p>Want the unboxing walkthrough of any of these?</p>
+              <button className="btn outline sm" onClick={() => scrollTo('label')}>Ask me anything <ArrowRight size={13} /></button>
             </div>
           </div>
         </section>
 
-        <div className="tape" />
+        {/* ============== TRACKING — experience ============== */}
+        <section id="tracking" className="manifest section-alt">
+          <ManifestHead no="05" title="Tracking history" sub="Where this shipment has been." />
 
-        {/* ================================================================== */}
-        /* 06. SHIPPING LABEL / CONTACT                                        */
-        /* ================================================================== */}
-        <section id="label" className="manifest label-sheet">
-          <div className="manifest-head">
-            <div className="mini-label"><Mail size={14} /> DISPATCH DIRECTORY</div>
-            <h2 className="manifest-title">06. FINAL SHIPPING LABEL</h2>
-          </div>
-
-          <div className="ship-label crate-in">
-            <div className="ship-label-top">
-              <span>EXPRESS FREIGHT // PRIORITY</span>
-              <span>DESTINATION: CONTACT DEVELOPER</span>
+          <Crate className="tracking-list">
+            {TRACKING_EVENTS.map((e, i) => (
+              <div key={e.role} className="tracking-row">
+                <div className="tracking-rail">
+                  <span className="tracking-dot"><Truck size={12} /></span>
+                  {i !== TRACKING_EVENTS.length - 1 && <span className="tracking-line" />}
+                </div>
+                <div className="tracking-body">
+                  <div className="tracking-top"><span className="tracking-status">{e.status}</span><span className="tracking-date">{e.date}</span></div>
+                  <div className="tracking-role"><Briefcase size={13} /> <strong>{e.role}</strong><span>— {e.place}</span></div>
+                  <ul>{e.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
+                </div>
+              </div>
+            ))}
+            <div className="tracking-row final">
+              <div className="tracking-rail"><span className="tracking-dot done"><PackageCheck size={12} /></span></div>
+              <div className="tracking-body"><span className="tracking-status done">READY FOR NEXT DESTINATION</span></div>
             </div>
+          </Crate>
 
+          <Crate delay={100} className="ports-block">
+            <span className="mini-label"><GraduationCap size={14} /> Ports of call</span>
+            <div className="ports-row">
+              {PORTS_OF_CALL.map((p) => (
+                <div key={p.school} className="port-card">
+                  <h4>{p.school}</h4>
+                  <p>{p.degree}</p>
+                  <span>{p.time}</span>
+                </div>
+              ))}
+            </div>
+          </Crate>
+
+          <Crate delay={160} className="seals-block">
+            <span className="mini-label"><Stamp size={14} /> Customs seals</span>
+            <div className="seals-row">
+              {SEALS.map((c) => (
+                <div key={c.name} className="seal">
+                  <CheckCircle2 size={15} className="seal-check" />
+                  <div><h5>{c.name}</h5><span>{c.by}</span></div>
+                </div>
+              ))}
+            </div>
+          </Crate>
+        </section>
+
+        {/* ============== SHIPPING LABEL — contact ============== */}
+        <section id="label" className="manifest label-sheet">
+          <ManifestHead no="06" title="Shipping label" sub="Where this manifest leads." />
+
+          <div className="ship-label">
+            <div className="ship-label-top">
+              <span>HANDLE WITH CARE</span>
+              <span>THIS SIDE UP ↑</span>
+            </div>
             <div className="ship-label-to">
-              <span className="ship-label-key">SHIP TO RECIPIENT:</span>
+              <span className="ship-label-key">TO</span>
               <a href="mailto:Srinivasrahul838@gmail.com" className="ship-label-cta">
-                Srinivasrahul838@gmail.com <ExternalLink size={24} />
+                Let's build it <ArrowUpRight size={26} />
               </a>
             </div>
-
             <div className="ship-label-fields">
-              <div className="ship-label-row">
-                <span><Phone size={14} /> PHONE NUMBER</span>
-                <span>+91 7337634886</span>
-              </div>
-              <div className="ship-label-row">
-                <span><MapPin size={14} /> LOCATION</span>
-                <span>Bangalore, Karnataka, India</span>
-              </div>
-              <div className="ship-label-row">
-                <span><Linkedin size={14} /> LINKEDIN</span>
-                <span>
-                  <a href="https://linkedin.com/in/rahul-s-6460b1238" target="_blank" rel="noreferrer">
-                    linkedin.com/in/rahul-s-6460b1238
+              {LABEL_FIELDS.map((f) => {
+                const Icon = f.icon
+                return (
+                  <a key={f.label} href={f.href} target={f.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="ship-label-row">
+                    <span><Icon size={12} /> {f.label}</span>
+                    <span>{f.value}</span>
                   </a>
-                </span>
-              </div>
-              <div className="ship-label-row">
-                <span><Github size={14} /> GITHUB</span>
-                <span>github.com/rahul-s</span>
-              </div>
+                )
+              })}
+              <div className="ship-label-row"><span><MapPin size={12} /> FROM</span><span>Bengaluru, India</span></div>
             </div>
-
-            <div className="barcode">
-              <span style={{ width: '4px' }} /><span style={{ width: '2px' }} /><span style={{ width: '6px' }} />
-              <span style={{ width: '1px' }} /><span style={{ width: '5px' }} /><span style={{ width: '2px' }} />
-              <span style={{ width: '8px' }} /><span style={{ width: '2px' }} /><span style={{ width: '4px' }} />
-              <span style={{ width: '1px' }} /><span style={{ width: '6px' }} /><span style={{ width: '3px' }} />
-              <span style={{ width: '5px' }} /><span style={{ width: '2px' }} /><span style={{ width: '7px' }} />
-              <span style={{ width: '4px' }} /><span style={{ width: '1px' }} /><span style={{ width: '3px' }} />
-            </div>
+            <BarcodeStrip />
           </div>
         </section>
+
+        <footer className="footer">
+          <span><Boxes size={13} /> PACKED BY RAHUL S.</span>
+          <span>TRACKING NO. RS-2026-088</span>
+          <span>© {new Date().getFullYear()}</span>
+        </footer>
       </main>
-
-      {/* ================================================================== */}
-      /* FOOTER                                                              */
-      /* ================================================================== */}
-      <footer className="footer wrap">
-        <span>© 2026 RAHUL S — FULLSTACK / FRONTEND DEVELOPER</span>
-        <span>BANGALORE, KARNATAKA</span>
-      </footer>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+function ManifestHead({ no, title, sub }) {
+  return (
+    <div className="manifest-head">
+      <div className="manifest-strip">
+        <span>ITEM {no}</span>
+        <span>{sub}</span>
+      </div>
+      <h2 className="manifest-title">{title}</h2>
+    </div>
+  )
+}
