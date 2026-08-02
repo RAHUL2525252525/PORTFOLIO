@@ -1,98 +1,169 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  Ship, Package, PackageCheck, Truck, Warehouse, Stamp, Barcode,
-  Mail, Phone, Github, Linkedin, ArrowRight, ArrowUpRight, ExternalLink,
-  ChevronLeft, ChevronRight, Menu, X, CheckCircle2, Briefcase,
-  GraduationCap, MapPin, Boxes,
+  Github, Linkedin, Mail, Phone, ArrowUpRight, Sparkles,
+  Code2, Server, Database, Wrench, Award, GraduationCap,
 } from 'lucide-react'
 import './index.css'
 
 /* ================================================================== */
-/* content — a bill of lading for one developer                        */
+/* content — kept in plain, simple words                               */
 /* ================================================================== */
 
-const TABS = [
-  { id: 'cover', label: 'Cover' },
-  { id: 'declaration', label: 'Declaration' },
-  { id: 'cargo', label: 'Cargo manifest' },
-  { id: 'shipments', label: 'Shipments' },
-  { id: 'tracking', label: 'Tracking' },
-  { id: 'label', label: 'Shipping label' },
+const ROLES = [
+  'React Developer',
+  'Frontend Developer',
+  'Software Developer',
+  'Java Full Stack Developer',
 ]
 
-const PACKING_LIST = [
-  { no: '01', desc: 'Frontend', contents: 'React · JavaScript · Tailwind CSS · HTML · CSS' },
-  { no: '02', desc: 'Backend', contents: 'Java · Spring Boot · REST API' },
-  { no: '03', desc: 'Database', contents: 'MySQL' },
-  { no: '04', desc: 'Tooling', contents: 'Git · GitHub' },
+const NAV = [
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'experience', label: 'Work' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'certifications', label: 'Certs' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'contact', label: 'Contact' },
 ]
 
-const CONTAINERS = [
-  { code: 'FRONTEND', sub: 'What a person sees and taps', items: ['React', 'Tailwind', 'HTML/CSS'], cls: 'c-front' },
-  { code: 'BACKEND', sub: 'Carries the load, answers every request', items: ['Java', 'Spring Boot', 'REST API'], cls: 'c-back' },
-  { code: 'DATABASE', sub: 'Where everything is stored and read back', items: ['MySQL'], cls: 'c-data' },
-  { code: 'TOOLING', sub: 'How it all gets versioned and shipped', items: ['Git', 'GitHub'], cls: 'c-tool' },
+const SKILLS = [
+  'React', 'JavaScript', 'HTML', 'CSS', 'Tailwind CSS',
+  'Java', 'Spring Boot', 'MySQL', 'REST API', 'Git', 'GitHub',
 ]
 
-const SHIPMENTS = [
+// Real order a request travels: screen, then server, then database, then tools.
+const STACK_LAYERS = [
   {
-    id: 'RS-2026-01', title: 'ShopSphere', tag: 'Full-stack online store',
-    desc: 'A complete online shop — browse, search, cart, and track orders. An admin panel behind it manages products, users, and stock.',
-    contents: ['React', 'Spring Boot', 'MySQL', 'REST API'],
-    note: 'Server sleeps to save cost — allow 30–60s to wake on first load.',
-    links: [{ label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' }, { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' }],
-    fragile: true,
-    values: [['500+', 'users'], ['100+', 'products'], ['50+', 'orders']],
+    icon: Code2,
+    title: 'What you see',
+    subtitle: 'Frontend',
+    items: ['React', 'Tailwind CSS', 'HTML', 'CSS'],
+    blurb: 'The screens and buttons a person taps.',
   },
   {
-    id: 'RS-2026-02', title: 'AI Exam Companion', tag: 'Exam practice app',
-    desc: 'A practice test app that scores instantly. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
-    contents: ['JavaScript', 'Firebase', 'Groq API'],
+    icon: Server,
+    title: 'What runs it',
+    subtitle: 'Backend',
+    items: ['Java', 'Spring Boot', 'REST API'],
+    blurb: 'The logic behind the screen. It answers every request.',
+  },
+  {
+    icon: Database,
+    title: 'Where data lives',
+    subtitle: 'Database',
+    items: ['MySQL'],
+    blurb: 'Where everything gets saved, and read back later.',
+  },
+  {
+    icon: Wrench,
+    title: 'How I build it',
+    subtitle: 'Tools',
+    items: ['Git', 'GitHub'],
+    blurb: 'Version control, and where the code lives online.',
+  },
+]
+
+const EXPERIENCE = [
+  {
+    role: 'Web Development Intern',
+    company: 'MR Tech Lab',
+    time: '2026',
+    place: 'Bengaluru',
+    points: [
+      'Built pages that work well on every screen size, using HTML, CSS, and JavaScript',
+      'Connected React pages to real APIs to show live data',
+      'Put finished projects online and checked them on different browsers',
+    ],
+  },
+  {
+    role: 'AI / ML & Python Intern',
+    company: 'KNOWX Innovations',
+    time: '2023',
+    place: 'Bengaluru',
+    points: [
+      'Built small Python programs to clean data and test simple models',
+      'Worked with the team on fixing bugs and keeping code running smoothly',
+    ],
+  },
+]
+
+const PROJECTS = [
+  {
+    id: '01',
+    title: 'ShopSphere',
+    tag: 'a full-stack online store',
+    desc: 'A complete online shop. People can browse, search, add to cart, and track orders. Behind it, an admin panel manages products, users, and stock.',
+    tech: ['React', 'Spring Boot', 'MySQL', 'REST API'],
+    note: 'The server sleeps to save cost. Give it 30–60 seconds to wake up before the live site loads fully.',
+    links: [
+      { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
+      { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
+    ],
+    featured: true,
+  },
+  {
+    id: '02',
+    title: 'AI Exam Companion',
+    tag: 'an exam practice app',
+    desc: 'A practice test app that scores you right away. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
+    tech: ['JavaScript', 'Firebase', 'Groq API'],
     links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
-    values: [['200+', 'questions'], ['95%', 'accuracy'], ['live', 'ai reply']],
   },
   {
-    id: 'RS-2023-03', title: 'Personal Portfolio', tag: 'Earlier shipment of this site',
-    desc: 'My first portfolio build. Built to be fast, legible, and consistent on any device.',
-    contents: ['React', 'Vite', 'CSS'],
-    values: [['1K+', 'views'], ['100', 'speed'], ['A+', 'score']],
+    id: '03',
+    title: 'Personal Portfolio',
+    tag: 'an earlier version of this site',
+    desc: 'My first portfolio site. Built to be fast, clean, and easy to read on any device.',
+    tech: ['React', 'Vite', 'CSS'],
   },
 ]
 
-const TRACKING_EVENTS = [
-  { status: 'IN TRANSIT', date: '2026', role: 'Web Development Intern', place: 'MR Tech Lab, Bengaluru', points: [
-    'Built pages that hold up on every screen size, in HTML, CSS, and JavaScript',
-    'Connected React pages to real APIs to show live data',
-    'Shipped finished projects and checked them across browsers',
-  ] },
-  { status: 'DEPARTED', date: '2023', role: 'AI / ML & Python Intern', place: 'KNOWX Innovations, Bengaluru', points: [
-    'Built small Python programs to clean data and test simple models',
-    'Worked with the team fixing bugs and keeping code running smoothly',
-  ] },
-]
-
-const PORTS_OF_CALL = [
-  { school: 'Dr. ACS College of Engineering', degree: 'B.E., Computer Science and Engineering', time: '2023 – 2026 · Bengaluru' },
-  { school: 'PVP Polytechnic', degree: 'Diploma, Information Science and Engineering', time: '2020 – 2023 · Bengaluru' },
-]
-
-const SEALS = [
+const CERTS = [
   { name: 'Introduction to Java', by: 'Infosys Springboard' },
   { name: 'Cloud Computing', by: 'Infosys Springboard' },
   { name: 'Software Engineering', by: 'Infosys Springboard' },
   { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future' },
 ]
 
-const LABEL_FIELDS = [
-  { icon: Mail, label: 'EMAIL', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
-  { icon: Phone, label: 'PHONE', value: '+91 73376 34886', href: 'tel:+917337634886' },
-  { icon: Linkedin, label: 'LINKEDIN', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
-  { icon: Github, label: 'GITHUB', value: 'github.com', href: 'https://github.com/' },
+const EDUCATION = [
+  { school: 'Dr. ACS College of Engineering', degree: 'B.E., Computer Science and Engineering', time: '2023 – 2026 · Bengaluru' },
+  { school: 'PVP Polytechnic', degree: 'Diploma, Information Science and Engineering', time: '2020 – 2023 · Bengaluru' },
+]
+
+const CONTACTS = [
+  { icon: Mail, label: 'Email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
+  { icon: Phone, label: 'Phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
+  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
+  { icon: Github, label: 'GitHub', value: 'github.com', href: 'https://github.com/' },
 ]
 
 /* ================================================================== */
 /* hooks                                                                */
 /* ================================================================== */
+
+function useTypewriter(words, typeSpeed = 65, deleteSpeed = 34, pause = 1300) {
+  const [text, setText] = useState('')
+  const [wordIndex, setWordIndex] = useState(0)
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    const current = words[wordIndex % words.length]
+    let t
+    if (!deleting && text === current) {
+      t = setTimeout(() => setDeleting(true), pause)
+    } else if (deleting && text === '') {
+      setDeleting(false)
+      setWordIndex((i) => (i + 1) % words.length)
+    } else {
+      t = setTimeout(() => {
+        setText((s) => (deleting ? current.slice(0, s.length - 1) : current.slice(0, s.length + 1)))
+      }, deleting ? deleteSpeed : typeSpeed)
+    }
+    return () => clearTimeout(t)
+  }, [text, deleting, wordIndex, words, typeSpeed, deleteSpeed, pause])
+
+  return text
+}
 
 function useReveal() {
   const ref = useRef(null)
@@ -110,37 +181,51 @@ function useReveal() {
   return [ref, inView]
 }
 
-function Crate({ children, className = '', delay = 0, as: Tag = 'div' }) {
+function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
   const [ref, inView] = useReveal()
   return (
-    <Tag ref={ref} className={`crate-in ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+    <Tag ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
       {children}
     </Tag>
   )
 }
 
-function useActiveTab(ids) {
-  const [active, setActive] = useState(ids[0])
+function useActiveSection() {
+  const [active, setActive] = useState('')
   useEffect(() => {
-    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean)
+    const sections = NAV.map((n) => document.getElementById(n.id)).filter(Boolean)
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) }),
-      { rootMargin: '-35% 0px -55% 0px' }
+      { rootMargin: '-40% 0px -50% 0px' }
     )
     sections.forEach((s) => obs.observe(s))
     return () => obs.disconnect()
-  }, [ids])
+  }, [])
   return active
 }
 
-/* a CSS-only barcode: bars of varying width, purely decorative */
-function BarcodeStrip() {
-  const bars = [2, 1, 3, 1, 1, 2, 4, 1, 2, 1, 3, 2, 1, 1, 4, 2, 1, 3, 1, 2, 1, 1, 3, 2, 4, 1]
+function useScrolledPast(threshold = 30) {
+  const [past, setPast] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setPast(window.scrollY > threshold)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [threshold])
+  return past
+}
+
+/* ================================================================== */
+/* small pieces                                                        */
+/* ================================================================== */
+
+// section marker: a gold-ringed medallion with the sheet number, joined by
+// a thin gold thread that runs to the section title — the through-line motif.
+function Eyebrow({ index }) {
   return (
-    <div className="barcode" aria-hidden="true">
-      {bars.map((w, i) => (
-        <span key={i} style={{ width: `${w * 2}px` }} />
-      ))}
+    <div className="eyebrow-row">
+      <span className="medallion">{index}</span>
+      <span className="thread" />
     </div>
   )
 }
@@ -150,284 +235,282 @@ function BarcodeStrip() {
 /* ================================================================== */
 
 export default function App() {
-  const ids = TABS.map((t) => t.id)
-  const active = useActiveTab(ids)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const railRef = useRef(null)
+  const typed = useTypewriter(ROLES)
+  const active = useActiveSection()
+  const scrolled = useScrolledPast()
+  const heroRef = useRef(null)
 
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    setMenuOpen(false)
+  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  // gold spotlight that follows the pointer in the hero — a quiet, premium touch
+  const handleHeroMove = (e) => {
+    const el = heroRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    el.style.setProperty('--x', `${e.clientX - rect.left}px`)
+    el.style.setProperty('--y', `${e.clientY - rect.top}px`)
   }
-  const scrollRail = (dir) => railRef.current?.scrollBy({ left: dir * 400, behavior: 'smooth' })
 
   return (
-    <div className="dock">
-      {/* ---------------- top bar: folder tabs ---------------- */}
-      <header className="topbar">
-        <div className="wrap topbar-inner">
-          <button className="brand" onClick={() => scrollTo('cover')}>
-            <Ship size={18} /> <span>RAHUL&nbsp;S.</span>
+    <div>
+      <div className="vignette" aria-hidden="true" />
+
+      {/* ---------------- navbar ---------------- */}
+      <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
+        <div className="wrap nav-inner">
+          <button className="logo-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
+            <span className="logo-ring">R</span>
+            <span className="logo-text">rahul<span className="dim">.dev</span></span>
           </button>
-          <nav className="tabs">
-            {TABS.map((t) => (
-              <button key={t.id} className={`tab ${active === t.id ? 'active' : ''}`} onClick={() => scrollTo(t.id)}>
-                {t.label}
+
+          <div className="tab-bar">
+            {NAV.map((n) => (
+              <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
+                {n.label}
               </button>
             ))}
-          </nav>
-          <button className="btn stamp-btn" onClick={() => scrollTo('label')}>Hire me</button>
-          <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Toggle menu">
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </div>
+
+          <button className="btn ghost" style={{ padding: '0.6rem 1.3rem', fontSize: '0.74rem' }} onClick={() => scrollTo('contact')}>
+            Say hi
           </button>
         </div>
-        {menuOpen && (
-          <div className="mobile-menu">
-            {TABS.map((t) => <button key={t.id} onClick={() => scrollTo(t.id)}>{t.label}</button>)}
-          </div>
-        )}
+      </nav>
+
+      {/* ---------------- hero ---------------- */}
+      <header id="hero" className="hero" ref={heroRef} onMouseMove={handleHeroMove}>
+        <div className="hero-spotlight" aria-hidden="true" />
+        <div className="hero-inner">
+          <Reveal>
+            <div className="hero-eyebrow">
+              <span className="pulse" />
+              Open to work · Bengaluru, India
+            </div>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <h1 className="hero-name">Hi, I&rsquo;m <span className="shine">Rahul</span>.</h1>
+          </Reveal>
+
+          <Reveal delay={140}>
+            <div className="hero-role">
+              <span className="rule" />
+              <span className="role-text">{typed}<span className="type-cursor" /></span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <p className="hero-desc">
+              I&rsquo;m in my final year of a Computer Science degree. I like to build real apps
+              that work — the part you see and click, made with React, and the part that makes
+              it run, made with Java and Spring Boot.
+            </p>
+          </Reveal>
+
+          <Reveal delay={260}>
+            <div className="hero-cta">
+              <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
+              <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
+            </div>
+          </Reveal>
+        </div>
       </header>
 
-      <main className="main">
-        {/* ============== COVER — bill of lading ============== */}
-        <section id="cover" className="manifest cover">
-          <div className="manifest-strip">
-            <span>BILL OF LADING</span>
-            <span>TRACKING NO. RS-2026-088</span>
+      {/* ---------------- about ---------------- */}
+      <section id="about" className="wrap section">
+        <Reveal>
+          <Eyebrow index="01" />
+          <h2 className="sec-title">A builder, not just a <em>student</em></h2>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="about-text">
+            I&rsquo;d rather make something real than only study the theory. I build the screens
+            people use with <strong>React</strong>, and the logic behind them with{' '}
+            <strong>Java</strong> and <strong>Spring Boot</strong>. I like clean, simple code,
+            and I care about making things people actually enjoy using — from the first click to
+            the last.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ---------------- skills ---------------- */}
+      <section id="skills" className="wrap section">
+        <Reveal>
+          <Eyebrow index="02" />
+          <h2 className="sec-title">What I work <em>with</em></h2>
+        </Reveal>
+        <div className="skill-cloud">
+          {SKILLS.map((s, i) => (
+            <Reveal key={s} delay={i * 35} as="span" className="panel skill-pill">
+              {s}
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------- experience ---------------- */}
+      <section id="experience" className="wrap section">
+        <Reveal>
+          <Eyebrow index="03" />
+          <h2 className="sec-title">How I got <em>here</em></h2>
+        </Reveal>
+
+        <div className="timeline">
+          {EXPERIENCE.map((e, i) => (
+            <Reveal key={e.company} delay={i * 100} as="div" className="timeline-item">
+              <span className="timeline-dot" />
+              <p className="tl-time">{e.time} · {e.place}</p>
+              <h3 className="tl-role">{e.role}</h3>
+              <p className="tl-meta">{e.company}</p>
+              <ul className="tl-points">
+                {e.points.map((pt) => <li key={pt}>{pt}</li>)}
+              </ul>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={100}>
+          <div className="edu-label">
+            <GraduationCap size={15} color="var(--gold)" /> Education
           </div>
-
-          <div className="cover-grid">
-            <div>
-              <h1 className="cover-name">RAHUL S.</h1>
-              <p className="cover-role">FULL-STACK DEVELOPER</p>
-              <p className="cover-desc">
-                Final-year Computer Science student who builds full products, not prototypes —
-                interfaces in <strong>React</strong>, backends in <strong>Java &amp; Spring Boot</strong>,
-                three shipments standing and live right now.
-              </p>
-              <div className="cover-actions">
-                <button className="btn primary" onClick={() => scrollTo('shipments')}>See shipments <ArrowRight size={15} /></button>
-                <button className="btn outline" onClick={() => scrollTo('label')}>Contact</button>
-              </div>
-              <div className="contents-line">
-                <Package size={13} /> CONTENTS — 03 LIVE SHIPMENTS · 02 DELIVERIES · 04 SEALS
-              </div>
-            </div>
-
-            <div className="stamp-wrap">
-              <div className="rubber-stamp">AVAILABLE<br />FOR HIRE</div>
-              <div className="manifest-box">
-                <div className="manifest-row"><span>ORIGIN</span><span>Bengaluru, IN</span></div>
-                <div className="manifest-row"><span>STATUS</span><span className="ok">● READY TO SHIP</span></div>
-                <div className="manifest-row"><span>INCOTERM</span><span>REMOTE / ONSITE</span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="tape" />
-
-        {/* ============== DECLARATION — about ============== */}
-        <section id="declaration" className="manifest">
-          <ManifestHead no="02" title="Declaration of contents" sub="How I work, on the record." />
-
-          <div className="decl-grid">
-            <Crate className="decl-card">
-              <span className="decl-tag">NOTE</span>
-              <p>I believe in learning by doing — every shipment on this manifest is one I built end to end,
-              and can walk you through <span className="hi">line by line.</span></p>
-            </Crate>
-            <Crate delay={80} className="decl-card">
-              <span className="decl-tag">DECLARED VALUE</span>
-              <p>My work spans the full stack — pixel-accurate, responsive interfaces in <strong>React</strong>,
-              backed by systems in <strong>Java</strong> and <strong>Spring Boot</strong>. I write code meant
-              to be read by other people, and I care about the seconds between a click and a response.</p>
-              <div className="decl-tally">
-                <div><b>03</b><span>Live shipments</span></div>
-                <div><b>02</b><span>Deliveries</span></div>
-                <div><b>04</b><span>Seals</span></div>
-              </div>
-            </Crate>
-          </div>
-        </section>
-
-        {/* ============== CARGO MANIFEST — skills ============== */}
-        <section id="cargo" className="manifest section-alt">
-          <ManifestHead no="03" title="Cargo manifest" sub="Packing list for a full-stack build." />
-
-          <Crate className="packing-list">
-            <div className="pl-row pl-head"><span>NO.</span><span>DESCRIPTION</span><span>CONTENTS</span></div>
-            {PACKING_LIST.map((row) => (
-              <div key={row.no} className="pl-row">
-                <span className="pl-no">{row.no}</span>
-                <span className="pl-desc">{row.desc}</span>
-                <span className="pl-contents">{row.contents}</span>
+          <div className="edu-grid">
+            {EDUCATION.map((ed) => (
+              <div key={ed.school} className="panel edu-card">
+                <p className="edu-school">{ed.school}</p>
+                <p className="edu-degree">{ed.degree}</p>
+                <p className="edu-time">{ed.time}</p>
               </div>
             ))}
-          </Crate>
-
-          <Crate delay={100} className="yard">
-            <div className="yard-label"><Warehouse size={14} /><span>CONTAINER YARD — THE FULL STACK</span></div>
-            <div className="yard-stack">
-              {CONTAINERS.map((c) => (
-                <div key={c.code} className={`container ${c.cls}`}>
-                  <div className="container-ridges" />
-                  <div className="container-corner tl" /><div className="container-corner tr" />
-                  <div className="container-corner bl" /><div className="container-corner br" />
-                  <div className="container-face">
-                    <div className="container-code">{c.code}</div>
-                    <p>{c.sub}</p>
-                    <div className="container-items">{c.items.map((i) => <span key={i}>{i}</span>)}</div>
-                  </div>
-                  <div className="container-door" />
-                </div>
-              ))}
-            </div>
-          </Crate>
-        </section>
-
-        <div className="tape reverse" />
-
-        {/* ============== SHIPMENTS — projects ============== */}
-        <section id="shipments" className="manifest">
-          <div className="manifest-head-row">
-            <ManifestHead no="04" title="Shipments" sub="Three builds, uncrated." />
-            <div className="rail-controls">
-              <button onClick={() => scrollRail(-1)} aria-label="Scroll left"><ChevronLeft size={16} /></button>
-              <button onClick={() => scrollRail(1)} aria-label="Scroll right"><ChevronRight size={16} /></button>
-            </div>
           </div>
+        </Reveal>
+      </section>
 
-          <div className="rail" ref={railRef}>
-            {SHIPMENTS.map((s) => (
-              <article key={s.id} className={`crate-card ${s.fragile ? 'fragile' : ''}`}>
-                <div className="crate-top">
-                  <span className="crate-id"><Barcode size={12} /> {s.id}</span>
-                  {s.fragile && <span className="fragile-flag">FRAGILE — FEATURED</span>}
+      {/* ---------------- projects ---------------- */}
+      <section id="projects" className="wrap section">
+        <Reveal>
+          <Eyebrow index="04" />
+          <h2 className="sec-title">Things I&rsquo;ve <em>built</em></h2>
+        </Reveal>
+
+        <div className="project-list">
+          {PROJECTS.map((p, i) => (
+            <Reveal key={p.id} delay={i * 100} className="panel project-card">
+              <div className="project-heading">
+                <h3>{p.title}</h3>
+                {p.featured && <span className="project-flag">Featured</span>}
+              </div>
+              <p className="project-tag">{p.tag}</p>
+              <p className="project-desc">{p.desc}</p>
+              <div className="project-tech">
+                {p.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
+              </div>
+              {p.note && <p className="project-note">{p.note}</p>}
+              {p.links && (
+                <div className="project-links">
+                  {p.links.map((l) => (
+                    <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
+                      {l.label} <ArrowUpRight size={13} />
+                    </a>
+                  ))}
                 </div>
-                <h3 className="crate-title">{s.title}</h3>
-                <p className="crate-tag">{s.tag}</p>
-                <p className="crate-desc">{s.desc}</p>
-                <div className="crate-values">
-                  {s.values.map(([v, k]) => (<div key={k}><b>{v}</b><span>{k}</span></div>))}
+              )}
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------- certifications ---------------- */}
+      <section id="certifications" className="wrap section">
+        <Reveal>
+          <Eyebrow index="05" />
+          <h2 className="sec-title">Always learning <em>something new</em></h2>
+        </Reveal>
+        <div className="cert-grid">
+          {CERTS.map((c, i) => (
+            <Reveal key={c.name} delay={i * 80} className="panel cert-card">
+              <span className="cert-icon"><Award size={16} color="var(--gold)" /></span>
+              <div>
+                <p className="cert-name">{c.name}</p>
+                <p className="cert-by">{c.by}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------- tech stack pipeline ---------------- */}
+      <section id="stack" className="wrap section">
+        <Reveal>
+          <Eyebrow index="06" />
+          <h2 className="sec-title">How a request moves through my <em>apps</em></h2>
+          <p className="sec-desc">
+            Top to bottom — the screen you tap, the server that answers, the database that
+            remembers, held together by the tools I use every day.
+          </p>
+        </Reveal>
+
+        <Reveal delay={80} className="pipeline">
+          {STACK_LAYERS.map((layer, i) => {
+            const Icon = layer.icon
+            return (
+              <div key={layer.title}>
+                <div className="pipe-node">
+                  <div className="pipe-icon"><Icon size={19} color="var(--gold)" /></div>
+                  <div className="pipe-body panel">
+                    <p className="pipe-sub">{layer.subtitle}</p>
+                    <h3 className="pipe-title">{layer.title}</h3>
+                    <p className="pipe-blurb">{layer.blurb}</p>
+                    <div className="pipe-items">
+                      {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
+                    </div>
+                  </div>
                 </div>
-                <div className="crate-contents"><span className="crate-contents-label">CONTENTS:</span>{s.contents.map((t) => <span key={t}>{t}</span>)}</div>
-                {s.note && <p className="crate-note">⚠ {s.note}</p>}
-                {s.links && (
-                  <div className="crate-links">
-                    {s.links.map((l) => (
-                      <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer">{l.label} <ExternalLink size={12} /></a>
-                    ))}
+                {i < STACK_LAYERS.length - 1 && (
+                  <div className="pipe-connector">
+                    <span className="wire"><span className="wire-line" style={{ animationDelay: `${i * -0.9}s` }} /></span>
                   </div>
                 )}
-              </article>
-            ))}
-            <div className="crate-end">
-              <p>Want the unboxing walkthrough of any of these?</p>
-              <button className="btn outline sm" onClick={() => scrollTo('label')}>Ask me anything <ArrowRight size={13} /></button>
-            </div>
-          </div>
-        </section>
-
-        {/* ============== TRACKING — experience ============== */}
-        <section id="tracking" className="manifest section-alt">
-          <ManifestHead no="05" title="Tracking history" sub="Where this shipment has been." />
-
-          <Crate className="tracking-list">
-            {TRACKING_EVENTS.map((e, i) => (
-              <div key={e.role} className="tracking-row">
-                <div className="tracking-rail">
-                  <span className="tracking-dot"><Truck size={12} /></span>
-                  {i !== TRACKING_EVENTS.length - 1 && <span className="tracking-line" />}
-                </div>
-                <div className="tracking-body">
-                  <div className="tracking-top"><span className="tracking-status">{e.status}</span><span className="tracking-date">{e.date}</span></div>
-                  <div className="tracking-role"><Briefcase size={13} /> <strong>{e.role}</strong><span>— {e.place}</span></div>
-                  <ul>{e.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
-                </div>
               </div>
-            ))}
-            <div className="tracking-row final">
-              <div className="tracking-rail"><span className="tracking-dot done"><PackageCheck size={12} /></span></div>
-              <div className="tracking-body"><span className="tracking-status done">READY FOR NEXT DESTINATION</span></div>
-            </div>
-          </Crate>
+            )
+          })}
+        </Reveal>
+      </section>
 
-          <Crate delay={100} className="ports-block">
-            <span className="mini-label"><GraduationCap size={14} /> Ports of call</span>
-            <div className="ports-row">
-              {PORTS_OF_CALL.map((p) => (
-                <div key={p.school} className="port-card">
-                  <h4>{p.school}</h4>
-                  <p>{p.degree}</p>
-                  <span>{p.time}</span>
-                </div>
-              ))}
-            </div>
-          </Crate>
+      {/* ---------------- contact ---------------- */}
+      <section id="contact" className="wrap section">
+        <Reveal>
+          <Eyebrow index="07" />
+          <h2 className="contact-title">Let&rsquo;s build <em>something good.</em></h2>
+          <p className="sec-desc">Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.</p>
+        </Reveal>
 
-          <Crate delay={160} className="seals-block">
-            <span className="mini-label"><Stamp size={14} /> Customs seals</span>
-            <div className="seals-row">
-              {SEALS.map((c) => (
-                <div key={c.name} className="seal">
-                  <CheckCircle2 size={15} className="seal-check" />
-                  <div><h5>{c.name}</h5><span>{c.by}</span></div>
-                </div>
-              ))}
-            </div>
-          </Crate>
-        </section>
+        <div className="contact-grid">
+          {CONTACTS.map((c, i) => {
+            const Icon = c.icon
+            return (
+              <Reveal key={c.label} delay={i * 70} as="div" className="panel contact-card">
+                <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%' }}>
+                  <span className="contact-icon"><Icon size={17} /></span>
+                  <span>
+                    <p className="contact-label">{c.label}</p>
+                    <p className="contact-value">{c.value}</p>
+                  </span>
+                </a>
+              </Reveal>
+            )
+          })}
+        </div>
+      </section>
 
-        {/* ============== SHIPPING LABEL — contact ============== */}
-        <section id="label" className="manifest label-sheet">
-          <ManifestHead no="06" title="Shipping label" sub="Where this manifest leads." />
-
-          <div className="ship-label">
-            <div className="ship-label-top">
-              <span>HANDLE WITH CARE</span>
-              <span>THIS SIDE UP ↑</span>
-            </div>
-            <div className="ship-label-to">
-              <span className="ship-label-key">TO</span>
-              <a href="mailto:Srinivasrahul838@gmail.com" className="ship-label-cta">
-                Let's build it <ArrowUpRight size={26} />
-              </a>
-            </div>
-            <div className="ship-label-fields">
-              {LABEL_FIELDS.map((f) => {
-                const Icon = f.icon
-                return (
-                  <a key={f.label} href={f.href} target={f.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="ship-label-row">
-                    <span><Icon size={12} /> {f.label}</span>
-                    <span>{f.value}</span>
-                  </a>
-                )
-              })}
-              <div className="ship-label-row"><span><MapPin size={12} /> FROM</span><span>Bengaluru, India</span></div>
-            </div>
-            <BarcodeStrip />
-          </div>
-        </section>
-
-        <footer className="footer">
-          <span><Boxes size={13} /> PACKED BY RAHUL S.</span>
-          <span>TRACKING NO. RS-2026-088</span>
-          <span>© {new Date().getFullYear()}</span>
-        </footer>
-      </main>
-    </div>
-  )
-}
-
-function ManifestHead({ no, title, sub }) {
-  return (
-    <div className="manifest-head">
-      <div className="manifest-strip">
-        <span>ITEM {no}</span>
-        <span>{sub}</span>
-      </div>
-      <h2 className="manifest-title">{title}</h2>
+      {/* ---------------- footer ---------------- */}
+      <footer className="site-footer">
+        <div className="wrap footer-inner">
+          <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
+          <span className="footer-meta" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+            <Sparkles size={13} /> built with React
+          </span>
+        </div>
+      </footer>
     </div>
   )
 }
