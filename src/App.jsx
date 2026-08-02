@@ -3,7 +3,8 @@ import {
   Github, Linkedin, Mail, Phone, ArrowUpRight, Sparkles,
   Code2, Server, Database, Wrench, Award, GraduationCap,
   MapPin, Briefcase, Rocket, Download, Menu, X, ChevronRight,
-  ExternalLink, Star, Zap, Layers, Palette,
+  ExternalLink, Star, Zap, Layers, Palette, Globe, Shield,
+  Cpu, Terminal, Box, Hexagon, Circle, Square,
 } from 'lucide-react'
 import './index.css'
 
@@ -250,11 +251,27 @@ export default function App() {
 
   return (
     <div className="app">
+      {/* ---------------- animated background ---------------- */}
+      <div className="mesh-gradient-bg">
+        <div className="mesh-blob mesh-blob-1" />
+        <div className="mesh-blob mesh-blob-2" />
+        <div className="mesh-blob mesh-blob-3" />
+        <div className="mesh-blob mesh-blob-4" />
+      </div>
+
+      {/* ---------------- floating shapes ---------------- */}
+      <div className="floating-shapes" aria-hidden="true">
+        <div className="shape shape-1"><Hexagon size={24} /></div>
+        <div className="shape shape-2"><Circle size={16} /></div>
+        <div className="shape shape-3"><Square size={20} /></div>
+        <div className="shape shape-4"><Hexagon size={18} /></div>
+      </div>
+
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => scrollTo('hero')} aria-label="Back to top">
-            <div className="logo-glow">
+            <div className="logo-3d">
               <span className="logo-mark">RS</span>
             </div>
             <span className="logo-text">Rahul S</span>
@@ -264,13 +281,14 @@ export default function App() {
             {NAV.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
                 {n.label}
-                <span className="tab-indicator" />
+                <span className="tab-glow" />
               </button>
             ))}
           </div>
 
           <button className="btn primary nav-cta" onClick={() => scrollTo('contact')}>
             <Download size={16} /> <span>Say hello</span>
+            <span className="btn-shine" />
           </button>
 
           <button className="menu-toggle" onClick={() => setMenuOpen((v) => !v)} aria-label="Toggle menu">
@@ -291,109 +309,124 @@ export default function App() {
 
       {/* ---------------- hero ---------------- */}
       <header id="hero" className="hero">
-        <div className="hero-bg">
-          <div className="gradient-orb orb-1" />
-          <div className="gradient-orb orb-2" />
-          <div className="gradient-orb orb-3" />
-        </div>
-
         <div className="wrap hero-inner">
-          <div className="hero-content">
-            <Reveal>
-              <div className="hero-badge">
-                <span className="badge-pulse" />
-                <Sparkles size={14} />
-                <span>Open to work · Bengaluru, India</span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <h1 className="hero-title">
-                <span className="greeting">Hi, I'm</span>
-                <br />
-                <span className="name-gradient">Rahul S</span>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={140}>
-              <div className="hero-role-wrapper">
-                <span className="role-label">I build</span>
-                <div className="role-text-container">
-                  <span className="role-text">{typed}</span>
-                  <span className="type-cursor" />
+          <div className="hero-grid">
+            <div className="hero-main">
+              <Reveal>
+                <div className="hero-badge">
+                  <span className="badge-pulse" />
+                  <Sparkles size={14} />
+                  <span>Open to work · Bengaluru, India</span>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
 
-            <Reveal delay={200}>
-              <p className="hero-description">
-                Final-year Computer Science student passionate about building real-world applications.
-                I craft intuitive user interfaces with <strong className="highlight">React</strong> and power them
-                with robust backends using <strong className="highlight">Java & Spring Boot</strong>.
-              </p>
-            </Reveal>
+              <Reveal delay={80}>
+                <h1 className="hero-title">
+                  <span className="greeting">Hi, I'm</span>
+                  <br />
+                  <span className="name-gradient">Rahul S</span>
+                </h1>
+              </Reveal>
 
-            <Reveal delay={260}>
-              <div className="hero-actions">
-                <button className="btn primary btn-lg" onClick={() => scrollTo('projects')}>
-                  <span>View my work</span>
-                  <ArrowUpRight size={18} />
-                </button>
-                <button className="btn outline btn-lg" onClick={() => scrollTo('contact')}>
-                  <span>Let's talk</span>
-                  <ChevronRight size={18} />
-                </button>
-              </div>
-            </Reveal>
+              <Reveal delay={140}>
+                <div className="hero-role-wrapper">
+                  <span className="role-label">I build</span>
+                  <div className="role-text-container">
+                    <span className="role-text">{typed}</span>
+                    <span className="type-cursor" />
+                  </div>
+                </div>
+              </Reveal>
 
-            <Reveal delay={320}>
-              <div className="hero-socials">
-                {CONTACTS.slice(2).map((c) => {
-                  const Icon = c.icon
-                  return (
-                    <a 
-                      key={c.label} 
-                      href={c.href} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="social-btn" 
-                      aria-label={c.label}
-                    >
-                      <Icon size={20} />
-                      <span className="social-tooltip">{c.label}</span>
-                    </a>
-                  )
-                })}
+              <Reveal delay={200}>
+                <p className="hero-description">
+                  Final-year Computer Science student passionate about building real-world applications.
+                  I craft intuitive user interfaces with <strong className="highlight">React</strong> and power them
+                  with robust backends using <strong className="highlight">Java & Spring Boot</strong>.
+                </p>
+              </Reveal>
+
+              <Reveal delay={260}>
+                <div className="hero-actions">
+                  <button className="btn primary btn-lg" onClick={() => scrollTo('projects')}>
+                    <span>View my work</span>
+                    <ArrowUpRight size={18} />
+                    <span className="btn-shine" />
+                  </button>
+                  <button className="btn outline btn-lg" onClick={() => scrollTo('contact')}>
+                    <span>Let's talk</span>
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              </Reveal>
+
+              <Reveal delay={320}>
+                <div className="hero-socials">
+                  {CONTACTS.slice(2).map((c) => {
+                    const Icon = c.icon
+                    return (
+                      <a 
+                        key={c.label} 
+                        href={c.href} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="social-btn" 
+                        aria-label={c.label}
+                      >
+                        <Icon size={20} />
+                        <span className="social-tooltip">{c.label}</span>
+                      </a>
+                    )
+                  })}
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal delay={180} className="hero-bento">
+              <div className="bento-grid">
+                <div className="bento-card bento-large">
+                  <div className="bento-header">
+                    <Zap size={18} className="bento-icon" />
+                    <span>Quick Stats</span>
+                  </div>
+                  <div className="bento-stats">
+                    <div className="bento-stat">
+                      <span className="bento-stat-num">03</span>
+                      <span className="bento-stat-label">Projects</span>
+                    </div>
+                    <div className="bento-stat">
+                      <span className="bento-stat-num">02</span>
+                      <span className="bento-stat-label">Internships</span>
+                    </div>
+                    <div className="bento-stat">
+                      <span className="bento-stat-num">04</span>
+                      <span className="bento-stat-label">Certs</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bento-card bento-small">
+                  <div className="bento-icon-wrapper">
+                    <Terminal size={24} />
+                  </div>
+                  <div className="bento-content">
+                    <span className="bento-label">Stack</span>
+                    <span className="bento-value">Full-Stack</span>
+                  </div>
+                </div>
+
+                <div className="bento-card bento-small">
+                  <div className="bento-icon-wrapper">
+                    <Globe size={24} />
+                  </div>
+                  <div className="bento-content">
+                    <span className="bento-label">Location</span>
+                    <span className="bento-value">Bengaluru</span>
+                  </div>
+                </div>
               </div>
             </Reveal>
           </div>
-
-          <Reveal delay={180} className="hero-stats-wrap">
-            <div className="stats-glass">
-              <div className="stats-header">
-                <Zap size={18} className="stats-icon" />
-                <span>Quick Stats</span>
-              </div>
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <span className="stat-number">03</span>
-                  <span className="stat-desc">Live projects</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">02</span>
-                  <span className="stat-desc">Internships</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">04</span>
-                  <span className="stat-desc">Certifications</span>
-                </div>
-              </div>
-              <div className="stats-footer">
-                <span className="status-dot" /> 
-                <span>Available for full-time roles</span>
-              </div>
-            </div>
-          </Reveal>
         </div>
 
         <div className="scroll-indicator">
@@ -488,6 +521,7 @@ export default function App() {
         <div className="projects-grid">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} delay={i * 120} className="project-card glass-card">
+              <div className="project-glow" />
               <div className="project-header">
                 <span className="project-id">{p.id}</span>
                 {p.featured && (
