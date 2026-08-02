@@ -255,7 +255,7 @@ export default function App() {
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => scrollTo('hero')} aria-label="Back to top">
             <span className="logo-mark">RS</span>
-            <span className="logo-text">Rahul Srinivasa</span>
+            <span className="logo-text">Rahul S</span>
           </button>
 
           <div className="tab-bar">
@@ -289,9 +289,7 @@ export default function App() {
       {/* ---------------- hero ---------------- */}
       <header id="hero" className="hero">
         <div className="hero-decor" aria-hidden="true">
-          <span className="dot-grid" />
           <span className="ring ring-a" />
-          <span className="ring ring-b" />
         </div>
 
         <div className="wrap hero-inner">
@@ -303,7 +301,7 @@ export default function App() {
             </Reveal>
 
             <Reveal delay={80}>
-              <h1 className="hero-name">Hi, I&rsquo;m<br /><span className="accent">Rahul Srinivasa</span></h1>
+              <h1 className="hero-name">Hi, I&rsquo;m<br /><span className="accent">Rahul S</span></h1>
             </Reveal>
 
             <Reveal delay={140}>
@@ -342,22 +340,26 @@ export default function App() {
           </div>
 
           <Reveal delay={180} className="hero-panel-wrap">
-            <div className="code-panel">
-              <div className="code-top">
-                <span className="dot d1" /><span className="dot d2" /><span className="dot d3" />
-                <span className="code-file">rahul.js</span>
+            <div className="facts-panel">
+              <p className="facts-kicker"><Sparkles size={13} /> Currently</p>
+              <p className="facts-headline">Final-year CS student, building full-stack products.</p>
+              <div className="facts-list">
+                <div className="facts-row">
+                  <span className="facts-num">03</span>
+                  <span className="facts-label">Live projects shipped</span>
+                </div>
+                <div className="facts-row">
+                  <span className="facts-num">02</span>
+                  <span className="facts-label">Internships completed</span>
+                </div>
+                <div className="facts-row">
+                  <span className="facts-num">04</span>
+                  <span className="facts-label">Certifications earned</span>
+                </div>
               </div>
-              <pre className="code-body">
-<span className="c-kw">const</span> <span className="c-var">rahul</span> = {'{'}
-  <span className="c-key">role</span>: <span className="c-str">"Frontend Developer"</span>,
-  <span className="c-key">stack</span>: [<span className="c-str">"React"</span>, <span className="c-str">"Java"</span>, <span className="c-str">"Spring Boot"</span>],
-  <span className="c-key">focus</span>: <span className="c-str">"clean code, real products"</span>,
-  <span className="c-key">status</span>: <span className="c-str">"open to work"</span>,
-{'}'};
-              </pre>
-            </div>
-            <div className="panel-badge">
-              <Sparkles size={14} /> 3 live projects shipped
+              <div className="facts-foot">
+                <span className="facts-dot" /> Open to full-time roles
+              </div>
             </div>
           </Reveal>
         </div>
@@ -573,7 +575,7 @@ export default function App() {
       {/* ---------------- footer ---------------- */}
       <footer className="site-footer">
         <div className="wrap footer-inner">
-          <span className="footer-meta">© {new Date().getFullYear()} Rahul Srinivasa</span>
+          <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
           <span className="footer-meta footer-built"><Sparkles size={13} /> built with React</span>
         </div>
       </footer>
