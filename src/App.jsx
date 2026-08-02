@@ -8,16 +8,16 @@ import {
 import './index.css'
 
 /* ================================================================== */
-/* content — a bill of lading for one developer                        */
+/* content — portfolio profile for one developer                       */
 /* ================================================================== */
 
 const TABS = [
-  { id: 'cover', label: 'Cover' },
-  { id: 'declaration', label: 'Declaration' },
-  { id: 'cargo', label: 'Cargo manifest' },
-  { id: 'shipments', label: 'Shipments' },
-  { id: 'tracking', label: 'Tracking' },
-  { id: 'label', label: 'Shipping label' },
+  { id: 'cover', label: 'Home' },
+  { id: 'declaration', label: 'About' },
+  { id: 'cargo', label: 'Skills' },
+  { id: 'shipments', label: 'Projects' },
+  { id: 'tracking', label: 'Experience' },
+  { id: 'label', label: 'Contact' },
 ]
 
 const PACKING_LIST = [
@@ -28,10 +28,10 @@ const PACKING_LIST = [
 ]
 
 const CONTAINERS = [
-  { code: 'FRONTEND', sub: 'What a person sees and taps', items: ['React', 'Tailwind', 'HTML/CSS'], cls: 'c-front' },
-  { code: 'BACKEND', sub: 'Carries the load, answers every request', items: ['Java', 'Spring Boot', 'REST API'], cls: 'c-back' },
-  { code: 'DATABASE', sub: 'Where everything is stored and read back', items: ['MySQL'], cls: 'c-data' },
-  { code: 'TOOLING', sub: 'How it all gets versioned and shipped', items: ['Git', 'GitHub'], cls: 'c-tool' },
+  { code: 'FRONTEND', sub: 'What a person sees and interacts with', items: ['React', 'Tailwind', 'HTML/CSS'], cls: 'c-front' },
+  { code: 'BACKEND', sub: 'Handles the logic and answers every request', items: ['Java', 'Spring Boot', 'REST API'], cls: 'c-back' },
+  { code: 'DATABASE', sub: 'Where all application data is stored', items: ['MySQL'], cls: 'c-data' },
+  { code: 'TOOLING', sub: 'How code is versioned, managed, and deployed', items: ['Git', 'GitHub'], cls: 'c-tool' },
 ]
 
 const SHIPMENTS = [
@@ -52,7 +52,7 @@ const SHIPMENTS = [
     values: [['200+', 'questions'], ['95%', 'accuracy'], ['live', 'ai reply']],
   },
   {
-    id: 'RS-2023-03', title: 'Personal Portfolio', tag: 'Earlier shipment of this site',
+    id: 'RS-2023-03', title: 'Personal Portfolio', tag: 'Earlier version of this site',
     desc: 'My first portfolio build. Built to be fast, legible, and consistent on any device.',
     contents: ['React', 'Vite', 'CSS'],
     values: [['1K+', 'views'], ['100', 'speed'], ['A+', 'score']],
@@ -60,14 +60,14 @@ const SHIPMENTS = [
 ]
 
 const TRACKING_EVENTS = [
-  { status: 'IN TRANSIT', date: '2026', role: 'Web Development Intern', place: 'MR Tech Lab, Bengaluru', points: [
-    'Built pages that hold up on every screen size, in HTML, CSS, and JavaScript',
-    'Connected React pages to real APIs to show live data',
-    'Shipped finished projects and checked them across browsers',
+  { status: 'PRESENT', date: '2026', role: 'Web Development Intern', place: 'MR Tech Lab, Bengaluru', points: [
+    'Built pages that work smoothly on all screen sizes using HTML, CSS, and JavaScript',
+    'Connected React pages to real APIs to display live data',
+    'Deployed finished projects and tested them across different browsers',
   ] },
-  { status: 'DEPARTED', date: '2023', role: 'AI / ML & Python Intern', place: 'KNOWX Innovations, Bengaluru', points: [
-    'Built small Python programs to clean data and test simple models',
-    'Worked with the team fixing bugs and keeping code running smoothly',
+  { status: 'COMPLETED', date: '2023', role: 'AI / ML & Python Intern', place: 'KNOWX Innovations, Bengaluru', points: [
+    'Built simple Python programs to clean data and test basic models',
+    'Worked with the team to fix bugs and keep code running smoothly',
   ] },
 ]
 
@@ -189,11 +189,11 @@ export default function App() {
       </header>
 
       <main className="main">
-        {/* ============== COVER — bill of lading ============== */}
+        {/* ============== COVER — hero section ============== */}
         <section id="cover" className="manifest cover">
           <div className="manifest-strip">
-            <span>BILL OF LADING</span>
-            <span>TRACKING NO. RS-2026-088</span>
+            <span>DEVELOPER PROFILE</span>
+            <span>ID NO. RS-2026-088</span>
           </div>
 
           <div className="cover-grid">
@@ -201,25 +201,25 @@ export default function App() {
               <h1 className="cover-name">RAHUL S.</h1>
               <p className="cover-role">FULL-STACK DEVELOPER</p>
               <p className="cover-desc">
-                Final-year Computer Science student who builds full products, not prototypes —
-                interfaces in <strong>React</strong>, backends in <strong>Java &amp; Spring Boot</strong>,
-                three shipments standing and live right now.
+                Final-year Computer Science student who builds complete applications, not just prototypes —
+                user interfaces in <strong>React</strong>, backends in <strong>Java &amp; Spring Boot</strong>,
+                with three projects live and active right now.
               </p>
               <div className="cover-actions">
-                <button className="btn primary" onClick={() => scrollTo('shipments')}>See shipments <ArrowRight size={15} /></button>
+                <button className="btn primary" onClick={() => scrollTo('shipments')}>See projects <ArrowRight size={15} /></button>
                 <button className="btn outline" onClick={() => scrollTo('label')}>Contact</button>
               </div>
               <div className="contents-line">
-                <Package size={13} /> CONTENTS — 03 LIVE SHIPMENTS · 02 DELIVERIES · 04 SEALS
+                <Package size={13} /> HIGHLIGHTS — 03 LIVE PROJECTS · 02 INTERNSHIPS · 04 CERTIFICATIONS
               </div>
             </div>
 
             <div className="stamp-wrap">
               <div className="rubber-stamp">AVAILABLE<br />FOR HIRE</div>
               <div className="manifest-box">
-                <div className="manifest-row"><span>ORIGIN</span><span>Bengaluru, IN</span></div>
-                <div className="manifest-row"><span>STATUS</span><span className="ok">● READY TO SHIP</span></div>
-                <div className="manifest-row"><span>INCOTERM</span><span>REMOTE / ONSITE</span></div>
+                <div className="manifest-row"><span>LOCATION</span><span>Bengaluru, IN</span></div>
+                <div className="manifest-row"><span>STATUS</span><span className="ok">● READY TO WORK</span></div>
+                <div className="manifest-row"><span>WORK MODEL</span><span>REMOTE / ONSITE</span></div>
               </div>
             </div>
           </div>
@@ -229,23 +229,23 @@ export default function App() {
 
         {/* ============== DECLARATION — about ============== */}
         <section id="declaration" className="manifest">
-          <ManifestHead no="02" title="Declaration of contents" sub="How I work, on the record." />
+          <ManifestHead no="02" title="About Me" sub="How I work and build applications." />
 
           <div className="decl-grid">
             <Crate className="decl-card">
               <span className="decl-tag">NOTE</span>
-              <p>I believe in learning by doing — every shipment on this manifest is one I built end to end,
-              and can walk you through <span className="hi">line by line.</span></p>
+              <p>I believe in learning by doing — every project in this portfolio is one I built from start to finish,
+              and I can walk you through it <span className="hi">line by line.</span></p>
             </Crate>
             <Crate delay={80} className="decl-card">
-              <span className="decl-tag">DECLARED VALUE</span>
-              <p>My work spans the full stack — pixel-accurate, responsive interfaces in <strong>React</strong>,
-              backed by systems in <strong>Java</strong> and <strong>Spring Boot</strong>. I write code meant
-              to be read by other people, and I care about the seconds between a click and a response.</p>
+              <span className="decl-tag">SUMMARY</span>
+              <p>My work covers full-stack web development — accurate, responsive user interfaces in <strong>React</strong>,
+              supported by backend systems in <strong>Java</strong> and <strong>Spring Boot</strong>. I write clean code that is easy
+              for team members to read, and I focus on application speed and performance.</p>
               <div className="decl-tally">
-                <div><b>03</b><span>Live shipments</span></div>
-                <div><b>02</b><span>Deliveries</span></div>
-                <div><b>04</b><span>Seals</span></div>
+                <div><b>03</b><span>Live projects</span></div>
+                <div><b>02</b><span>Internships</span></div>
+                <div><b>04</b><span>Certifications</span></div>
               </div>
             </Crate>
           </div>
@@ -253,10 +253,10 @@ export default function App() {
 
         {/* ============== CARGO MANIFEST — skills ============== */}
         <section id="cargo" className="manifest section-alt">
-          <ManifestHead no="03" title="Cargo manifest" sub="Packing list for a full-stack build." />
+          <ManifestHead no="03" title="Technical Skills" sub="Summary of my technical stack." />
 
           <Crate className="packing-list">
-            <div className="pl-row pl-head"><span>NO.</span><span>DESCRIPTION</span><span>CONTENTS</span></div>
+            <div className="pl-row pl-head"><span>NO.</span><span>CATEGORY</span><span>TECHNOLOGIES</span></div>
             {PACKING_LIST.map((row) => (
               <div key={row.no} className="pl-row">
                 <span className="pl-no">{row.no}</span>
@@ -267,7 +267,7 @@ export default function App() {
           </Crate>
 
           <Crate delay={100} className="yard">
-            <div className="yard-label"><Warehouse size={14} /><span>CONTAINER YARD — THE FULL STACK</span></div>
+            <div className="yard-label"><Warehouse size={14} /><span>CORE SKILL CATEGORIES — FULL STACK</span></div>
             <div className="yard-stack">
               {CONTAINERS.map((c) => (
                 <div key={c.code} className={`container ${c.cls}`}>
@@ -291,7 +291,7 @@ export default function App() {
         {/* ============== SHIPMENTS — projects ============== */}
         <section id="shipments" className="manifest">
           <div className="manifest-head-row">
-            <ManifestHead no="04" title="Shipments" sub="Three builds, uncrated." />
+            <ManifestHead no="04" title="Projects" sub="Three featured builds, live now." />
             <div className="rail-controls">
               <button onClick={() => scrollRail(-1)} aria-label="Scroll left"><ChevronLeft size={16} /></button>
               <button onClick={() => scrollRail(1)} aria-label="Scroll right"><ChevronRight size={16} /></button>
@@ -303,7 +303,7 @@ export default function App() {
               <article key={s.id} className={`crate-card ${s.fragile ? 'fragile' : ''}`}>
                 <div className="crate-top">
                   <span className="crate-id"><Barcode size={12} /> {s.id}</span>
-                  {s.fragile && <span className="fragile-flag">FRAGILE — FEATURED</span>}
+                  {s.fragile && <span className="fragile-flag">FEATURED PROJECT</span>}
                 </div>
                 <h3 className="crate-title">{s.title}</h3>
                 <p className="crate-tag">{s.tag}</p>
@@ -311,7 +311,7 @@ export default function App() {
                 <div className="crate-values">
                   {s.values.map(([v, k]) => (<div key={k}><b>{v}</b><span>{k}</span></div>))}
                 </div>
-                <div className="crate-contents"><span className="crate-contents-label">CONTENTS:</span>{s.contents.map((t) => <span key={t}>{t}</span>)}</div>
+                <div className="crate-contents"><span className="crate-contents-label">TECH STACK:</span>{s.contents.map((t) => <span key={t}>{t}</span>)}</div>
                 {s.note && <p className="crate-note">⚠ {s.note}</p>}
                 {s.links && (
                   <div className="crate-links">
@@ -323,7 +323,7 @@ export default function App() {
               </article>
             ))}
             <div className="crate-end">
-              <p>Want the unboxing walkthrough of any of these?</p>
+              <p>Want a detailed walkthrough of any of these projects?</p>
               <button className="btn outline sm" onClick={() => scrollTo('label')}>Ask me anything <ArrowRight size={13} /></button>
             </div>
           </div>
@@ -331,7 +331,7 @@ export default function App() {
 
         {/* ============== TRACKING — experience ============== */}
         <section id="tracking" className="manifest section-alt">
-          <ManifestHead no="05" title="Tracking history" sub="Where this shipment has been." />
+          <ManifestHead no="05" title="Work & Experience" sub="My professional journey so far." />
 
           <Crate className="tracking-list">
             {TRACKING_EVENTS.map((e, i) => (
@@ -349,12 +349,12 @@ export default function App() {
             ))}
             <div className="tracking-row final">
               <div className="tracking-rail"><span className="tracking-dot done"><PackageCheck size={12} /></span></div>
-              <div className="tracking-body"><span className="tracking-status done">READY FOR NEXT DESTINATION</span></div>
+              <div className="tracking-body"><span className="tracking-status done">READY FOR MY NEXT ROLE</span></div>
             </div>
           </Crate>
 
           <Crate delay={100} className="ports-block">
-            <span className="mini-label"><GraduationCap size={14} /> Ports of call</span>
+            <span className="mini-label"><GraduationCap size={14} /> Education</span>
             <div className="ports-row">
               {PORTS_OF_CALL.map((p) => (
                 <div key={p.school} className="port-card">
@@ -367,7 +367,7 @@ export default function App() {
           </Crate>
 
           <Crate delay={160} className="seals-block">
-            <span className="mini-label"><Stamp size={14} /> Customs seals</span>
+            <span className="mini-label"><Stamp size={14} /> Certifications</span>
             <div className="seals-row">
               {SEALS.map((c) => (
                 <div key={c.name} className="seal">
@@ -381,17 +381,17 @@ export default function App() {
 
         {/* ============== SHIPPING LABEL — contact ============== */}
         <section id="label" className="manifest label-sheet">
-          <ManifestHead no="06" title="Shipping label" sub="Where this manifest leads." />
+          <ManifestHead no="06" title="Contact Information" sub="Get in touch with me." />
 
           <div className="ship-label">
             <div className="ship-label-top">
-              <span>HANDLE WITH CARE</span>
-              <span>THIS SIDE UP ↑</span>
+              <span>OPEN FOR OPPORTUNITIES</span>
+              <span>AVAILABLE IMMEDIATELY</span>
             </div>
             <div className="ship-label-to">
               <span className="ship-label-key">TO</span>
               <a href="mailto:Srinivasrahul838@gmail.com" className="ship-label-cta">
-                Let's build it <ArrowUpRight size={26} />
+                Let's connect <ArrowUpRight size={26} />
               </a>
             </div>
             <div className="ship-label-fields">
@@ -404,15 +404,15 @@ export default function App() {
                   </a>
                 )
               })}
-              <div className="ship-label-row"><span><MapPin size={12} /> FROM</span><span>Bengaluru, India</span></div>
+              <div className="ship-label-row"><span><MapPin size={12} /> LOCATION</span><span>Bengaluru, India</span></div>
             </div>
             <BarcodeStrip />
           </div>
         </section>
 
         <footer className="footer">
-          <span><Boxes size={13} /> PACKED BY RAHUL S.</span>
-          <span>TRACKING NO. RS-2026-088</span>
+          <span><Boxes size={13} /> BUILT BY RAHUL S.</span>
+          <span>PORTFOLIO ID RS-2026-088</span>
           <span>© {new Date().getFullYear()}</span>
         </footer>
       </main>
@@ -424,7 +424,7 @@ function ManifestHead({ no, title, sub }) {
   return (
     <div className="manifest-head">
       <div className="manifest-strip">
-        <span>ITEM {no}</span>
+        <span>SECTION {no}</span>
         <span>{sub}</span>
       </div>
       <h2 className="manifest-title">{title}</h2>
