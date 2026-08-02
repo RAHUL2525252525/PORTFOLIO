@@ -108,11 +108,6 @@ strong { color: var(--ink); font-weight: 700; }
 .tab:hover { color: var(--ink); transform: translateY(0); }
 .tab.active { background: var(--label); color: var(--stamp); transform: translateY(0); box-shadow: 0 -2px 0 var(--stamp) inset; }
 
-.stamp-btn {
-  flex-shrink: 0;
-  margin-left: 10px;
-}
-
 .menu-toggle {
   display: none;
   background: none;
@@ -159,21 +154,12 @@ strong { color: var(--ink); font-weight: 700; }
   cursor: pointer;
   transition: all 0.15s var(--ease);
 }
-.btn.sm { padding: 9px 14px; font-size: 11.5px; }
 
 .btn.primary { background: var(--ink); color: var(--label); }
 .btn.primary:hover { background: var(--stamp); border-color: var(--stamp); transform: translateY(-1px); }
 
 .btn.outline { background: var(--label); color: var(--ink); }
 .btn.outline:hover { border-color: var(--stamp); color: var(--stamp); }
-
-.btn.stamp-btn {
-  background: transparent;
-  color: var(--stamp);
-  border-color: var(--stamp);
-  transform: rotate(-2deg);
-}
-.btn.stamp-btn:hover { background: var(--stamp); color: var(--label); }
 
 /* ================================================================== */
 /* LAYOUT / MANIFEST SECTIONS                                          */
@@ -227,7 +213,7 @@ strong { color: var(--ink); font-weight: 700; }
   margin-bottom: 14px;
 }
 
-/* packing tape divider between sections */
+/* Tape divider */
 .tape {
   height: 30px;
   max-width: 1180px;
@@ -320,7 +306,7 @@ strong { color: var(--ink); font-weight: 700; }
 .manifest-row .ok { color: var(--ok) !important; }
 
 /* ================================================================== */
-/* DECLARATION — about                                                */
+/* DECLARATION                                                         */
 /* ================================================================== */
 
 .decl-grid { max-width: 1180px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; }
@@ -333,8 +319,6 @@ strong { color: var(--ink); font-weight: 700; }
   padding: 3px 10px; border-radius: 2px; letter-spacing: 0.06em;
 }
 .decl-card p { font-size: 15px; color: var(--ink-dim); }
-.decl-card:first-child p { font-size: 16px; color: var(--ink); }
-.hi { color: var(--stamp); font-weight: 600; }
 
 .decl-tally { display: flex; gap: 26px; padding-top: 16px; margin-top: 14px; border-top: 2px dashed var(--ink-faint); }
 .decl-tally div { display: flex; flex-direction: column; gap: 2px; }
@@ -342,7 +326,7 @@ strong { color: var(--ink); font-weight: 700; }
 .decl-tally span { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* ================================================================== */
-/* CARGO MANIFEST — skills                                            */
+/* SKILLS / PACKING LIST                                               */
 /* ================================================================== */
 
 .packing-list { max-width: 1180px; margin: 0 auto 50px; padding: 0 24px; }
@@ -377,8 +361,6 @@ strong { color: var(--ink); font-weight: 700; }
 
 .container {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 6px 0 rgba(0,0,0,0.18), inset 0 0 0 2px rgba(0,0,0,0.25);
@@ -407,7 +389,7 @@ strong { color: var(--ink); font-weight: 700; }
   margin-bottom: 4px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
-.container-face p { font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 10px; max-width: 460px; }
+.container-face p { font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 10px; max-width: 650px; }
 .container-items { display: flex; gap: 6px; flex-wrap: wrap; }
 .container-items span {
   font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 3px 9px;
@@ -417,25 +399,11 @@ strong { color: var(--ink); font-weight: 700; }
 
 .c-front { background: linear-gradient(180deg, var(--c-front), var(--c-front-dark)); }
 .c-back { background: linear-gradient(180deg, var(--c-back), var(--c-back-dark)); }
-.c-data { background: linear-gradient(180deg, var(--c-data), var(--c-data-dark)); }
 .c-tool { background: linear-gradient(180deg, var(--c-tool), var(--c-tool-dark)); }
 
 /* ================================================================== */
-/* SHIPMENTS — projects rail                                           */
+/* PROJECTS RAIL                                                      */
 /* ================================================================== */
-
-.rail-controls { display: flex; gap: 8px; }
-.rail-controls button {
-  width: 34px; height: 34px;
-  border: 2px solid var(--ink);
-  background: var(--label);
-  color: var(--ink);
-  border-radius: 3px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s var(--ease);
-}
-.rail-controls button:hover { background: var(--ink); color: var(--label); }
 
 .rail {
   display: flex;
@@ -451,7 +419,7 @@ strong { color: var(--ink); font-weight: 700; }
 
 .crate-card {
   scroll-snap-align: start;
-  flex: 0 0 min(400px, 84vw);
+  flex: 0 0 min(370px, 84vw);
   border: 2px solid var(--ink);
   border-radius: 3px;
   background: var(--label);
@@ -461,12 +429,6 @@ strong { color: var(--ink); font-weight: 700; }
   position: relative;
 }
 .crate-card.fragile { border-color: var(--stamp); }
-.crate-card::before {
-  content: '';
-  position: absolute;
-  top: -2px; left: 18px; right: 18px; height: 2px;
-  background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px);
-}
 
 .crate-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px; }
 .crate-id { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--ink-faint); }
@@ -474,39 +436,21 @@ strong { color: var(--ink); font-weight: 700; }
 
 .crate-title { font-family: var(--display); font-size: 25px; font-weight: 400; color: var(--ink); margin-bottom: 2px; }
 .crate-tag { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--stamp); margin-bottom: 12px; }
-.crate-desc { font-size: 13.5px; color: var(--ink-dim); margin-bottom: 16px; }
+.crate-desc { font-size: 13.5px; color: var(--ink-dim); margin-bottom: 16px; flex: 1; }
 
-.crate-values { display: flex; gap: 20px; padding: 13px 0; border-top: 1px dashed var(--ink-faint); border-bottom: 1px dashed var(--ink-faint); margin-bottom: 14px; }
+.crate-values { display: flex; gap: 16px; padding: 13px 0; border-top: 1px dashed var(--ink-faint); border-bottom: 1px dashed var(--ink-faint); margin-bottom: 14px; }
 .crate-values div { display: flex; flex-direction: column; gap: 2px; }
-.crate-values b { font-family: var(--display); font-size: 18px; color: var(--ink); }
-.crate-values span { font-family: var(--mono); font-size: 9.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+.crate-values b { font-family: var(--display); font-size: 15px; color: var(--ink); }
+.crate-values span { font-family: var(--mono); font-size: 9px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
 
 .crate-contents { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; align-items: center; }
 .crate-contents-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: var(--ink-faint); margin-right: 2px; }
 .crate-contents span:not(.crate-contents-label) { font-family: var(--mono); font-size: 10.5px; padding: 4px 9px; border: 1px solid var(--ink-faint); color: var(--ink-dim); border-radius: 2px; }
 
-.crate-note { font-family: var(--mono); font-size: 11px; color: var(--stamp); margin-bottom: 14px; }
-
-.crate-links { display: flex; gap: 16px; margin-top: auto; }
-.crate-links a { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--stamp); }
-.crate-links a:hover { text-decoration: underline; }
-
-.crate-end {
-  scroll-snap-align: start;
-  flex: 0 0 240px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 14px;
-  color: var(--ink-dim);
-  font-size: 13.5px;
-  border: 2px dashed var(--ink-faint);
-  border-radius: 3px;
-  padding: 22px;
-}
+.crate-note { font-family: var(--mono); font-size: 11px; color: var(--stamp); margin-top: auto; }
 
 /* ================================================================== */
-/* TRACKING — experience & education                                  */
+/* TRACKING & HISTORY                                                  */
 /* ================================================================== */
 
 .tracking-list { max-width: 1180px; margin: 0 auto 46px; padding: 0 24px; }
@@ -556,7 +500,7 @@ strong { color: var(--ink); font-weight: 700; }
 .seal span { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); }
 
 /* ================================================================== */
-/* SHIPPING LABEL — contact                                            */
+/* SHIPPING LABEL / CONTACT                                            */
 /* ================================================================== */
 
 .label-sheet { padding-bottom: 50px; }
@@ -588,11 +532,11 @@ strong { color: var(--ink); font-weight: 700; }
 .ship-label-cta {
   display: flex; align-items: center; gap: 10px;
   font-family: var(--display);
-  font-size: clamp(28px, 5vw, 40px);
+  font-size: clamp(22px, 4vw, 32px);
   color: var(--ink);
-  width: fit-content;
+  word-break: break-all;
 }
-.ship-label-cta svg { color: var(--stamp); transition: transform 0.2s var(--ease); }
+.ship-label-cta svg { color: var(--stamp); transition: transform 0.2s var(--ease); flex-shrink: 0; }
 .ship-label-cta:hover svg { transform: translate(4px, -4px); }
 
 .ship-label-fields { border-top: 2px solid var(--ink); margin-bottom: 22px; }
@@ -612,7 +556,7 @@ strong { color: var(--ink); font-weight: 700; }
 .barcode span { background: var(--ink); height: 100%; display: block; }
 
 /* ================================================================== */
-/* FOOTER                                                              */
+/* FOOTER & REVEALS                                                    */
 /* ================================================================== */
 
 .footer {
@@ -630,11 +574,6 @@ strong { color: var(--ink); font-weight: 700; }
   color: var(--ink-faint);
   flex-wrap: wrap;
 }
-.footer span { display: flex; align-items: center; gap: 6px; }
-
-/* ================================================================== */
-/* REVEAL ANIMATIONS                                                   */
-/* ================================================================== */
 
 .crate-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
 .crate-in.in { opacity: 1; transform: translateY(0); }
@@ -642,10 +581,6 @@ strong { color: var(--ink); font-weight: 700; }
 @media (prefers-reduced-motion: reduce) {
   .crate-in, .ship-label-cta svg { transition: none; transform: none; }
 }
-
-/* ================================================================== */
-/* RESPONSIVE DESIGN                                                   */
-/* ================================================================== */
 
 @media (max-width: 900px) {
   .tabs { display: none; }
