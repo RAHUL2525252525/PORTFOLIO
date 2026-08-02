@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   Github, Linkedin, Mail, Phone, ArrowUpRight, Sparkles,
-  Code2, Server, Database, Wrench, Award, GraduationCap,
+  Code2, Server, Database, Wrench, Award, GraduationCap, ShieldCheck, Cpu
 } from 'lucide-react'
 import './index.css'
 
 /* ================================================================== */
-/* content — kept in plain, simple words                               */
+/* content — aligned with professional resume details                 */
 /* ================================================================== */
 
 const ROLES = [
   'React Developer',
   'Frontend Developer',
+  'Full Stack Developer',
   'Software Developer',
-  'Java Full Stack Developer',
 ]
 
 const NAV = [
@@ -27,39 +27,40 @@ const NAV = [
 ]
 
 const SKILLS = [
-  'React', 'JavaScript', 'HTML', 'CSS', 'Tailwind CSS',
-  'Java', 'Spring Boot', 'MySQL', 'REST API', 'Git', 'GitHub',
+  'React.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Tailwind CSS',
+  'Java', 'Spring Boot', 'Spring Data JPA', 'MySQL', 'Firebase',
+  'REST APIs', 'Git', 'GitHub', 'Vite', 'Vercel', 'Render'
 ]
 
-// Real order a request travels: screen, then server, then database, then tools.
+// Architecture request flow: Client -> Server -> Database -> Tooling & Infra
 const STACK_LAYERS = [
   {
     icon: Code2,
-    title: 'What you see',
-    subtitle: 'Frontend',
-    items: ['React', 'Tailwind CSS', 'HTML', 'CSS'],
-    blurb: 'The screens and buttons a person taps.',
+    title: 'Frontend Presentation',
+    subtitle: 'User Interface',
+    items: ['React.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Tailwind CSS', 'Vite'],
+    blurb: 'Responsive, accessible web screens and component architecture engineered for seamless user interaction.',
   },
   {
     icon: Server,
-    title: 'What runs it',
-    subtitle: 'Backend',
-    items: ['Java', 'Spring Boot', 'REST API'],
-    blurb: 'The logic behind the screen. It answers every request.',
+    title: 'Backend Logic & APIs',
+    subtitle: 'Server Side',
+    items: ['Java', 'Spring Boot', 'Spring Data JPA', 'REST APIs', 'Firebase Auth'],
+    blurb: 'Robust application logic, secure authentication pipelines, and efficient API endpoint handling.',
   },
   {
     icon: Database,
-    title: 'Where data lives',
-    subtitle: 'Database',
-    items: ['MySQL'],
-    blurb: 'Where everything gets saved, and read back later.',
+    title: 'Data Persistence',
+    subtitle: 'Database & Storage',
+    items: ['MySQL', 'Firebase Realtime DB', 'CRUD Operations'],
+    blurb: 'Structured data modeling, relational storage, and real-time state synchronization.',
   },
   {
     icon: Wrench,
-    title: 'How I build it',
-    subtitle: 'Tools',
-    items: ['Git', 'GitHub'],
-    blurb: 'Version control, and where the code lives online.',
+    title: 'Build & Deployment',
+    subtitle: 'Tooling & Hosting',
+    items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vercel', 'Render'],
+    blurb: 'Version control, continuous integration workflows, and modern cloud hosting environments.',
   },
 ]
 
@@ -70,9 +71,9 @@ const EXPERIENCE = [
     time: '2026',
     place: 'Bengaluru',
     points: [
-      'Built pages that work well on every screen size, using HTML, CSS, and JavaScript',
-      'Connected React pages to real APIs to show live data',
-      'Put finished projects online and checked them on different browsers',
+      'Developed responsive and accessible web pages using HTML5, CSS3 (Flexbox/Grid), and JavaScript (ES6+).',
+      'Integrated REST APIs with React.js to fetch and display dynamic data.',
+      'Deployed frontend applications on Vercel and Render while ensuring responsive design and cross-browser compatibility.',
     ],
   },
   {
@@ -81,8 +82,8 @@ const EXPERIENCE = [
     time: '2023',
     place: 'Bengaluru',
     points: [
-      'Built small Python programs to clean data and test simple models',
-      'Worked with the team on fixing bugs and keeping code running smoothly',
+      'Worked on Python-based applications, data preprocessing, and basic model testing for AI/ML projects.',
+      'Collaborated with the development team to maintain code, perform testing, and support software development activities.',
     ],
   },
 ]
@@ -91,30 +92,30 @@ const PROJECTS = [
   {
     id: '01',
     title: 'ShopSphere',
-    tag: 'a full-stack online store',
-    desc: 'A complete online shop. People can browse, search, add to cart, and track orders. Behind it, an admin panel manages products, users, and stock.',
-    tech: ['React', 'Spring Boot', 'MySQL', 'REST API'],
-    note: 'The server sleeps to save cost. Give it 30–60 seconds to wake up before the live site loads fully.',
+    tag: 'Full-Stack E-Commerce Web Application',
+    desc: 'A complete full-stack e-commerce web application featuring product browsing, search functionality, cart, wishlist, user authentication, and order management. Includes an admin dashboard to manage products, users, inventory, and orders using CRUD operations.',
+    tech: ['React.js', 'JavaScript (ES6+)', 'Java', 'Spring Boot', 'Spring Data JPA', 'REST APIs', 'MySQL', 'Git'],
+    note: 'Note: Start the backend first (Render free tier may take 30–60 seconds to wake up), then open the frontend.',
     links: [
-      { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
-      { label: 'Backend', href: 'https://shopsphere-backend-5umn.onrender.com' },
+      { label: 'Live Site', href: 'https://shopsphere-8m8f.vercel.app/' },
+      { label: 'Backend API', href: 'https://shopsphere-backend-5umn.onrender.com' },
     ],
     featured: true,
   },
   {
     id: '02',
     title: 'AI Exam Companion',
-    tag: 'an exam practice app',
-    desc: 'A practice test app that scores you right away. A built-in AI chatbot explains why an answer was wrong, instead of just marking it incorrect.',
-    tech: ['JavaScript', 'Firebase', 'Groq API'],
-    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+    tag: 'AI-Powered Exam Preparation Application',
+    desc: 'Interactive mock test platform with instant score calculation, answer validation, and performance tracking. Integrated Groq API to power an AI chatbot that explains complex concepts and clarifies wrong answers in real-time.',
+    tech: ['HTML5', 'CSS3', 'JavaScript (ES6+)', 'Firebase Authentication', 'Groq API', 'JSON'],
+    links: [{ label: 'Live Site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
   },
   {
     id: '03',
     title: 'Personal Portfolio',
-    tag: 'an earlier version of this site',
-    desc: 'My first portfolio site. Built to be fast, clean, and easy to read on any device.',
-    tech: ['React', 'Vite', 'CSS'],
+    tag: 'Responsive Developer Portfolio',
+    desc: 'A high-performance personal portfolio website built with modular, reusable React components to showcase projects, technical skills, certifications, and contact information.',
+    tech: ['React.js', 'Vite', 'JavaScript (ES6+)', 'CSS3 (Flexbox & Grid)', 'Vercel'],
   },
 ]
 
@@ -122,12 +123,25 @@ const CERTS = [
   { name: 'Introduction to Java', by: 'Infosys Springboard' },
   { name: 'Cloud Computing', by: 'Infosys Springboard' },
   { name: 'Software Engineering', by: 'Infosys Springboard' },
-  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future' },
+  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future Program' },
 ]
 
 const EDUCATION = [
-  { school: 'Dr. ACS College of Engineering', degree: 'B.E., Computer Science and Engineering', time: '2023 – 2026 · Bengaluru' },
-  { school: 'PVP Polytechnic', degree: 'Diploma, Information Science and Engineering', time: '2020 – 2023 · Bengaluru' },
+  { 
+    school: 'Dr. ACS College of Engineering', 
+    degree: 'Bachelor of Engineering (B.E.) in Computer Science and Engineering', 
+    time: '2023 – 2026 · Bengaluru' 
+  },
+  { 
+    school: 'PVP Polytechnic', 
+    degree: 'Diploma in Information Science and Engineering', 
+    time: '2020 – 2023 · Bengaluru' 
+  },
+  { 
+    school: 'Vidya Priya English School', 
+    degree: 'Secondary School Leaving Certificate (SSLC)', 
+    time: '2019 – 2020 · Bengaluru' 
+  },
 ]
 
 const CONTACTS = [
@@ -173,7 +187,7 @@ function useReveal() {
     if (!el) return
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     )
     obs.observe(el)
     return () => obs.disconnect()
@@ -216,11 +230,9 @@ function useScrolledPast(threshold = 30) {
 }
 
 /* ================================================================== */
-/* small pieces                                                        */
+/* small components                                                   */
 /* ================================================================== */
 
-// section marker: a gold-ringed medallion with the sheet number, joined by
-// a thin gold thread that runs to the section title — the through-line motif.
 function Eyebrow({ index }) {
   return (
     <div className="eyebrow-row">
@@ -231,7 +243,7 @@ function Eyebrow({ index }) {
 }
 
 /* ================================================================== */
-/* app                                                                  */
+/* main application                                                    */
 /* ================================================================== */
 
 export default function App() {
@@ -242,7 +254,6 @@ export default function App() {
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-  // gold spotlight that follows the pointer in the hero — a quiet, premium touch
   const handleHeroMove = (e) => {
     const el = heroRef.current
     if (!el) return
@@ -284,12 +295,12 @@ export default function App() {
           <Reveal>
             <div className="hero-eyebrow">
               <span className="pulse" />
-              Open to work · Bengaluru, India
+              Open to Opportunities · Bengaluru, India
             </div>
           </Reveal>
 
           <Reveal delay={80}>
-            <h1 className="hero-name">Hi, I&rsquo;m <span className="shine">Rahul</span>.</h1>
+            <h1 className="hero-name">Hi, I&rsquo;m <span className="shine">Rahul S</span>.</h1>
           </Reveal>
 
           <Reveal delay={140}>
@@ -301,9 +312,7 @@ export default function App() {
 
           <Reveal delay={200}>
             <p className="hero-desc">
-              I&rsquo;m in my final year of a Computer Science degree. I like to build real apps
-              that work — the part you see and click, made with React, and the part that makes
-              it run, made with Java and Spring Boot.
+              Performance-driven Developer and B.E. Computer Science Graduate with hands-on experience in building responsive web applications using React.js, JavaScript (ES6+), Java, Spring Boot, and MySQL.
             </p>
           </Reveal>
 
@@ -320,15 +329,11 @@ export default function App() {
       <section id="about" className="wrap section">
         <Reveal>
           <Eyebrow index="01" />
-          <h2 className="sec-title">A builder, not just a <em>student</em></h2>
+          <h2 className="sec-title">Engineered for <em>Performance</em> & Scale</h2>
         </Reveal>
         <Reveal delay={100}>
           <p className="about-text">
-            I&rsquo;d rather make something real than only study the theory. I build the screens
-            people use with <strong>React</strong>, and the logic behind them with{' '}
-            <strong>Java</strong> and <strong>Spring Boot</strong>. I like clean, simple code,
-            and I care about making things people actually enjoy using — from the first click to
-            the last.
+            I specialize in developing responsive web applications with <strong>React.js</strong> and robust backends powered by <strong>Java</strong> and <strong>Spring Boot</strong>. Proficient in dynamic REST API integration, Firebase Authentication, state management, and relational database management with <strong>MySQL</strong>. I am focused on writing clean, modular code that delivers seamless UI/UX across all devices.
           </p>
         </Reveal>
       </section>
@@ -337,11 +342,11 @@ export default function App() {
       <section id="skills" className="wrap section">
         <Reveal>
           <Eyebrow index="02" />
-          <h2 className="sec-title">What I work <em>with</em></h2>
+          <h2 className="sec-title">Technical <em>Proficiencies</em></h2>
         </Reveal>
         <div className="skill-cloud">
           {SKILLS.map((s, i) => (
-            <Reveal key={s} delay={i * 35} as="span" className="panel skill-pill">
+            <Reveal key={s} delay={i * 30} as="span" className="panel skill-pill">
               {s}
             </Reveal>
           ))}
@@ -352,7 +357,7 @@ export default function App() {
       <section id="experience" className="wrap section">
         <Reveal>
           <Eyebrow index="03" />
-          <h2 className="sec-title">How I got <em>here</em></h2>
+          <h2 className="sec-title">Professional <em>Experience</em></h2>
         </Reveal>
 
         <div className="timeline">
@@ -371,7 +376,7 @@ export default function App() {
 
         <Reveal delay={100}>
           <div className="edu-label">
-            <GraduationCap size={15} color="var(--gold)" /> Education
+            <GraduationCap size={16} color="var(--gold)" /> Education Background
           </div>
           <div className="edu-grid">
             {EDUCATION.map((ed) => (
@@ -389,7 +394,7 @@ export default function App() {
       <section id="projects" className="wrap section">
         <Reveal>
           <Eyebrow index="04" />
-          <h2 className="sec-title">Things I&rsquo;ve <em>built</em></h2>
+          <h2 className="sec-title">Featured <em>Projects</em></h2>
         </Reveal>
 
         <div className="project-list">
@@ -397,7 +402,7 @@ export default function App() {
             <Reveal key={p.id} delay={i * 100} className="panel project-card">
               <div className="project-heading">
                 <h3>{p.title}</h3>
-                {p.featured && <span className="project-flag">Featured</span>}
+                {p.featured && <span className="project-flag">Featured Full Stack</span>}
               </div>
               <p className="project-tag">{p.tag}</p>
               <p className="project-desc">{p.desc}</p>
@@ -423,7 +428,7 @@ export default function App() {
       <section id="certifications" className="wrap section">
         <Reveal>
           <Eyebrow index="05" />
-          <h2 className="sec-title">Always learning <em>something new</em></h2>
+          <h2 className="sec-title">Certifications &amp; <em>Learning</em></h2>
         </Reveal>
         <div className="cert-grid">
           {CERTS.map((c, i) => (
@@ -442,10 +447,9 @@ export default function App() {
       <section id="stack" className="wrap section">
         <Reveal>
           <Eyebrow index="06" />
-          <h2 className="sec-title">How a request moves through my <em>apps</em></h2>
+          <h2 className="sec-title">Application Architecture &amp; <em>Data Flow</em></h2>
           <p className="sec-desc">
-            Top to bottom — the screen you tap, the server that answers, the database that
-            remembers, held together by the tools I use every day.
+            A structured breakdown of client request handling, middleware processing, database persistence, and deployment infrastructure.
           </p>
         </Reveal>
 
@@ -480,8 +484,8 @@ export default function App() {
       <section id="contact" className="wrap section">
         <Reveal>
           <Eyebrow index="07" />
-          <h2 className="contact-title">Let&rsquo;s build <em>something good.</em></h2>
-          <p className="sec-desc">Open to full-stack and frontend roles. Based in Bengaluru, happy to work remote.</p>
+          <h2 className="contact-title">Let&rsquo;s Connect &amp; <em>Build Together.</em></h2>
+          <p className="sec-desc">Open to React, Frontend, Full Stack, and Software Engineering roles. Based in Bengaluru, India.</p>
         </Reveal>
 
         <div className="contact-grid">
@@ -507,7 +511,7 @@ export default function App() {
         <div className="wrap footer-inner">
           <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
           <span className="footer-meta" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Sparkles size={13} /> built with React
+            <Sparkles size={13} /> Crafted with React.js &amp; CSS3
           </span>
         </div>
       </footer>
