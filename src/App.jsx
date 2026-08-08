@@ -96,16 +96,6 @@ const EDUCATION = [
     degree: 'B.E. in Computer Science and Engineering',
     time: '2023 – 2026 · Bengaluru',
   },
-  {
-    school: 'PVP Polytechnic',
-    degree: 'Diploma in Information Science and Engineering',
-    time: '2020 – 2023 · Bengaluru',
-  },
-  {
-    school: 'Vidya Priya English School',
-    degree: 'Secondary School Leaving Certificate (SSLC)',
-    time: '2019 – 2020 · Bengaluru',
-  },
 ]
 
 const PROJECTS = [
@@ -129,21 +119,6 @@ const PROJECTS = [
     desc: 'A secure banking application covering registration, login, account management, and transaction workflows, with JWT authentication and role-based access for user and admin operations.',
     tech: ['React.js', 'Java', 'Spring Boot', 'Spring Security', 'JWT', 'Spring Data JPA', 'MySQL', 'Docker'],
     featured: true,
-  },
-  {
-    id: 'proj_03',
-    title: 'AI Exam Companion',
-    tag: 'AI-Powered Exam Preparation',
-    desc: 'A mock-test platform with instant scoring and answer validation, plus a Groq-powered chatbot that explains concepts and clarifies wrong answers in real time.',
-    tech: ['HTML5', 'CSS3', 'JavaScript (ES6)', 'Firebase Auth', 'Groq API', 'JSON'],
-    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
-  },
-  {
-    id: 'proj_04',
-    title: 'Personal Portfolio',
-    tag: 'This Site',
-    desc: 'A performance-focused portfolio built with modular React components to present projects, skills, and contact details.',
-    tech: ['React.js', 'Vite', 'JavaScript (ES6)', 'CSS3'],
   },
 ]
 
