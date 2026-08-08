@@ -104,7 +104,7 @@ const PROJECTS = [
       'Integrated Spring Boot REST APIs with React.js and MySQL for end-to-end data management.',
       'Implemented authentication and secure order-management workflows.',
     ],
-    note: 'Backend is on Render’s free tier — first request can take 30–60s to wake it up.',
+    note: 'Backend is on Render\u2019s free tier — first request can take 30–60s to wake it up.',
     links: [
       { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
       { label: 'Backend API', href: 'https://shopsphere-backend-5umn.onrender.com' },
@@ -231,6 +231,8 @@ function SectionLabel({ index, label }) {
   )
 }
 
+// Signature element: a compact "dossier" card presenting the resume's
+// own header facts the way a recruiter would want them at a glance.
 function ProfileCard() {
   const rows = [
     { icon: MapPin, k: 'Location', v: 'Bengaluru, India' },
@@ -252,7 +254,8 @@ function ProfileCard() {
             const Icon = r.icon
             return (
               <div key={r.k} className="profile-row">
-                <span className="profile-row-k"><Icon size={14} className="profile-row-icon" />{r.k}</span>
+                <Icon size={14} className="profile-row-icon" />
+                <span className="profile-row-k">{r.k}</span>
                 <span className="profile-row-v">{r.v}</span>
               </div>
             )
@@ -263,7 +266,7 @@ function ProfileCard() {
             const Icon = c.icon
             return (
               <a key={c.label} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" aria-label={c.label} className="profile-icon-link">
-                <Icon size={16} />
+                <Icon size={15} />
               </a>
             )
           })}
@@ -408,7 +411,7 @@ export default function App() {
           {EXPERIENCE.map((e, i) => (
             <Reveal key={e.company} delay={i * 100} as="div" className="panel timeline-item">
               <div className="tl-head">
-                <span className="tl-icon"><Briefcase size={18} /></span>
+                <span className="tl-icon"><Briefcase size={15} /></span>
                 <div>
                   <h3 className="tl-role">{e.role}</h3>
                   <p className="tl-meta">{e.company} · {e.place}</p>
@@ -423,7 +426,7 @@ export default function App() {
         </div>
 
         <Reveal delay={100}>
-          <div className="sub-label"><GraduationCap size={18} /> Education</div>
+          <div className="sub-label"><GraduationCap size={15} /> Education</div>
           <div className="edu-grid">
             {EDUCATION.map((ed) => (
               <div key={ed.school} className="panel edu-card">
@@ -448,7 +451,7 @@ export default function App() {
                 <span className="project-id">{p.id}</span>
                 <div className="project-heading">
                   <h3>{p.title}</h3>
-                  {p.featured && <span className="project-flag"><CheckCircle2 size={13} /> Featured</span>}
+                  {p.featured && <span className="project-flag"><CheckCircle2 size={12} /> Featured</span>}
                 </div>
               </div>
               <p className="project-tag">{p.tag}</p>
@@ -465,7 +468,7 @@ export default function App() {
                 <div className="project-links">
                   {p.links.map((l) => (
                     <a key={l.label} className="project-link" href={l.href} target="_blank" rel="noopener noreferrer">
-                      {l.label} <ArrowUpRight size={14} />
+                      {l.label} <ArrowUpRight size={13} />
                     </a>
                   ))}
                 </div>
@@ -483,7 +486,7 @@ export default function App() {
         <div className="cert-grid">
           {CERTS.map((c, i) => (
             <Reveal key={c.name} delay={i * 70} className="panel cert-card">
-              <span className="cert-icon"><Award size={20} /></span>
+              <span className="cert-icon"><Award size={17} /></span>
               <div>
                 <p className="cert-name">{c.name}</p>
                 <p className="cert-by">{c.by}</p>
@@ -508,7 +511,7 @@ export default function App() {
             const Icon = layer.icon
             return (
               <Reveal key={layer.title} delay={i * 70} className="panel approach-card">
-                <div className="approach-icon"><Icon size={20} /></div>
+                <div className="approach-icon"><Icon size={18} /></div>
                 <p className="approach-sub">{layer.subtitle}</p>
                 <h3 className="approach-title">{layer.title}</h3>
                 <p className="approach-blurb">{layer.blurb}</p>
@@ -535,7 +538,7 @@ export default function App() {
             return (
               <Reveal key={c.label} delay={i * 60} as="div" className="panel contact-card">
                 <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="contact-link">
-                  <span className="contact-icon"><Icon size={18} /></span>
+                  <span className="contact-icon"><Icon size={16} /></span>
                   <span className="contact-kv">
                     <span className="contact-key">{c.label}</span>
                     <span className="contact-value">{c.value}</span>
