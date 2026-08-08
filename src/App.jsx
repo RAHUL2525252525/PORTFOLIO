@@ -1,66 +1,78 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  Github, Linkedin, Mail, Phone, ArrowUpRight, Sparkles,
-  Code2, Server, Database, Wrench, Award, GraduationCap, ShieldCheck, Cpu
+  Github, Linkedin, Mail, Phone, ArrowUpRight,
+  Terminal, Layers, Database, Wrench, ShieldCheck,
+  GraduationCap, BadgeCheck, CheckCircle2
 } from 'lucide-react'
 import './index.css'
 
 /* ================================================================== */
-/* content — aligned with professional resume details                 */
+/* content — sourced from resume (RAHUL_S_FlowCV_Resume_2026-08-08)    */
 /* ================================================================== */
 
 const ROLES = [
-  'React Developer',
-  'Frontend Developer',
   'Full Stack Developer',
-  'Software Developer',
+  'Java · Spring Boot Developer',
+  'React Developer',
+  'REST API Engineer',
 ]
 
-const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Work' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'certifications', label: 'Certs' },
-  { id: 'stack', label: 'Stack' },
-  { id: 'contact', label: 'Contact' },
+const ROUTES = [
+  { id: 'about', label: '/about' },
+  { id: 'skills', label: '/skills' },
+  { id: 'experience', label: '/experience' },
+  { id: 'projects', label: '/projects' },
+  { id: 'certifications', label: '/certifications' },
+  { id: 'architecture', label: '/architecture' },
+  { id: 'contact', label: '/contact' },
 ]
 
-const SKILLS = [
-  'React.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Tailwind CSS',
-  'Java', 'Spring Boot', 'Spring Data JPA', 'MySQL', 'Firebase',
-  'REST APIs', 'Git', 'GitHub', 'Vite', 'Vercel', 'Render'
+const SKILL_GROUPS = [
+  { cat: 'Languages', items: ['Java', 'JavaScript (ES6)', 'SQL'] },
+  { cat: 'Frontend', items: ['React.js', 'HTML5', 'CSS3', 'JSX', 'Responsive Design', 'Flexbox', 'CSS Grid'] },
+  { cat: 'Backend', items: ['Java', 'Spring Boot', 'Spring MVC', 'REST APIs', 'Spring Data JPA', 'Hibernate'] },
+  { cat: 'Database', items: ['MySQL', 'SQL', 'Database Design', 'CRUD Operations'] },
+  { cat: 'Security', items: ['Spring Security', 'JWT Authentication', 'Role-Based Access Control'] },
+  { cat: 'Testing', items: ['JUnit 5', 'Mockito'] },
+  { cat: 'Core CS', items: ['OOP', 'Data Structures & Algorithms', 'DBMS', 'Agile Development'] },
+  { cat: 'Tools & Deployment', items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Docker', 'Docker Compose', 'AWS EC2', 'Vercel', 'Render'] },
 ]
 
-// Architecture request flow: Client -> Server -> Database -> Tooling & Infra
-const STACK_LAYERS = [
+const ARCHITECTURE = [
   {
-    icon: Code2,
+    icon: Terminal,
     title: 'Frontend Presentation',
-    subtitle: 'User Interface',
-    items: ['React.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Tailwind CSS', 'Vite'],
-    blurb: 'Responsive, accessible web screens and component architecture engineered for seamless user interaction.',
+    subtitle: 'Client',
+    items: ['React.js', 'JSX', 'HTML5', 'CSS3', 'Flexbox / Grid', 'Vite'],
+    blurb: 'Responsive interfaces and reusable component structure, built for consistent behaviour across breakpoints.',
   },
   {
-    icon: Server,
+    icon: Layers,
     title: 'Backend Logic & APIs',
-    subtitle: 'Server Side',
-    items: ['Java', 'Spring Boot', 'Spring Data JPA', 'REST APIs', 'Firebase Auth'],
-    blurb: 'Robust application logic, secure authentication pipelines, and efficient API endpoint handling.',
+    subtitle: 'Service Layer',
+    items: ['Java', 'Spring Boot', 'Spring MVC', 'REST APIs', 'Spring Data JPA', 'Hibernate'],
+    blurb: 'Controller → Service → Repository layering, exposing REST endpoints consumed directly by the frontend.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Auth & Access Control',
+    subtitle: 'Security',
+    items: ['Spring Security', 'JWT Authentication', 'Role-Based Access Control'],
+    blurb: 'Stateless authentication and route-level authorization for protected user and admin operations.',
   },
   {
     icon: Database,
     title: 'Data Persistence',
-    subtitle: 'Database & Storage',
-    items: ['MySQL', 'Firebase Realtime DB', 'CRUD Operations'],
-    blurb: 'Structured data modeling, relational storage, and real-time state synchronization.',
+    subtitle: 'Database',
+    items: ['MySQL', 'Database Design', 'CRUD Operations'],
+    blurb: 'Relational schema design across users, roles, accounts, products, and orders.',
   },
   {
     icon: Wrench,
     title: 'Build & Deployment',
-    subtitle: 'Tooling & Hosting',
-    items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vercel', 'Render'],
-    blurb: 'Version control, continuous integration workflows, and modern cloud hosting environments.',
+    subtitle: 'Infra',
+    items: ['Git', 'GitHub', 'Docker', 'Docker Compose', 'AWS EC2', 'Vercel', 'Render'],
+    blurb: 'Version-controlled workflows, containerized environments, and cloud-hosted delivery.',
   },
 ]
 
@@ -71,91 +83,95 @@ const EXPERIENCE = [
     time: '2026',
     place: 'Bengaluru',
     points: [
-      'Developed responsive and accessible web pages using HTML5, CSS3 (Flexbox/Grid), and JavaScript (ES6+).',
-      'Integrated REST APIs with React.js to fetch and display dynamic data.',
-      'Deployed frontend applications on Vercel and Render while ensuring responsive design and cross-browser compatibility.',
+      'Gained hands-on exposure to full-stack development using HTML, CSS, JavaScript, React.js, Java, Spring Boot, REST APIs, and MySQL.',
+      'Developed responsive frontend interfaces and integrated REST APIs with backend services for dynamic data handling.',
+      'Practiced database integration, authentication, CRUD operations, Git-based development, and application deployment.',
     ],
   },
+]
+
+const EDUCATION = [
   {
-    role: 'AI / ML & Python Intern',
-    company: 'KNOWX Innovations',
-    time: '2023',
-    place: 'Bengaluru',
-    points: [
-      'Worked on Python-based applications, data preprocessing, and basic model testing for AI/ML projects.',
-      'Collaborated with the development team to maintain code, perform testing, and support software development activities.',
-    ],
+    school: 'Dr. ACS College of Engineering',
+    degree: 'B.E. in Computer Science and Engineering',
+    time: '2023 – 2026 · Bengaluru',
+  },
+  {
+    school: 'PVP Polytechnic',
+    degree: 'Diploma in Information Science and Engineering',
+    time: '2020 – 2023 · Bengaluru',
+  },
+  {
+    school: 'Vidya Priya English School',
+    degree: 'Secondary School Leaving Certificate (SSLC)',
+    time: '2019 – 2020 · Bengaluru',
   },
 ]
 
 const PROJECTS = [
   {
-    id: '01',
+    id: 'proj_01',
     title: 'ShopSphere',
-    tag: 'Full-Stack E-Commerce Web Application',
-    desc: 'A complete full-stack e-commerce web application featuring product browsing, search functionality, cart, wishlist, user authentication, and order management. Includes an admin dashboard to manage products, users, inventory, and orders using CRUD operations.',
-    tech: ['React.js', 'JavaScript (ES6+)', 'Java', 'Spring Boot', 'Spring Data JPA', 'REST APIs', 'MySQL', 'Git'],
-    note: 'Note: Start the backend first (Render free tier may take 30–60 seconds to wake up), then open the frontend.',
+    tag: 'Full-Stack E-Commerce Application',
+    desc: 'An e-commerce platform supporting product browsing, search, cart, wishlist, checkout, and order management, with role-based admin tooling for products, inventory, users, and orders.',
+    tech: ['React.js', 'Java', 'Spring Boot', 'Spring Data JPA', 'REST APIs', 'MySQL', 'Git'],
+    note: 'Backend is on Render\u2019s free tier — first request can take 30–60s to wake it up.',
     links: [
-      { label: 'Live Site', href: 'https://shopsphere-8m8f.vercel.app/' },
+      { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
       { label: 'Backend API', href: 'https://shopsphere-backend-5umn.onrender.com' },
     ],
     featured: true,
   },
   {
-    id: '02',
-    title: 'AI Exam Companion',
-    tag: 'AI-Powered Exam Preparation Application',
-    desc: 'Interactive mock test platform with instant score calculation, answer validation, and performance tracking. Integrated Groq API to power an AI chatbot that explains complex concepts and clarifies wrong answers in real-time.',
-    tech: ['HTML5', 'CSS3', 'JavaScript (ES6+)', 'Firebase Authentication', 'Groq API', 'JSON'],
-    links: [{ label: 'Live Site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+    id: 'proj_02',
+    title: 'Online Banking System',
+    tag: 'Full-Stack Banking Application',
+    desc: 'A secure banking application covering registration, login, account management, and transaction workflows, with JWT authentication and role-based access for user and admin operations.',
+    tech: ['React.js', 'Java', 'Spring Boot', 'Spring Security', 'JWT', 'Spring Data JPA', 'MySQL', 'Docker'],
+    featured: true,
   },
   {
-    id: '03',
+    id: 'proj_03',
+    title: 'AI Exam Companion',
+    tag: 'AI-Powered Exam Preparation',
+    desc: 'A mock-test platform with instant scoring and answer validation, plus a Groq-powered chatbot that explains concepts and clarifies wrong answers in real time.',
+    tech: ['HTML5', 'CSS3', 'JavaScript (ES6)', 'Firebase Auth', 'Groq API', 'JSON'],
+    links: [{ label: 'Live site', href: 'https://ai-exam-companion-ghzc.onrender.com' }],
+  },
+  {
+    id: 'proj_04',
     title: 'Personal Portfolio',
-    tag: 'Responsive Developer Portfolio',
-    desc: 'A high-performance personal portfolio website built with modular, reusable React components to showcase projects, technical skills, certifications, and contact information.',
-    tech: ['React.js', 'Vite', 'JavaScript (ES6+)', 'CSS3 (Flexbox & Grid)', 'Vercel'],
+    tag: 'This Site',
+    desc: 'A performance-focused portfolio built with modular React components to present projects, skills, and contact details.',
+    tech: ['React.js', 'Vite', 'JavaScript (ES6)', 'CSS3'],
   },
 ]
 
 const CERTS = [
   { name: 'Introduction to Java', by: 'Infosys Springboard' },
-  { name: 'Cloud Computing', by: 'Infosys Springboard' },
-  { name: 'Software Engineering', by: 'Infosys Springboard' },
-  { name: 'AI and Green Skills', by: 'Edunet Foundation, Skills4Future Program' },
-]
-
-const EDUCATION = [
-  { 
-    school: 'Dr. ACS College of Engineering', 
-    degree: 'Bachelor of Engineering (B.E.) in Computer Science and Engineering', 
-    time: '2023 – 2026 · Bengaluru' 
-  },
-  { 
-    school: 'PVP Polytechnic', 
-    degree: 'Diploma in Information Science and Engineering', 
-    time: '2020 – 2023 · Bengaluru' 
-  },
-  { 
-    school: 'Vidya Priya English School', 
-    degree: 'Secondary School Leaving Certificate (SSLC)', 
-    time: '2019 – 2020 · Bengaluru' 
-  },
+  { name: 'Java Programming Fundamentals', by: 'Infosys Springboard' },
 ]
 
 const CONTACTS = [
-  { icon: Mail, label: 'Email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
-  { icon: Phone, label: 'Phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
-  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
-  { icon: Github, label: 'GitHub', value: 'github.com', href: 'https://github.com/' },
+  { icon: Mail, label: 'email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
+  { icon: Phone, label: 'phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
+  { icon: Linkedin, label: 'linkedin', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
+  { icon: Github, label: 'github', value: 'github.com/rahul-s', href: 'https://github.com/' },
+]
+
+const HERO_JSON = [
+  { k: 'name', v: '"Rahul S"' },
+  { k: 'role', v: '"Full Stack Developer"' },
+  { k: 'location', v: '"Bengaluru, IN"' },
+  { k: 'stack', v: '["React", "Spring Boot", "MySQL"]' },
+  { k: 'status', v: '"open_to_work"' },
 ]
 
 /* ================================================================== */
 /* hooks                                                                */
 /* ================================================================== */
 
-function useTypewriter(words, typeSpeed = 65, deleteSpeed = 34, pause = 1300) {
+function useTypewriter(words, typeSpeed = 60, deleteSpeed = 30, pause = 1300) {
   const [text, setText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
   const [deleting, setDeleting] = useState(false)
@@ -207,7 +223,7 @@ function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
 function useActiveSection() {
   const [active, setActive] = useState('')
   useEffect(() => {
-    const sections = NAV.map((n) => document.getElementById(n.id)).filter(Boolean)
+    const sections = ROUTES.map((n) => document.getElementById(n.id)).filter(Boolean)
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) }),
       { rootMargin: '-40% 0px -50% 0px' }
@@ -230,14 +246,55 @@ function useScrolledPast(threshold = 30) {
 }
 
 /* ================================================================== */
-/* small components                                                   */
+/* small components                                                    */
 /* ================================================================== */
 
-function Eyebrow({ index }) {
+// Section header styled as an HTTP request line — carries real
+// information here since the site really is organised as a set of
+// routes, and each one really does resolve (reveal-in doubles as
+// the "response").
+function Endpoint({ method = 'GET', path }) {
+  const [ref, inView] = useReveal()
   return (
-    <div className="eyebrow-row">
-      <span className="medallion">{index}</span>
-      <span className="thread" />
+    <div ref={ref} className="endpoint-row">
+      <span className={`http-method ${method.toLowerCase()}`}>{method}</span>
+      <span className="http-path">{path}</span>
+      <span className="http-rule" />
+      <span className={`http-status ${inView ? 'in' : ''}`}>200 OK</span>
+    </div>
+  )
+}
+
+function HeroResponse() {
+  const [visibleLines, setVisibleLines] = useState(0)
+
+  useEffect(() => {
+    if (visibleLines >= HERO_JSON.length) return
+    const t = setTimeout(() => setVisibleLines((v) => v + 1), 260 + visibleLines * 90)
+    return () => clearTimeout(t)
+  }, [visibleLines])
+
+  return (
+    <div className="response-card">
+      <div className="response-titlebar">
+        <span className="dot" /><span className="dot" /><span className="dot" />
+        <span className="response-file">profile.json</span>
+      </div>
+      <div className="response-body">
+        <p className="response-line request-line">
+          <span className="tok-method">GET</span> /rahul-s <span className="tok-dim">HTTP/1.1</span>
+        </p>
+        <p className="response-line status-line"><span className="tok-ok">200 OK</span></p>
+        <p className="response-line brace">{'{'}</p>
+        {HERO_JSON.map((row, i) => (
+          <p key={row.k} className={`response-line kv ${i < visibleLines ? 'in' : ''}`}>
+            <span className="tok-key">&quot;{row.k}&quot;</span><span className="tok-dim">:</span>{' '}
+            <span className="tok-val">{row.v}</span>
+            {i < HERO_JSON.length - 1 && <span className="tok-dim">,</span>}
+          </p>
+        ))}
+        <p className="response-line brace">{'}'}<span className="cursor-blink" /></p>
+      </div>
     </div>
   )
 }
@@ -250,104 +307,104 @@ export default function App() {
   const typed = useTypewriter(ROLES)
   const active = useActiveSection()
   const scrolled = useScrolledPast()
-  const heroRef = useRef(null)
 
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-  const handleHeroMove = (e) => {
-    const el = heroRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    el.style.setProperty('--x', `${e.clientX - rect.left}px`)
-    el.style.setProperty('--y', `${e.clientY - rect.top}px`)
-  }
-
   return (
     <div>
-      <div className="vignette" aria-hidden="true" />
+      <div className="grid-field" aria-hidden="true" />
 
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-            <span className="logo-ring">R</span>
-            <span className="logo-text">rahul<span className="dim">.dev</span></span>
+            <span className="logo-chip">rahul.dev</span>
           </button>
 
           <div className="tab-bar">
-            {NAV.map((n) => (
+            {ROUTES.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
                 {n.label}
               </button>
             ))}
           </div>
 
-          <button className="btn ghost" style={{ padding: '0.6rem 1.3rem', fontSize: '0.74rem' }} onClick={() => scrollTo('contact')}>
-            Say hi
+          <button className="btn ghost nav-cta" onClick={() => scrollTo('contact')}>
+            POST /contact
           </button>
         </div>
       </nav>
 
       {/* ---------------- hero ---------------- */}
-      <header id="hero" className="hero" ref={heroRef} onMouseMove={handleHeroMove}>
-        <div className="hero-spotlight" aria-hidden="true" />
-        <div className="hero-inner">
-          <Reveal>
-            <div className="hero-eyebrow">
-              <span className="pulse" />
-              Open to Opportunities · Bengaluru, India
-            </div>
-          </Reveal>
+      <header id="hero" className="hero">
+        <div className="wrap hero-inner">
+          <div className="hero-copy">
+            <Reveal>
+              <div className="hero-eyebrow"><span className="prompt">$</span> whoami</div>
+            </Reveal>
 
-          <Reveal delay={80}>
-            <h1 className="hero-name">Hi, I&rsquo;m <span className="shine">Rahul S</span>.</h1>
-          </Reveal>
+            <Reveal delay={70}>
+              <h1 className="hero-name">Rahul S</h1>
+            </Reveal>
 
-          <Reveal delay={140}>
-            <div className="hero-role">
-              <span className="rule" />
-              <span className="role-text">{typed}<span className="type-cursor" /></span>
-            </div>
-          </Reveal>
+            <Reveal delay={130}>
+              <div className="hero-role">
+                <span className="cmt">//</span>
+                <span className="role-text">{typed}<span className="type-cursor" /></span>
+              </div>
+            </Reveal>
 
-          <Reveal delay={200}>
-            <p className="hero-desc">
-              Performance-driven Developer and B.E. Computer Science Graduate with hands-on experience in building responsive web applications using React.js, JavaScript (ES6+), Java, Spring Boot, and MySQL.
-            </p>
-          </Reveal>
+            <Reveal delay={190}>
+              <p className="hero-desc">
+                Full stack developer skilled in Java, Spring Boot, React.js, REST APIs, and MySQL —
+                building secure, responsive web applications with attention to backend architecture,
+                database design, and authentication.
+              </p>
+            </Reveal>
 
-          <Reveal delay={260}>
-            <div className="hero-cta">
-              <button className="btn primary" onClick={() => scrollTo('projects')}>View Projects</button>
-              <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact Me</button>
-            </div>
+            <Reveal delay={250}>
+              <div className="hero-cta">
+                <button className="btn primary" onClick={() => scrollTo('projects')}>View projects</button>
+                <button className="btn ghost" onClick={() => scrollTo('contact')}>Get in touch</button>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={120} className="hero-response">
+            <HeroResponse />
           </Reveal>
         </div>
       </header>
 
       {/* ---------------- about ---------------- */}
       <section id="about" className="wrap section">
-        <Reveal>
-          <Eyebrow index="01" />
-          <h2 className="sec-title">Engineered for <em>Performance</em> & Scale</h2>
+        <Reveal><Endpoint path="/about" /></Reveal>
+        <Reveal delay={90}>
+          <h2 className="sec-title">Backend-minded, shipped as full stack.</h2>
         </Reveal>
-        <Reveal delay={100}>
+        <Reveal delay={140}>
           <p className="about-text">
-            I specialize in developing responsive web applications with <strong>React.js</strong> and robust backends powered by <strong>Java</strong> and <strong>Spring Boot</strong>. Proficient in dynamic REST API integration, Firebase Authentication, state management, and relational database management with <strong>MySQL</strong>. I am focused on writing clean, modular code that delivers seamless UI/UX across all devices.
+            I build web applications end to end — <strong>React</strong> interfaces wired to
+            <strong> Spring Boot</strong> services, with data modelled in <strong>MySQL</strong> and
+            protected by <strong>Spring Security</strong> and JWT. I care about how a request actually
+            moves through a system: controller, service, repository, and the schema underneath it —
+            and I write it in clean, testable layers rather than one large tangle.
           </p>
         </Reveal>
       </section>
 
       {/* ---------------- skills ---------------- */}
       <section id="skills" className="wrap section">
-        <Reveal>
-          <Eyebrow index="02" />
-          <h2 className="sec-title">Technical <em>Proficiencies</em></h2>
-        </Reveal>
-        <div className="skill-cloud">
-          {SKILLS.map((s, i) => (
-            <Reveal key={s} delay={i * 30} as="span" className="panel skill-pill">
-              {s}
+        <Reveal><Endpoint path="/skills" /></Reveal>
+        <Reveal delay={90}><h2 className="sec-title">Technical skills</h2></Reveal>
+
+        <div className="skill-grid">
+          {SKILL_GROUPS.map((g, i) => (
+            <Reveal key={g.cat} delay={i * 60} className="panel skill-card">
+              <p className="skill-cat">{g.cat}</p>
+              <div className="skill-items">
+                {g.items.map((s) => <span key={s} className="pill">{s}</span>)}
+              </div>
             </Reveal>
           ))}
         </div>
@@ -355,15 +412,13 @@ export default function App() {
 
       {/* ---------------- experience ---------------- */}
       <section id="experience" className="wrap section">
-        <Reveal>
-          <Eyebrow index="03" />
-          <h2 className="sec-title">Professional <em>Experience</em></h2>
-        </Reveal>
+        <Reveal><Endpoint path="/experience" /></Reveal>
+        <Reveal delay={90}><h2 className="sec-title">Experience</h2></Reveal>
 
         <div className="timeline">
           {EXPERIENCE.map((e, i) => (
             <Reveal key={e.company} delay={i * 100} as="div" className="timeline-item">
-              <span className="timeline-dot" />
+              <span className="timeline-node" />
               <p className="tl-time">{e.time} · {e.place}</p>
               <h3 className="tl-role">{e.role}</h3>
               <p className="tl-meta">{e.company}</p>
@@ -375,9 +430,7 @@ export default function App() {
         </div>
 
         <Reveal delay={100}>
-          <div className="edu-label">
-            <GraduationCap size={16} color="var(--gold)" /> Education Background
-          </div>
+          <div className="sub-label"><GraduationCap size={15} /> Education</div>
           <div className="edu-grid">
             {EDUCATION.map((ed) => (
               <div key={ed.school} className="panel edu-card">
@@ -392,22 +445,21 @@ export default function App() {
 
       {/* ---------------- projects ---------------- */}
       <section id="projects" className="wrap section">
-        <Reveal>
-          <Eyebrow index="04" />
-          <h2 className="sec-title">Featured <em>Projects</em></h2>
-        </Reveal>
+        <Reveal><Endpoint path="/projects" /></Reveal>
+        <Reveal delay={90}><h2 className="sec-title">Projects</h2></Reveal>
 
         <div className="project-list">
           {PROJECTS.map((p, i) => (
-            <Reveal key={p.id} delay={i * 100} className="panel project-card">
+            <Reveal key={p.id} delay={i * 90} className="panel project-card">
               <div className="project-heading">
+                <span className="project-id">{p.id}</span>
                 <h3>{p.title}</h3>
-                {p.featured && <span className="project-flag">Featured Full Stack</span>}
+                {p.featured && <span className="project-flag"><CheckCircle2 size={12} /> featured</span>}
               </div>
               <p className="project-tag">{p.tag}</p>
               <p className="project-desc">{p.desc}</p>
               <div className="project-tech">
-                {p.tech.map((t) => <span key={t} className="tech-pill">{t}</span>)}
+                {p.tech.map((t) => <span key={t} className="pill mono">{t}</span>)}
               </div>
               {p.note && <p className="project-note">{p.note}</p>}
               {p.links && (
@@ -426,14 +478,13 @@ export default function App() {
 
       {/* ---------------- certifications ---------------- */}
       <section id="certifications" className="wrap section">
-        <Reveal>
-          <Eyebrow index="05" />
-          <h2 className="sec-title">Certifications &amp; <em>Learning</em></h2>
-        </Reveal>
+        <Reveal><Endpoint path="/certifications" /></Reveal>
+        <Reveal delay={90}><h2 className="sec-title">Certifications</h2></Reveal>
+
         <div className="cert-grid">
           {CERTS.map((c, i) => (
-            <Reveal key={c.name} delay={i * 80} className="panel cert-card">
-              <span className="cert-icon"><Award size={16} color="var(--gold)" /></span>
+            <Reveal key={c.name} delay={i * 70} className="panel cert-card">
+              <span className="cert-icon"><BadgeCheck size={16} /></span>
               <div>
                 <p className="cert-name">{c.name}</p>
                 <p className="cert-by">{c.by}</p>
@@ -443,36 +494,34 @@ export default function App() {
         </div>
       </section>
 
-      {/* ---------------- tech stack pipeline ---------------- */}
-      <section id="stack" className="wrap section">
-        <Reveal>
-          <Eyebrow index="06" />
-          <h2 className="sec-title">Application Architecture &amp; <em>Data Flow</em></h2>
+      {/* ---------------- architecture ---------------- */}
+      <section id="architecture" className="wrap section">
+        <Reveal><Endpoint path="/architecture" /></Reveal>
+        <Reveal delay={90}>
+          <h2 className="sec-title">How a request moves</h2>
           <p className="sec-desc">
-            A structured breakdown of client request handling, middleware processing, database persistence, and deployment infrastructure.
+            Client to service to schema — the layers a request actually passes through, and what runs it.
           </p>
         </Reveal>
 
         <Reveal delay={80} className="pipeline">
-          {STACK_LAYERS.map((layer, i) => {
+          {ARCHITECTURE.map((layer, i) => {
             const Icon = layer.icon
             return (
               <div key={layer.title}>
                 <div className="pipe-node">
-                  <div className="pipe-icon"><Icon size={19} color="var(--gold)" /></div>
+                  <div className="pipe-icon"><Icon size={18} /></div>
                   <div className="pipe-body panel">
                     <p className="pipe-sub">{layer.subtitle}</p>
                     <h3 className="pipe-title">{layer.title}</h3>
                     <p className="pipe-blurb">{layer.blurb}</p>
                     <div className="pipe-items">
-                      {layer.items.map((it) => <span key={it} className="tech-pill">{it}</span>)}
+                      {layer.items.map((it) => <span key={it} className="pill mono">{it}</span>)}
                     </div>
                   </div>
                 </div>
-                {i < STACK_LAYERS.length - 1 && (
-                  <div className="pipe-connector">
-                    <span className="wire"><span className="wire-line" style={{ animationDelay: `${i * -0.9}s` }} /></span>
-                  </div>
+                {i < ARCHITECTURE.length - 1 && (
+                  <div className="pipe-connector"><span className="wire" /></div>
                 )}
               </div>
             )
@@ -482,22 +531,22 @@ export default function App() {
 
       {/* ---------------- contact ---------------- */}
       <section id="contact" className="wrap section">
-        <Reveal>
-          <Eyebrow index="07" />
-          <h2 className="contact-title">Let&rsquo;s Connect &amp; <em>Build Together.</em></h2>
-          <p className="sec-desc">Open to React, Frontend, Full Stack, and Software Engineering roles. Based in Bengaluru, India.</p>
+        <Reveal><Endpoint method="POST" path="/contact" /></Reveal>
+        <Reveal delay={90}>
+          <h2 className="sec-title">Let&rsquo;s build something.</h2>
+          <p className="sec-desc">Open to Full Stack, Java/Spring Boot, and React roles. Based in Bengaluru, India.</p>
         </Reveal>
 
         <div className="contact-grid">
           {CONTACTS.map((c, i) => {
             const Icon = c.icon
             return (
-              <Reveal key={c.label} delay={i * 70} as="div" className="panel contact-card">
-                <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', width: '100%' }}>
-                  <span className="contact-icon"><Icon size={17} /></span>
-                  <span>
-                    <p className="contact-label">{c.label}</p>
-                    <p className="contact-value">{c.value}</p>
+              <Reveal key={c.label} delay={i * 60} as="div" className="panel contact-card">
+                <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="contact-link">
+                  <span className="contact-icon"><Icon size={16} /></span>
+                  <span className="contact-kv">
+                    <span className="contact-key">{c.label}</span>
+                    <span className="contact-value">{c.value}</span>
                   </span>
                 </a>
               </Reveal>
@@ -509,10 +558,8 @@ export default function App() {
       {/* ---------------- footer ---------------- */}
       <footer className="site-footer">
         <div className="wrap footer-inner">
-          <span className="footer-meta">© {new Date().getFullYear()} Rahul S</span>
-          <span className="footer-meta" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Sparkles size={13} /> Crafted with React.js &amp; CSS3
-          </span>
+          <span className="footer-meta">// built by Rahul S · 2026</span>
+          <span className="footer-meta">status: <span className="tok-ok">open_to_work</span></span>
         </div>
       </footer>
     </div>
