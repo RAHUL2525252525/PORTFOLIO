@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react'
 import {
   Github, Linkedin, Mail, Phone, ArrowUpRight, MapPin, GraduationCap,
