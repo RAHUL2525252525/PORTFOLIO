@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  Github, Linkedin, Mail, Phone, ArrowUpRight,
-  Terminal, Layers, Database, Wrench, ShieldCheck,
-  GraduationCap, BadgeCheck, CheckCircle2
+  Github, Linkedin, Mail, Phone, ArrowUpRight, MapPin, GraduationCap,
+  Briefcase, Award, CheckCircle2, Code2, Layers, ShieldCheck, Database, Wrench
 } from 'lucide-react'
 import './index.css'
 
@@ -10,21 +9,16 @@ import './index.css'
 /* content — sourced from resume (RAHUL_S_FlowCV_Resume_2026-08-08)    */
 /* ================================================================== */
 
-const ROLES = [
-  'Full Stack Developer',
-  'Java · Spring Boot Developer',
-  'React Developer',
-  'REST API Engineer',
-]
+const STACK_ROTATE = ['React.js', 'Spring Boot', 'MySQL', 'REST APIs', 'Spring Security']
 
-const ROUTES = [
-  { id: 'about', label: '/about' },
-  { id: 'skills', label: '/skills' },
-  { id: 'experience', label: '/experience' },
-  { id: 'projects', label: '/projects' },
-  { id: 'certifications', label: '/certifications' },
-  { id: 'architecture', label: '/architecture' },
-  { id: 'contact', label: '/contact' },
+const NAV = [
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Work' },
+  { id: 'certifications', label: 'Certifications' },
+  { id: 'approach', label: 'Approach' },
+  { id: 'contact', label: 'Contact' },
 ]
 
 const SKILL_GROUPS = [
@@ -38,9 +32,9 @@ const SKILL_GROUPS = [
   { cat: 'Tools & Deployment', items: ['Git', 'GitHub', 'VS Code', 'IntelliJ IDEA', 'Vite', 'Docker', 'Docker Compose', 'AWS EC2', 'Vercel', 'Render'] },
 ]
 
-const ARCHITECTURE = [
+const APPROACH = [
   {
-    icon: Terminal,
+    icon: Code2,
     title: 'Frontend Presentation',
     subtitle: 'Client',
     items: ['React.js', 'JSX', 'HTML5', 'CSS3', 'Flexbox / Grid', 'Vite'],
@@ -70,7 +64,7 @@ const ARCHITECTURE = [
   {
     icon: Wrench,
     title: 'Build & Deployment',
-    subtitle: 'Infra',
+    subtitle: 'Infrastructure',
     items: ['Git', 'GitHub', 'Docker', 'Docker Compose', 'AWS EC2', 'Vercel', 'Render'],
     blurb: 'Version-controlled workflows, containerized environments, and cloud-hosted delivery.',
   },
@@ -100,11 +94,16 @@ const EDUCATION = [
 
 const PROJECTS = [
   {
-    id: 'proj_01',
+    id: '01',
     title: 'ShopSphere',
     tag: 'Full-Stack E-Commerce Application',
-    desc: 'An e-commerce platform supporting product browsing, search, cart, wishlist, checkout, and order management, with role-based admin tooling for products, inventory, users, and orders.',
     tech: ['React.js', 'Java', 'Spring Boot', 'Spring Data JPA', 'REST APIs', 'MySQL', 'Git'],
+    highlights: [
+      'Built an e-commerce platform supporting product browsing, search, cart, wishlist, checkout, and order management.',
+      'Developed role-based admin functionality for managing products, inventory, users, and orders.',
+      'Integrated Spring Boot REST APIs with React.js and MySQL for end-to-end data management.',
+      'Implemented authentication and secure order-management workflows.',
+    ],
     note: 'Backend is on Render\u2019s free tier — first request can take 30–60s to wake it up.',
     links: [
       { label: 'Live site', href: 'https://shopsphere-8m8f.vercel.app/' },
@@ -113,11 +112,17 @@ const PROJECTS = [
     featured: true,
   },
   {
-    id: 'proj_02',
+    id: '02',
     title: 'Online Banking System',
     tag: 'Full-Stack Banking Application',
-    desc: 'A secure banking application covering registration, login, account management, and transaction workflows, with JWT authentication and role-based access for user and admin operations.',
     tech: ['React.js', 'Java', 'Spring Boot', 'Spring Security', 'JWT', 'Spring Data JPA', 'MySQL', 'Docker'],
+    highlights: [
+      'Developed a secure full-stack banking application with registration, login, account management, and transaction workflows.',
+      'Built REST APIs using Spring Boot and Spring Data JPA with a layered Controller, Service, and Repository architecture.',
+      'Implemented JWT authentication and role-based access control using Spring Security for protected user and admin operations.',
+      'Designed MySQL database entities and relationships for users, roles, accounts, and transactions.',
+      'Containerized the application environment using Docker and Docker Compose.',
+    ],
     featured: true,
   },
 ]
@@ -128,25 +133,17 @@ const CERTS = [
 ]
 
 const CONTACTS = [
-  { icon: Mail, label: 'email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
-  { icon: Phone, label: 'phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
-  { icon: Linkedin, label: 'linkedin', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
-  { icon: Github, label: 'github', value: 'github.com/rahul-s', href: 'https://github.com/' },
-]
-
-const HERO_JSON = [
-  { k: 'name', v: '"Rahul S"' },
-  { k: 'role', v: '"Full Stack Developer"' },
-  { k: 'location', v: '"Bengaluru, IN"' },
-  { k: 'stack', v: '["React", "Spring Boot", "MySQL"]' },
-  { k: 'status', v: '"open_to_work"' },
+  { icon: Mail, label: 'Email', value: 'Srinivasrahul838@gmail.com', href: 'mailto:Srinivasrahul838@gmail.com' },
+  { icon: Phone, label: 'Phone', value: '+91 73376 34886', href: 'tel:+917337634886' },
+  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/rahul-s', href: 'https://www.linkedin.com/in/rahul-s-6460b1238' },
+  { icon: Github, label: 'GitHub', value: 'github.com/rahul-s', href: 'https://github.com/' },
 ]
 
 /* ================================================================== */
 /* hooks                                                                */
 /* ================================================================== */
 
-function useTypewriter(words, typeSpeed = 60, deleteSpeed = 30, pause = 1300) {
+function useTypewriter(words, typeSpeed = 65, deleteSpeed = 32, pause = 1400) {
   const [text, setText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
   const [deleting, setDeleting] = useState(false)
@@ -198,7 +195,7 @@ function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
 function useActiveSection() {
   const [active, setActive] = useState('')
   useEffect(() => {
-    const sections = ROUTES.map((n) => document.getElementById(n.id)).filter(Boolean)
+    const sections = NAV.map((n) => document.getElementById(n.id)).filter(Boolean)
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id) }),
       { rootMargin: '-40% 0px -50% 0px' }
@@ -224,51 +221,56 @@ function useScrolledPast(threshold = 30) {
 /* small components                                                    */
 /* ================================================================== */
 
-// Section header styled as an HTTP request line — carries real
-// information here since the site really is organised as a set of
-// routes, and each one really does resolve (reveal-in doubles as
-// the "response").
-function Endpoint({ method = 'GET', path }) {
-  const [ref, inView] = useReveal()
+function SectionLabel({ index, label }) {
   return (
-    <div ref={ref} className="endpoint-row">
-      <span className={`http-method ${method.toLowerCase()}`}>{method}</span>
-      <span className="http-path">{path}</span>
-      <span className="http-rule" />
-      <span className={`http-status ${inView ? 'in' : ''}`}>200 OK</span>
+    <div className="section-label">
+      <span className="section-num">{index}</span>
+      <span className="section-name">{label}</span>
+      <span className="section-rule" />
     </div>
   )
 }
 
-function HeroResponse() {
-  const [visibleLines, setVisibleLines] = useState(0)
-
-  useEffect(() => {
-    if (visibleLines >= HERO_JSON.length) return
-    const t = setTimeout(() => setVisibleLines((v) => v + 1), 260 + visibleLines * 90)
-    return () => clearTimeout(t)
-  }, [visibleLines])
-
+// Signature element: a compact "dossier" card presenting the resume's
+// own header facts the way a recruiter would want them at a glance.
+function ProfileCard() {
+  const rows = [
+    { icon: MapPin, k: 'Location', v: 'Bengaluru, India' },
+    { icon: Briefcase, k: 'Focus', v: 'Java · Spring Boot · React' },
+    { icon: GraduationCap, k: 'Education', v: 'B.E. Computer Science, 2026' },
+  ]
   return (
-    <div className="response-card">
-      <div className="response-titlebar">
-        <span className="dot" /><span className="dot" /><span className="dot" />
-        <span className="response-file">profile.json</span>
-      </div>
-      <div className="response-body">
-        <p className="response-line request-line">
-          <span className="tok-method">GET</span> /rahul-s <span className="tok-dim">HTTP/1.1</span>
-        </p>
-        <p className="response-line status-line"><span className="tok-ok">200 OK</span></p>
-        <p className="response-line brace">{'{'}</p>
-        {HERO_JSON.map((row, i) => (
-          <p key={row.k} className={`response-line kv ${i < visibleLines ? 'in' : ''}`}>
-            <span className="tok-key">&quot;{row.k}&quot;</span><span className="tok-dim">:</span>{' '}
-            <span className="tok-val">{row.v}</span>
-            {i < HERO_JSON.length - 1 && <span className="tok-dim">,</span>}
-          </p>
-        ))}
-        <p className="response-line brace">{'}'}<span className="cursor-blink" /></p>
+    <div className="profile-card">
+      <div className="profile-bar" />
+      <div className="profile-body">
+        <p className="profile-eyebrow">Candidate Profile</p>
+        <h3 className="profile-name">Rahul S</h3>
+        <p className="profile-role">Full Stack Developer</p>
+        <div className="profile-status">
+          <span className="status-dot" /> Available for opportunities
+        </div>
+        <div className="profile-rows">
+          {rows.map((r) => {
+            const Icon = r.icon
+            return (
+              <div key={r.k} className="profile-row">
+                <Icon size={14} className="profile-row-icon" />
+                <span className="profile-row-k">{r.k}</span>
+                <span className="profile-row-v">{r.v}</span>
+              </div>
+            )
+          })}
+        </div>
+        <div className="profile-links">
+          {CONTACTS.map((c) => {
+            const Icon = c.icon
+            return (
+              <a key={c.label} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" aria-label={c.label} className="profile-icon-link">
+                <Icon size={15} />
+              </a>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
@@ -279,7 +281,7 @@ function HeroResponse() {
 /* ================================================================== */
 
 export default function App() {
-  const typed = useTypewriter(ROLES)
+  const typed = useTypewriter(STACK_ROTATE)
   const active = useActiveSection()
   const scrolled = useScrolledPast()
 
@@ -287,26 +289,22 @@ export default function App() {
 
   return (
     <div>
-      <div className="grid-field" aria-hidden="true" />
-
       {/* ---------------- navbar ---------------- */}
       <nav className={`site-nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-inner">
           <button className="logo-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-            <span className="logo-chip">rahul.dev</span>
+            <span className="logo-text">Rahul S<span className="logo-dot">.</span></span>
           </button>
 
           <div className="tab-bar">
-            {ROUTES.map((n) => (
+            {NAV.map((n) => (
               <button key={n.id} className={`tab ${active === n.id ? 'active' : ''}`} onClick={() => scrollTo(n.id)}>
                 {n.label}
               </button>
             ))}
           </div>
 
-          <button className="btn ghost nav-cta" onClick={() => scrollTo('contact')}>
-            POST /contact
-          </button>
+          <a className="btn primary nav-cta" href="mailto:Srinivasrahul838@gmail.com">Get in touch</a>
         </div>
       </nav>
 
@@ -315,7 +313,7 @@ export default function App() {
         <div className="wrap hero-inner">
           <div className="hero-copy">
             <Reveal>
-              <div className="hero-eyebrow"><span className="prompt">$</span> whoami</div>
+              <div className="hero-pill"><span className="status-dot" /> Available for opportunities</div>
             </Reveal>
 
             <Reveal delay={70}>
@@ -323,37 +321,44 @@ export default function App() {
             </Reveal>
 
             <Reveal delay={130}>
-              <div className="hero-role">
-                <span className="cmt">//</span>
-                <span className="role-text">{typed}<span className="type-cursor" /></span>
+              <p className="hero-role">Full Stack Developer</p>
+            </Reveal>
+
+            <Reveal delay={170}>
+              <div className="hero-stack">
+                Building with <span className="hero-stack-word">{typed}</span><span className="type-cursor" />
               </div>
             </Reveal>
 
-            <Reveal delay={190}>
+            <Reveal delay={220}>
               <p className="hero-desc">
                 Full stack developer skilled in Java, Spring Boot, React.js, REST APIs, and MySQL —
-                building secure, responsive web applications with attention to backend architecture,
-                database design, and authentication.
+                with hands-on experience building secure, responsive web applications. Strong in
+                backend API development, frontend integration, database management, and authentication.
               </p>
             </Reveal>
 
-            <Reveal delay={250}>
+            <Reveal delay={270}>
               <div className="hero-cta">
-                <button className="btn primary" onClick={() => scrollTo('projects')}>View projects</button>
-                <button className="btn ghost" onClick={() => scrollTo('contact')}>Get in touch</button>
+                <button className="btn primary" onClick={() => scrollTo('projects')}>View my work</button>
+                <button className="btn ghost" onClick={() => scrollTo('contact')}>Contact me</button>
               </div>
+            </Reveal>
+
+            <Reveal delay={310}>
+              <p className="hero-meta">B.E. Computer Science, 2026 &nbsp;·&nbsp; Bengaluru, India</p>
             </Reveal>
           </div>
 
-          <Reveal delay={120} className="hero-response">
-            <HeroResponse />
+          <Reveal delay={140} className="hero-profile">
+            <ProfileCard />
           </Reveal>
         </div>
       </header>
 
       {/* ---------------- about ---------------- */}
       <section id="about" className="wrap section">
-        <Reveal><Endpoint path="/about" /></Reveal>
+        <Reveal><SectionLabel index="01" label="About" /></Reveal>
         <Reveal delay={90}>
           <h2 className="sec-title">Backend-minded, shipped as full stack.</h2>
         </Reveal>
@@ -362,20 +367,32 @@ export default function App() {
             I build web applications end to end — <strong>React</strong> interfaces wired to
             <strong> Spring Boot</strong> services, with data modelled in <strong>MySQL</strong> and
             protected by <strong>Spring Security</strong> and JWT. I care about how a request actually
-            moves through a system: controller, service, repository, and the schema underneath it —
-            and I write it in clean, testable layers rather than one large tangle.
+            moves through a system, and I write it in clean, testable layers rather than one large tangle.
           </p>
         </Reveal>
+
+        <div className="fact-row">
+          {[
+            { label: 'Core Stack', value: 'Java · Spring Boot · React' },
+            { label: 'Projects Shipped', value: '2 full-stack applications' },
+            { label: 'Based In', value: 'Bengaluru, India' },
+          ].map((f, i) => (
+            <Reveal key={f.label} delay={i * 70} className="panel fact-card">
+              <p className="fact-label">{f.label}</p>
+              <p className="fact-value">{f.value}</p>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       {/* ---------------- skills ---------------- */}
       <section id="skills" className="wrap section">
-        <Reveal><Endpoint path="/skills" /></Reveal>
+        <Reveal><SectionLabel index="02" label="Skills" /></Reveal>
         <Reveal delay={90}><h2 className="sec-title">Technical skills</h2></Reveal>
 
         <div className="skill-grid">
           {SKILL_GROUPS.map((g, i) => (
-            <Reveal key={g.cat} delay={i * 60} className="panel skill-card">
+            <Reveal key={g.cat} delay={i * 55} className="panel skill-card">
               <p className="skill-cat">{g.cat}</p>
               <div className="skill-items">
                 {g.items.map((s) => <span key={s} className="pill">{s}</span>)}
@@ -387,16 +404,20 @@ export default function App() {
 
       {/* ---------------- experience ---------------- */}
       <section id="experience" className="wrap section">
-        <Reveal><Endpoint path="/experience" /></Reveal>
+        <Reveal><SectionLabel index="03" label="Experience" /></Reveal>
         <Reveal delay={90}><h2 className="sec-title">Experience</h2></Reveal>
 
         <div className="timeline">
           {EXPERIENCE.map((e, i) => (
-            <Reveal key={e.company} delay={i * 100} as="div" className="timeline-item">
-              <span className="timeline-node" />
-              <p className="tl-time">{e.time} · {e.place}</p>
-              <h3 className="tl-role">{e.role}</h3>
-              <p className="tl-meta">{e.company}</p>
+            <Reveal key={e.company} delay={i * 100} as="div" className="panel timeline-item">
+              <div className="tl-head">
+                <span className="tl-icon"><Briefcase size={15} /></span>
+                <div>
+                  <h3 className="tl-role">{e.role}</h3>
+                  <p className="tl-meta">{e.company} · {e.place}</p>
+                </div>
+                <span className="tl-time">{e.time}</span>
+              </div>
               <ul className="tl-points">
                 {e.points.map((pt) => <li key={pt}>{pt}</li>)}
               </ul>
@@ -420,19 +441,25 @@ export default function App() {
 
       {/* ---------------- projects ---------------- */}
       <section id="projects" className="wrap section">
-        <Reveal><Endpoint path="/projects" /></Reveal>
+        <Reveal><SectionLabel index="04" label="Selected Work" /></Reveal>
         <Reveal delay={90}><h2 className="sec-title">Projects</h2></Reveal>
 
         <div className="project-list">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} delay={i * 90} className="panel project-card">
-              <div className="project-heading">
+              <div className="project-top">
                 <span className="project-id">{p.id}</span>
-                <h3>{p.title}</h3>
-                {p.featured && <span className="project-flag"><CheckCircle2 size={12} /> featured</span>}
+                <div className="project-heading">
+                  <h3>{p.title}</h3>
+                  {p.featured && <span className="project-flag"><CheckCircle2 size={12} /> Featured</span>}
+                </div>
               </div>
               <p className="project-tag">{p.tag}</p>
-              <p className="project-desc">{p.desc}</p>
+
+              <ul className="project-highlights">
+                {p.highlights.map((h) => <li key={h}>{h}</li>)}
+              </ul>
+
               <div className="project-tech">
                 {p.tech.map((t) => <span key={t} className="pill mono">{t}</span>)}
               </div>
@@ -453,13 +480,13 @@ export default function App() {
 
       {/* ---------------- certifications ---------------- */}
       <section id="certifications" className="wrap section">
-        <Reveal><Endpoint path="/certifications" /></Reveal>
+        <Reveal><SectionLabel index="05" label="Certifications" /></Reveal>
         <Reveal delay={90}><h2 className="sec-title">Certifications</h2></Reveal>
 
         <div className="cert-grid">
           {CERTS.map((c, i) => (
             <Reveal key={c.name} delay={i * 70} className="panel cert-card">
-              <span className="cert-icon"><BadgeCheck size={16} /></span>
+              <span className="cert-icon"><Award size={17} /></span>
               <div>
                 <p className="cert-name">{c.name}</p>
                 <p className="cert-by">{c.by}</p>
@@ -469,44 +496,37 @@ export default function App() {
         </div>
       </section>
 
-      {/* ---------------- architecture ---------------- */}
-      <section id="architecture" className="wrap section">
-        <Reveal><Endpoint path="/architecture" /></Reveal>
+      {/* ---------------- approach ---------------- */}
+      <section id="approach" className="wrap section">
+        <Reveal><SectionLabel index="06" label="Approach" /></Reveal>
         <Reveal delay={90}>
-          <h2 className="sec-title">How a request moves</h2>
+          <h2 className="sec-title">How I structure an application</h2>
           <p className="sec-desc">
-            Client to service to schema — the layers a request actually passes through, and what runs it.
+            Client to service to schema — the layers a request passes through, and what runs each one.
           </p>
         </Reveal>
 
-        <Reveal delay={80} className="pipeline">
-          {ARCHITECTURE.map((layer, i) => {
+        <div className="approach-grid">
+          {APPROACH.map((layer, i) => {
             const Icon = layer.icon
             return (
-              <div key={layer.title}>
-                <div className="pipe-node">
-                  <div className="pipe-icon"><Icon size={18} /></div>
-                  <div className="pipe-body panel">
-                    <p className="pipe-sub">{layer.subtitle}</p>
-                    <h3 className="pipe-title">{layer.title}</h3>
-                    <p className="pipe-blurb">{layer.blurb}</p>
-                    <div className="pipe-items">
-                      {layer.items.map((it) => <span key={it} className="pill mono">{it}</span>)}
-                    </div>
-                  </div>
+              <Reveal key={layer.title} delay={i * 70} className="panel approach-card">
+                <div className="approach-icon"><Icon size={18} /></div>
+                <p className="approach-sub">{layer.subtitle}</p>
+                <h3 className="approach-title">{layer.title}</h3>
+                <p className="approach-blurb">{layer.blurb}</p>
+                <div className="approach-items">
+                  {layer.items.map((it) => <span key={it} className="pill mono">{it}</span>)}
                 </div>
-                {i < ARCHITECTURE.length - 1 && (
-                  <div className="pipe-connector"><span className="wire" /></div>
-                )}
-              </div>
+              </Reveal>
             )
           })}
-        </Reveal>
+        </div>
       </section>
 
       {/* ---------------- contact ---------------- */}
       <section id="contact" className="wrap section">
-        <Reveal><Endpoint method="POST" path="/contact" /></Reveal>
+        <Reveal><SectionLabel index="07" label="Contact" /></Reveal>
         <Reveal delay={90}>
           <h2 className="sec-title">Let&rsquo;s build something.</h2>
           <p className="sec-desc">Open to Full Stack, Java/Spring Boot, and React roles. Based in Bengaluru, India.</p>
@@ -533,8 +553,8 @@ export default function App() {
       {/* ---------------- footer ---------------- */}
       <footer className="site-footer">
         <div className="wrap footer-inner">
-          <span className="footer-meta">// built by Rahul S · 2026</span>
-          <span className="footer-meta">status: <span className="tok-ok">open_to_work</span></span>
+          <span className="footer-meta">© 2026 Rahul S</span>
+          <span className="footer-meta">Full Stack Developer · Bengaluru, India</span>
         </div>
       </footer>
     </div>
