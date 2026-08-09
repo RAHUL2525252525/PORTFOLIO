@@ -751,7 +751,7 @@ function App() {
             <div className="about-layout">
               <Reveal delay={80}>
                 <h2 className="massive-title">
-                  Backend-minded,
+                  Frontend-focused,
                   <br />
                   <span>shipped full stack.</span>
                 </h2>
