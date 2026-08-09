@@ -15,15 +15,11 @@ import {
   ShieldCheck,
   Database,
   Wrench,
-  Menu,
-  X,
+  ExternalLink,
+  Sparkles,
+  Terminal,
 } from 'lucide-react'
-
 import './index.css'
-
-/* ============================================================= */
-/* DATA                                                           */
-/* ============================================================= */
 
 const STACK_ROTATE = [
   'React.js',
@@ -123,14 +119,7 @@ const APPROACH = [
     icon: Code2,
     title: 'Frontend Presentation',
     subtitle: 'Client',
-    items: [
-      'React.js',
-      'JSX',
-      'HTML5',
-      'CSS3',
-      'Flexbox / Grid',
-      'Vite',
-    ],
+    items: ['React.js', 'JSX', 'HTML5', 'CSS3', 'Flexbox / Grid', 'Vite'],
     blurb:
       'Responsive interfaces and reusable component structure, built for consistent behaviour across breakpoints.',
   },
@@ -165,11 +154,7 @@ const APPROACH = [
     icon: Database,
     title: 'Data Persistence',
     subtitle: 'Database',
-    items: [
-      'MySQL',
-      'Database Design',
-      'CRUD Operations',
-    ],
+    items: ['MySQL', 'Database Design', 'CRUD Operations'],
     blurb:
       'Relational schema design across users, roles, accounts, products, and orders.',
   },
@@ -310,10 +295,6 @@ const CONTACTS = [
   },
 ]
 
-/* ============================================================= */
-/* HOOKS                                                         */
-/* ============================================================= */
-
 function useTypewriter(
   words,
   typeSpeed = 65,
@@ -411,7 +392,7 @@ function Reveal({
 }
 
 function useActiveSection() {
-  const [active, setActive] = useState('')
+  const [active, setActive] = useState('about')
 
   useEffect(() => {
     const sections = NAV.map((item) =>
@@ -427,7 +408,7 @@ function useActiveSection() {
         })
       },
       {
-        rootMargin: '-40% 0px -50% 0px',
+        rootMargin: '-35% 0px -55% 0px',
       }
     )
 
@@ -443,26 +424,23 @@ function useScrolledPast(threshold = 30) {
   const [past, setPast] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => {
+    const handleScroll = () => {
       setPast(window.scrollY > threshold)
     }
 
-    onScroll()
+    handleScroll()
 
-    window.addEventListener('scroll', onScroll, {
+    window.addEventListener('scroll', handleScroll, {
       passive: true,
     })
 
-    return () =>
-      window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [threshold])
 
   return past
 }
-
-/* ============================================================= */
-/* SMALL COMPONENTS                                              */
-/* ============================================================= */
 
 function SectionLabel({ index, label }) {
   return (
@@ -494,102 +472,99 @@ function ProfileCard() {
   ]
 
   return (
-    <div className="profile-card">
-      <div className="profile-glow" />
-
-      <div className="profile-top-line">
-        <span>PROFILE / 2026</span>
-
-        <span className="profile-live">
-          <span className="status-dot" />
-          AVAILABLE
-        </span>
-      </div>
-
-      <div className="profile-avatar">
-        RS
-      </div>
-
-      <div className="profile-body">
-        <p className="profile-eyebrow">
-          Candidate Profile
-        </p>
-
-        <h3 className="profile-name">
-          Rahul S
-        </h3>
-
-        <p className="profile-role">
-          Full Stack Developer
-        </p>
-
-        <div className="profile-status">
-          <span className="status-dot" />
-          Available for opportunities
+    <div className="profile-3d-wrap">
+      <div className="profile-card">
+        <div className="profile-glow" />
+        <div className="profile-bar">
+          <span />
+          <span />
+          <span />
         </div>
 
-        <div className="profile-rows">
-          {rows.map((row) => {
-            const Icon = row.icon
+        <div className="profile-body">
+          <div className="profile-top-line">
+            <span className="mini-label">CANDIDATE / 2026</span>
+            <Sparkles size={15} />
+          </div>
 
-            return (
-              <div
-                key={row.k}
-                className="profile-row"
-              >
-                <span className="profile-row-icon">
-                  <Icon size={14} />
-                </span>
+          <p className="profile-eyebrow">
+            Full Stack Developer
+          </p>
 
-                <span className="profile-row-k">
-                  {row.k}
-                </span>
+          <h3 className="profile-name">
+            Rahul S<span>.</span>
+          </h3>
 
-                <span className="profile-row-v">
-                  {row.v}
-                </span>
-              </div>
-            )
-          })}
-        </div>
+          <p className="profile-role">
+            Java · Spring Boot · React
+          </p>
 
-        <div className="profile-links">
-          {CONTACTS.map((contact) => {
-            const Icon = contact.icon
+          <div className="profile-status">
+            <span className="status-dot" />
+            Available for opportunities
+          </div>
 
-            return (
-              <a
-                key={contact.label}
-                href={contact.href}
-                target={
-                  contact.href.startsWith('http')
-                    ? '_blank'
-                    : undefined
-                }
-                rel="noopener noreferrer"
-                aria-label={contact.label}
-                className="profile-icon-link"
-              >
-                <Icon size={16} />
-              </a>
-            )
-          })}
+          <div className="profile-divider" />
+
+          <div className="profile-rows">
+            {rows.map((row) => {
+              const Icon = row.icon
+
+              return (
+                <div
+                  key={row.k}
+                  className="profile-row"
+                >
+                  <div className="profile-row-icon-box">
+                    <Icon size={14} />
+                  </div>
+
+                  <div className="profile-row-content">
+                    <span className="profile-row-k">
+                      {row.k}
+                    </span>
+
+                    <span className="profile-row-v">
+                      {row.v}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="profile-links">
+            {CONTACTS.map((contact) => {
+              const Icon = contact.icon
+
+              return (
+                <a
+                  key={contact.label}
+                  href={contact.href}
+                  target={
+                    contact.href.startsWith('http')
+                      ? '_blank'
+                      : undefined
+                  }
+                  rel="noopener noreferrer"
+                  aria-label={contact.label}
+                  className="profile-icon-link"
+                >
+                  <Icon size={16} />
+                </a>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-/* ============================================================= */
-/* MAIN APP                                                       */
-/* ============================================================= */
-
-export default function App() {
+function App() {
   const typed = useTypewriter(STACK_ROTATE)
   const active = useActiveSection()
   const scrolled = useScrolledPast()
-
-  const [mobileMenu, setMobileMenu] = useState(false)
 
   const scrollTo = (id) => {
     document
@@ -598,16 +573,14 @@ export default function App() {
         behavior: 'smooth',
         block: 'start',
       })
-
-    setMobileMenu(false)
   }
 
   return (
-    <div className="app-shell">
-
-      {/* ===================================================== */}
-      {/* NAVBAR                                                 */}
-      {/* ===================================================== */}
+    <div className="app">
+      <div className="background-grid" />
+      <div className="background-orb orb-one" />
+      <div className="background-orb orb-two" />
+      <div className="background-orb orb-three" />
 
       <nav
         className={`site-nav ${
@@ -615,7 +588,6 @@ export default function App() {
         }`}
       >
         <div className="wrap nav-inner">
-
           <button
             className="logo-btn"
             onClick={() =>
@@ -626,12 +598,9 @@ export default function App() {
             }
             aria-label="Back to top"
           >
-            <span className="logo-mark">
-              RS
-            </span>
-
+            <span className="logo-mark">R</span>
             <span className="logo-text">
-              Rahul S<span className="logo-dot">.</span>
+              Rahul S<span>.</span>
             </span>
           </button>
 
@@ -656,69 +625,23 @@ export default function App() {
             Get in touch
             <ArrowUpRight size={15} />
           </a>
-
-          <button
-            className="mobile-menu-btn"
-            onClick={() =>
-              setMobileMenu((value) => !value)
-            }
-            aria-label="Toggle navigation"
-          >
-            {mobileMenu ? (
-              <X size={22} />
-            ) : (
-              <Menu size={22} />
-            )}
-          </button>
         </div>
-
-        {mobileMenu && (
-          <div className="mobile-menu">
-            {NAV.map((item) => (
-              <button
-                key={item.id}
-                className={`mobile-tab ${
-                  active === item.id ? 'active' : ''
-                }`}
-                onClick={() => scrollTo(item.id)}
-              >
-                <span>{item.label}</span>
-                <ArrowUpRight size={15} />
-              </button>
-            ))}
-          </div>
-        )}
       </nav>
 
-      {/* ===================================================== */}
-      {/* HERO                                                   */}
-      {/* ===================================================== */}
-
       <header id="hero" className="hero">
-        <div className="hero-grid-bg" />
-
-        <div className="hero-orb orb-one" />
-        <div className="hero-orb orb-two" />
-
         <div className="wrap hero-inner">
-
           <div className="hero-copy">
-
             <Reveal>
               <div className="hero-pill">
                 <span className="status-dot" />
                 Available for opportunities
-                <span className="pill-arrow">
-                  →
-                </span>
               </div>
             </Reveal>
 
             <Reveal delay={70}>
-              <div className="hero-overline">
-                SOFTWARE ENGINEER
-                <span />
-                BENGALURU, INDIA
+              <div className="hero-kicker">
+                <Terminal size={14} />
+                JAVA FULL STACK DEVELOPER
               </div>
             </Reveal>
 
@@ -737,43 +660,36 @@ export default function App() {
 
             <Reveal delay={210}>
               <div className="hero-stack">
-                Building with
-                <span className="hero-stack-word">
-                  {typed}
-                </span>
+                Building with{' '}
+                <strong>{typed}</strong>
                 <span className="type-cursor" />
               </div>
             </Reveal>
 
             <Reveal delay={250}>
               <p className="hero-desc">
-                Full stack developer skilled in Java,
-                Spring Boot, React.js, REST APIs, and
-                MySQL — with hands-on experience building
-                secure, responsive web applications.
-                Strong in backend API development,
-                frontend integration, database management,
-                and authentication.
+                Full stack developer skilled in Java, Spring
+                Boot, React.js, REST APIs, and MySQL — with
+                hands-on experience building secure,
+                responsive web applications. Strong in backend
+                API development, frontend integration,
+                database management, and authentication.
               </p>
             </Reveal>
 
             <Reveal delay={300}>
               <div className="hero-cta">
                 <button
-                  className="btn primary large-btn"
-                  onClick={() =>
-                    scrollTo('projects')
-                  }
+                  className="btn primary large"
+                  onClick={() => scrollTo('projects')}
                 >
                   View my work
                   <ArrowUpRight size={17} />
                 </button>
 
                 <button
-                  className="btn ghost large-btn"
-                  onClick={() =>
-                    scrollTo('contact')
-                  }
+                  className="btn ghost large"
+                  onClick={() => scrollTo('contact')}
                 >
                   Contact me
                 </button>
@@ -784,10 +700,10 @@ export default function App() {
               <div className="hero-meta">
                 <span>
                   <GraduationCap size={15} />
-                  B.E. Computer Science · 2026
+                  B.E. Computer Science
                 </span>
 
-                <span className="meta-divider" />
+                <span className="meta-separator" />
 
                 <span>
                   <MapPin size={15} />
@@ -804,93 +720,68 @@ export default function App() {
             <ProfileCard />
           </Reveal>
         </div>
-
-        <div className="scroll-indicator">
-          <span />
-          Scroll to explore
-        </div>
       </header>
 
-      {/* ===================================================== */}
-      {/* ABOUT                                                  */}
-      {/* ===================================================== */}
+      <main>
+        <section
+          id="about"
+          className="wrap section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="01"
+              label="About"
+            />
+          </Reveal>
 
-      <section
-        id="about"
-        className="wrap section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="01"
-            label="About"
-          />
-        </Reveal>
-
-        <div className="about-layout">
-
-          <Reveal delay={70}>
-            <div className="about-heading">
-              <span className="small-kicker">
-                PROFILE
-              </span>
-
-              <h2 className="sec-title">
-                Backend-minded,
-                <br />
-                shipped as full stack.
-              </h2>
-            </div>
+          <Reveal delay={80}>
+            <h2 className="sec-title">
+              Backend-minded,
+              <span> shipped as full stack.</span>
+            </h2>
           </Reveal>
 
           <Reveal delay={130}>
-            <div className="about-content">
-              <p className="about-text">
-                I build web applications end to end —
-                <strong> React</strong> interfaces wired
-                to <strong>Spring Boot</strong> services,
-                with data modelled in <strong>MySQL</strong>
-                and protected by
-                <strong> Spring Security</strong> and JWT.
-              </p>
-
-              <p className="about-text secondary">
-                I care about how a request actually moves
-                through a system, and I write it in clean,
-                testable layers rather than one large
-                tangle.
-              </p>
-            </div>
+            <p className="about-text">
+              I build web applications end to end —
+              <strong> React</strong> interfaces wired to
+              <strong> Spring Boot</strong> services, with
+              data modelled in <strong>MySQL</strong> and
+              protected by <strong>Spring Security</strong>{' '}
+              and JWT. I care about how a request actually
+              moves through a system, and I write it in
+              clean, testable layers rather than one large
+              tangle.
+            </p>
           </Reveal>
-        </div>
 
-        <div className="fact-row">
-          {[
-            {
-              label: 'Core Stack',
-              value:
-                'Java · Spring Boot · React',
-            },
-            {
-              label: 'Projects Shipped',
-              value:
-                '2 full-stack applications',
-            },
-            {
-              label: 'Based In',
-              value:
-                'Bengaluru, India',
-            },
-          ].map((fact, index) => (
-            <Reveal
-              key={fact.label}
-              delay={index * 70}
-              className="panel fact-card"
-            >
-              <span className="fact-number">
-                0{index + 1}
-              </span>
+          <div className="fact-row">
+            {[
+              {
+                label: 'Core Stack',
+                value: 'Java · Spring Boot · React',
+                number: '01',
+              },
+              {
+                label: 'Projects Shipped',
+                value: '2 full-stack applications',
+                number: '02',
+              },
+              {
+                label: 'Based In',
+                value: 'Bengaluru, India',
+                number: '03',
+              },
+            ].map((fact, index) => (
+              <Reveal
+                key={fact.label}
+                delay={index * 70}
+                className="panel fact-card"
+              >
+                <span className="fact-number">
+                  {fact.number}
+                </span>
 
-              <div>
                 <p className="fact-label">
                   {fact.label}
                 </p>
@@ -898,553 +789,468 @@ export default function App() {
                 <p className="fact-value">
                   {fact.value}
                 </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================================================== */}
-      {/* SKILLS                                                  */}
-      {/* ===================================================== */}
-
-      <section
-        id="skills"
-        className="wrap section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="02"
-            label="Skills"
-          />
-        </Reveal>
-
-        <Reveal delay={80}>
-          <div className="section-heading-row">
-            <h2 className="sec-title">
-              Technical skills
-            </h2>
-
-            <p className="heading-note">
-              Tools I use to design, build,
-              secure and ship applications.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="skill-grid">
-          {SKILL_GROUPS.map((group, index) => (
-            <Reveal
-              key={group.cat}
-              delay={index * 45}
-              className="panel skill-card"
-            >
-              <div className="skill-card-top">
-                <span className="skill-index">
-                  {String(index + 1).padStart(
-                    2,
-                    '0'
-                  )}
-                </span>
-
-                <p className="skill-cat">
-                  {group.cat}
-                </p>
-              </div>
-
-              <div className="skill-items">
-                {group.items.map((skill) => (
-                  <span
-                    key={skill}
-                    className="pill"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================================================== */}
-      {/* EXPERIENCE                                              */}
-      {/* ===================================================== */}
-
-      <section
-        id="experience"
-        className="wrap section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="03"
-            label="Experience"
-          />
-        </Reveal>
-
-        <Reveal delay={80}>
-          <h2 className="sec-title">
-            Experience
-          </h2>
-        </Reveal>
-
-        <div className="timeline">
-          {EXPERIENCE.map((experience, index) => (
-            <Reveal
-              key={experience.company}
-              delay={index * 100}
-              className="panel timeline-item"
-            >
-              <div className="timeline-marker">
-                <span />
-              </div>
-
-              <div className="tl-head">
-                <div className="tl-icon">
-                  <Briefcase size={17} />
-                </div>
-
-                <div className="tl-title-wrap">
-                  <span className="tl-kicker">
-                    EXPERIENCE · {experience.time}
-                  </span>
-
-                  <h3 className="tl-role">
-                    {experience.role}
-                  </h3>
-
-                  <p className="tl-meta">
-                    {experience.company}
-                    <span>·</span>
-                    {experience.place}
-                  </p>
-                </div>
-
-                <span className="tl-time">
-                  {experience.time}
-                </span>
-              </div>
-
-              <ul className="tl-points">
-                {experience.points.map(
-                  (point) => (
-                    <li key={point}>
-                      <CheckCircle2
-                        size={15}
-                      />
-                      <span>{point}</span>
-                    </li>
-                  )
-                )}
-              </ul>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={100}>
-          <div className="sub-label">
-            <GraduationCap size={16} />
-            Education
-          </div>
-
-          <div className="edu-grid">
-            {EDUCATION.map((education) => (
-              <div
-                key={education.school}
-                className="panel edu-card"
-              >
-                <div className="edu-icon">
-                  <GraduationCap size={20} />
-                </div>
-
-                <div>
-                  <p className="edu-school">
-                    {education.school}
-                  </p>
-
-                  <p className="edu-degree">
-                    {education.degree}
-                  </p>
-
-                  <p className="edu-time">
-                    {education.time}
-                  </p>
-                </div>
-              </div>
+              </Reveal>
             ))}
           </div>
-        </Reveal>
-      </section>
+        </section>
 
-      {/* ===================================================== */}
-      {/* PROJECTS                                                */}
-      {/* ===================================================== */}
+        <section
+          id="skills"
+          className="wrap section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="02"
+              label="Skills"
+            />
+          </Reveal>
 
-      <section
-        id="projects"
-        className="wrap section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="04"
-            label="Selected Work"
-          />
-        </Reveal>
-
-        <Reveal delay={80}>
-          <div className="section-heading-row">
+          <Reveal delay={80}>
             <h2 className="sec-title">
-              Projects
+              Technical <span>skills.</span>
             </h2>
+          </Reveal>
 
-            <p className="heading-note">
-              Real applications built across
-              frontend, backend, database and
-              security layers.
+          <Reveal delay={120}>
+            <p className="sec-desc">
+              A practical stack focused on building,
+              securing and deploying full-stack applications.
             </p>
+          </Reveal>
+
+          <div className="skill-grid">
+            {SKILL_GROUPS.map((group, index) => (
+              <Reveal
+                key={group.cat}
+                delay={index * 45}
+                className="panel skill-card"
+              >
+                <div className="skill-card-head">
+                  <span className="skill-index">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+
+                  <p className="skill-cat">
+                    {group.cat}
+                  </p>
+                </div>
+
+                <div className="skill-items">
+                  {group.items.map((skill) => (
+                    <span
+                      key={skill}
+                      className="pill"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </Reveal>
+            ))}
           </div>
-        </Reveal>
+        </section>
 
-        <div className="project-list">
-          {PROJECTS.map((project, index) => (
-            <Reveal
-              key={project.id}
-              delay={index * 90}
-              className="panel project-card"
-            >
-              <div className="project-number">
-                {project.id}
-              </div>
+        <section
+          id="experience"
+          className="wrap section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="03"
+              label="Experience"
+            />
+          </Reveal>
 
-              <div className="project-main">
+          <Reveal delay={80}>
+            <h2 className="sec-title">
+              Experience & <span>education.</span>
+            </h2>
+          </Reveal>
+
+          <div className="timeline">
+            {EXPERIENCE.map((experience, index) => (
+              <Reveal
+                key={experience.company}
+                delay={index * 100}
+                className="panel timeline-item"
+              >
+                <div className="timeline-line" />
+
+                <div className="tl-head">
+                  <span className="tl-icon">
+                    <Briefcase size={17} />
+                  </span>
+
+                  <div>
+                    <p className="experience-label">
+                      EXPERIENCE
+                    </p>
+
+                    <h3 className="tl-role">
+                      {experience.role}
+                    </h3>
+
+                    <p className="tl-meta">
+                      {experience.company} ·{' '}
+                      {experience.place}
+                    </p>
+                  </div>
+
+                  <span className="tl-time">
+                    {experience.time}
+                  </span>
+                </div>
+
+                <ul className="tl-points">
+                  {experience.points.map((point) => (
+                    <li key={point}>
+                      <CheckCircle2 size={15} />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={100}>
+            <div className="sub-label">
+              <GraduationCap size={16} />
+              Education
+            </div>
+
+            <div className="edu-grid">
+              {EDUCATION.map((education) => (
+                <div
+                  key={education.school}
+                  className="panel edu-card"
+                >
+                  <div className="edu-icon">
+                    <GraduationCap size={20} />
+                  </div>
+
+                  <div>
+                    <p className="edu-school">
+                      {education.school}
+                    </p>
+
+                    <p className="edu-degree">
+                      {education.degree}
+                    </p>
+
+                    <p className="edu-time">
+                      {education.time}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
+        <section
+          id="projects"
+          className="wrap section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="04"
+              label="Selected Work"
+            />
+          </Reveal>
+
+          <Reveal delay={80}>
+            <h2 className="sec-title">
+              Projects that <span>ship.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <p className="sec-desc">
+              Full-stack applications demonstrating frontend,
+              backend, security and database integration.
+            </p>
+          </Reveal>
+
+          <div className="project-list">
+            {PROJECTS.map((project, index) => (
+              <Reveal
+                key={project.id}
+                delay={index * 100}
+                className="panel project-card"
+              >
+                <div className="project-number">
+                  {project.id}
+                </div>
 
                 <div className="project-top">
-                  <div className="project-heading">
-                    <div className="project-title-row">
+                  <div>
+                    <p className="project-category">
+                      {project.tag}
+                    </p>
+
+                    <div className="project-heading">
                       <h3>{project.title}</h3>
 
                       {project.featured && (
                         <span className="project-flag">
-                          <CheckCircle2 size={12} />
+                          <CheckCircle2 size={13} />
                           Featured
                         </span>
                       )}
                     </div>
+                  </div>
 
-                    <p className="project-tag">
-                      {project.tag}
-                    </p>
+                  <div className="project-floating-icon">
+                    <ArrowUpRight size={20} />
                   </div>
                 </div>
 
-                <div className="project-body">
+                <ul className="project-highlights">
+                  {project.highlights.map((highlight) => (
+                    <li key={highlight}>
+                      <span className="bullet" />
+                      {highlight}
+                    </li>
+                  ))}
+                </ul>
 
-                  <div className="project-description">
-                    <span className="project-mini-title">
-                      WHAT I BUILT
+                <div className="project-tech">
+                  {project.tech.map((tech) => (
+                    <span
+                      key={tech}
+                      className="pill mono"
+                    >
+                      {tech}
                     </span>
-
-                    <ul className="project-highlights">
-                      {project.highlights.map(
-                        (highlight) => (
-                          <li key={highlight}>
-                            <span className="bullet" />
-                            <span>
-                              {highlight}
-                            </span>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-
-                  <div className="project-stack-box">
-                    <span className="project-mini-title">
-                      TECHNOLOGY
-                    </span>
-
-                    <div className="project-tech">
-                      {project.tech.map(
-                        (technology) => (
-                          <span
-                            key={technology}
-                            className="pill mono"
-                          >
-                            {technology}
-                          </span>
-                        )
-                      )}
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 {project.note && (
                   <p className="project-note">
-                    <span>NOTE</span>
                     {project.note}
                   </p>
                 )}
 
                 {project.links && (
                   <div className="project-links">
-                    {project.links.map(
-                      (link) => (
-                        <a
-                          key={link.label}
-                          className="project-link"
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {link.label}
-                          <ArrowUpRight
-                            size={14}
-                          />
-                        </a>
-                      )
-                    )}
+                    {project.links.map((link) => (
+                      <a
+                        key={link.label}
+                        className="project-link"
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label}
+                        <ExternalLink size={14} />
+                      </a>
+                    ))}
                   </div>
                 )}
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================================================== */}
-      {/* CERTIFICATIONS                                         */}
-      {/* ===================================================== */}
-
-      <section
-        id="certifications"
-        className="wrap section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="05"
-            label="Certifications"
-          />
-        </Reveal>
-
-        <Reveal delay={80}>
-          <h2 className="sec-title">
-            Certifications
-          </h2>
-        </Reveal>
-
-        <div className="cert-grid">
-          {CERTS.map((certification, index) => (
-            <Reveal
-              key={certification.name}
-              delay={index * 70}
-              className="panel cert-card"
-            >
-              <div className="cert-icon">
-                <Award size={19} />
-              </div>
-
-              <div className="cert-content">
-                <span className="cert-number">
-                  0{index + 1}
-                </span>
-
-                <p className="cert-name">
-                  {certification.name}
-                </p>
-
-                <p className="cert-by">
-                  {certification.by}
-                </p>
-              </div>
-
-              <CheckCircle2
-                size={18}
-                className="cert-check"
-              />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================================================== */}
-      {/* APPROACH                                                */}
-      {/* ===================================================== */}
-
-      <section
-        id="approach"
-        className="wrap section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="06"
-            label="Approach"
-          />
-        </Reveal>
-
-        <Reveal delay={80}>
-          <div className="section-heading-row approach-heading">
-            <div>
-              <h2 className="sec-title">
-                How I structure
-                <br />
-                an application
-              </h2>
-            </div>
-
-            <p className="heading-note">
-              Client to service to schema —
-              the layers a request passes
-              through, and what runs each one.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="approach-grid">
-          {APPROACH.map((layer, index) => {
-            const Icon = layer.icon
-
-            return (
-              <Reveal
-                key={layer.title}
-                delay={index * 70}
-                className="panel approach-card"
-              >
-                <div className="approach-top">
-                  <span className="approach-number">
-                    0{index + 1}
-                  </span>
-
-                  <div className="approach-icon">
-                    <Icon size={19} />
-                  </div>
-                </div>
-
-                <p className="approach-sub">
-                  {layer.subtitle}
-                </p>
-
-                <h3 className="approach-title">
-                  {layer.title}
-                </h3>
-
-                <p className="approach-blurb">
-                  {layer.blurb}
-                </p>
-
-                <div className="approach-items">
-                  {layer.items.map((item) => (
-                    <span
-                      key={item}
-                      className="pill mono"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
               </Reveal>
-            )
-          })}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
 
-      {/* ===================================================== */}
-      {/* CONTACT                                                 */}
-      {/* ===================================================== */}
+        <section
+          id="certifications"
+          className="wrap section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="05"
+              label="Certifications"
+            />
+          </Reveal>
 
-      <section
-        id="contact"
-        className="wrap section contact-section"
-      >
-        <Reveal>
-          <SectionLabel
-            index="07"
-            label="Contact"
-          />
-        </Reveal>
+          <Reveal delay={80}>
+            <h2 className="sec-title">
+              Certifications <span>& learning.</span>
+            </h2>
+          </Reveal>
 
-        <Reveal delay={80}>
-          <div className="contact-hero">
-            <div>
-              <span className="small-kicker">
-                LET'S CONNECT
-              </span>
+          <div className="cert-grid">
+            {CERTS.map((certification, index) => (
+              <Reveal
+                key={certification.name}
+                delay={index * 80}
+                className="panel cert-card"
+              >
+                <div className="cert-icon">
+                  <Award size={19} />
+                </div>
 
-              <h2 className="sec-title">
-                Let&rsquo;s build
-                <br />
-                something.
-              </h2>
-            </div>
+                <div>
+                  <p className="cert-name">
+                    {certification.name}
+                  </p>
+
+                  <p className="cert-by">
+                    {certification.by}
+                  </p>
+                </div>
+
+                <CheckCircle2
+                  size={18}
+                  className="cert-check"
+                />
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="approach"
+          className="wrap section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="06"
+              label="Approach"
+            />
+          </Reveal>
+
+          <Reveal delay={80}>
+            <h2 className="sec-title">
+              How I structure <span>an application.</span>
+            </h2>
 
             <p className="sec-desc">
-              Open to Full Stack, Java/Spring Boot,
-              and React roles. Based in Bengaluru,
-              India.
+              Client to service to schema — the layers a
+              request passes through, and what runs each one.
             </p>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        <div className="contact-grid">
-          {CONTACTS.map((contact, index) => {
-            const Icon = contact.icon
+          <div className="approach-grid">
+            {APPROACH.map((layer, index) => {
+              const Icon = layer.icon
 
-            return (
-              <Reveal
-                key={contact.label}
-                delay={index * 60}
-                className="panel contact-card"
-              >
-                <a
-                  href={contact.href}
-                  target={
-                    contact.href.startsWith('http')
-                      ? '_blank'
-                      : undefined
-                  }
-                  rel="noopener noreferrer"
-                  className="contact-link"
+              return (
+                <Reveal
+                  key={layer.title}
+                  delay={index * 70}
+                  className="panel approach-card"
                 >
-                  <span className="contact-icon">
-                    <Icon size={17} />
-                  </span>
+                  <div className="approach-number">
+                    0{index + 1}
+                  </div>
 
-                  <span className="contact-kv">
-                    <span className="contact-key">
-                      {contact.label}
+                  <div className="approach-icon">
+                    <Icon size={20} />
+                  </div>
+
+                  <p className="approach-sub">
+                    {layer.subtitle}
+                  </p>
+
+                  <h3 className="approach-title">
+                    {layer.title}
+                  </h3>
+
+                  <p className="approach-blurb">
+                    {layer.blurb}
+                  </p>
+
+                  <div className="approach-items">
+                    {layer.items.map((item) => (
+                      <span
+                        key={item}
+                        className="pill mono"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </Reveal>
+              )
+            })}
+          </div>
+        </section>
+
+        <section
+          id="contact"
+          className="wrap section contact-section"
+        >
+          <Reveal>
+            <SectionLabel
+              index="07"
+              label="Contact"
+            />
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div className="contact-heading">
+              <div>
+                <p className="contact-kicker">
+                  HAVE A ROLE IN MIND?
+                </p>
+
+                <h2 className="sec-title">
+                  Let's build
+                  <span> something.</span>
+                </h2>
+
+                <p className="sec-desc">
+                  Open to Full Stack, Java/Spring Boot, and
+                  React roles. Based in Bengaluru, India.
+                </p>
+              </div>
+
+              <div className="contact-orb">
+                <Mail size={32} />
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="contact-grid">
+            {CONTACTS.map((contact, index) => {
+              const Icon = contact.icon
+
+              return (
+                <Reveal
+                  key={contact.label}
+                  delay={index * 60}
+                  className="panel contact-card"
+                >
+                  <a
+                    href={contact.href}
+                    target={
+                      contact.href.startsWith('http')
+                        ? '_blank'
+                        : undefined
+                    }
+                    rel="noopener noreferrer"
+                    className="contact-link"
+                  >
+                    <span className="contact-icon">
+                      <Icon size={17} />
                     </span>
 
-                    <span className="contact-value">
-                      {contact.value}
+                    <span className="contact-kv">
+                      <span className="contact-key">
+                        {contact.label}
+                      </span>
+
+                      <span className="contact-value">
+                        {contact.value}
+                      </span>
                     </span>
-                  </span>
 
-                  <ArrowUpRight
-                    size={16}
-                    className="contact-arrow"
-                  />
-                </a>
-              </Reveal>
-            )
-          })}
-        </div>
-      </section>
-
-      {/* ===================================================== */}
-      {/* FOOTER                                                  */}
-      {/* ===================================================== */}
+                    <ArrowUpRight
+                      size={16}
+                      className="contact-arrow"
+                    />
+                  </a>
+                </Reveal>
+              )
+            })}
+          </div>
+        </section>
+      </main>
 
       <footer className="site-footer">
         <div className="wrap footer-inner">
-          <div className="footer-brand">
-            <span className="footer-logo">
-              RS
-            </span>
-
-            <span>
-              Rahul S
-            </span>
-          </div>
-
           <span className="footer-meta">
             © 2026 Rahul S
           </span>
@@ -1457,3 +1263,5 @@ export default function App() {
     </div>
   )
 }
+
+export default App
