@@ -1,1337 +1,2336 @@
-import { useEffect, useRef, useState } from 'react'
-import {
-  Github,
-  Linkedin,
-  Mail,
-  Phone,
-  ArrowUpRight,
-  MapPin,
-  GraduationCap,
-  Briefcase,
-  Award,
-  CheckCircle2,
-  Code2,
-  Layers,
-  ShieldCheck,
-  Database,
-  Wrench,
-  ExternalLink,
-  Sparkles,
-  Terminal,
-  ChevronDown,
-} from 'lucide-react'
-import './index.css'
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-const STACK_ROTATE = [
-  'React.js',
-  'Spring Boot',
-  'MySQL',
-  'REST APIs',
-  'Spring Security',
-]
+:root {
+  --paper: #f7f5ef;
+  --paper-dark: #ebe8df;
+  --white: #ffffff;
 
-const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Work' },
-  { id: 'certifications', label: 'Certifications' },
-  { id: 'approach', label: 'Approach' },
-  { id: 'contact', label: 'Contact' },
-]
+  --ink: #111111;
+  --ink-soft: #272727;
+  --muted: #686868;
+  --muted-light: #9a9a94;
 
-const SKILL_GROUPS = [
-  {
-    cat: 'Languages',
-    items: ['Java', 'JavaScript (ES6)', 'SQL'],
-  },
-  {
-    cat: 'Frontend',
-    items: [
-      'React.js',
-      'HTML5',
-      'CSS3',
-      'JSX',
-      'Responsive Design',
-      'Flexbox',
-      'CSS Grid',
-    ],
-  },
-  {
-    cat: 'Backend',
-    items: [
-      'Java',
-      'Spring Boot',
-      'Spring MVC',
-      'REST APIs',
-      'Spring Data JPA',
-      'Hibernate',
-    ],
-  },
-  {
-    cat: 'Database',
-    items: [
-      'MySQL',
-      'SQL',
-      'Database Design',
-      'CRUD Operations',
-    ],
-  },
-  {
-    cat: 'Security',
-    items: [
-      'Spring Security',
-      'JWT Authentication',
-      'Role-Based Access Control',
-    ],
-  },
-  {
-    cat: 'Testing',
-    items: ['JUnit 5', 'Mockito'],
-  },
-  {
-    cat: 'Core CS',
-    items: [
-      'OOP',
-      'Data Structures & Algorithms',
-      'DBMS',
-      'Agile Development',
-    ],
-  },
-  {
-    cat: 'Tools & Deployment',
-    items: [
-      'Git',
-      'GitHub',
-      'VS Code',
-      'IntelliJ IDEA',
-      'Vite',
-      'Docker',
-      'Docker Compose',
-      'AWS EC2',
-      'Vercel',
-      'Render',
-    ],
-  },
-]
+  --orange: #ff5a1f;
+  --orange-dark: #df4310;
+  --mint: #b7e4d1;
+  --yellow: #f4c95d;
+  --blue: #355cdb;
 
-const APPROACH = [
-  {
-    icon: Code2,
-    title: 'Frontend Presentation',
-    subtitle: 'Client',
-    items: [
-      'React.js',
-      'JSX',
-      'HTML5',
-      'CSS3',
-      'Flexbox / Grid',
-      'Vite',
-    ],
-    blurb:
-      'Responsive interfaces and reusable component structure, built for consistent behaviour across breakpoints.',
-  },
-  {
-    icon: Layers,
-    title: 'Backend Logic & APIs',
-    subtitle: 'Service Layer',
-    items: [
-      'Java',
-      'Spring Boot',
-      'Spring MVC',
-      'REST APIs',
-      'Spring Data JPA',
-      'Hibernate',
-    ],
-    blurb:
-      'Controller → Service → Repository layering, exposing REST endpoints consumed directly by the frontend.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Auth & Access Control',
-    subtitle: 'Security',
-    items: [
-      'Spring Security',
-      'JWT Authentication',
-      'Role-Based Access Control',
-    ],
-    blurb:
-      'Stateless authentication and route-level authorization for protected user and admin operations.',
-  },
-  {
-    icon: Database,
-    title: 'Data Persistence',
-    subtitle: 'Database',
-    items: ['MySQL', 'Database Design', 'CRUD Operations'],
-    blurb:
-      'Relational schema design across users, roles, accounts, products, and orders.',
-  },
-  {
-    icon: Wrench,
-    title: 'Build & Deployment',
-    subtitle: 'Infrastructure',
-    items: [
-      'Git',
-      'GitHub',
-      'Docker',
-      'Docker Compose',
-      'AWS EC2',
-      'Vercel',
-      'Render',
-    ],
-    blurb:
-      'Version-controlled workflows, containerized environments, and cloud-hosted delivery.',
-  },
-]
+  --line: #d9d6ce;
+  --line-dark: #bcb8ae;
 
-const EXPERIENCE = [
-  {
-    role: 'Web Development Intern',
-    company: 'MR Tech Lab',
-    time: '2026',
-    place: 'Bengaluru',
-    points: [
-      'Gained hands-on exposure to full-stack development using HTML, CSS, JavaScript, React.js, Java, Spring Boot, REST APIs, and MySQL.',
-      'Developed responsive frontend interfaces and integrated REST APIs with backend services for dynamic data handling.',
-      'Practiced database integration, authentication, CRUD operations, Git-based development, and application deployment.',
-    ],
-  },
-]
+  --container: 1240px;
 
-const EDUCATION = [
-  {
-    school: 'Dr. ACS College of Engineering',
-    degree: 'B.E. in Computer Science and Engineering',
-    time: '2023 – 2026 · Bengaluru',
-  },
-]
+  --shadow:
+    0 18px 50px rgba(17, 17, 17, 0.07);
 
-const PROJECTS = [
-  {
-    id: '01',
-    title: 'ShopSphere',
-    tag: 'Full-Stack E-Commerce Application',
-    tech: [
-      'React.js',
-      'Java',
-      'Spring Boot',
-      'Spring Data JPA',
-      'REST APIs',
-      'MySQL',
-      'Git',
-    ],
-    highlights: [
-      'Built an e-commerce platform supporting product browsing, search, cart, wishlist, checkout, and order management.',
-      'Developed role-based admin functionality for managing products, inventory, users, and orders.',
-      'Integrated Spring Boot REST APIs with React.js and MySQL for end-to-end data management.',
-      'Implemented authentication and secure order-management workflows.',
-    ],
-    note:
-      'Backend is on Render’s free tier — first request can take 30–60s to wake it up.',
-    links: [
-      {
-        label: 'Live site',
-        href: 'https://shopsphere-8m8f.vercel.app/',
-      },
-      {
-        label: 'Backend API',
-        href: 'https://shopsphere-backend-5umn.onrender.com',
-      },
-    ],
-    featured: true,
-  },
-  {
-    id: '02',
-    title: 'Online Banking System',
-    tag: 'Full-Stack Banking Application',
-    tech: [
-      'React.js',
-      'Java',
-      'Spring Boot',
-      'Spring Security',
-      'JWT',
-      'Spring Data JPA',
-      'MySQL',
-      'Docker',
-    ],
-    highlights: [
-      'Developed a secure full-stack banking application with registration, login, account management, and transaction workflows.',
-      'Built REST APIs using Spring Boot and Spring Data JPA with a layered Controller, Service, and Repository architecture.',
-      'Implemented JWT authentication and role-based access control using Spring Security for protected user and admin operations.',
-      'Designed MySQL database entities and relationships for users, roles, accounts, and transactions.',
-      'Containerized the application environment using Docker and Docker Compose.',
-    ],
-    featured: true,
-  },
-]
+  --shadow-heavy:
+    0 30px 70px rgba(17, 17, 17, 0.12);
 
-const CERTS = [
-  {
-    name: 'Introduction to Java',
-    by: 'Infosys Springboard',
-  },
-  {
-    name: 'Java Programming Fundamentals',
-    by: 'Infosys Springboard',
-  },
-]
-
-const CONTACTS = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'Srinivasrahul838@gmail.com',
-    href: 'mailto:Srinivasrahul838@gmail.com',
-  },
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+91 73376 34886',
-    href: 'tel:+917337634886',
-  },
-  {
-    icon: Linkedin,
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/rahul-s',
-    href: 'https://www.linkedin.com/in/rahul-s-6460b1238',
-  },
-  {
-    icon: Github,
-    label: 'GitHub',
-    value: 'github.com/rahul-s',
-    href: 'https://github.com/',
-  },
-]
-
-function useTypewriter(
-  words,
-  typeSpeed = 65,
-  deleteSpeed = 32,
-  pause = 1400
-) {
-  const [text, setText] = useState('')
-  const [wordIndex, setWordIndex] = useState(0)
-  const [deleting, setDeleting] = useState(false)
-
-  useEffect(() => {
-    const current = words[wordIndex % words.length]
-    let timer
-
-    if (!deleting && text === current) {
-      timer = setTimeout(() => setDeleting(true), pause)
-    } else if (deleting && text === '') {
-      setDeleting(false)
-      setWordIndex((i) => (i + 1) % words.length)
-    } else {
-      timer = setTimeout(
-        () => {
-          setText((value) =>
-            deleting
-              ? current.slice(0, value.length - 1)
-              : current.slice(0, value.length + 1)
-          )
-        },
-        deleting ? deleteSpeed : typeSpeed
-      )
-    }
-
-    return () => clearTimeout(timer)
-  }, [
-    text,
-    deleting,
-    wordIndex,
-    words,
-    typeSpeed,
-    deleteSpeed,
-    pause,
-  ])
-
-  return text
+  --radius: 4px;
 }
 
-function useReveal() {
-  const ref = useRef(null)
-  const [inView, setInView] = useState(false)
-
-  useEffect(() => {
-    const element = ref.current
-
-    if (!element) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true)
-          observer.disconnect()
-        }
-      },
-      {
-        threshold: 0.12,
-      }
-    )
-
-    observer.observe(element)
-
-    return () => observer.disconnect()
-  }, [])
-
-  return [ref, inView]
+* {
+  box-sizing: border-box;
 }
 
-function Reveal({
-  children,
-  className = '',
-  delay = 0,
-  as: Tag = 'div',
-}) {
-  const [ref, inView] = useReveal()
-
-  return (
-    <Tag
-      ref={ref}
-      className={`reveal ${inView ? 'in' : ''} ${className}`}
-      style={{
-        transitionDelay: `${delay}ms`,
-      }}
-    >
-      {children}
-    </Tag>
-  )
+html {
+  scroll-behavior: smooth;
 }
 
-function useActiveSection() {
-  const [active, setActive] = useState('about')
-
-  useEffect(() => {
-    const sections = NAV.map((item) =>
-      document.getElementById(item.id)
-    ).filter(Boolean)
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id)
-          }
-        })
-      },
-      {
-        rootMargin: '-35% 0px -55% 0px',
-      }
-    )
-
-    sections.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
-  }, [])
-
-  return active
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
 }
 
-function useScrolledPast(threshold = 30) {
-  const [past, setPast] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setPast(window.scrollY > threshold)
-    }
-
-    handleScroll()
-
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [threshold])
-
-  return past
+body,
+button,
+a {
+  -webkit-font-smoothing: antialiased;
 }
 
-function SectionLabel({ index, label }) {
-  return (
-    <div className="section-label">
-      <span className="section-index">{index}</span>
-      <span className="section-name">{label}</span>
-      <span className="section-rule" />
-    </div>
-  )
+button,
+a {
+  font: inherit;
 }
 
-function ProfileCard() {
-  const rows = [
-    {
-      icon: MapPin,
-      k: 'Location',
-      v: 'Bengaluru, India',
-    },
-    {
-      icon: Briefcase,
-      k: 'Focus',
-      v: 'Java · Spring Boot · React',
-    },
-    {
-      icon: GraduationCap,
-      k: 'Education',
-      v: 'B.E. Computer Science, 2026',
-    },
-  ]
-
-  return (
-    <div className="profile-console">
-      <div className="console-top">
-        <div className="window-dots">
-          <span />
-          <span />
-          <span />
-        </div>
-
-        <span className="console-title">
-          rahul.dev / profile
-        </span>
-
-        <span className="console-status">
-          ONLINE
-        </span>
-      </div>
-
-      <div className="console-screen">
-        <div className="console-grid" />
-
-        <div className="profile-terminal">
-          <span className="terminal-comment">
-            // candidate_profile
-          </span>
-
-          <p className="console-command">
-            $ whoami
-          </p>
-
-          <h3>
-            Rahul S<span>.</span>
-          </h3>
-
-          <p className="console-role">
-            Full Stack Developer
-          </p>
-
-          <div className="console-status-large">
-            <span className="status-dot" />
-            Available for opportunities
-          </div>
-
-          <div className="console-divider" />
-
-          <div className="console-info">
-            {rows.map((row) => {
-              const Icon = row.icon
-
-              return (
-                <div
-                  className="console-info-row"
-                  key={row.k}
-                >
-                  <div className="console-icon">
-                    <Icon size={15} />
-                  </div>
-
-                  <div>
-                    <span>{row.k}</span>
-                    <strong>{row.v}</strong>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="console-stack">
-            <span>STACK</span>
-
-            <div>
-              {STACK_ROTATE.slice(0, 4).map((item) => (
-                <b key={item}>{item}</b>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="console-corner">
-          2026
-        </div>
-      </div>
-    </div>
-  )
+button {
+  cursor: pointer;
 }
 
-function App() {
-  const typed = useTypewriter(STACK_ROTATE)
-  const active = useActiveSection()
-  const scrolled = useScrolledPast()
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-  const scrollTo = (id) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+::selection {
+  background: var(--orange);
+  color: white;
+}
+
+/* =========================================================
+   APP BACKGROUND
+========================================================= */
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.paper-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(
+      rgba(17, 17, 17, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(17, 17, 17, 0.035) 1px,
+      transparent 1px
+    );
+  background-size: 55px 55px;
+  z-index: -5;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: -4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+}
+
+.orange-orb,
+.mint-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  z-index: -3;
+}
+
+.orange-orb {
+  width: 380px;
+  height: 380px;
+  background: rgba(255, 90, 31, 0.11);
+  top: 5%;
+  right: -200px;
+}
+
+.mint-orb {
+  width: 450px;
+  height: 450px;
+  background: rgba(183, 228, 209, 0.35);
+  bottom: 5%;
+  left: -250px;
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+.section {
+  position: relative;
+  padding: 125px 0;
+  scroll-margin-top: 100px;
+}
+
+.section-container,
+.nav-inner,
+.footer-inner {
+  width: min(
+    calc(100% - 56px),
+    var(--container)
+  );
+
+  margin-inline: auto;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 18px 0;
+  transition: 0.3s ease;
+}
+
+.site-nav.scrolled {
+  padding: 10px 0;
+}
+
+.nav-inner {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  padding: 7px 9px 7px 14px;
+
+  background: rgba(247, 245, 239, 0.92);
+  border: 1px solid var(--line);
+
+  box-shadow:
+    0 8px 25px rgba(17, 17, 17, 0.06);
+}
+
+.logo-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.logo-mark {
+  width: 37px;
+  height: 37px;
+
+  display: grid;
+  place-items: center;
+
+  background: var(--orange);
+  color: white;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+
+  border-radius: 2px;
+
+  transform: rotate(-3deg);
+}
+
+.logo-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.logo-text span {
+  color: var(--orange);
+}
+
+.tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tab {
+  position: relative;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--muted);
+
+  padding: 9px 11px;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+
+  transition: 0.25s ease;
+}
+
+.tab::after {
+  content: '';
+
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: 2px;
+
+  height: 2px;
+
+  background: var(--orange);
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: 0.25s ease;
+}
+
+.tab:hover,
+.tab.active {
+  color: var(--ink);
+}
+
+.tab.active::after {
+  transform: scaleX(1);
+}
+
+.nav-contact {
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 16px;
+
+  background: var(--ink);
+  color: white;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: 0.25s ease;
+}
+
+.nav-contact:hover {
+  background: var(--orange);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+
+  padding: 150px 0 100px;
+}
+
+.hero-inner {
+  width: min(
+    calc(100% - 56px),
+    var(--container)
+  );
+
+  margin-inline: auto;
+
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(420px, 0.95fr);
+
+  gap: 90px;
+
+  align-items: center;
+}
+
+.hero-index {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--muted);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.hero-index span {
+  color: var(--orange);
+  font-weight: 700;
+}
+
+.hero-index i {
+  width: 35px;
+  height: 1px;
+  background: var(--line-dark);
+}
+
+.hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 38px 0 0;
+
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.kicker-line {
+  width: 30px;
+  height: 2px;
+  background: var(--orange);
+}
+
+.hero-name {
+  margin: 17px 0 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: clamp(
+    82px,
+    11vw,
+    150px
+  );
+
+  line-height: 0.82;
+
+  letter-spacing: -0.09em;
+
+  font-weight: 700;
+}
+
+.hero-name em {
+  color: var(--orange);
+  font-style: normal;
+}
+
+.hero-role-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 30px;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 600;
+}
+
+.role-arrow {
+  display: grid;
+  place-items: center;
+
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid var(--line);
+
+  font-size: 18px;
+  color: var(--orange);
+}
+
+.hero-stack {
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 25px;
+
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+.hero-stack strong {
+  color: var(--ink);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.type-cursor {
+  width: 2px;
+  height: 15px;
+
+  background: var(--orange);
+
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero-desc {
+  max-width: 650px;
+
+  margin: 25px 0 0;
+
+  color: var(--muted);
+
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 32px;
+}
+
+.button-black,
+.button-outline {
+  min-height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 0 19px;
+
+  border: 1px solid var(--ink);
+
+  font-weight: 700;
+
+  transition: 0.25s ease;
+}
+
+.button-black {
+  background: var(--ink);
+  color: white;
+}
+
+.button-black:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: translateY(-3px);
+}
+
+.button-outline {
+  background: transparent;
+  color: var(--ink);
+}
+
+.button-outline:hover {
+  background: var(--white);
+  transform: translateY(-3px);
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+
+  margin-top: 25px;
+
+  color: var(--muted);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+
+.hero-meta span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hero-meta svg {
+  color: var(--orange);
+}
+
+/* =========================================================
+   PROFILE COMMAND CONSOLE
+========================================================= */
+
+.hero-profile {
+  perspective: 1200px;
+}
+
+.profile-console {
+  position: relative;
+
+  min-height: 540px;
+
+  background: #171717;
+
+  color: white;
+
+  box-shadow:
+    25px 30px 0 var(--orange),
+    0 35px 70px rgba(17, 17, 17, 0.18);
+
+  transform: rotate(2deg);
+
+  transition:
+    transform 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.profile-console:hover {
+  transform:
+    rotate(0deg)
+    translateY(-8px);
+
+  box-shadow:
+    15px 18px 0 var(--orange),
+    0 40px 80px rgba(17, 17, 17, 0.22);
+}
+
+.console-top {
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 17px;
+
+  border-bottom: 1px solid #333;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #999;
+}
+
+.window-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.window-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #777;
+}
+
+.console-status {
+  color: #8be2b2;
+}
+
+.console-screen {
+  position: relative;
+
+  min-height: 492px;
+
+  overflow: hidden;
+
+  padding: 40px;
+}
+
+.console-grid {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.22;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    );
+
+  background-size: 35px 35px;
+}
+
+.profile-terminal {
+  position: relative;
+  z-index: 2;
+}
+
+.terminal-comment {
+  color: #666;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.console-command {
+  margin: 45px 0 10px;
+
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.profile-terminal h3 {
+  margin: 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: 58px;
+  letter-spacing: -0.06em;
+}
+
+.profile-terminal h3 span {
+  color: var(--orange);
+}
+
+.console-role {
+  margin: 8px 0 0;
+
+  color: #aaa;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.console-status-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 20px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #303030;
+
+  color: #8be2b2;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.console-status-large .status-dot {
+  width: 6px;
+  height: 6px;
+
+  background: #7ee2a8;
+
+  box-shadow: none;
+}
+
+.console-divider {
+  height: 1px;
+
+  margin: 30px 0;
+
+  background: #303030;
+}
+
+.console-info {
+  display: grid;
+  gap: 17px;
+}
+
+.console-info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.console-icon {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid #333;
+
+  color: var(--orange);
+}
+
+.console-info-row div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.console-info-row span {
+  color: #666;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+
+  text-transform: uppercase;
+}
+
+.console-info-row strong {
+  color: #ddd;
+
+  font-size: 11px;
+}
+
+.console-stack {
+  margin-top: 28px;
+}
+
+.console-stack > span {
+  color: #666;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+}
+
+.console-stack > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin-top: 8px;
+}
+
+.console-stack b {
+  padding: 5px 7px;
+
+  border: 1px solid #333;
+
+  color: #bbb;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.console-corner {
+  position: absolute;
+  right: 25px;
+  bottom: 20px;
+
+  color: #333;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+.scroll-indicator {
+  position: absolute;
+
+  bottom: 25px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+}
+
+/* =========================================================
+   SECTION LABEL
+========================================================= */
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 35px;
+}
+
+.section-index {
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.section-name {
+  color: var(--ink);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-rule {
+  width: 80px;
+  height: 1px;
+
+  background: var(--line-dark);
+}
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+.massive-title {
+  max-width: 900px;
+
+  margin: 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: clamp(
+    50px,
+    7vw,
+    92px
+  );
+
+  line-height: 0.94;
+
+  letter-spacing: -0.075em;
+}
+
+.massive-title span {
+  color: var(--orange);
+}
+
+.section-heading-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.section-heading-row > p {
+  max-width: 380px;
+
+  margin: 0 0 7px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.about-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.1fr)
+    minmax(280px, 0.6fr);
+
+  gap: 90px;
+
+  align-items: end;
+}
+
+.about-copy {
+  position: relative;
+
+  border-left: 2px solid var(--orange);
+
+  padding-left: 24px;
+}
+
+.copy-number {
+  display: block;
+
+  margin-bottom: 17px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.about-copy p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.about-copy strong {
+  color: var(--ink);
+}
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1px;
+
+  margin-top: 80px;
+
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.fact-card {
+  position: relative;
+
+  min-height: 185px;
+
+  padding: 25px;
+
+  background: var(--paper);
+
+  transition: 0.3s ease;
+}
+
+.fact-card:hover {
+  background: white;
+  transform: translateY(-5px);
+  z-index: 2;
+  box-shadow: var(--shadow);
+}
+
+.fact-letter {
+  display: block;
+
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+
+.fact-label {
+  display: block;
+
+  margin-top: 35px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.fact-card strong {
+  display: block;
+
+  max-width: 240px;
+
+  margin-top: 9px;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+}
+
+.fact-arrow {
+  position: absolute;
+
+  right: 22px;
+  bottom: 20px;
+
+  color: var(--line-dark);
+
+  transition: 0.25s ease;
+}
+
+.fact-card:hover .fact-arrow {
+  color: var(--orange);
+  transform: translate(3px, -3px);
+}
+
+/* =========================================================
+   SKILLS MATRIX
+========================================================= */
+
+.skills-table {
+  margin-top: 65px;
+
+  border-top: 1px solid var(--ink);
+}
+
+.skill-row {
+  min-height: 100px;
+
+  display: grid;
+
+  grid-template-columns:
+    70px
+    180px
+    1fr
+    30px;
+
+  align-items: center;
+
+  gap: 25px;
+
+  border-bottom: 1px solid var(--line);
+
+  transition: 0.3s ease;
+}
+
+.skill-row:hover {
+  padding-left: 12px;
+  background: white;
+}
+
+.skill-number {
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+
+.skill-row h3 {
+  margin: 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-list span {
+  padding: 7px 9px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255, 255, 255, 0.5);
+
+  color: var(--muted);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+
+  transition: 0.2s ease;
+}
+
+.skill-list span:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.skill-arrow {
+  color: var(--muted-light);
+}
+
+/* =========================================================
+   EXPERIENCE
+========================================================= */
+
+.experience-layout {
+  display: grid;
+
+  grid-template-columns: 120px 1fr;
+
+  gap: 55px;
+
+  margin-top: 70px;
+}
+
+.timeline-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.rail-line {
+  position: relative;
+
+  width: 1px;
+  flex: 1;
+
+  min-height: 300px;
+
+  background: var(--line);
+}
+
+.rail-line i {
+  position: absolute;
+
+  top: 10px;
+  left: -3px;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--orange);
+
+  box-shadow:
+    0 0 0 5px rgba(255, 90, 31, 0.12);
+}
+
+.experience-content {
+  max-width: 900px;
+}
+
+.experience-block {
+  padding-bottom: 60px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.experience-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.eyebrow {
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.experience-top h3 {
+  margin: 9px 0 5px;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 31px;
+}
+
+.experience-top p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.year-tag {
+  align-self: flex-start;
+
+  padding: 8px 10px;
+
+  background: var(--ink);
+  color: white;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.experience-block ul {
+  display: grid;
+  gap: 12px;
+
+  margin: 30px 0 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.experience-block li {
+  display: flex;
+  gap: 10px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.experience-block li svg {
+  flex: 0 0 auto;
+
+  margin-top: 3px;
+
+  color: var(--orange);
+}
+
+.education-block {
+  display: flex;
+  gap: 18px;
+
+  margin-top: 50px;
+
+  padding: 25px;
+
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.education-icon {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 48px;
+
+  background: var(--mint);
+
+  color: var(--ink);
+}
+
+.education-block h3 {
+  margin: 7px 0 5px;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+}
+
+.education-block p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.education-block small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+
+.projects {
+  display: grid;
+  gap: 35px;
+
+  margin-top: 70px;
+}
+
+.project {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 40px;
+
+  background: white;
+
+  border: 1px solid var(--line);
+
+  transition: 0.4s ease;
+}
+
+.project:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-heavy);
+}
+
+.project-main {
+  background: var(--ink);
+  color: white;
+
+  border-color: var(--ink);
+}
+
+.project-main .project-tag,
+.project-main .project-label {
+  color: var(--orange);
+}
+
+.project-main .project-description li {
+  color: #bdbdbd;
+}
+
+.project-main .project-tech span {
+  border-color: #444;
+  color: #bbb;
+}
+
+.project-main .project-note {
+  color: #777;
+}
+
+.project-number {
+  position: absolute;
+
+  top: 25px;
+  right: 30px;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: 60px;
+  font-weight: 700;
+
+  color: rgba(0, 0, 0, 0.07);
+}
+
+.project-main .project-number {
+  color: rgba(255, 255, 255, 0.06);
+}
+
+.project-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.project-tag {
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-header h3 {
+  margin: 9px 0 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: clamp(40px, 5vw, 68px);
+
+  line-height: 0.95;
+
+  letter-spacing: -0.06em;
+}
+
+.featured {
+  align-self: flex-start;
+
+  padding: 7px 9px;
+
+  background: var(--orange);
+  color: white;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.project-body {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(230px, 0.7fr);
+
+  gap: 70px;
+
+  margin-top: 60px;
+}
+
+.project-label {
+  display: block;
+
+  margin-bottom: 18px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.project-description ul {
+  display: grid;
+  gap: 14px;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.project-description li {
+  display: flex;
+  gap: 10px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.project-description li > span {
+  width: 5px;
+  height: 5px;
+
+  flex: 0 0 5px;
+
+  margin-top: 8px;
+
+  background: var(--orange);
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-tech span {
+  padding: 7px 8px;
+
+  border: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+}
+
+.project-note {
+  margin: 20px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 20px;
+}
+
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 11px;
+
+  background: var(--orange);
+  color: white;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.project-links a:hover {
+  background: var(--orange-dark);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   CERTIFICATIONS
+========================================================= */
+
+.certifications {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 1px;
+
+  margin-top: 65px;
+
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.certification {
+  position: relative;
+
+  min-height: 145px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  padding: 25px;
+
+  background: var(--paper);
+
+  transition: 0.3s ease;
+}
+
+.certification:hover {
+  background: white;
+  transform: translateY(-5px);
+  z-index: 2;
+  box-shadow: var(--shadow);
+}
+
+.cert-index {
+  position: absolute;
+
+  top: 15px;
+  right: 18px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.cert-icon {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 45px;
+
+  background: var(--yellow);
+}
+
+.certification h3 {
+  margin: 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+}
+
+.certification p {
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.cert-check {
+  margin-left: auto;
+
+  color: #2f9b68;
+}
+
+/* =========================================================
+   ARCHITECTURE
+========================================================= */
+
+.architecture {
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 1px;
+
+  margin-top: 65px;
+
+  background: var(--line);
+
+  border: 1px solid var(--line);
+}
+
+.architecture-node {
+  position: relative;
+
+  min-height: 370px;
+
+  padding: 22px;
+
+  background: white;
+
+  transition: 0.35s ease;
+}
+
+.architecture-node:hover {
+  background: var(--ink);
+  color: white;
+
+  transform: translateY(-8px);
+
+  z-index: 2;
+
+  box-shadow: var(--shadow-heavy);
+}
+
+.node-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.node-subtitle {
+  display: block;
+
+  margin-top: 40px;
+
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.architecture-node h3 {
+  margin: 8px 0 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: 19px;
+  line-height: 1.15;
+}
+
+.architecture-node p {
+  min-height: 100px;
+
+  margin: 15px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.architecture-node:hover p {
+  color: #aaa;
+}
+
+.node-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  margin-top: 15px;
+}
+
+.node-items span {
+  padding: 5px 6px;
+
+  border: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+}
+
+.architecture-node:hover .node-items span {
+  border-color: #444;
+  color: #aaa;
+}
+
+.architecture-arrow {
+  position: absolute;
+
+  top: 50%;
+  right: -13px;
+
+  width: 25px;
+  height: 25px;
+
+  display: grid;
+  place-items: center;
+
+  background: var(--orange);
+  color: white;
+
+  border-radius: 50%;
+
+  z-index: 5;
+}
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact-terminal {
+  margin-top: 60px;
+
+  background: #171717;
+
+  color: white;
+
+  border: 1px solid #171717;
+
+  box-shadow:
+    18px 18px 0 var(--mint),
+    0 30px 70px rgba(17, 17, 17, 0.15);
+}
+
+.terminal-header {
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  border-bottom: 1px solid #333;
+
+  color: #777;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.terminal-content {
+  min-height: 440px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 70px;
+}
+
+.terminal-line {
+  color: var(--orange);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.terminal-content h2 {
+  max-width: 800px;
+
+  margin: 20px 0 0;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: clamp(
+    60px,
+    9vw,
+    120px
+  );
+
+  line-height: 0.85;
+
+  letter-spacing: -0.08em;
+}
+
+.terminal-content h2 span {
+  color: var(--orange);
+}
+
+.terminal-content p {
+  max-width: 570px;
+
+  margin: 25px 0 0;
+
+  color: #999;
+
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.terminal-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 30px;
+
+  padding: 14px 18px;
+
+  background: var(--orange);
+  color: white;
+
+  font-weight: 700;
+
+  transition: 0.25s ease;
+}
+
+.terminal-button:hover {
+  background: white;
+  color: var(--ink);
+  transform: translateY(-3px);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 1px;
+
+  margin-top: 55px;
+
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.contact-item {
+  background: var(--paper);
+
+  transition: 0.3s ease;
+}
+
+.contact-item:hover {
+  background: white;
+  transform: translateY(-5px);
+  z-index: 2;
+  box-shadow: var(--shadow);
+}
+
+.contact-item a {
+  min-height: 120px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 20px;
+}
+
+.contact-icon {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 40px;
+
+  background: var(--mint);
+}
+
+.contact-item a > span:nth-child(2) {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-item small {
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+
+  text-transform: uppercase;
+}
+
+.contact-item strong {
+  overflow: hidden;
+
+  color: var(--ink);
+
+  font-size: 10px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-arrow {
+  margin-left: auto;
+
+  color: var(--muted-light);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+}
+
+.footer-inner {
+  min-height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  color: var(--muted-light);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+
+.footer-code {
+  color: var(--orange);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .tab-bar {
+    display: none;
   }
 
-  return (
-    <div className="app">
-      <div className="paper-grid" />
-      <div className="noise" />
-      <div className="orange-orb orb-one" />
-      <div className="mint-orb orb-two" />
-
-      <nav
-        className={`site-nav ${
-          scrolled ? 'scrolled' : ''
-        }`}
-      >
-        <div className="nav-inner">
-          <button
-            className="logo-btn"
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              })
-            }
-          >
-            <span className="logo-mark">R</span>
-
-            <span className="logo-text">
-              RAHUL<span>.DEV</span>
-            </span>
-          </button>
-
-          <div className="tab-bar">
-            {NAV.map((item) => (
-              <button
-                key={item.id}
-                className={`tab ${
-                  active === item.id ? 'active' : ''
-                }`}
-                onClick={() => scrollTo(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <a
-            className="nav-contact"
-            href="mailto:Srinivasrahul838@gmail.com"
-          >
-            Let's talk
-            <ArrowUpRight size={15} />
-          </a>
-        </div>
-      </nav>
-
-      <header id="hero" className="hero">
-        <div className="hero-inner">
-          <div className="hero-copy">
-            <Reveal>
-              <div className="hero-index">
-                <span>00</span>
-                <i />
-                PORTFOLIO / 2026
-              </div>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <p className="hero-kicker">
-                <span className="kicker-line" />
-                JAVA FULL STACK DEVELOPER
-              </p>
-            </Reveal>
-
-            <Reveal delay={130}>
-              <h1 className="hero-name">
-                Rahul
-                <em>S.</em>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={180}>
-              <div className="hero-role-row">
-                <span>Full Stack Developer</span>
-                <span className="role-arrow">↗</span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={220}>
-              <div className="hero-stack">
-                <span>Currently building with</span>
-                <strong>{typed}</strong>
-                <span className="type-cursor" />
-              </div>
-            </Reveal>
-
-            <Reveal delay={260}>
-              <p className="hero-desc">
-                Full stack developer skilled in Java, Spring
-                Boot, React.js, REST APIs, and MySQL — with
-                hands-on experience building secure,
-                responsive web applications. Strong in backend
-                API development, frontend integration,
-                database management, and authentication.
-              </p>
-            </Reveal>
-
-            <Reveal delay={310}>
-              <div className="hero-cta">
-                <button
-                  className="button-black"
-                  onClick={() => scrollTo('projects')}
-                >
-                  View selected work
-                  <ArrowUpRight size={17} />
-                </button>
-
-                <button
-                  className="button-outline"
-                  onClick={() => scrollTo('contact')}
-                >
-                  Contact me
-                </button>
-              </div>
-            </Reveal>
-
-            <Reveal delay={350}>
-              <div className="hero-meta">
-                <span>
-                  <GraduationCap size={15} />
-                  B.E. Computer Science
-                </span>
-
-                <span>
-                  <MapPin size={15} />
-                  Bengaluru, India
-                </span>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal
-            delay={160}
-            className="hero-profile"
-          >
-            <ProfileCard />
-          </Reveal>
-        </div>
-
-        <button
-          className="scroll-indicator"
-          onClick={() => scrollTo('about')}
-          aria-label="Scroll to about"
-        >
-          <span>SCROLL</span>
-          <ChevronDown size={15} />
-        </button>
-      </header>
-
-      <main>
-        <section
-          id="about"
-          className="section about-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="01"
-                label="About"
-              />
-            </Reveal>
-
-            <div className="about-layout">
-              <Reveal delay={80}>
-                <h2 className="massive-title">
-                  Backend-minded,
-                  <br />
-                  <span>shipped full stack.</span>
-                </h2>
-              </Reveal>
-
-              <Reveal delay={140}>
-                <div className="about-copy">
-                  <span className="copy-number">
-                    / 01
-                  </span>
-
-                  <p>
-                    I build web applications end to end —
-                    <strong> React</strong> interfaces wired to
-                    <strong> Spring Boot</strong> services, with
-                    data modelled in <strong>MySQL</strong> and
-                    protected by <strong>Spring Security</strong>{' '}
-                    and JWT. I care about how a request actually
-                    moves through a system, and I write it in
-                    clean, testable layers rather than one large
-                    tangle.
-                  </p>
-                </div>
-              </Reveal>
-            </div>
-
-            <div className="fact-grid">
-              {[
-                {
-                  label: 'Core Stack',
-                  value: 'Java · Spring Boot · React',
-                  number: 'A',
-                },
-                {
-                  label: 'Projects Shipped',
-                  value: '2 full-stack applications',
-                  number: 'B',
-                },
-                {
-                  label: 'Based In',
-                  value: 'Bengaluru, India',
-                  number: 'C',
-                },
-              ].map((fact, index) => (
-                <Reveal
-                  key={fact.label}
-                  delay={index * 70}
-                  className="fact-card"
-                >
-                  <span className="fact-letter">
-                    {fact.number}
-                  </span>
-
-                  <span className="fact-label">
-                    {fact.label}
-                  </span>
-
-                  <strong>{fact.value}</strong>
-
-                  <ArrowUpRight
-                    className="fact-arrow"
-                    size={18}
-                  />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="skills" className="section">
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="02"
-                label="Skills"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="section-heading-row">
-                <h2 className="massive-title">
-                  Technical
-                  <span> inventory.</span>
-                </h2>
-
-                <p>
-                  A practical stack focused on building,
-                  securing and deploying full-stack
-                  applications.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="skills-table">
-              {SKILL_GROUPS.map((group, index) => (
-                <Reveal
-                  key={group.cat}
-                  delay={index * 35}
-                  className="skill-row"
-                >
-                  <span className="skill-number">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-
-                  <h3>{group.cat}</h3>
-
-                  <div className="skill-list">
-                    {group.items.map((skill) => (
-                      <span key={skill}>
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-
-                  <ArrowUpRight
-                    className="skill-arrow"
-                    size={17}
-                  />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="experience"
-          className="section experience-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="03"
-                label="Experience"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <h2 className="massive-title">
-                Experience &
-                <span> education.</span>
-              </h2>
-            </Reveal>
-
-            <div className="experience-layout">
-              <div className="timeline-rail">
-                <span>2026</span>
-                <div className="rail-line">
-                  <i />
-                </div>
-                <span>NOW</span>
-              </div>
-
-              <div className="experience-content">
-                {EXPERIENCE.map((experience) => (
-                  <Reveal
-                    key={experience.company}
-                    className="experience-block"
-                  >
-                    <div className="experience-top">
-                      <div>
-                        <span className="eyebrow">
-                          EXPERIENCE
-                        </span>
-
-                        <h3>
-                          {experience.role}
-                        </h3>
-
-                        <p>
-                          {experience.company} ·{' '}
-                          {experience.place}
-                        </p>
-                      </div>
-
-                      <span className="year-tag">
-                        {experience.time}
-                      </span>
-                    </div>
-
-                    <ul>
-                      {experience.points.map((point) => (
-                        <li key={point}>
-                          <CheckCircle2 size={15} />
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </Reveal>
-                ))}
-
-                <Reveal
-                  delay={100}
-                  className="education-block"
-                >
-                  <div className="education-icon">
-                    <GraduationCap size={22} />
-                  </div>
-
-                  <div>
-                    <span className="eyebrow">
-                      EDUCATION
-                    </span>
-
-                    <h3>
-                      {EDUCATION[0].school}
-                    </h3>
-
-                    <p>
-                      {EDUCATION[0].degree}
-                    </p>
-
-                    <small>
-                      {EDUCATION[0].time}
-                    </small>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="projects"
-          className="section projects-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="04"
-                label="Selected Work"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="section-heading-row">
-                <h2 className="massive-title">
-                  Projects that
-                  <span> ship.</span>
-                </h2>
-
-                <p>
-                  Full-stack applications demonstrating
-                  frontend, backend, security and database
-                  integration.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="projects">
-              {PROJECTS.map((project, index) => (
-                <Reveal
-                  key={project.id}
-                  delay={index * 100}
-                  className={`project ${
-                    index === 0 ? 'project-main' : ''
-                  }`}
-                >
-                  <div className="project-number">
-                    {project.id}
-                  </div>
-
-                  <div className="project-header">
-                    <div>
-                      <span className="project-tag">
-                        {project.tag}
-                      </span>
-
-                      <h3>{project.title}</h3>
-                    </div>
-
-                    {project.featured && (
-                      <span className="featured">
-                        FEATURED
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="project-body">
-                    <div className="project-description">
-                      <span className="project-label">
-                        WHAT I BUILT
-                      </span>
-
-                      <ul>
-                        {project.highlights.map(
-                          (highlight) => (
-                            <li key={highlight}>
-                              <span />
-                              {highlight}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-
-                    <div className="project-side">
-                      <span className="project-label">
-                        STACK
-                      </span>
-
-                      <div className="project-tech">
-                        {project.tech.map((tech) => (
-                          <span key={tech}>
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {project.note && (
-                        <p className="project-note">
-                          {project.note}
-                        </p>
-                      )}
-
-                      {project.links && (
-                        <div className="project-links">
-                          {project.links.map((link) => (
-                            <a
-                              key={link.label}
-                              href={link.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {link.label}
-                              <ExternalLink
-                                size={14}
-                              />
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="certifications"
-          className="section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="05"
-                label="Certifications"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <h2 className="massive-title">
-                Certifications
-                <span> & learning.</span>
-              </h2>
-            </Reveal>
-
-            <div className="certifications">
-              {CERTS.map((certification, index) => (
-                <Reveal
-                  key={certification.name}
-                  delay={index * 80}
-                  className="certification"
-                >
-                  <span className="cert-index">
-                    0{index + 1}
-                  </span>
-
-                  <div className="cert-icon">
-                    <Award size={20} />
-                  </div>
-
-                  <div>
-                    <h3>
-                      {certification.name}
-                    </h3>
-
-                    <p>{certification.by}</p>
-                  </div>
-
-                  <CheckCircle2
-                    className="cert-check"
-                    size={19}
-                  />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="approach"
-          className="section architecture-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="06"
-                label="Approach"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="section-heading-row">
-                <h2 className="massive-title">
-                  How I structure
-                  <span> an application.</span>
-                </h2>
-
-                <p>
-                  Client to service to schema — the layers
-                  a request passes through, and what runs
-                  each one.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="architecture">
-              {APPROACH.map((layer, index) => {
-                const Icon = layer.icon
-
-                return (
-                  <Reveal
-                    key={layer.title}
-                    delay={index * 70}
-                    className="architecture-node"
-                  >
-                    <div className="node-top">
-                      <span>
-                        0{index + 1}
-                      </span>
-
-                      <Icon size={20} />
-                    </div>
-
-                    <span className="node-subtitle">
-                      {layer.subtitle}
-                    </span>
-
-                    <h3>{layer.title}</h3>
-
-                    <p>{layer.blurb}</p>
-
-                    <div className="node-items">
-                      {layer.items.map((item) => (
-                        <span key={item}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-
-                    {index < APPROACH.length - 1 && (
-                      <div className="architecture-arrow">
-                        →
-                      </div>
-                    )}
-                  </Reveal>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="contact"
-          className="section contact-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="07"
-                label="Contact"
-              />
-            </Reveal>
-
-            <div className="contact-terminal">
-              <div className="terminal-header">
-                <div className="window-dots">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-
-                <span>
-                  rahul@developer:~
-                </span>
-
-                <Terminal size={15} />
-              </div>
-
-              <div className="terminal-content">
-                <Reveal>
-                  <span className="terminal-line">
-                    $ ./start-conversation
-                  </span>
-
-                  <h2>
-                    Let's build
-                    <span> something.</span>
-                  </h2>
-
-                  <p>
-                    Open to Full Stack, Java/Spring Boot,
-                    and React roles. Based in Bengaluru,
-                    India.
-                  </p>
-
-                  <a
-                    className="terminal-button"
-                    href="mailto:Srinivasrahul838@gmail.com"
-                  >
-                    Start a conversation
-                    <ArrowUpRight size={18} />
-                  </a>
-                </Reveal>
-              </div>
-            </div>
-
-            <div className="contact-grid">
-              {CONTACTS.map((contact, index) => {
-                const Icon = contact.icon
-
-                return (
-                  <Reveal
-                    key={contact.label}
-                    delay={index * 60}
-                    className="contact-item"
-                  >
-                    <a
-                      href={contact.href}
-                      target={
-                        contact.href.startsWith('http')
-                          ? '_blank'
-                          : undefined
-                      }
-                      rel="noopener noreferrer"
-                    >
-                      <span className="contact-icon">
-                        <Icon size={17} />
-                      </span>
-
-                      <span>
-                        <small>
-                          {contact.label}
-                        </small>
-
-                        <strong>
-                          {contact.value}
-                        </strong>
-                      </span>
-
-                      <ArrowUpRight
-                        className="contact-arrow"
-                        size={16}
-                      />
-                    </a>
-                  </Reveal>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="site-footer">
-        <div className="footer-inner">
-          <span>© 2026 Rahul S</span>
-
-          <span>
-            Full Stack Developer · Bengaluru, India
-          </span>
-
-          <span className="footer-code">
-            BUILD / 2026
-          </span>
-        </div>
-      </footer>
-    </div>
-  )
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .hero-profile {
+    width: min(100%, 650px);
+    margin-inline: auto;
+  }
+
+  .architecture {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .architecture-node:last-child {
+    grid-column: span 2;
+  }
+
+  .architecture-arrow {
+    display: none;
+  }
+
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-export default App
+@media (max-width: 800px) {
+  .section {
+    padding: 90px 0;
+  }
+
+  .section-container,
+  .nav-inner,
+  .footer-inner,
+  .hero-inner {
+    width: min(
+      calc(100% - 32px),
+      var(--container)
+    );
+  }
+
+  .hero {
+    padding-top: 130px;
+  }
+
+  .hero-name {
+    font-size: clamp(
+      72px,
+      20vw,
+      110px
+    );
+  }
+
+  .hero-role-row {
+    font-size: 27px;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .section-heading-row {
+    display: block;
+  }
+
+  .section-heading-row > p {
+    margin-top: 25px;
+  }
+
+  .massive-title {
+    font-size: clamp(
+      48px,
+      11vw,
+      75px
+    );
+  }
+
+  .fact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-row {
+    grid-template-columns:
+      45px
+      150px
+      1fr;
+  }
+
+  .skill-arrow {
+    display: none;
+  }
+
+  .experience-layout {
+    grid-template-columns: 35px 1fr;
+    gap: 25px;
+  }
+
+  .project-body {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .certifications {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-node:last-child {
+    grid-column: auto;
+  }
+
+  .terminal-content {
+    padding: 50px 30px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-nav {
+    padding: 9px 0;
+  }
+
+  .nav-inner {
+    height: 57px;
+  }
+
+  .logo-text {
+    font-size: 11px;
+  }
+
+  .logo-mark {
+    width: 31px;
+    height: 31px;
+  }
+
+  .nav-contact {
+    min-height: 38px;
+    padding: 0 10px;
+
+    font-size: 10px;
+  }
+
+  .hero {
+    padding-top: 115px;
+  }
+
+  .hero-index {
+    font-size: 8px;
+  }
+
+  .hero-kicker {
+    margin-top: 28px;
+    font-size: 9px;
+  }
+
+  .hero-name {
+    font-size: clamp(
+      62px,
+      21vw,
+      95px
+    );
+  }
+
+  .hero-role-row {
+    font-size: 24px;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+  }
+
+  .button-black,
+  .button-outline {
+    width: 100%;
+  }
+
+  .hero-meta {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profile-console {
+    min-height: 470px;
+
+    transform: none;
+
+    box-shadow:
+      12px 12px 0 var(--orange),
+      0 25px 50px rgba(17, 17, 17, 0.15);
+  }
+
+  .profile-console:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+      8px 8px 0 var(--orange),
+      0 25px 50px rgba(17, 17, 17, 0.15);
+  }
+
+  .console-screen {
+    min-height: 422px;
+    padding: 27px 22px;
+  }
+
+  .profile-terminal h3 {
+    font-size: 43px;
+  }
+
+  .console-command {
+    margin-top: 30px;
+  }
+
+  .console-corner {
+    font-size: 35px;
+  }
+
+  .section {
+    padding: 75px 0;
+  }
+
+  .section-label {
+    margin-bottom: 25px;
+  }
+
+  .massive-title {
+    font-size: 45px;
+  }
+
+  .skill-row {
+    display: block;
+
+    padding: 22px 0;
+  }
+
+  .skill-number {
+    display: block;
+    margin-bottom: 7px;
+  }
+
+  .skill-row h3 {
+    margin-bottom: 14px;
+  }
+
+  .experience-layout {
+    grid-template-columns: 20px 1fr;
+    gap: 18px;
+  }
+
+  .timeline-rail span {
+    writing-mode: vertical-rl;
+  }
+
+  .experience-top {
+    display: block;
+  }
+
+  .year-tag {
+    display: inline-block;
+    margin-top: 14px;
+  }
+
+  .experience-top h3 {
+    font-size: 25px;
+  }
+
+  .education-block {
+    align-items: flex-start;
+  }
+
+  .project {
+    padding: 27px 20px;
+  }
+
+  .project-number {
+    font-size: 45px;
+  }
+
+  .project-header {
+    display: block;
+  }
+
+  .project-header h3 {
+    font-size: 43px;
+  }
+
+  .featured {
+    display: inline-block;
+    margin-top: 15px;
+  }
+
+  .project-body {
+    margin-top: 45px;
+  }
+
+  .terminal-content {
+    min-height: 400px;
+    padding: 45px 22px;
+  }
+
+  .terminal-content h2 {
+    font-size: 58px;
+  }
+
+  .contact-terminal {
+    box-shadow:
+      10px 10px 0 var(--mint),
+      0 25px 50px rgba(17, 17, 17, 0.13);
+  }
+
+  .footer-inner {
+    min-height: 120px;
+
+    align-items: flex-start;
+    justify-content: center;
+
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+}
