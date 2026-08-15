@@ -581,6 +581,24 @@ function App() {
 
   return (
     <div className="app">
+      <div className="site-video-bg">
+        <video
+          className="site-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="https://assets.mixkit.co/videos/4407/4407-thumb-720-0.jpg"
+        >
+          <source
+            src="https://assets.mixkit.co/videos/4407/4407-720.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+      <div className="site-video-overlay" />
+
       <div className="paper-grid" />
       <div className="noise" />
       <div className="orange-orb orb-one" />
@@ -633,24 +651,6 @@ function App() {
       </nav>
 
       <header id="hero" className="hero">
-        {/* Free futuristic 3D/graphics video background from Pexels */}
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        >
-          <source
-            src="https://videos.pexels.com/video-files/2759477/2759477-sd_426_240_30fps.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div className="hero-video-overlay" aria-hidden="true" />
-        <div className="hero-video-glow" aria-hidden="true" />
-
         <div className="hero-inner">
           <div className="hero-copy">
             <Reveal>
