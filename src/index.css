@@ -348,9 +348,95 @@ HERO
   align-items: center;
 
   padding: 150px 0 100px;
+
+  overflow: hidden;
+  isolation: isolate;
+  background: #111;
+}
+
+/* =========================================================
+HERO VIDEO BACKGROUND
+========================================================= */
+
+.hero-video {
+  position: absolute;
+  inset: -5%;
+
+  width: 110%;
+  height: 110%;
+
+  object-fit: cover;
+  object-position: center;
+
+  opacity: 0.48;
+  filter: saturate(0.75) contrast(1.08) brightness(0.72);
+
+  pointer-events: none;
+  z-index: -3;
+
+  transform: scale(1.04);
+  animation: heroVideoDrift 18s ease-in-out infinite alternate;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(90deg,
+      rgba(247, 245, 239, 0.94) 0%,
+      rgba(247, 245, 239, 0.78) 38%,
+      rgba(247, 245, 239, 0.28) 72%,
+      rgba(17, 17, 17, 0.55) 100%
+    ),
+    linear-gradient(180deg,
+      rgba(17, 17, 17, 0.08),
+      rgba(17, 17, 17, 0.22)
+    );
+
+  pointer-events: none;
+  z-index: -2;
+}
+
+.hero-video-glow {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: -170px;
+  top: 50%;
+
+  border-radius: 50%;
+  background: rgba(255, 90, 31, 0.18);
+  filter: blur(90px);
+
+  pointer-events: none;
+  z-index: -1;
+
+  animation: heroGlowFloat 9s ease-in-out infinite alternate;
+}
+
+@keyframes heroVideoDrift {
+  from {
+    transform: scale(1.04) translate3d(-1%, -0.5%, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(1%, 0.5%, 0);
+  }
+}
+
+@keyframes heroGlowFloat {
+  from {
+    transform: translate3d(0, -50px, 0) scale(0.92);
+  }
+  to {
+    transform: translate3d(-35px, 35px, 0) scale(1.08);
+  }
 }
 
 .hero-inner {
+  position: relative;
+  z-index: 2;
+
   width: min(
     calc(100% - 56px),
     var(--container)
@@ -605,8 +691,11 @@ PROFILE COMMAND CONSOLE
 
   min-height: 540px;
 
-  background: #171717;
+  background: rgba(23, 23, 23, 0.92);
   color: white;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
   border-radius: var(--radius-large);
 
@@ -2122,6 +2211,42 @@ FOOTER
 .footer-code {
   color: var(--orange);
   font-weight: 700;
+}
+
+/* Keep the video subtle on smaller screens and respect accessibility preferences. */
+@media (max-width: 800px) {
+  .hero-video {
+    opacity: 0.30;
+    filter: saturate(0.65) contrast(1.05) brightness(0.68);
+  }
+
+  .hero-video-overlay {
+    background:
+      linear-gradient(180deg,
+        rgba(247, 245, 239, 0.88) 0%,
+        rgba(247, 245, 239, 0.76) 48%,
+        rgba(247, 245, 239, 0.62) 100%
+      ),
+      rgba(17, 17, 17, 0.12);
+  }
+
+  .hero-video-glow {
+    width: 350px;
+    height: 350px;
+    right: -180px;
+    opacity: 0.65;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    animation: none;
+    transform: scale(1.04);
+  }
+
+  .hero-video-glow {
+    animation: none;
+  }
 }
 
 /* =========================================================
