@@ -581,28 +581,23 @@ function App() {
 
   return (
     <div className="app">
-      <div className="site-video-bg">
-        <video
-          className="site-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="https://assets.mixkit.co/videos/4407/4407-thumb-720-0.jpg"
-        >
-          <source
-            src="https://assets.mixkit.co/videos/4407/4407-720.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </div>
-      <div className="site-video-overlay" />
-
-      <div className="paper-grid" />
-      <div className="noise" />
-      <div className="orange-orb orb-one" />
-      <div className="mint-orb orb-two" />
+      <video
+        className="site-video-bg"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        {/* Pexels video 15439669 — download it and place it in /public as pexels-15439669.mp4 */}
+        <source src="/pexels-15439669.mp4" type="video/mp4" />
+      </video>
+      <div className="site-video-overlay" aria-hidden="true" />
+      <div className="site-grid" aria-hidden="true" />
+      <div className="site-noise" aria-hidden="true" />
+      <div className="site-glow site-glow-blue" aria-hidden="true" />
+      <div className="site-glow site-glow-orange" aria-hidden="true" />
 
       <nav
         className={`site-nav ${
