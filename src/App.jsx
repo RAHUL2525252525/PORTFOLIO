@@ -581,23 +581,10 @@ function App() {
 
   return (
     <div className="app">
-      <video
-        className="site-video-bg"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-hidden="true"
-      >
-        {/* Pexels video 15439669 — download it and place it in /public as pexels-15439669.mp4 */}
-        <source src="/pexels-15439669.mp4" type="video/mp4" />
-      </video>
-      <div className="site-video-overlay" aria-hidden="true" />
-      <div className="site-grid" aria-hidden="true" />
-      <div className="site-noise" aria-hidden="true" />
-      <div className="site-glow site-glow-blue" aria-hidden="true" />
-      <div className="site-glow site-glow-orange" aria-hidden="true" />
+      <div className="paper-grid" />
+      <div className="noise" />
+      <div className="orange-orb orb-one" />
+      <div className="mint-orb orb-two" />
 
       <nav
         className={`site-nav ${
@@ -646,6 +633,24 @@ function App() {
       </nav>
 
       <header id="hero" className="hero">
+        {/* Free futuristic 3D/graphics video background from Pexels */}
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/2759477/2759477-sd_426_240_30fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div className="hero-video-overlay" aria-hidden="true" />
+        <div className="hero-video-glow" aria-hidden="true" />
+
         <div className="hero-inner">
           <div className="hero-copy">
             <Reveal>
