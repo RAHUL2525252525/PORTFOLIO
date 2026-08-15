@@ -633,24 +633,6 @@ function App() {
       </nav>
 
       <header id="hero" className="hero">
-        {/* Free futuristic 3D/graphics video background from Pexels */}
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        >
-          <source
-            src="https://videos.pexels.com/video-files/2759477/2759477-sd_426_240_30fps.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div className="hero-video-overlay" aria-hidden="true" />
-        <div className="hero-video-glow" aria-hidden="true" />
-
         <div className="hero-inner">
           <div className="hero-copy">
             <Reveal>
