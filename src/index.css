@@ -2868,3 +2868,446 @@ body { background:#05070b; color:var(--ink); }
   .site-video-bg { animation:none; transform:none; }
   .reveal { transition:none; }
 }
+/* =========================================================
+   CINEMATIC 3D VIDEO BACKGROUND
+   ========================================================= */
+
+.video-background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -20;
+  background: #02050a;
+}
+
+.site-video-bg {
+  position: absolute;
+  inset: -5%;
+
+  width: 110%;
+  height: 110%;
+
+  object-fit: cover;
+
+  opacity: 0.48;
+
+  filter:
+    brightness(0.42)
+    contrast(1.18)
+    saturate(1.25)
+    blur(0.2px);
+
+  transform: scale(1.04);
+
+  animation: videoDepth 18s ease-in-out infinite alternate;
+}
+
+.video-dark-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2, 5, 10, 0.96) 0%,
+      rgba(2, 5, 10, 0.78) 35%,
+      rgba(2, 5, 10, 0.58) 65%,
+      rgba(2, 5, 10, 0.78) 100%
+    );
+
+  z-index: 1;
+}
+
+.video-blue-glow {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 78% 35%,
+      rgba(20, 105, 255, 0.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 20% 65%,
+      rgba(255, 90, 31, 0.09),
+      transparent 30%
+    );
+
+  mix-blend-mode: screen;
+
+  z-index: 2;
+}
+
+.video-grid-overlay {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 70px 70px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 85%
+    );
+
+  z-index: 3;
+}
+
+@keyframes videoDepth {
+  0% {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: scale(1.075) translate3d(-0.5%, -0.4%, 0);
+  }
+
+  100% {
+    transform: scale(1.04) translate3d(0.5%, 0.4%, 0);
+  }
+}
+
+
+/* =========================================================
+   DARK GLASS UI
+   ========================================================= */
+
+body {
+  background: #02050a;
+  color: #f5f7fa;
+}
+
+.app {
+  background: transparent;
+  isolation: isolate;
+}
+
+.paper-grid {
+  opacity: 0.12;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 55px 55px;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.nav-inner {
+  background: rgba(5, 9, 16, 0.72) !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.logo-text,
+.logo-btn {
+  color: #f5f7fa !important;
+}
+
+.tab {
+  color: rgba(220, 228, 240, 0.62) !important;
+}
+
+.tab:hover,
+.tab.active {
+  color: #ffffff !important;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 5;
+}
+
+.hero-index {
+  color: rgba(220, 228, 240, 0.55) !important;
+}
+
+.hero-name {
+  color: #f7f9fc !important;
+
+  text-shadow:
+    0 0 40px rgba(255, 255, 255, 0.04);
+}
+
+.hero-role-row {
+  color: #f2f5f8 !important;
+}
+
+.hero-stack,
+.hero-desc,
+.hero-meta {
+  color: rgba(220, 228, 240, 0.72) !important;
+}
+
+
+/* =========================================================
+   PROFILE CONSOLE
+   ========================================================= */
+
+.profile-console {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 16, 25, 0.88),
+      rgba(3, 7, 13, 0.72)
+    ) !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+  box-shadow:
+    0 35px 100px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(0, 102, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  transform:
+    perspective(1400px)
+    rotateY(-3deg)
+    rotateX(1deg);
+
+  transition:
+    transform 0.6s ease,
+    box-shadow 0.6s ease;
+}
+
+.profile-console:hover {
+  transform:
+    perspective(1400px)
+    rotateY(0deg)
+    rotateX(0deg)
+    translateY(-8px);
+
+  box-shadow:
+    0 45px 120px rgba(0, 0, 0, 0.65),
+    0 0 90px rgba(0, 119, 255, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.console-top {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.console-screen {
+  background: rgba(2, 6, 12, 0.55) !important;
+}
+
+.console-grid {
+  opacity: 0.35;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    );
+}
+
+.console-title,
+.console-info-row span,
+.console-stack > span {
+  color: rgba(210, 220, 235, 0.42) !important;
+}
+
+.console-role,
+.console-info-row strong {
+  color: #e8edf5 !important;
+}
+
+.console-divider {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+
+/* =========================================================
+   GLASS SECTIONS
+   ========================================================= */
+
+.section-container {
+  position: relative;
+}
+
+.section-label {
+  color: rgba(220, 228, 240, 0.5) !important;
+}
+
+.massive-title {
+  color: #f5f7fa !important;
+}
+
+.massive-title span {
+  color: rgba(220, 228, 240, 0.42) !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button-black {
+  background: #ff5a1f !important;
+  color: #ffffff !important;
+
+  box-shadow:
+    0 10px 35px rgba(255, 90, 31, 0.20);
+}
+
+.button-black:hover {
+  background: #ff6b35 !important;
+
+  box-shadow:
+    0 15px 45px rgba(255, 90, 31, 0.30);
+}
+
+.button-outline {
+  background: rgba(255, 255, 255, 0.035) !important;
+  color: #f5f7fa !important;
+
+  border-color: rgba(255, 255, 255, 0.15) !important;
+
+  backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.project-card,
+.skill-card,
+.approach-card,
+.experience-card,
+.cert-card,
+.contact-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 16, 25, 0.72),
+      rgba(4, 8, 14, 0.58)
+    ) !important;
+
+  border-color: rgba(255, 255, 255, 0.09) !important;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.project-card:hover,
+.skill-card:hover,
+.approach-card:hover,
+.experience-card:hover,
+.cert-card:hover,
+.contact-card:hover {
+  transform: translateY(-7px);
+
+  border-color: rgba(255, 90, 31, 0.28) !important;
+
+  box-shadow:
+    0 35px 90px rgba(0, 0, 0, 0.42),
+    0 0 40px rgba(255, 90, 31, 0.05) !important;
+}
+
+
+/* =========================================================
+   REDUCE VIDEO ON MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .site-video-bg {
+    opacity: 0.28;
+    filter:
+      brightness(0.35)
+      contrast(1.12)
+      saturate(1.1);
+  }
+
+  .video-dark-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(2, 5, 10, 0.92),
+        rgba(2, 5, 10, 0.72)
+      );
+  }
+
+  .profile-console {
+    transform: none;
+  }
+
+  .profile-console:hover {
+    transform: translateY(-4px);
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY / PERFORMANCE
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .site-video-bg {
+    animation: none;
+    transform: scale(1.04);
+  }
+
+  .profile-console {
+    transform: none;
+  }
+}
