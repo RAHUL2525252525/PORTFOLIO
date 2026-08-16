@@ -23,11 +23,11 @@ import {
 import './index.css'
 
 const STACK_ROTATE = [
-  'React.js',
+  'Java',
   'Spring Boot',
+  'React.js',
   'MySQL',
   'REST APIs',
-  'Spring Security',
 ]
 
 const NAV = [
@@ -43,12 +43,13 @@ const NAV = [
 const SKILL_GROUPS = [
   {
     cat: 'Languages',
-    items: ['Java', 'JavaScript (ES6)', 'SQL'],
+    items: ['Java', 'JavaScript (ES6+)', 'SQL', 'HTML5', 'CSS3'],
   },
   {
     cat: 'Frontend',
     items: [
       'React.js',
+      'Axios',
       'HTML5',
       'CSS3',
       'JSX',
@@ -63,18 +64,9 @@ const SKILL_GROUPS = [
       'Java',
       'Spring Boot',
       'Spring MVC',
-      'REST APIs',
       'Spring Data JPA',
       'Hibernate',
-    ],
-  },
-  {
-    cat: 'Database',
-    items: [
-      'MySQL',
-      'SQL',
-      'Database Design',
-      'CRUD Operations',
+      'REST API Design',
     ],
   },
   {
@@ -83,34 +75,60 @@ const SKILL_GROUPS = [
       'Spring Security',
       'JWT Authentication',
       'Role-Based Access Control',
+      'OAuth Concepts',
     ],
   },
   {
-    cat: 'Testing',
-    items: ['JUnit 5', 'Mockito'],
+    cat: 'Database',
+    items: [
+      'MySQL',
+      'SQL',
+      'Database Design',
+      'Normalization',
+      'Relational Data Modeling',
+    ],
+  },
+  {
+    cat: 'Architecture',
+    items: [
+      'Controller / Service / Repository',
+      'MVC',
+      'Exception Handling',
+      'DTO Pattern',
+    ],
+  },
+  {
+    cat: 'Testing & Practices',
+    items: [
+      'JUnit 5',
+      'Mockito',
+      'Postman',
+      'Agile / Scrum',
+      'Code Reviews',
+      'Unit Testing',
+    ],
+  },
+  {
+    cat: 'Cloud & Tools',
+    items: [
+      'Docker',
+      'Docker Compose',
+      'Maven',
+      'Git',
+      'GitHub',
+      'CI/CD Basics',
+      'Vercel',
+      'Render',
+      'Aiven',
+    ],
   },
   {
     cat: 'Core CS',
     items: [
-      'OOP',
       'Data Structures & Algorithms',
+      'OOP',
       'DBMS',
-      'Agile Development',
-    ],
-  },
-  {
-    cat: 'Tools & Deployment',
-    items: [
-      'Git',
-      'GitHub',
-      'VS Code',
-      'IntelliJ IDEA',
-      'Vite',
-      'Docker',
-      'Docker Compose',
-      'AWS EC2',
-      'Vercel',
-      'Render',
+      'Software Engineering Principles',
     ],
   },
 ]
@@ -188,12 +206,12 @@ const EXPERIENCE = [
   {
     role: 'Web Development Intern',
     company: 'MR Tech Lab',
-    time: '2026',
+    time: 'Jan 2026 – May 2026',
     place: 'Bengaluru',
     points: [
-      'Gained hands-on exposure to full-stack development using HTML, CSS, JavaScript, React.js, Java, Spring Boot, REST APIs, and MySQL.',
-      'Developed responsive frontend interfaces and integrated REST APIs with backend services for dynamic data handling.',
-      'Practiced database integration, authentication, CRUD operations, Git-based development, and application deployment.',
+      'Built responsive, cross-browser user interfaces using HTML, CSS, and JavaScript, translating design requirements into functional web pages.',
+      'Integrated Firebase backend services, including Google Authentication, to implement secure user sign-in and session management.',
+      'Collaborated with cross-functional teammates in an Agile, Git-based workflow to implement, test, and ship UI features on schedule.',
     ],
   },
 ]
@@ -201,7 +219,7 @@ const EXPERIENCE = [
 const EDUCATION = [
   {
     school: 'Dr. ACS College of Engineering',
-    degree: 'B.E. in Computer Science and Engineering',
+    degree: 'B.E. in Computer Science and Engineering · CGPA: 8.00 / 10',
     time: '2023 – 2026 · Bengaluru',
   },
 ]
@@ -210,24 +228,23 @@ const PROJECTS = [
   {
     id: '01',
     title: 'ShopSphere',
-    tag: 'Full-Stack E-Commerce Application',
+    tag: 'Full-Stack E-Commerce Web Application',
     tech: [
+      'Java 17',
+      'Spring Boot 3',
       'React.js',
-      'Java',
-      'Spring Boot',
       'Spring Data JPA',
-      'REST APIs',
       'MySQL',
-      'Git',
+      'REST APIs',
     ],
     highlights: [
-      'Built an e-commerce platform supporting product browsing, search, cart, wishlist, checkout, and order management.',
-      'Developed role-based admin functionality for managing products, inventory, users, and orders.',
-      'Integrated Spring Boot REST APIs with React.js and MySQL for end-to-end data management.',
-      'Implemented authentication and secure order-management workflows.',
+      'Architected a full-stack e-commerce platform spanning browsing, search, cart, wishlist, checkout, and order management.',
+      'Implemented role-based access control (ADMIN / CUSTOMER) to separate inventory and order-management operations from customer-facing flows.',
+      'Designed and delivered 15+ REST API endpoints connecting the React.js frontend to the Spring Boot backend, with consistent request validation and error handling.',
+      'Built a component-based, responsive UI with client-side form validation and centralized state management across cart, checkout, and order workflows.',
     ],
     note:
-      'Backend is on Render’s free tier — first request can take 30–60s to wake it up.',
+      'START BACKEND FIRST: The Spring Boot backend is hosted on Render and may sleep on the free tier. Open the backend first, wait for it to wake up, then open the frontend.',
     links: [
       {
         label: 'Live site',
@@ -242,24 +259,34 @@ const PROJECTS = [
   },
   {
     id: '02',
-    title: 'Online Banking System',
+    title: 'BankSphere',
     tag: 'Full-Stack Banking Application',
     tech: [
-      'React.js',
-      'Java',
-      'Spring Boot',
+      'Java 17',
+      'Spring Boot 3',
       'Spring Security',
       'JWT',
-      'Spring Data JPA',
+      'React.js',
       'MySQL',
       'Docker',
     ],
     highlights: [
-      'Developed a secure full-stack banking application with registration, login, account management, and transaction workflows.',
-      'Built REST APIs using Spring Boot and Spring Data JPA with a layered Controller, Service, and Repository architecture.',
-      'Implemented JWT authentication and role-based access control using Spring Security for protected user and admin operations.',
-      'Designed MySQL database entities and relationships for users, roles, accounts, and transactions.',
-      'Containerized the application environment using Docker and Docker Compose.',
+      'Developed a secure banking backend supporting user registration, login, account management, and transaction workflows.',
+      'Implemented stateless JWT authentication with Spring Security, enforcing role-based access control across user, admin, and super-admin permission levels.',
+      'Designed a normalized MySQL schema with 8+ entities and relational integrity constraints to prevent orphaned records.',
+      'Containerized the full stack with Docker Compose and wrote JUnit 5 / Mockito unit tests covering transaction and authentication edge cases.',
+    ],
+    note:
+      'START BACKEND FIRST: The Spring Boot backend is hosted on Render and may sleep on the free tier. Open the backend first and wait for it to wake up before opening the frontend.',
+    links: [
+      {
+        label: 'Live site',
+        href: 'https://banksphere-frontend.vercel.app',
+      },
+      {
+        label: 'Backend API',
+        href: 'https://banksphere-backend-b96m.onrender.com',
+      },
     ],
     featured: true,
   },
@@ -475,7 +502,7 @@ function ProfileCard() {
     {
       icon: GraduationCap,
       k: 'Education',
-      v: 'B.E. Computer Science, 2026',
+      v: 'B.E. Computer Science · 2026',
     },
   ]
 
@@ -514,7 +541,7 @@ function ProfileCard() {
           </h3>
 
           <p className="console-role">
-            Full Stack Developer
+            Software Engineer · Full Stack Developer
           </p>
 
           <div className="console-status-large">
@@ -646,7 +673,7 @@ function App() {
             <Reveal delay={80}>
               <p className="hero-kicker">
                 <span className="kicker-line" />
-                JAVA FULL STACK DEVELOPER
+                SOFTWARE ENGINEER / FULL STACK DEVELOPER
               </p>
             </Reveal>
 
@@ -764,7 +791,7 @@ function App() {
                   </span>
 
                   <p>
-                    I build web applications end to end —
+                    I build full-stack web applications end to end —
                     <strong> React</strong> interfaces wired to
                     <strong> Spring Boot</strong> services, with
                     data modelled in <strong>MySQL</strong> and
@@ -787,7 +814,7 @@ function App() {
                 },
                 {
                   label: 'Projects Shipped',
-                  value: '2 full-stack applications',
+                  value: '2 live full-stack applications',
                   number: 'B',
                 },
                 {
