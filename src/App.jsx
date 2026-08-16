@@ -4,6 +4,9 @@ import "./index.css";
 const VIDEO_URL =
   "https://freestockfootagearchive.com/wp-content/uploads/2020/06/Abstract_Neon_Light_Night_Overlay_.mp4";
 
+const SECOND_VIDEO_URL =
+  "https://cdn.coverr.co/videos/coverr-a-man-working-on-his-laptop-1577/1080p.mp4";
+
 const NAV_ITEMS = [
   ["home", "HOME"],
   ["about", "ABOUT"],
@@ -244,10 +247,12 @@ function App() {
   return (
     <div className="site">
 
-      {/* VIDEO BACKGROUND */}
+      {/* =====================================================
+          BACKGROUND VIDEOS
+      ====================================================== */}
 
       <video
-        className="background-video"
+        className="background-video video-one"
         autoPlay
         muted
         loop
@@ -258,16 +263,39 @@ function App() {
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
 
+      <video
+        className="background-video video-two"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        <source src={SECOND_VIDEO_URL} type="video/mp4" />
+      </video>
+
       <div className="video-darkness" />
       <div className="video-color-wash" />
+      <div className="video-vignette" />
+
+      <div className="grid-background" />
       <div className="scanlines" />
       <div className="noise-layer" />
+
+      <div className="floating-particle particle-1" />
+      <div className="floating-particle particle-2" />
+      <div className="floating-particle particle-3" />
+      <div className="floating-particle particle-4" />
+      <div className="floating-particle particle-5" />
 
       <div className="orb orb-one" />
       <div className="orb orb-two" />
       <div className="orb orb-three" />
 
-      {/* NAVIGATION */}
+      {/* =====================================================
+          NAVIGATION
+      ====================================================== */}
 
       <header className="topbar">
 
@@ -284,7 +312,7 @@ function App() {
           </span>
         </button>
 
-        <nav className={`desktop-nav ${menuOpen ? "nav-open" : ""}`}>
+        <nav className="desktop-nav">
           {NAV_ITEMS.map(([id, label], index) => (
             <button
               key={id}
@@ -321,7 +349,9 @@ function App() {
 
       </header>
 
-      {/* MOBILE NAV */}
+      {/* =====================================================
+          MOBILE NAV
+      ====================================================== */}
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         {NAV_ITEMS.map(([id, label], index) => (
@@ -338,7 +368,9 @@ function App() {
 
       <main>
 
-        {/* HERO */}
+        {/* =====================================================
+            HERO
+        ====================================================== */}
 
         <section id="home" className="hero">
 
@@ -485,7 +517,9 @@ function App() {
 
         </section>
 
-        {/* ABOUT */}
+        {/* =====================================================
+            ABOUT
+        ====================================================== */}
 
         <section id="about" className="section about">
 
@@ -585,7 +619,9 @@ function App() {
 
         </section>
 
-        {/* SKILLS */}
+        {/* =====================================================
+            SKILLS
+        ====================================================== */}
 
         <section id="skills" className="section skills">
 
@@ -678,7 +714,9 @@ function App() {
 
         </section>
 
-        {/* EXPERIENCE */}
+        {/* =====================================================
+            EXPERIENCE
+        ====================================================== */}
 
         <section id="experience" className="section experience">
 
@@ -795,7 +833,9 @@ function App() {
 
         </section>
 
-        {/* PROJECTS */}
+        {/* =====================================================
+            PROJECTS
+        ====================================================== */}
 
         <section id="projects" className="section projects">
 
@@ -958,7 +998,9 @@ function App() {
 
         </section>
 
-        {/* CERTIFICATIONS */}
+        {/* =====================================================
+            CERTIFICATIONS
+        ====================================================== */}
 
         <section className="section certifications">
 
@@ -1018,7 +1060,9 @@ function App() {
 
         </section>
 
-        {/* CONTACT */}
+        {/* =====================================================
+            CONTACT
+        ====================================================== */}
 
         <section
           id="contact"
@@ -1046,16 +1090,6 @@ function App() {
               Developer.
             </p>
 
-            <a
-              href="mailto:Srinivasrahul838@gmail.com"
-              className="email-button"
-            >
-              Srinivasrahul838@gmail.com
-              <Arrow />
-            </a>
-
-            {/* CONTACT DETAILS */}
-
             <div className="social-links">
 
               <a
@@ -1064,6 +1098,15 @@ function App() {
               >
                 <span>PHONE</span>
                 <strong>7337634886</strong>
+                <Arrow />
+              </a>
+
+              <a
+                href="mailto:Srinivasrahul838@gmail.com"
+                className="social-card"
+              >
+                <span>EMAIL</span>
+                <strong>Srinivasrahul838@gmail.com</strong>
                 <Arrow />
               </a>
 
