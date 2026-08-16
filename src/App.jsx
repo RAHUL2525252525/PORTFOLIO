@@ -22,6 +22,8 @@ import {
 } from 'lucide-react'
 import './index.css'
 
+const VIDEO_BG = 'https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4'
+
 const STACK_ROTATE = [
   'Java',
   'Spring Boot',
@@ -497,7 +499,7 @@ function ProfileCard() {
     {
       icon: Briefcase,
       k: 'Focus',
-      v: 'Java · Spring Boot · React',
+      v: 'Java · Spring Boot · React · MySQL',
     },
     {
       icon: GraduationCap,
@@ -526,6 +528,16 @@ function ProfileCard() {
 
       <div className="console-screen">
         <div className="console-grid" />
+
+        <div className="profile-portrait-wrap">
+          <div className="portrait-ring" />
+          <img
+            className="profile-portrait"
+            src="/rahul-profile.jpg"
+            alt="Rahul S - Software Engineer"
+          />
+          <span className="portrait-label">RAHUL S / 2026</span>
+        </div>
 
         <div className="profile-terminal">
           <span className="terminal-comment">
@@ -608,10 +620,20 @@ function App() {
 
   return (
     <div className="app">
+      <video
+        className="site-video-bg"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        <source src={VIDEO_BG} type="video/mp4" />
+      </video>
+      <div className="video-overlay" />
       <div className="paper-grid" />
       <div className="noise" />
-      <div className="orange-orb orb-one" />
-      <div className="mint-orb orb-two" />
 
       <nav
         className={`site-nav ${
@@ -686,7 +708,7 @@ function App() {
 
             <Reveal delay={180}>
               <div className="hero-role-row">
-                <span>Full Stack Developer</span>
+                <span>Software Engineer</span>
                 <span className="role-arrow">↗</span>
               </div>
             </Reveal>
@@ -701,12 +723,10 @@ function App() {
 
             <Reveal delay={260}>
               <p className="hero-desc">
-                Full stack developer skilled in Java, Spring
-                Boot, React.js, REST APIs, and MySQL — with
-                hands-on experience building secure,
-                responsive web applications. Strong in backend
-                API development, frontend integration,
-                database management, and authentication.
+                Software Engineer with hands-on experience building
+                full-stack applications using Java, Spring Boot, React.js,
+                REST APIs, JWT security, MySQL, Docker, and modern
+                deployment workflows.
               </p>
             </Reveal>
 
@@ -1349,7 +1369,7 @@ function App() {
           <span>© 2026 Rahul S</span>
 
           <span>
-            Full Stack Developer · Bengaluru, India
+            Software Engineer · Java / Spring Boot / React
           </span>
 
           <span className="footer-code">
