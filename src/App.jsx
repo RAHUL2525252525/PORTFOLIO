@@ -284,7 +284,7 @@ function App() {
           </span>
         </button>
 
-        <nav className="desktop-nav">
+        <nav className={`desktop-nav ${menuOpen ? "nav-open" : ""}`}>
           {NAV_ITEMS.map(([id, label], index) => (
             <button
               key={id}
@@ -1046,7 +1046,15 @@ function App() {
               Developer.
             </p>
 
-            {/* CONTACT CARDS */}
+            <a
+              href="mailto:Srinivasrahul838@gmail.com"
+              className="email-button"
+            >
+              Srinivasrahul838@gmail.com
+              <Arrow />
+            </a>
+
+            {/* CONTACT DETAILS */}
 
             <div className="social-links">
 
@@ -1056,15 +1064,6 @@ function App() {
               >
                 <span>PHONE</span>
                 <strong>7337634886</strong>
-                <Arrow />
-              </a>
-
-              <a
-                href="mailto:Srinivasrahul838@gmail.com"
-                className="social-card"
-              >
-                <span>EMAIL</span>
-                <strong>Srinivasrahul838@gmail.com</strong>
                 <Arrow />
               </a>
 
