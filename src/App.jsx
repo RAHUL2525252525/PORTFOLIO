@@ -1,1381 +1,647 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
-  Github,
-  Linkedin,
-  Mail,
-  Phone,
+  ArrowDownRight,
   ArrowUpRight,
-  MapPin,
-  GraduationCap,
-  Briefcase,
-  Award,
+  BriefcaseBusiness,
   CheckCircle2,
   Code2,
-  Layers,
-  ShieldCheck,
   Database,
-  Wrench,
-  ExternalLink,
-  Sparkles,
+  Github,
+  GraduationCap,
+  Linkedin,
+  Mail,
+  MapPin,
+  Menu,
+  MonitorSmartphone,
+  Server,
+  ShieldCheck,
   Terminal,
-  ChevronDown,
+  X,
 } from 'lucide-react'
 import './index.css'
 
-const VIDEO_BG = 'https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4'
+const VIDEO_BG =
+  'https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4'
 
-const STACK_ROTATE = [
-  'Java',
-  'Spring Boot',
-  'React.js',
-  'MySQL',
-  'REST APIs',
-]
+const PROFILE_IMAGE = '/rahul-profile.jpg'
 
 const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Work' },
-  { id: 'certifications', label: 'Certifications' },
-  { id: 'approach', label: 'Approach' },
-  { id: 'contact', label: 'Contact' },
+  ['about', 'About'],
+  ['skills', 'Skills'],
+  ['experience', 'Experience'],
+  ['work', 'Work'],
+  ['certifications', 'Certifications'],
+  ['approach', 'Approach'],
+  ['contact', 'Contact'],
 ]
 
-const SKILL_GROUPS = [
+const SKILLS = [
   {
-    cat: 'Languages',
-    items: ['Java', 'JavaScript (ES6+)', 'SQL', 'HTML5', 'CSS3'],
+    icon: Code2,
+    title: 'Languages',
+    items: ['Java', 'JavaScript ES6+', 'SQL', 'HTML5', 'CSS3'],
   },
   {
-    cat: 'Frontend',
-    items: [
-      'React.js',
-      'Axios',
-      'HTML5',
-      'CSS3',
-      'JSX',
-      'Responsive Design',
-      'Flexbox',
-      'CSS Grid',
-    ],
+    icon: MonitorSmartphone,
+    title: 'Frontend',
+    items: ['React.js', 'Axios', 'JSX', 'Responsive UI', 'Flexbox', 'CSS Grid'],
   },
   {
-    cat: 'Backend',
+    icon: Server,
+    title: 'Backend',
     items: [
-      'Java',
       'Spring Boot',
       'Spring MVC',
       'Spring Data JPA',
       'Hibernate',
-      'REST API Design',
+      'REST APIs',
     ],
   },
   {
-    cat: 'Security',
-    items: [
-      'Spring Security',
-      'JWT Authentication',
-      'Role-Based Access Control',
-      'OAuth Concepts',
-    ],
+    icon: ShieldCheck,
+    title: 'Security',
+    items: ['Spring Security', 'JWT', 'RBAC', 'OAuth Concepts'],
   },
   {
-    cat: 'Database',
-    items: [
-      'MySQL',
-      'SQL',
-      'Database Design',
-      'Normalization',
-      'Relational Data Modeling',
-    ],
+    icon: Database,
+    title: 'Data',
+    items: ['MySQL', 'SQL', 'Normalization', 'Relational Modeling'],
   },
   {
-    cat: 'Architecture',
-    items: [
-      'Controller / Service / Repository',
-      'MVC',
-      'Exception Handling',
-      'DTO Pattern',
-    ],
-  },
-  {
-    cat: 'Testing & Practices',
-    items: [
-      'JUnit 5',
-      'Mockito',
-      'Postman',
-      'Agile / Scrum',
-      'Code Reviews',
-      'Unit Testing',
-    ],
-  },
-  {
-    cat: 'Cloud & Tools',
+    icon: Terminal,
+    title: 'DevOps & Tools',
     items: [
       'Docker',
       'Docker Compose',
       'Maven',
       'Git',
       'GitHub',
-      'CI/CD Basics',
-      'Vercel',
-      'Render',
-      'Aiven',
-    ],
-  },
-  {
-    cat: 'Core CS',
-    items: [
-      'Data Structures & Algorithms',
-      'OOP',
-      'DBMS',
-      'Software Engineering Principles',
-    ],
-  },
-]
-
-const APPROACH = [
-  {
-    icon: Code2,
-    title: 'Frontend Presentation',
-    subtitle: 'Client',
-    items: [
-      'React.js',
-      'JSX',
-      'HTML5',
-      'CSS3',
-      'Flexbox / Grid',
-      'Vite',
-    ],
-    blurb:
-      'Responsive interfaces and reusable component structure, built for consistent behaviour across breakpoints.',
-  },
-  {
-    icon: Layers,
-    title: 'Backend Logic & APIs',
-    subtitle: 'Service Layer',
-    items: [
-      'Java',
-      'Spring Boot',
-      'Spring MVC',
-      'REST APIs',
-      'Spring Data JPA',
-      'Hibernate',
-    ],
-    blurb:
-      'Controller → Service → Repository layering, exposing REST endpoints consumed directly by the frontend.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Auth & Access Control',
-    subtitle: 'Security',
-    items: [
-      'Spring Security',
-      'JWT Authentication',
-      'Role-Based Access Control',
-    ],
-    blurb:
-      'Stateless authentication and route-level authorization for protected user and admin operations.',
-  },
-  {
-    icon: Database,
-    title: 'Data Persistence',
-    subtitle: 'Database',
-    items: ['MySQL', 'Database Design', 'CRUD Operations'],
-    blurb:
-      'Relational schema design across users, roles, accounts, products, and orders.',
-  },
-  {
-    icon: Wrench,
-    title: 'Build & Deployment',
-    subtitle: 'Infrastructure',
-    items: [
-      'Git',
-      'GitHub',
-      'Docker',
-      'Docker Compose',
-      'AWS EC2',
       'Vercel',
       'Render',
     ],
-    blurb:
-      'Version-controlled workflows, containerized environments, and cloud-hosted delivery.',
-  },
-]
-
-const EXPERIENCE = [
-  {
-    role: 'Web Development Intern',
-    company: 'MR Tech Lab',
-    time: 'Jan 2026 – May 2026',
-    place: 'Bengaluru',
-    points: [
-      'Built responsive, cross-browser user interfaces using HTML, CSS, and JavaScript, translating design requirements into functional web pages.',
-      'Integrated Firebase backend services, including Google Authentication, to implement secure user sign-in and session management.',
-      'Collaborated with cross-functional teammates in an Agile, Git-based workflow to implement, test, and ship UI features on schedule.',
-    ],
-  },
-]
-
-const EDUCATION = [
-  {
-    school: 'Dr. ACS College of Engineering',
-    degree: 'B.E. in Computer Science and Engineering · CGPA: 8.00 / 10',
-    time: '2023 – 2026 · Bengaluru',
   },
 ]
 
 const PROJECTS = [
   {
-    id: '01',
+    number: '01',
     title: 'ShopSphere',
-    tag: 'Full-Stack E-Commerce Web Application',
-    tech: [
-      'Java 17',
-      'Spring Boot 3',
-      'React.js',
-      'Spring Data JPA',
-      'MySQL',
-      'REST APIs',
+    type: 'FULL-STACK E-COMMERCE',
+    description:
+      'A complete e-commerce platform built around a Java/Spring Boot API and a responsive React frontend.',
+    bullets: [
+      'Browsing, search, cart, wishlist, checkout and order management.',
+      'ADMIN / CUSTOMER role-based access control.',
+      '15+ REST API endpoints with validation and error handling.',
+      'Responsive component-based UI with centralized state.',
     ],
-    highlights: [
-      'Architected a full-stack e-commerce platform spanning browsing, search, cart, wishlist, checkout, and order management.',
-      'Implemented role-based access control (ADMIN / CUSTOMER) to separate inventory and order-management operations from customer-facing flows.',
-      'Designed and delivered 15+ REST API endpoints connecting the React.js frontend to the Spring Boot backend, with consistent request validation and error handling.',
-      'Built a component-based, responsive UI with client-side form validation and centralized state management across cart, checkout, and order workflows.',
-    ],
-    note:
-      'START BACKEND FIRST: The Spring Boot backend is hosted on Render and may sleep on the free tier. Open the backend first, wait for it to wake up, then open the frontend.',
-    links: [
-      {
-        label: 'Live site',
-        href: 'https://shopsphere-8m8f.vercel.app/',
-      },
-      {
-        label: 'Backend API',
-        href: 'https://shopsphere-backend-5umn.onrender.com',
-      },
-    ],
-    featured: true,
+    stack: ['Java 17', 'Spring Boot 3', 'React.js', 'JPA', 'MySQL', 'REST'],
+    frontend: 'https://shopsphere-8m8f.vercel.app/',
+    backend: 'https://shopsphere-backend-5umn.onrender.com',
   },
   {
-    id: '02',
+    number: '02',
     title: 'BankSphere',
-    tag: 'Full-Stack Banking Application',
-    tech: [
+    type: 'FULL-STACK BANKING SYSTEM',
+    description:
+      'A secure banking application with JWT authentication, role-based authorization and transaction workflows.',
+    bullets: [
+      'Registration, login, account management and transactions.',
+      'JWT + Spring Security across user, admin and super-admin roles.',
+      'Normalized MySQL schema with 8+ entities.',
+      'Docker Compose plus JUnit 5 / Mockito test coverage.',
+    ],
+    stack: [
       'Java 17',
       'Spring Boot 3',
       'Spring Security',
       'JWT',
       'React.js',
       'MySQL',
-      'Docker',
     ],
-    highlights: [
-      'Developed a secure banking backend supporting user registration, login, account management, and transaction workflows.',
-      'Implemented stateless JWT authentication with Spring Security, enforcing role-based access control across user, admin, and super-admin permission levels.',
-      'Designed a normalized MySQL schema with 8+ entities and relational integrity constraints to prevent orphaned records.',
-      'Containerized the full stack with Docker Compose and wrote JUnit 5 / Mockito unit tests covering transaction and authentication edge cases.',
-    ],
-    note:
-      'START BACKEND FIRST: The Spring Boot backend is hosted on Render and may sleep on the free tier. Open the backend first and wait for it to wake up before opening the frontend.',
-    links: [
-      {
-        label: 'Live site',
-        href: 'https://banksphere-frontend.vercel.app',
-      },
-      {
-        label: 'Backend API',
-        href: 'https://banksphere-backend-b96m.onrender.com',
-      },
-    ],
-    featured: true,
+    frontend: 'https://banksphere-frontend.vercel.app',
+    backend: 'https://banksphere-backend-b96m.onrender.com',
   },
 ]
 
-const CERTS = [
-  {
-    name: 'Introduction to Java',
-    by: 'Infosys Springboard',
-  },
-  {
-    name: 'Java Programming Fundamentals',
-    by: 'Infosys Springboard',
-  },
+const CERTIFICATIONS = [
+  ['01', 'Java Programming Fundamentals', 'Infosys Springboard'],
+  ['02', 'Introduction to Java', 'Infosys Springboard'],
 ]
 
-const CONTACTS = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'Srinivasrahul838@gmail.com',
-    href: 'mailto:Srinivasrahul838@gmail.com',
-  },
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+91 73376 34886',
-    href: 'tel:+917337634886',
-  },
-  {
-    icon: Linkedin,
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/rahul-s',
-    href: 'https://www.linkedin.com/in/rahul-s-6460b1238',
-  },
-  {
-    icon: Github,
-    label: 'GitHub',
-    value: 'github.com/rahul-s',
-    href: 'https://github.com/',
-  },
-]
-
-function useTypewriter(
-  words,
-  typeSpeed = 65,
-  deleteSpeed = 32,
-  pause = 1400
-) {
-  const [text, setText] = useState('')
-  const [wordIndex, setWordIndex] = useState(0)
-  const [deleting, setDeleting] = useState(false)
-
-  useEffect(() => {
-    const current = words[wordIndex % words.length]
-    let timer
-
-    if (!deleting && text === current) {
-      timer = setTimeout(() => setDeleting(true), pause)
-    } else if (deleting && text === '') {
-      setDeleting(false)
-      setWordIndex((i) => (i + 1) % words.length)
-    } else {
-      timer = setTimeout(
-        () => {
-          setText((value) =>
-            deleting
-              ? current.slice(0, value.length - 1)
-              : current.slice(0, value.length + 1)
-          )
-        },
-        deleting ? deleteSpeed : typeSpeed
-      )
-    }
-
-    return () => clearTimeout(timer)
-  }, [
-    text,
-    deleting,
-    wordIndex,
-    words,
-    typeSpeed,
-    deleteSpeed,
-    pause,
-  ])
-
-  return text
-}
-
-function useReveal() {
-  const ref = useRef(null)
-  const [inView, setInView] = useState(false)
-
-  useEffect(() => {
-    const element = ref.current
-
-    if (!element) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true)
-          observer.disconnect()
-        }
-      },
-      {
-        threshold: 0.12,
-      }
-    )
-
-    observer.observe(element)
-
-    return () => observer.disconnect()
-  }, [])
-
-  return [ref, inView]
-}
-
-function Reveal({
-  children,
-  className = '',
-  delay = 0,
-  as: Tag = 'div',
-}) {
-  const [ref, inView] = useReveal()
-
-  return (
-    <Tag
-      ref={ref}
-      className={`reveal ${inView ? 'in' : ''} ${className}`}
-      style={{
-        transitionDelay: `${delay}ms`,
-      }}
-    >
-      {children}
-    </Tag>
-  )
-}
-
-function useActiveSection() {
-  const [active, setActive] = useState('about')
-
-  useEffect(() => {
-    const sections = NAV.map((item) =>
-      document.getElementById(item.id)
-    ).filter(Boolean)
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id)
-          }
-        })
-      },
-      {
-        rootMargin: '-35% 0px -55% 0px',
-      }
-    )
-
-    sections.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
-  }, [])
-
-  return active
-}
-
-function useScrolledPast(threshold = 30) {
-  const [past, setPast] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setPast(window.scrollY > threshold)
-    }
-
-    handleScroll()
-
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [threshold])
-
-  return past
-}
-
-function SectionLabel({ index, label }) {
+function SectionLabel({ number, children }) {
   return (
     <div className="section-label">
-      <span className="section-index">{index}</span>
-      <span className="section-name">{label}</span>
-      <span className="section-rule" />
+      <span>{number}</span>
+      <i />
+      <b>{children}</b>
     </div>
   )
 }
 
-function ProfileCard() {
-  const rows = [
-    {
-      icon: MapPin,
-      k: 'Location',
-      v: 'Bengaluru, India',
-    },
-    {
-      icon: Briefcase,
-      k: 'Focus',
-      v: 'Java · Spring Boot · React · MySQL',
-    },
-    {
-      icon: GraduationCap,
-      k: 'Education',
-      v: 'B.E. Computer Science · 2026',
-    },
-  ]
+function Reveal({ children, className = '', delay = 0 }) {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const node = document.querySelectorAll('.reveal-pending')
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.08 }
+    )
+
+    node.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <div className="profile-console">
-      <div className="console-top">
-        <div className="window-dots">
-          <span />
-          <span />
-          <span />
-        </div>
-
-        <span className="console-title">
-          rahul.dev / profile
-        </span>
-
-        <span className="console-status">
-          ONLINE
-        </span>
-      </div>
-
-      <div className="console-screen">
-        <div className="console-grid" />
-
-        <div className="profile-portrait-wrap">
-          <div className="portrait-ring" />
-          <img
-            className="profile-portrait"
-            src="/rahul-profile.jpg"
-            alt="Rahul S - Software Engineer"
-          />
-          <span className="portrait-label">RAHUL S / 2026</span>
-        </div>
-
-        <div className="profile-terminal">
-          <span className="terminal-comment">
-            // candidate_profile
-          </span>
-
-          <p className="console-command">
-            $ whoami
-          </p>
-
-          <h3>
-            Rahul S<span>.</span>
-          </h3>
-
-          <p className="console-role">
-            Software Engineer · Full Stack Developer
-          </p>
-
-          <div className="console-status-large">
-            <span className="status-dot" />
-            Available for opportunities
-          </div>
-
-          <div className="console-divider" />
-
-          <div className="console-info">
-            {rows.map((row) => {
-              const Icon = row.icon
-
-              return (
-                <div
-                  className="console-info-row"
-                  key={row.k}
-                >
-                  <div className="console-icon">
-                    <Icon size={15} />
-                  </div>
-
-                  <div>
-                    <span>{row.k}</span>
-                    <strong>{row.v}</strong>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="console-stack">
-            <span>STACK</span>
-
-            <div>
-              {STACK_ROTATE.slice(0, 4).map((item) => (
-                <b key={item}>{item}</b>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="console-corner">
-          2026
-        </div>
-      </div>
+    <div
+      className={`reveal-pending ${className} ${visible ? 'is-visible' : ''}`}
+      style={{ '--delay': `${delay}ms` }}
+      ref={(element) => {
+        if (element && !visible) {
+          const observer = new IntersectionObserver(
+            ([entry]) => {
+              if (entry.isIntersecting) {
+                setVisible(true)
+                observer.disconnect()
+              }
+            },
+            { threshold: 0.08 }
+          )
+          observer.observe(element)
+        }
+      }}
+    >
+      {children}
     </div>
   )
 }
 
 function App() {
-  const typed = useTypewriter(STACK_ROTATE)
-  const active = useActiveSection()
-  const scrolled = useScrolledPast()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [active, setActive] = useState('about')
+
+  const currentYear = useMemo(() => new Date().getFullYear(), [])
+
+  useEffect(() => {
+    const sections = NAV.map(([id]) => document.getElementById(id)).filter(Boolean)
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+        if (visible) setActive(visible.target.id)
+      },
+      { rootMargin: '-20% 0px -60% 0px', threshold: [0.05, 0.2, 0.5] }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
 
   const scrollTo = (id) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    setMenuOpen(false)
   }
 
   return (
-    <div className="app">
-      <video
-        className="site-video-bg"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-hidden="true"
-      >
-        <source src={VIDEO_BG} type="video/mp4" />
-      </video>
-      <div className="video-overlay" />
-      <div className="paper-grid" />
-      <div className="noise" />
+    <div className="site">
+      {/* The video is a real base layer: z-index 0. Content never uses negative z-index. */}
+      <div className="video-layer" aria-hidden="true">
+        <video
+          className="background-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster=""
+        >
+          <source src={VIDEO_BG} type="video/mp4" />
+        </video>
+        <div className="video-tint" />
+        <div className="video-vignette" />
+      </div>
 
-      <nav
-        className={`site-nav ${
-          scrolled ? 'scrolled' : ''
-        }`}
-      >
-        <div className="nav-inner">
-          <button
-            className="logo-btn"
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              })
-            }
-          >
-            <span className="logo-mark">R</span>
+      <div className="ambient ambient-one" />
+      <div className="ambient ambient-two" />
+      <div className="scanlines" />
 
-            <span className="logo-text">
-              RAHUL<span>.DEV</span>
-            </span>
-          </button>
+      <header className="topbar">
+        <button className="brand" onClick={() => scrollTo('about')}>
+          <span className="brand-mark">R</span>
+          <span>
+            RAHUL<span>.DEV</span>
+          </span>
+        </button>
 
-          <div className="tab-bar">
-            {NAV.map((item) => (
-              <button
-                key={item.id}
-                className={`tab ${
-                  active === item.id ? 'active' : ''
-                }`}
-                onClick={() => scrollTo(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+        <nav className="desktop-nav">
+          {NAV.map(([id, label], index) => (
+            <button
+              key={id}
+              className={active === id ? 'active' : ''}
+              onClick={() => scrollTo(id)}
+            >
+              <small>0{index + 1}</small>
+              {label}
+            </button>
+          ))}
+        </nav>
 
-          <a
-            className="nav-contact"
-            href="mailto:Srinivasrahul838@gmail.com"
-          >
-            Let's talk
-            <ArrowUpRight size={15} />
-          </a>
-        </div>
-      </nav>
-
-      <header id="hero" className="hero">
-        <div className="hero-inner">
-          <div className="hero-copy">
-            <Reveal>
-              <div className="hero-index">
-                <span>00</span>
-                <i />
-                PORTFOLIO / 2026
-              </div>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <p className="hero-kicker">
-                <span className="kicker-line" />
-                SOFTWARE ENGINEER / FULL STACK DEVELOPER
-              </p>
-            </Reveal>
-
-            <Reveal delay={130}>
-              <h1 className="hero-name">
-                Rahul
-                <em>S.</em>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={180}>
-              <div className="hero-role-row">
-                <span>Software Engineer</span>
-                <span className="role-arrow">↗</span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={220}>
-              <div className="hero-stack">
-                <span>Currently building with</span>
-                <strong>{typed}</strong>
-                <span className="type-cursor" />
-              </div>
-            </Reveal>
-
-            <Reveal delay={260}>
-              <p className="hero-desc">
-                Software Engineer with hands-on experience building
-                full-stack applications using Java, Spring Boot, React.js,
-                REST APIs, JWT security, MySQL, Docker, and modern
-                deployment workflows.
-              </p>
-            </Reveal>
-
-            <Reveal delay={310}>
-              <div className="hero-cta">
-                <button
-                  className="button-black"
-                  onClick={() => scrollTo('projects')}
-                >
-                  View selected work
-                  <ArrowUpRight size={17} />
-                </button>
-
-                <button
-                  className="button-outline"
-                  onClick={() => scrollTo('contact')}
-                >
-                  Contact me
-                </button>
-              </div>
-            </Reveal>
-
-            <Reveal delay={350}>
-              <div className="hero-meta">
-                <span>
-                  <GraduationCap size={15} />
-                  B.E. Computer Science
-                </span>
-
-                <span>
-                  <MapPin size={15} />
-                  Bengaluru, India
-                </span>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal
-            delay={160}
-            className="hero-profile"
-          >
-            <ProfileCard />
-          </Reveal>
-        </div>
+        <a className="availability" href="mailto:Srinivasrahul838@gmail.com">
+          <span />
+          AVAILABLE FOR OPPORTUNITIES
+        </a>
 
         <button
-          className="scroll-indicator"
-          onClick={() => scrollTo('about')}
-          aria-label="Scroll to about"
+          className="menu-button"
+          onClick={() => setMenuOpen((value) => !value)}
+          aria-label="Toggle navigation"
         >
-          <span>SCROLL</span>
-          <ChevronDown size={15} />
+          {menuOpen ? <X size={21} /> : <Menu size={21} />}
         </button>
       </header>
 
-      <main>
-        <section
-          id="about"
-          className="section about-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="01"
-                label="About"
-              />
-            </Reveal>
+      {menuOpen && (
+        <div className="mobile-nav">
+          {NAV.map(([id, label]) => (
+            <button key={id} onClick={() => scrollTo(id)}>
+              {label}
+              <ArrowUpRight size={16} />
+            </button>
+          ))}
+        </div>
+      )}
 
-            <div className="about-layout">
+      <main>
+        <section id="about" className="hero section-shell">
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <Reveal>
+                <div className="eyebrow">
+                  <span>01</span>
+                  <i />
+                  SOFTWARE ENGINEER / FULL-STACK
+                </div>
+              </Reveal>
+
               <Reveal delay={80}>
-                <h2 className="massive-title">
-                  Frontend-focused,
-                  <br />
-                  <span>shipped full stack.</span>
-                </h2>
+                <h1>
+                  Rahul
+                  <em>S.</em>
+                </h1>
               </Reveal>
 
               <Reveal delay={140}>
-                <div className="about-copy">
-                  <span className="copy-number">
-                    / 01
-                  </span>
+                <div className="hero-role">
+                  <strong>Java · Spring Boot · React</strong>
+                  <span>BUILDING DIGITAL SYSTEMS</span>
+                </div>
+              </Reveal>
 
-                  <p>
-                    I build full-stack web applications end to end —
-                    <strong> React</strong> interfaces wired to
-                    <strong> Spring Boot</strong> services, with
-                    data modelled in <strong>MySQL</strong> and
-                    protected by <strong>Spring Security</strong>{' '}
-                    and JWT. I care about how a request actually
-                    moves through a system, and I write it in
-                    clean, testable layers rather than one large
-                    tangle.
-                  </p>
+              <Reveal delay={200}>
+                <p className="hero-summary">
+                  Software Engineer with hands-on experience building
+                  full-stack applications using Java, Spring Boot, React.js,
+                  REST APIs, JWT security, MySQL and Docker.
+                </p>
+              </Reveal>
+
+              <Reveal delay={260}>
+                <div className="hero-actions">
+                  <button className="primary-btn" onClick={() => scrollTo('work')}>
+                    View selected work
+                    <ArrowDownRight size={18} />
+                  </button>
+                  <a className="ghost-btn" href="mailto:Srinivasrahul838@gmail.com">
+                    Contact me
+                    <ArrowUpRight size={17} />
+                  </a>
+                </div>
+              </Reveal>
+
+              <Reveal delay={320}>
+                <div className="hero-meta">
+                  <span>
+                    <GraduationCap size={15} />
+                    B.E. Computer Science · 2026
+                  </span>
+                  <span>
+                    <MapPin size={15} />
+                    Bengaluru, India
+                  </span>
                 </div>
               </Reveal>
             </div>
 
-            <div className="fact-grid">
-              {[
-                {
-                  label: 'Core Stack',
-                  value: 'Java · Spring Boot · React',
-                  number: 'A',
-                },
-                {
-                  label: 'Projects Shipped',
-                  value: '2 live full-stack applications',
-                  number: 'B',
-                },
-                {
-                  label: 'Based In',
-                  value: 'Bengaluru, India',
-                  number: 'C',
-                },
-              ].map((fact, index) => (
-                <Reveal
-                  key={fact.label}
-                  delay={index * 70}
-                  className="fact-card"
-                >
-                  <span className="fact-letter">
-                    {fact.number}
-                  </span>
-
-                  <span className="fact-label">
-                    {fact.label}
-                  </span>
-
-                  <strong>{fact.value}</strong>
-
-                  <ArrowUpRight
-                    className="fact-arrow"
-                    size={18}
-                  />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="skills" className="section">
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="02"
-                label="Skills"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="section-heading-row">
-                <h2 className="massive-title">
-                  Technical
-                  <span> inventory.</span>
-                </h2>
-
-                <p>
-                  A practical stack focused on building,
-                  securing and deploying full-stack
-                  applications.
-                </p>
+            <Reveal className="profile-panel" delay={180}>
+              <div className="profile-top">
+                <span>IDENTITY / 001</span>
+                <span className="live-dot">● ONLINE</span>
               </div>
-            </Reveal>
 
-            <div className="skills-table">
-              {SKILL_GROUPS.map((group, index) => (
-                <Reveal
-                  key={group.cat}
-                  delay={index * 35}
-                  className="skill-row"
-                >
-                  <span className="skill-number">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-
-                  <h3>{group.cat}</h3>
-
-                  <div className="skill-list">
-                    {group.items.map((skill) => (
-                      <span key={skill}>
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-
-                  <ArrowUpRight
-                    className="skill-arrow"
-                    size={17}
+              <div className="profile-main">
+                <div className="portrait-wrap">
+                  <div className="portrait-ring" />
+                  <img
+                    src={PROFILE_IMAGE}
+                    alt="Rahul S"
+                    className="portrait"
                   />
-                </Reveal>
-              ))}
-            </div>
+                  <span className="portrait-status">AVAILABLE</span>
+                </div>
+
+                <div className="profile-name">
+                  <span>$ whoami</span>
+                  <h2>Rahul S.</h2>
+                  <p>Software Engineer<br />Full-Stack Developer</p>
+                </div>
+              </div>
+
+              <div className="profile-data">
+                <div>
+                  <small>LOCATION</small>
+                  <b>Bengaluru, India</b>
+                </div>
+                <div>
+                  <small>FOCUS</small>
+                  <b>Java · Spring Boot · React</b>
+                </div>
+                <div>
+                  <small>EDUCATION</small>
+                  <b>B.E. Computer Science · 2026</b>
+                </div>
+              </div>
+
+              <div className="profile-stack">
+                {['Java', 'Spring Boot', 'React.js', 'MySQL', 'Docker'].map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+
+              <div className="profile-year">{currentYear}</div>
+            </Reveal>
+          </div>
+
+          <div className="scroll-cue">
+            <span>SCROLL TO EXPLORE</span>
+            <ArrowDownRight size={15} />
           </div>
         </section>
 
-        <section
-          id="experience"
-          className="section experience-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="03"
-                label="Experience"
-              />
-            </Reveal>
+        <section className="intro section-shell">
+          <Reveal>
+            <SectionLabel number="02">Profile</SectionLabel>
+          </Reveal>
 
-            <Reveal delay={80}>
-              <h2 className="massive-title">
-                Experience &
-                <span> education.</span>
+          <div className="intro-grid">
+            <Reveal className="intro-title">
+              <h2>
+                I turn requirements into
+                <span> working software.</span>
               </h2>
             </Reveal>
 
-            <div className="experience-layout">
-              <div className="timeline-rail">
-                <span>2026</span>
-                <div className="rail-line">
-                  <i />
-                </div>
-                <span>NOW</span>
+            <Reveal className="intro-copy" delay={100}>
+              <p>
+                I enjoy building systems from the API layer to the interface:
+                designing REST endpoints, modeling relational data, securing
+                requests and connecting everything to a responsive React UI.
+              </p>
+              <p>
+                My current stack combines Java, Spring Boot, React.js, MySQL,
+                Docker and modern Git-based development workflows.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section id="skills" className="section-shell section-block">
+          <Reveal>
+            <SectionLabel number="03">Technical Stack</SectionLabel>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div className="section-heading">
+              <h2>Tools I use to <span>ship.</span></h2>
+              <p>Backend depth. Frontend execution. Production-minded tooling.</p>
+            </div>
+          </Reveal>
+
+          <div className="skills-grid">
+            {SKILLS.map((skill, index) => {
+              const Icon = skill.icon
+              return (
+                <Reveal key={skill.title} delay={index * 50} className="skill-card">
+                  <div className="card-index">0{index + 1}</div>
+                  <Icon size={21} />
+                  <h3>{skill.title}</h3>
+                  <div className="chip-list">
+                    {skill.items.map((item) => <span key={item}>{item}</span>)}
+                  </div>
+                </Reveal>
+              )
+            })}
+          </div>
+        </section>
+
+        <section id="experience" className="section-shell section-block">
+          <Reveal>
+            <SectionLabel number="04">Experience</SectionLabel>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div className="experience-card">
+              <div className="experience-date">JAN 2026 — MAY 2026</div>
+              <div>
+                <span className="muted-label">WEB DEVELOPMENT INTERN</span>
+                <h2>MR Tech Lab</h2>
+                <p>
+                  Built responsive cross-browser interfaces with HTML, CSS and
+                  JavaScript; integrated Firebase authentication; and worked in
+                  an Agile, Git-based workflow to ship tested UI features.
+                </p>
               </div>
+              <BriefcaseBusiness size={25} />
+            </div>
+          </Reveal>
+        </section>
 
-              <div className="experience-content">
-                {EXPERIENCE.map((experience) => (
-                  <Reveal
-                    key={experience.company}
-                    className="experience-block"
-                  >
-                    <div className="experience-top">
-                      <div>
-                        <span className="eyebrow">
-                          EXPERIENCE
-                        </span>
+        <section id="work" className="section-shell section-block">
+          <Reveal>
+            <SectionLabel number="05">Selected Work</SectionLabel>
+          </Reveal>
 
-                        <h3>
-                          {experience.role}
-                        </h3>
+          <Reveal delay={80}>
+            <div className="section-heading">
+              <h2>Built, deployed, <span>live.</span></h2>
+              <p>Two full-stack applications you can actually open and test.</p>
+            </div>
+          </Reveal>
 
-                        <p>
-                          {experience.company} ·{' '}
-                          {experience.place}
-                        </p>
-                      </div>
+          <div className="projects">
+            {PROJECTS.map((project, index) => (
+              <Reveal key={project.title} delay={index * 100} className="project-card">
+                <div className="project-number">{project.number}</div>
 
-                      <span className="year-tag">
-                        {experience.time}
-                      </span>
+                <div className="project-main">
+                  <div className="project-heading">
+                    <div>
+                      <span>{project.type}</span>
+                      <h3>{project.title}</h3>
                     </div>
+                    <span className="live-badge">LIVE</span>
+                  </div>
 
+                  <p className="project-description">{project.description}</p>
+
+                  <div className="project-content">
                     <ul>
-                      {experience.points.map((point) => (
-                        <li key={point}>
+                      {project.bullets.map((bullet) => (
+                        <li key={bullet}>
                           <CheckCircle2 size={15} />
-                          <span>{point}</span>
+                          {bullet}
                         </li>
                       ))}
                     </ul>
-                  </Reveal>
-                ))}
-
-                <Reveal
-                  delay={100}
-                  className="education-block"
-                >
-                  <div className="education-icon">
-                    <GraduationCap size={22} />
-                  </div>
-
-                  <div>
-                    <span className="eyebrow">
-                      EDUCATION
-                    </span>
-
-                    <h3>
-                      {EDUCATION[0].school}
-                    </h3>
-
-                    <p>
-                      {EDUCATION[0].degree}
-                    </p>
-
-                    <small>
-                      {EDUCATION[0].time}
-                    </small>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="projects"
-          className="section projects-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="04"
-                label="Selected Work"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="section-heading-row">
-                <h2 className="massive-title">
-                  Projects that
-                  <span> ship.</span>
-                </h2>
-
-                <p>
-                  Full-stack applications demonstrating
-                  frontend, backend, security and database
-                  integration.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="projects">
-              {PROJECTS.map((project, index) => (
-                <Reveal
-                  key={project.id}
-                  delay={index * 100}
-                  className={`project ${
-                    index === 0 ? 'project-main' : ''
-                  }`}
-                >
-                  <div className="project-number">
-                    {project.id}
-                  </div>
-
-                  <div className="project-header">
-                    <div>
-                      <span className="project-tag">
-                        {project.tag}
-                      </span>
-
-                      <h3>{project.title}</h3>
-                    </div>
-
-                    {project.featured && (
-                      <span className="featured">
-                        FEATURED
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="project-body">
-                    <div className="project-description">
-                      <span className="project-label">
-                        WHAT I BUILT
-                      </span>
-
-                      <ul>
-                        {project.highlights.map(
-                          (highlight) => (
-                            <li key={highlight}>
-                              <span />
-                              {highlight}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
 
                     <div className="project-side">
-                      <span className="project-label">
-                        STACK
-                      </span>
-
-                      <div className="project-tech">
-                        {project.tech.map((tech) => (
-                          <span key={tech}>
-                            {tech}
-                          </span>
-                        ))}
+                      <small>STACK</small>
+                      <div className="chip-list">
+                        {project.stack.map((item) => <span key={item}>{item}</span>)}
                       </div>
 
-                      {project.note && (
-                        <p className="project-note">
-                          {project.note}
+                      <div className="render-note">
+                        <span>⚡</span>
+                        <p>
+                          <b>START BACKEND FIRST</b>
+                          <br />
+                          Render may put the backend to sleep. Open the backend,
+                          wait for it to wake, then open the frontend.
                         </p>
-                      )}
-
-                      {project.links && (
-                        <div className="project-links">
-                          {project.links.map((link) => (
-                            <a
-                              key={link.label}
-                              href={link.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {link.label}
-                              <ExternalLink
-                                size={14}
-                              />
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="certifications"
-          className="section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="05"
-                label="Certifications"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <h2 className="massive-title">
-                Certifications
-                <span> & learning.</span>
-              </h2>
-            </Reveal>
-
-            <div className="certifications">
-              {CERTS.map((certification, index) => (
-                <Reveal
-                  key={certification.name}
-                  delay={index * 80}
-                  className="certification"
-                >
-                  <span className="cert-index">
-                    0{index + 1}
-                  </span>
-
-                  <div className="cert-icon">
-                    <Award size={20} />
-                  </div>
-
-                  <div>
-                    <h3>
-                      {certification.name}
-                    </h3>
-
-                    <p>{certification.by}</p>
-                  </div>
-
-                  <CheckCircle2
-                    className="cert-check"
-                    size={19}
-                  />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="approach"
-          className="section architecture-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="06"
-                label="Approach"
-              />
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div className="section-heading-row">
-                <h2 className="massive-title">
-                  How I structure
-                  <span> an application.</span>
-                </h2>
-
-                <p>
-                  Client to service to schema — the layers
-                  a request passes through, and what runs
-                  each one.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="architecture">
-              {APPROACH.map((layer, index) => {
-                const Icon = layer.icon
-
-                return (
-                  <Reveal
-                    key={layer.title}
-                    delay={index * 70}
-                    className="architecture-node"
-                  >
-                    <div className="node-top">
-                      <span>
-                        0{index + 1}
-                      </span>
-
-                      <Icon size={20} />
-                    </div>
-
-                    <span className="node-subtitle">
-                      {layer.subtitle}
-                    </span>
-
-                    <h3>{layer.title}</h3>
-
-                    <p>{layer.blurb}</p>
-
-                    <div className="node-items">
-                      {layer.items.map((item) => (
-                        <span key={item}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-
-                    {index < APPROACH.length - 1 && (
-                      <div className="architecture-arrow">
-                        →
                       </div>
-                    )}
-                  </Reveal>
-                )
-              })}
-            </div>
+
+                      <div className="project-links">
+                        <a href={project.frontend} target="_blank" rel="noreferrer">
+                          Live frontend <ArrowUpRight size={15} />
+                        </a>
+                        <a href={project.backend} target="_blank" rel="noreferrer">
+                          Backend API <ArrowUpRight size={15} />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </section>
 
-        <section
-          id="contact"
-          className="section contact-section"
-        >
-          <div className="section-container">
-            <Reveal>
-              <SectionLabel
-                index="07"
-                label="Contact"
-              />
-            </Reveal>
+        <section id="certifications" className="section-shell section-block">
+          <Reveal>
+            <SectionLabel number="06">Certifications</SectionLabel>
+          </Reveal>
 
-            <div className="contact-terminal">
-              <div className="terminal-header">
-                <div className="window-dots">
-                  <span />
-                  <span />
-                  <span />
+          <div className="cert-grid">
+            {CERTIFICATIONS.map(([number, title, issuer]) => (
+              <Reveal key={title} className="cert-card">
+                <span>{number}</span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{issuer}</p>
                 </div>
+                <CheckCircle2 size={19} />
+              </Reveal>
+            ))}
+          </div>
+        </section>
 
-                <span>
-                  rahul@developer:~
-                </span>
+        <section id="approach" className="section-shell section-block">
+          <Reveal>
+            <SectionLabel number="07">Approach</SectionLabel>
+          </Reveal>
 
-                <Terminal size={15} />
+          <Reveal delay={80}>
+            <div className="architecture-heading">
+              <h2>From request to <span>response.</span></h2>
+              <p>How I think about a production web application.</p>
+            </div>
+          </Reveal>
+
+          <div className="architecture">
+            {[
+              ['01', 'CLIENT', 'React.js', 'Responsive UI, state, forms and API integration.'],
+              ['02', 'API', 'Spring Boot', 'Controllers, services, DTOs and exception handling.'],
+              ['03', 'SECURITY', 'Spring Security', 'JWT authentication and role-based authorization.'],
+              ['04', 'DATA', 'MySQL + JPA', 'Normalized relational data and persistent domain models.'],
+            ].map(([num, label, title, text]) => (
+              <Reveal key={num} className="architecture-node">
+                <span>{num}</span>
+                <small>{label}</small>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section id="contact" className="contact section-shell">
+          <Reveal>
+            <SectionLabel number="08">Contact</SectionLabel>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div className="contact-terminal">
+              <div className="terminal-head">
+                <span><i /> <i /> <i /></span>
+                <b>rahul@developer:~</b>
+                <span>CONTACT</span>
               </div>
 
-              <div className="terminal-content">
-                <Reveal>
-                  <span className="terminal-line">
-                    $ ./start-conversation
-                  </span>
-
-                  <h2>
-                    Let's build
-                    <span> something.</span>
-                  </h2>
-
-                  <p>
-                    Open to Full Stack, Java/Spring Boot,
-                    and React roles. Based in Bengaluru,
-                    India.
-                  </p>
-
-                  <a
-                    className="terminal-button"
-                    href="mailto:Srinivasrahul838@gmail.com"
-                  >
-                    Start a conversation
-                    <ArrowUpRight size={18} />
-                  </a>
-                </Reveal>
+              <div className="terminal-body">
+                <span>$ ./start-conversation</span>
+                <h2>Let's build <em>something.</em></h2>
+                <p>Open to Software Engineer, Java/Spring Boot and React opportunities.</p>
+                <a href="mailto:Srinivasrahul838@gmail.com">
+                  Start a conversation <ArrowUpRight size={18} />
+                </a>
               </div>
             </div>
+          </Reveal>
 
-            <div className="contact-grid">
-              {CONTACTS.map((contact, index) => {
-                const Icon = contact.icon
-
-                return (
-                  <Reveal
-                    key={contact.label}
-                    delay={index * 60}
-                    className="contact-item"
-                  >
-                    <a
-                      href={contact.href}
-                      target={
-                        contact.href.startsWith('http')
-                          ? '_blank'
-                          : undefined
-                      }
-                      rel="noopener noreferrer"
-                    >
-                      <span className="contact-icon">
-                        <Icon size={17} />
-                      </span>
-
-                      <span>
-                        <small>
-                          {contact.label}
-                        </small>
-
-                        <strong>
-                          {contact.value}
-                        </strong>
-                      </span>
-
-                      <ArrowUpRight
-                        className="contact-arrow"
-                        size={16}
-                      />
-                    </a>
-                  </Reveal>
-                )
-              })}
-            </div>
+          <div className="contact-grid">
+            <a href="mailto:Srinivasrahul838@gmail.com">
+              <Mail size={18} />
+              <span><small>EMAIL</small><b>Srinivasrahul838@gmail.com</b></span>
+              <ArrowUpRight size={16} />
+            </a>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
+              <Linkedin size={18} />
+              <span><small>LINKEDIN</small><b>Connect with me</b></span>
+              <ArrowUpRight size={16} />
+            </a>
+            <a href="https://github.com/" target="_blank" rel="noreferrer">
+              <Github size={18} />
+              <span><small>GITHUB</small><b>View my code</b></span>
+              <ArrowUpRight size={16} />
+            </a>
           </div>
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="footer-inner">
-          <span>© 2026 Rahul S</span>
-
-          <span>
-            Software Engineer · Java / Spring Boot / React
-          </span>
-
-          <span className="footer-code">
-            BUILD / 2026
-          </span>
-        </div>
+      <footer className="footer">
+        <span>© {currentYear} Rahul S</span>
+        <span>JAVA · SPRING BOOT · REACT</span>
+        <span>BUILD / 2026</span>
       </footer>
     </div>
   )
