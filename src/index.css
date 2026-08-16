@@ -26,7 +26,6 @@
 
   --max-width: 1450px;
 
-  /* NEW: subtle rounding */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -777,17 +776,21 @@ button:hover .arrow-symbol {
   left: 160px;
 }
 
+/* =========================================================
+   PROFILE PICTURE
+   ONLY MODIFIED UI PART
+========================================================= */
+
 .portrait-frame {
-  width: 290px;
-  height: 370px;
+  width: 300px;
+  height: 300px;
 
   position: relative;
   overflow: hidden;
 
-  border: 1px solid rgba(217, 255, 0, 0.45);
+  border: 2px solid rgba(217, 255, 0, 0.55);
 
-  /* Rounded corners while retaining the angular design */
-  border-radius: var(--radius-lg);
+  border-radius: 50%;
 
   background: rgba(10, 14, 18, 0.65);
 
@@ -795,6 +798,7 @@ button:hover .arrow-symbol {
 
   box-shadow:
     0 0 50px rgba(66, 232, 255, 0.08),
+    0 0 30px rgba(217, 255, 0, 0.08),
     inset 0 0 40px rgba(217, 255, 0, 0.05);
 
   z-index: 3;
@@ -807,6 +811,8 @@ button:hover .arrow-symbol {
   display: block;
 
   object-fit: cover;
+
+  border-radius: 50%;
 
   filter:
     grayscale(0.15)
@@ -2585,12 +2591,18 @@ button:hover .arrow-symbol {
     height: 320px;
   }
 
+  /* CIRCULAR PROFILE - MOBILE */
+
   .portrait-frame {
     width: 190px;
 
-    height: 250px;
+    height: 190px;
 
-    border-radius: var(--radius-md);
+    border-radius: 50%;
+  }
+
+  .profile-image {
+    border-radius: 50%;
   }
 
   .portrait-tag {
@@ -2969,12 +2981,18 @@ button:hover .arrow-symbol {
     height: 280px;
   }
 
+  /* CIRCULAR PROFILE - VERY SMALL MOBILE */
+
   .portrait-frame {
     width: 165px;
 
-    height: 220px;
+    height: 165px;
 
-    border-radius: var(--radius-md);
+    border-radius: 50%;
+  }
+
+  .profile-image {
+    border-radius: 50%;
   }
 
   .code-float {
@@ -3055,7 +3073,6 @@ button:hover .arrow-symbol {
 
 /* =========================================================
    GLOBAL CARD ROUNDING SAFETY
-   Keeps any remaining rectangular components rounded.
 ========================================================= */
 
 .skill-group,
