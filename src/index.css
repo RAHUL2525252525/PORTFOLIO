@@ -2415,3 +2415,77 @@ button:hover .arrow-symbol {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* =====================================================
+   REQUESTED UPDATES ONLY
+   DO NOT CHANGE EXISTING THEME / COLOURS / UI
+===================================================== */
+
+/* Bigger professional title above Rahul */
+.hero-kicker {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+/* Make Skills text clearly visible */
+.skill-group h3,
+.skill-group-top h3,
+.skill-list span {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Make Experience text clearly visible */
+.experience-main,
+.experience-main h3,
+.experience-main p,
+.experience-points p,
+.experience-stack span {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Make Project text clearly visible */
+.project-showcase,
+.project-main-info,
+.project-main-info h3,
+.project-main-info h4,
+.project-description,
+.project-details,
+.project-points p,
+.project-stack span {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Social/contact links */
+.contact-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.contact-meta a {
+  color: inherit;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.contact-meta a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .hero-kicker {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-meta {
+    gap: 12px 18px;
+  }
+}
