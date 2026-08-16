@@ -209,15 +209,17 @@ function App() {
   const [active, setActive] = useState("home");
 
   useEffect(() => {
-    const sections = NAV_ITEMS.map(([id]) => document.getElementById(id)).filter(
-      Boolean
-    );
+    const sections = NAV_ITEMS.map(([id]) =>
+      document.getElementById(id)
+    ).filter(Boolean);
 
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          .sort(
+            (a, b) => b.intersectionRatio - a.intersectionRatio
+          )[0];
 
         if (visible) {
           setActive(visible.target.id);
@@ -241,9 +243,9 @@ function App() {
 
   return (
     <div className="site">
-      {/* =====================================================
-          VIDEO BACKGROUND
-      ====================================================== */}
+
+      {/* VIDEO BACKGROUND */}
+
       <video
         className="background-video"
         autoPlay
@@ -261,15 +263,14 @@ function App() {
       <div className="scanlines" />
       <div className="noise-layer" />
 
-      {/* Floating neon shapes */}
       <div className="orb orb-one" />
       <div className="orb orb-two" />
       <div className="orb orb-three" />
 
-      {/* =====================================================
-          NAVIGATION
-      ====================================================== */}
+      {/* NAVIGATION */}
+
       <header className="topbar">
+
         <button
           className="brand"
           onClick={() => navigate("home")}
@@ -279,7 +280,7 @@ function App() {
 
           <span className="brand-copy">
             <strong>RAHUL</strong>
-            <small>FULL STACK DEVELOPER</small>
+            <small>JAVA FULL STACK DEVELOPER</small>
           </span>
         </button>
 
@@ -287,7 +288,11 @@ function App() {
           {NAV_ITEMS.map(([id, label], index) => (
             <button
               key={id}
-              className={active === id ? "nav-item active" : "nav-item"}
+              className={
+                active === id
+                  ? "nav-item active"
+                  : "nav-item"
+              }
               onClick={() => navigate(id)}
             >
               <span>0{index}</span>
@@ -296,7 +301,10 @@ function App() {
           ))}
         </nav>
 
-        <a className="top-contact" href="mailto:Srinivasrahul838@gmail.com">
+        <a
+          className="top-contact"
+          href="mailto:Srinivasrahul838@gmail.com"
+        >
           <span>LET'S TALK</span>
           <Arrow />
         </a>
@@ -310,14 +318,17 @@ function App() {
           <span />
           <span />
         </button>
+
       </header>
 
-      {/* =====================================================
-          MOBILE NAV
-      ====================================================== */}
+      {/* MOBILE NAV */}
+
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         {NAV_ITEMS.map(([id, label], index) => (
-          <button key={id} onClick={() => navigate(id)}>
+          <button
+            key={id}
+            onClick={() => navigate(id)}
+          >
             <small>0{index}</small>
             {label}
             <Arrow />
@@ -325,13 +336,16 @@ function App() {
         ))}
       </div>
 
-      {/* =====================================================
-          HERO
-      ====================================================== */}
       <main>
+
+        {/* HERO */}
+
         <section id="home" className="hero">
+
           <div className="hero-grid">
+
             <div className="hero-left">
+
               <div className="live-line">
                 <span className="live-dot" />
                 AVAILABLE FOR OPPORTUNITIES
@@ -344,9 +358,9 @@ function App() {
               </div>
 
               <p className="hero-kicker">
-                SOFTWARE ENGINEER
+                JAVA FULL STACK DEVELOPER
                 <b>+</b>
-                FULL STACK DEVELOPER
+                SOFTWARE ENGINEER
               </p>
 
               <h1>
@@ -361,12 +375,14 @@ function App() {
               </div>
 
               <p className="hero-description">
-                Full Stack Developer skilled in React.js, Java, and Spring Boot
-                with strong hands-on experience building secure, end-to-end web
-                applications from UI to database.
+                Full Stack Developer skilled in React.js, Java,
+                and Spring Boot with strong hands-on experience
+                building secure, end-to-end web applications
+                from UI to database.
               </p>
 
               <div className="hero-actions">
+
                 <button
                   className="neon-button primary"
                   onClick={() => navigate("projects")}
@@ -381,9 +397,11 @@ function App() {
                 >
                   CONTACT ME
                 </button>
+
               </div>
 
               <div className="hero-facts">
+
                 <div>
                   <small>LOCATION</small>
                   <strong>Bengaluru, India</strong>
@@ -398,19 +416,22 @@ function App() {
                   <small>CGPA</small>
                   <strong>8.00</strong>
                 </div>
+
               </div>
+
             </div>
 
-            {/* =================================================
-                ORBIT PROFILE
-            ================================================== */}
+            {/* PROFILE */}
+
             <div className="hero-visual">
+
               <div className="visual-label label-top">
                 <span>PROFILE_NODE</span>
                 <b>ONLINE</b>
               </div>
 
               <div className="orbit-system">
+
                 <div className="orbit orbit-a" />
                 <div className="orbit orbit-b" />
                 <div className="orbit orbit-c" />
@@ -421,6 +442,7 @@ function App() {
 
                 <div className="portrait-frame">
                   <div className="portrait-glow" />
+
                   <img
                     src="/rahul-profile.jpg"
                     alt="Rahul S"
@@ -432,6 +454,7 @@ function App() {
                   <span>R.S</span>
                   <small>2026</small>
                 </div>
+
               </div>
 
               <div className="visual-label label-bottom">
@@ -442,53 +465,69 @@ function App() {
               <div className="code-float">
                 <span>// candidate_profile</span>
                 <strong>&gt; whoami</strong>
-                <p>Full Stack Developer</p>
+                <p>Java Full Stack Developer</p>
                 <small>JAVA · REACT · SPRING · MYSQL</small>
               </div>
+
             </div>
+
           </div>
 
           <div className="hero-bottom">
             <span>SCROLL TO EXPLORE</span>
+
             <div className="scroll-line">
               <i />
             </div>
+
             <span>00 / 06</span>
           </div>
+
         </section>
 
-        {/* =====================================================
-            ABOUT
-        ====================================================== */}
+        {/* ABOUT */}
+
         <section id="about" className="section about">
+
           <div className="section-heading">
             <span className="section-number">01</span>
+
             <div>
               <small>IDENTITY</small>
-              <h2>Built from UI<br />to database.</h2>
+              <h2>
+                Built from UI
+                <br />
+                to database.
+              </h2>
             </div>
           </div>
 
           <div className="about-content">
+
             <div className="about-statement">
+
               <span className="quote-mark">“</span>
 
               <p>
-                Full Stack Developer skilled in React.js, Java, and Spring Boot
-                with strong hands-on experience building secure, end-to-end web
-                applications from UI to database.
+                Full Stack Developer skilled in React.js, Java,
+                and Spring Boot with strong hands-on experience
+                building secure, end-to-end web applications
+                from UI to database.
               </p>
 
               <span className="about-line" />
 
               <p className="about-secondary">
-                Proven ability to independently architect and deliver
-                full-stack projects — REST APIs, JWT authentication, RBAC, and
-                MySQL database design — in Agile environments.
+                Proven ability to independently architect and
+                deliver full-stack projects — REST APIs, JWT
+                authentication, RBAC, and MySQL database design
+                — in Agile environments.
               </p>
+
             </div>
 
             <div className="about-terminal">
+
               <div className="terminal-top">
                 <span />
                 <span />
@@ -497,62 +536,91 @@ function App() {
               </div>
 
               <div className="terminal-body">
+
                 <p>
                   <b>$</b> cat profile.json
                 </p>
 
                 <div className="terminal-json">
+
                   <span>{"{"}</span>
+
                   <span>
-                    <i>"role"</i>: "Full Stack Developer",
+                    <i>"role"</i>: "Java Full Stack Developer",
                   </span>
+
                   <span>
                     <i>"focus"</i>: "Production Web Apps",
                   </span>
+
                   <span>
                     <i>"frontend"</i>: "React.js",
                   </span>
+
                   <span>
                     <i>"backend"</i>: "Java + Spring Boot",
                   </span>
+
                   <span>
                     <i>"database"</i>: "MySQL",
                   </span>
+
                   <span>
                     <i>"security"</i>: "JWT + RBAC",
                   </span>
+
                   <span>{"}"}</span>
+
                 </div>
 
                 <p className="terminal-success">
                   <b>✓</b> profile loaded successfully
                 </p>
+
               </div>
+
             </div>
+
           </div>
+
         </section>
 
-        {/* =====================================================
-            SKILLS
-        ====================================================== */}
+        {/* SKILLS */}
+
         <section id="skills" className="section skills">
+
           <div className="section-heading">
+
             <span className="section-number">02</span>
+
             <div>
               <small>TECH STACK</small>
-              <h2>Tools I<br />build with.</h2>
+
+              <h2>
+                Tools I
+                <br />
+                build with.
+              </h2>
             </div>
+
           </div>
 
           <div className="skills-layout">
+
             <div className="skill-intro">
+
               <div className="radar">
+
                 <div className="radar-ring ring-one" />
                 <div className="radar-ring ring-two" />
                 <div className="radar-ring ring-three" />
+
                 <div className="radar-cross horizontal" />
                 <div className="radar-cross vertical" />
-                <div className="radar-center">RS</div>
+
+                <div className="radar-center">
+                  RS
+                </div>
 
                 {STACK.map((item, index) => (
                   <span
@@ -562,47 +630,76 @@ function App() {
                     {item}
                   </span>
                 ))}
+
               </div>
 
               <p>
-                A practical stack focused on building responsive frontends,
-                secure REST APIs, relational databases and deployable
-                full-stack systems.
+                A practical stack focused on building responsive
+                frontends, secure REST APIs, relational databases
+                and deployable full-stack systems.
               </p>
+
             </div>
 
             <div className="skill-groups">
+
               {SKILL_GROUPS.map((group) => (
-                <article className="skill-group" key={group.number}>
+
+                <article
+                  className="skill-group"
+                  key={group.number}
+                >
+
                   <div className="skill-group-top">
+
                     <span>{group.number}</span>
+
                     <h3>{group.title}</h3>
+
                   </div>
 
                   <div className="skill-list">
+
                     {group.skills.map((skill) => (
-                      <span key={skill}>{skill}</span>
+                      <span key={skill}>
+                        {skill}
+                      </span>
                     ))}
+
                   </div>
+
                 </article>
+
               ))}
+
             </div>
+
           </div>
+
         </section>
 
-        {/* =====================================================
-            EXPERIENCE
-        ====================================================== */}
+        {/* EXPERIENCE */}
+
         <section id="experience" className="section experience">
+
           <div className="section-heading">
+
             <span className="section-number">03</span>
+
             <div>
               <small>CAREER</small>
-              <h2>Experience<br />that ships.</h2>
+
+              <h2>
+                Experience
+                <br />
+                that ships.
+              </h2>
             </div>
+
           </div>
 
           <div className="experience-wrapper">
+
             <div className="experience-year">
               <span>2026</span>
               <i />
@@ -610,77 +707,145 @@ function App() {
             </div>
 
             <article className="experience-main">
+
               <div className="experience-header">
+
                 <div>
-                  <small>WEB DEVELOPMENT INTERN</small>
-                  <h3>{EXPERIENCE.company}</h3>
-                  <p>{EXPERIENCE.location}</p>
+
+                  <small>
+                    WEB DEVELOPMENT INTERN
+                  </small>
+
+                  <h3>
+                    {EXPERIENCE.company}
+                  </h3>
+
+                  <p>
+                    {EXPERIENCE.location}
+                  </p>
+
                 </div>
 
                 <span className="experience-period">
                   {EXPERIENCE.period}
                 </span>
+
               </div>
 
               <div className="experience-points">
-                {EXPERIENCE.points.map((point, index) => (
-                  <div key={point}>
-                    <span>0{index + 1}</span>
-                    <p>{point}</p>
-                  </div>
-                ))}
+
+                {EXPERIENCE.points.map(
+                  (point, index) => (
+
+                    <div key={point}>
+
+                      <span>
+                        0{index + 1}
+                      </span>
+
+                      <p>{point}</p>
+
+                    </div>
+
+                  )
+                )}
+
               </div>
 
               <div className="experience-stack">
+
                 <span>REACT.JS</span>
                 <span>JAVA</span>
                 <span>SPRING BOOT</span>
                 <span>MYSQL</span>
                 <span>REST API</span>
                 <span>GIT</span>
+
               </div>
+
             </article>
+
           </div>
 
           <div className="education-strip">
-            <div className="education-number">EDU</div>
+
+            <div className="education-number">
+              EDU
+            </div>
 
             <div>
-              <small>B.E. COMPUTER SCIENCE AND ENGINEERING</small>
-              <h3>Dr. ACS College of Engineering</h3>
-              <p>Bengaluru · 2023 — 2026</p>
+
+              <small>
+                B.E. COMPUTER SCIENCE AND ENGINEERING
+              </small>
+
+              <h3>
+                Dr. ACS College of Engineering
+              </h3>
+
+              <p>
+                Bengaluru · 2023 — 2026
+              </p>
+
             </div>
 
             <strong>8.00</strong>
+
           </div>
+
         </section>
 
-        {/* =====================================================
-            PROJECTS
-        ====================================================== */}
+        {/* PROJECTS */}
+
         <section id="projects" className="section projects">
+
           <div className="section-heading project-heading">
+
             <span className="section-number">04</span>
+
             <div>
+
               <small>SELECTED WORK</small>
-              <h2>Things I've<br />actually shipped.</h2>
+
+              <h2>
+                Things I've
+                <br />
+                actually shipped.
+              </h2>
+
             </div>
 
             <p>
-              End-to-end applications demonstrating frontend, backend,
-              authentication, database design, testing and deployment.
+              End-to-end applications demonstrating frontend,
+              backend, authentication, database design, testing
+              and deployment.
             </p>
+
           </div>
 
           <div className="projects-list">
+
             {PROJECTS.map((project) => (
-              <article className="project-showcase" key={project.number}>
+
+              <article
+                className="project-showcase"
+                key={project.number}
+              >
+
                 <div className="project-index">
-                  <span>{project.number}</span>
-                  <small>{project.year}</small>
+
+                  <span>
+                    {project.number}
+                  </span>
+
+                  <small>
+                    {project.year}
+                  </small>
+
                 </div>
 
                 <div className="project-main-info">
+
                   <div className="project-category">
                     {project.category}
                   </div>
@@ -694,38 +859,71 @@ function App() {
                   </p>
 
                   <div className="project-stack">
-                    {project.stack.split(" · ").map((item) => (
-                      <span key={item}>{item}</span>
-                    ))}
+
+                    {project.stack
+                      .split(" · ")
+                      .map((item) => (
+                        <span key={item}>
+                          {item}
+                        </span>
+                      ))}
+
                   </div>
+
                 </div>
 
                 <div className="project-details">
-                  <div className="project-points">
-                    <small>WHAT I BUILT</small>
 
-                    {project.points.map((point, index) => (
-                      <div key={point}>
-                        <span>0{index + 1}</span>
-                        <p>{point}</p>
-                      </div>
-                    ))}
+                  <div className="project-points">
+
+                    <small>
+                      WHAT I BUILT
+                    </small>
+
+                    {project.points.map(
+                      (point, index) => (
+
+                        <div key={point}>
+
+                          <span>
+                            0{index + 1}
+                          </span>
+
+                          <p>{point}</p>
+
+                        </div>
+
+                      )
+                    )}
+
                   </div>
 
                   <div className="project-links">
+
                     <div className="render-warning">
+
                       <span>⚠</span>
+
                       <p>
-                        <strong>START BACKEND FIRST</strong>
+
+                        <strong>
+                          START BACKEND FIRST
+                        </strong>
+
                         <br />
-                        The backend is deployed on Render and may sleep on the
-                        free tier. Open the backend first and wait around
-                        30–50 seconds for it to wake up, then open the
-                        frontend.
+
+                        The backend is deployed on Render
+                        and may sleep on the free tier.
+                        Open the backend first and wait
+                        around 30–50 seconds for it to wake
+                        up, then open the frontend.
+
                       </p>
+
                     </div>
 
                     <div className="project-buttons">
+
                       <a
                         href={project.backend}
                         target="_blank"
@@ -745,51 +943,95 @@ function App() {
                         LIVE FRONTEND
                         <Arrow />
                       </a>
+
                     </div>
+
                   </div>
+
                 </div>
+
               </article>
+
             ))}
+
           </div>
+
         </section>
 
-        {/* =====================================================
-            CERTIFICATIONS
-        ====================================================== */}
+        {/* CERTIFICATIONS */}
+
         <section className="section certifications">
+
           <div className="section-heading">
+
             <span className="section-number">05</span>
+
             <div>
+
               <small>CREDENTIALS</small>
-              <h2>Learning<br />never stops.</h2>
+
+              <h2>
+                Learning
+                <br />
+                never stops.
+              </h2>
+
             </div>
+
           </div>
 
           <div className="cert-grid">
+
             <article className="cert-card">
+
               <span>01</span>
-              <small>INFOSYS SPRINGBOARD</small>
-              <h3>Java Programming Fundamentals</h3>
+
+              <small>
+                INFOSYS SPRINGBOARD
+              </small>
+
+              <h3>
+                Java Programming Fundamentals
+              </h3>
+
               <div>JAVA</div>
+
             </article>
 
             <article className="cert-card">
+
               <span>02</span>
-              <small>INFOSYS SPRINGBOARD</small>
-              <h3>Introduction to Java</h3>
+
+              <small>
+                INFOSYS SPRINGBOARD
+              </small>
+
+              <h3>
+                Introduction to Java
+              </h3>
+
               <div>JAVA</div>
+
             </article>
+
           </div>
+
         </section>
 
-        {/* =====================================================
-            CONTACT
-        ====================================================== */}
-        <section id="contact" className="contact-section">
+        {/* CONTACT */}
+
+        <section
+          id="contact"
+          className="contact-section"
+        >
+
           <div className="contact-glow" />
 
           <div className="contact-content">
-            <span className="contact-label">06 / CONTACT</span>
+
+            <span className="contact-label">
+              06 / CONTACT
+            </span>
 
             <h2>
               Let's build
@@ -798,8 +1040,9 @@ function App() {
             </h2>
 
             <p>
-              Looking for opportunities to build production-grade web
-              applications and contribute as a Full Stack or Frontend
+              Looking for opportunities to build
+              production-grade web applications and
+              contribute as a Full Stack or Frontend
               Developer.
             </p>
 
@@ -811,20 +1054,77 @@ function App() {
               <Arrow />
             </a>
 
-            <div className="contact-meta">
-              <span>RAHUL S</span>
-              <span>BENGALURU, INDIA</span>
-              <span>2026</span>
+            {/* CONTACT DETAILS */}
+
+            <div className="social-links">
+
+              <a
+                href="tel:7337634886"
+                className="social-card"
+              >
+                <span>PHONE</span>
+                <strong>7337634886</strong>
+                <Arrow />
+              </a>
+
+              <a
+                href="https://github.com/RAHUL2525252525"
+                target="_blank"
+                rel="noreferrer"
+                className="social-card"
+              >
+                <span>GITHUB</span>
+                <strong>RAHUL2525252525</strong>
+                <Arrow />
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/rahul-s-6460b1238"
+                target="_blank"
+                rel="noreferrer"
+                className="social-card"
+              >
+                <span>LINKEDIN</span>
+                <strong>RAHUL S.</strong>
+                <Arrow />
+              </a>
+
             </div>
+
+            <div className="contact-meta">
+
+              <span>RAHUL S</span>
+
+              <span>
+                BENGALURU, INDIA
+              </span>
+
+              <span>2026</span>
+
+            </div>
+
           </div>
+
         </section>
+
       </main>
 
       <footer className="footer">
-        <span>RAHUL.S / FULL STACK DEVELOPER</span>
-        <span>BUILT WITH REACT.JS</span>
-        <span>© 2026</span>
+
+        <span>
+          RAHUL.S / JAVA FULL STACK DEVELOPER
+        </span>
+
+        <span>
+          BUILT WITH REACT.JS
+        </span>
+
+        <span>
+          © 2026
+        </span>
+
       </footer>
+
     </div>
   );
 }
