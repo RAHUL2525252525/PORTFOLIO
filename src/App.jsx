@@ -22,12 +22,16 @@ import {
   Globe,
   Cpu,
   ChevronDown,
+  Activity,
+  FolderCode,
+  Command,
 } from 'lucide-react'
 
 import './index.css'
 
 /* =========================================================
-   ONLINE VIDEO
+   ONLINE VIDEO BACKGROUND
+   No video file required in public/
 ========================================================= */
 
 const VIDEO_BG =
@@ -38,13 +42,13 @@ const VIDEO_BG =
 ========================================================= */
 
 const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Stack' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'certifications', label: 'Certs' },
-  { id: 'approach', label: 'Approach' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'about', label: 'Home', code: '00' },
+  { id: 'skills', label: 'Stack', code: '01' },
+  { id: 'experience', label: 'Experience', code: '02' },
+  { id: 'projects', label: 'Projects', code: '03' },
+  { id: 'certifications', label: 'Certs', code: '04' },
+  { id: 'approach', label: 'Approach', code: '05' },
+  { id: 'contact', label: 'Contact', code: '06' },
 ]
 
 /* =========================================================
@@ -55,9 +59,9 @@ const SKILLS = [
   {
     number: '01',
     icon: Code2,
-    title: 'Frontend',
+    title: 'FRONTEND',
     description:
-      'Building responsive, component-driven interfaces with modern frontend technologies.',
+      'Responsive, component-driven interfaces with modern frontend technologies.',
     items: [
       'React.js',
       'JavaScript ES6+',
@@ -73,9 +77,9 @@ const SKILLS = [
   {
     number: '02',
     icon: Server,
-    title: 'Backend',
+    title: 'BACKEND',
     description:
-      'Developing RESTful backend services and structured application logic.',
+      'RESTful backend services and structured application logic.',
     items: [
       'Java',
       'Spring Boot',
@@ -89,9 +93,9 @@ const SKILLS = [
   {
     number: '03',
     icon: ShieldCheck,
-    title: 'Security',
+    title: 'SECURITY',
     description:
-      'Implementing authentication and access control for protected applications.',
+      'Authentication and access control for protected applications.',
     items: [
       'Spring Security',
       'JWT',
@@ -103,9 +107,9 @@ const SKILLS = [
   {
     number: '04',
     icon: Database,
-    title: 'Database',
+    title: 'DATABASE',
     description:
-      'Designing relational data models and implementing reliable CRUD workflows.',
+      'Relational data models and reliable CRUD workflows.',
     items: [
       'MySQL',
       'SQL',
@@ -117,9 +121,9 @@ const SKILLS = [
   {
     number: '05',
     icon: Layers3,
-    title: 'Engineering',
+    title: 'ENGINEERING',
     description:
-      'Applying structured development practices to create maintainable applications.',
+      'Structured development practices for maintainable applications.',
     items: [
       'OOP',
       'DSA',
@@ -133,7 +137,7 @@ const SKILLS = [
   {
     number: '06',
     icon: Globe,
-    title: 'Deployment',
+    title: 'DEPLOYMENT',
     description:
       'Taking applications from local development to cloud deployment.',
     items: [
@@ -182,7 +186,7 @@ const PROJECTS = [
   {
     number: '01',
     title: 'ShopSphere',
-    subtitle: 'Full-Stack E-Commerce Platform',
+    subtitle: 'FULL-STACK E-COMMERCE PLATFORM',
     description:
       'A complete e-commerce application with customer shopping flows and a role-based admin dashboard.',
     tech: [
@@ -209,7 +213,7 @@ const PROJECTS = [
   {
     number: '02',
     title: 'BankSphere',
-    subtitle: 'Full-Stack Banking System',
+    subtitle: 'FULL-STACK BANKING SYSTEM',
     description:
       'A secure banking platform built with React and Spring Boot with authentication, account management and protected workflows.',
     tech: [
@@ -258,19 +262,19 @@ const CERTIFICATIONS = [
 const APPROACH = [
   {
     icon: Terminal,
-    title: 'Think in Systems',
+    title: 'THINK IN SYSTEMS',
     text:
       'I like understanding how the frontend, API, business logic and database connect instead of treating each layer independently.',
   },
   {
     icon: Cpu,
-    title: 'Build Practical',
+    title: 'BUILD PRACTICAL',
     text:
       'My projects focus on real application workflows such as authentication, CRUD operations, dashboards, transactions and orders.',
   },
   {
     icon: Sparkles,
-    title: 'Keep Improving',
+    title: 'KEEP IMPROVING',
     text:
       'I continuously improve my Java, React, SQL and software engineering fundamentals while building projects.',
   },
@@ -283,25 +287,25 @@ const APPROACH = [
 const CONTACTS = [
   {
     icon: Mail,
-    label: 'Email',
+    label: 'EMAIL',
     value: 'Srinivasrahul838@gmail.com',
     href: 'mailto:Srinivasrahul838@gmail.com',
   },
   {
     icon: Phone,
-    label: 'Phone',
+    label: 'PHONE',
     value: '+91 73376 34886',
     href: 'tel:+917337634886',
   },
   {
     icon: Linkedin,
-    label: 'LinkedIn',
+    label: 'LINKEDIN',
     value: 'linkedin.com/in/rahul-s',
     href: 'https://www.linkedin.com/in/rahul-s-6460b1238',
   },
   {
     icon: Github,
-    label: 'GitHub',
+    label: 'GITHUB',
     value: 'github.com/RAHUL2525252525',
     href: 'https://github.com/RAHUL2525252525',
   },
@@ -397,108 +401,109 @@ function Reveal({ children, className = '', delay = 0 }) {
 }
 
 /* =========================================================
-   SECTION TITLE
+   PROJECT
 ========================================================= */
 
-function SectionTitle({ eyebrow, title, text }) {
+function ProjectPanel({ project }) {
   return (
-    <div className="section-heading">
-      <div className="section-eyebrow">
-        <span />
-        {eyebrow}
+    <article className="project-panel">
+      <div className="project-number-big">
+        {project.number}
       </div>
 
-      <h2>
-        {title}
-      </h2>
+      <div className="project-panel-content">
 
-      {text && <p>{text}</p>}
-    </div>
-  )
-}
+        <div className="project-panel-head">
+          <div>
+            <span className="project-status">
+              <span />
+              LIVE SYSTEM
+            </span>
 
-/* =========================================================
-   PROJECT CARD
-========================================================= */
+            <span className="project-type">
+              {project.subtitle}
+            </span>
 
-function ProjectCard({ project }) {
-  return (
-    <article className="project-card">
-      <div className="project-glow" />
+            <h3>{project.title}</h3>
+          </div>
 
-      <div className="project-top">
-        <span className="project-number">
-          {project.number}
-        </span>
-
-        <div className="project-live">
-          <span className="live-dot" />
-          LIVE
-        </div>
-      </div>
-
-      <div className="project-main">
-        <div>
-          <span className="project-category">
-            {project.subtitle}
-          </span>
-
-          <h3>{project.title}</h3>
-
-          <p>{project.description}</p>
+          <div className="project-symbol">
+            <FolderCode size={34} />
+          </div>
         </div>
 
-        <div className="project-icon">
-          <ArrowUpRight size={25} />
+        <p className="project-description">
+          {project.description}
+        </p>
+
+        <div className="project-data">
+
+          <div className="data-block">
+            <span className="data-label">
+              TECHNOLOGY
+            </span>
+
+            <div className="tech-list">
+              {project.tech.map((tech) => (
+                <span key={tech}>
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="data-block">
+            <span className="data-label">
+              FEATURES
+            </span>
+
+            <div className="feature-list">
+              {project.features.map((feature) => (
+                <span key={feature}>
+                  <b>+</b>
+                  {feature}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
-      </div>
 
-      <div className="project-tech">
-        {project.tech.map((tech) => (
-          <span key={tech}>{tech}</span>
-        ))}
-      </div>
+        <div className="wake-warning">
+          <div className="wake-icon">
+            <Activity size={17} />
+          </div>
 
-      <div className="project-features">
-        {project.features.map((feature) => (
-          <span key={feature}>
-            <span className="feature-check">+</span>
-            {feature}
-          </span>
-        ))}
-      </div>
-
-      <div className="backend-warning">
-        <div className="warning-icon">
-          <Server size={16} />
+          <div>
+            <strong>RENDER BACKEND</strong>
+            <p>{project.note}</p>
+          </div>
         </div>
 
-        <div>
-          <strong>BACKEND WAKE-UP REQUIRED</strong>
-          <p>{project.note}</p>
+        <div className="project-links">
+
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noreferrer"
+            className="project-live-button"
+          >
+            OPEN LIVE PROJECT
+            <ArrowUpRight size={18} />
+          </a>
+
+          <a
+            href={project.backend}
+            target="_blank"
+            rel="noreferrer"
+            className="project-backend-button"
+          >
+            BACKEND
+            <ExternalLink size={15} />
+          </a>
+
         </div>
-      </div>
 
-      <div className="project-actions">
-        <a
-          href={project.live}
-          target="_blank"
-          rel="noreferrer"
-          className="project-primary"
-        >
-          Open live project
-          <ExternalLink size={16} />
-        </a>
-
-        <a
-          href={project.backend}
-          target="_blank"
-          rel="noreferrer"
-          className="project-secondary"
-        >
-          Backend
-          <ArrowUpRight size={15} />
-        </a>
       </div>
     </article>
   )
@@ -509,6 +514,7 @@ function ProjectCard({ project }) {
 ========================================================= */
 
 function App() {
+
   const typed = useTypewriter([
     'React.js',
     'Java',
@@ -521,9 +527,10 @@ function App() {
   const [active, setActive] = useState('about')
 
   useEffect(() => {
-    const sections = NAV.map((item) =>
-      document.getElementById(item.id)
-    ).filter(Boolean)
+
+    const sections = NAV
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean)
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -538,12 +545,16 @@ function App() {
       }
     )
 
-    sections.forEach((section) => observer.observe(section))
+    sections.forEach((section) =>
+      observer.observe(section)
+    )
 
     return () => observer.disconnect()
+
   }, [])
 
   const scrollTo = (id) => {
+
     document
       .getElementById(id)
       ?.scrollIntoView({
@@ -558,7 +569,7 @@ function App() {
     <div className="app">
 
       {/* =====================================================
-          FULL SCREEN VIDEO
+          VIDEO BACKGROUND
       ===================================================== */}
 
       <video
@@ -579,402 +590,500 @@ function App() {
       <div className="video-dark-layer" />
       <div className="video-gradient" />
 
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
+      <div className="noise" />
+      <div className="scanlines" />
 
       {/* =====================================================
-          CONTENT
+          DESKTOP SIDE NAVIGATION
       ===================================================== */}
 
-      <div className="site-content">
+      <aside className="side-navigation">
 
-        {/* =================================================
-            NAVBAR
-        ================================================= */}
-
-        <nav className="floating-nav">
-
-          <button
-            className="brand"
-            onClick={() => scrollTo('about')}
-          >
-            <span className="brand-box">R</span>
-
-            <span>
-              RAHUL
-              <small>.DEV</small>
-            </span>
-          </button>
-
-          <div className="desktop-nav">
-            {NAV.map((item) => (
-              <button
-                key={item.id}
-                className={
-                  active === item.id
-                    ? 'nav-item active'
-                    : 'nav-item'
-                }
-                onClick={() => scrollTo(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <a
-            href="mailto:Srinivasrahul838@gmail.com"
-            className="nav-hire"
-          >
-            Hire me
-            <ArrowUpRight size={15} />
-          </a>
-
-          <button
-            className="mobile-menu"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? (
-              <X size={21} />
-            ) : (
-              <Menu size={21} />
-            )}
-          </button>
-        </nav>
-
-        {/* MOBILE NAV */}
-
-        <div
-          className={
-            menuOpen
-              ? 'mobile-nav open'
-              : 'mobile-nav'
-          }
+        <button
+          className="side-logo"
+          onClick={() => scrollTo('about')}
         >
+          <span>R</span>
+        </button>
+
+        <div className="side-line" />
+
+        <div className="side-nav-links">
+
           {NAV.map((item) => (
             <button
               key={item.id}
               onClick={() => scrollTo(item.id)}
+              className={
+                active === item.id
+                  ? 'side-nav-item active'
+                  : 'side-nav-item'
+              }
             >
-              {item.label}
-              <ArrowUpRight size={15} />
+              <span>{item.code}</span>
+              <i />
+              <b>{item.label}</b>
             </button>
           ))}
+
         </div>
 
-        {/* =================================================
+        <div className="side-bottom">
+          <span>IN</span>
+          <span>01</span>
+        </div>
+
+      </aside>
+
+      {/* =====================================================
+          MOBILE TOP BAR
+      ===================================================== */}
+
+      <header className="mobile-header">
+
+        <button
+          className="mobile-logo"
+          onClick={() => scrollTo('about')}
+        >
+          R<span>.DEV</span>
+        </button>
+
+        <button
+          className="mobile-menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? (
+            <X size={22} />
+          ) : (
+            <Menu size={22} />
+          )}
+        </button>
+
+      </header>
+
+      <div
+        className={
+          menuOpen
+            ? 'mobile-navigation open'
+            : 'mobile-navigation'
+        }
+      >
+
+        {NAV.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollTo(item.id)}
+          >
+            <span>{item.code}</span>
+            {item.label}
+            <ArrowUpRight size={16} />
+          </button>
+        ))}
+
+      </div>
+
+      {/* =====================================================
+          MAIN CONTENT
+      ===================================================== */}
+
+      <main className="main">
+
+        {/* ===================================================
             HERO
-        ================================================= */}
+        =================================================== */}
 
-        <header id="about" className="hero-section">
+        <section
+          id="about"
+          className="hero"
+        >
 
-          <div className="hero-left">
+          <div className="hero-top-meta">
+            <span>
+              <Activity size={13} />
+              SYSTEM ONLINE
+            </span>
 
-            <Reveal>
-              <div className="status-pill">
-                <span className="status-light" />
-                AVAILABLE FOR OPPORTUNITIES
-              </div>
-            </Reveal>
+            <span>
+              BENGALURU / INDIA
+            </span>
 
-            <Reveal delay={100}>
-              <p className="hero-small">
-                SOFTWARE DEVELOPER
-                <span>/</span>
-                FRONTEND + FULL STACK
-              </p>
-            </Reveal>
-
-            <Reveal delay={180}>
-              <h1>
-                Rahul
-                <span>S.</span>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={250}>
-              <div className="hero-role">
-                <span>Building with</span>
-
-                <strong>
-                  {typed}
-                  <i />
-                </strong>
-              </div>
-            </Reveal>
-
-            <Reveal delay={320}>
-              <p className="hero-description">
-                Software Developer and Frontend Developer
-                building responsive, full-stack web
-                applications with React.js, Java,
-                Spring Boot and MySQL.
-              </p>
-            </Reveal>
-
-            <Reveal delay={380}>
-              <div className="hero-buttons">
-
-                <button
-                  className="primary-btn"
-                  onClick={() => scrollTo('projects')}
-                >
-                  Explore my work
-                  <ArrowUpRight size={17} />
-                </button>
-
-                <button
-                  className="ghost-btn"
-                  onClick={() => scrollTo('contact')}
-                >
-                  Let's connect
-                </button>
-
-              </div>
-            </Reveal>
-
-            <Reveal delay={430}>
-              <div className="hero-location">
-                <MapPin size={15} />
-                Bengaluru, India
-                <span />
-                <GraduationCap size={15} />
-                B.E. Computer Science · 2026
-              </div>
-            </Reveal>
-
+            <span>
+              2026
+            </span>
           </div>
 
-          {/* HERO PROFILE */}
+          <div className="hero-grid">
 
-          <Reveal
-            className="hero-right"
-            delay={200}
-          >
+            <div className="hero-copy">
 
-            <div className="profile-orbit orbit-one" />
-            <div className="profile-orbit orbit-two" />
+              <Reveal>
 
-            <div className="profile-card">
+                <div className="hero-index">
+                  00 — SOFTWARE DEVELOPER
+                </div>
 
-              <div className="profile-card-top">
+              </Reveal>
+
+              <Reveal delay={100}>
+
+                <h1>
+                  RAHUL
+                  <span>S.</span>
+                </h1>
+
+              </Reveal>
+
+              <Reveal delay={180}>
+
+                <div className="hero-subtitle">
+
+                  <span>BUILDING WITH</span>
+
+                  <strong>
+                    {typed}
+                    <i />
+                  </strong>
+
+                </div>
+
+              </Reveal>
+
+              <Reveal delay={250}>
+
+                <p className="hero-text">
+                  Software Developer and Frontend Developer
+                  building responsive, full-stack web
+                  applications with React.js, Java,
+                  Spring Boot and MySQL.
+                </p>
+
+              </Reveal>
+
+              <Reveal delay={320}>
+
+                <div className="hero-actions">
+
+                  <button
+                    onClick={() => scrollTo('projects')}
+                    className="hero-main-button"
+                  >
+                    EXPLORE WORK
+                    <ArrowUpRight size={18} />
+                  </button>
+
+                  <button
+                    onClick={() => scrollTo('contact')}
+                    className="hero-outline-button"
+                  >
+                    CONTACT
+                  </button>
+
+                </div>
+
+              </Reveal>
+
+            </div>
+
+            {/* =================================================
+                PROFILE SYSTEM
+            ================================================= */}
+
+            <Reveal
+              className="profile-system"
+              delay={180}
+            >
+
+              <div className="profile-corner corner-tl" />
+              <div className="profile-corner corner-tr" />
+              <div className="profile-corner corner-bl" />
+              <div className="profile-corner corner-br" />
+
+              <div className="profile-header">
+
                 <span>
-                  01 / PROFILE
+                  USER_PROFILE
                 </span>
 
-                <span className="profile-live">
+                <span className="profile-online">
                   ● ONLINE
                 </span>
+
               </div>
 
-              <div className="profile-image-area">
+              <div className="profile-photo">
 
-                <div className="image-backdrop" />
+                <div className="photo-grid" />
 
-                <div className="image-ring" />
+                <div className="photo-circle" />
 
                 <img
                   src="/rahul-profile.jpg"
                   alt="Rahul S"
                 />
 
-                <div className="image-tag">
-                  RAHUL S
-                  <span>DEVELOPER</span>
+                <div className="photo-code">
+                  RHL / 2026
                 </div>
 
               </div>
 
-              <div className="profile-info">
+              <div className="profile-details">
 
                 <div>
-                  <span>FOCUS</span>
+                  <span>ROLE</span>
                   <strong>
-                    Frontend / Full Stack
+                    FRONTEND / FULL STACK
                   </strong>
                 </div>
 
                 <div>
                   <span>CORE</span>
                   <strong>
-                    React · Java · Spring
+                    REACT · JAVA · SPRING
                   </strong>
                 </div>
 
               </div>
 
-              <div className="profile-bottom">
+              <div className="profile-footer">
+
                 <span>
-                  <span className="mini-dot" />
-                  OPEN TO WORK
+                  <i />
+                  AVAILABLE
                 </span>
 
                 <span>
-                  2026
+                  B.E. CSE
                 </span>
+
               </div>
 
-            </div>
+            </Reveal>
 
-          </Reveal>
+          </div>
 
           <button
             className="hero-scroll"
             onClick={() => scrollTo('skills')}
           >
-            <span>SCROLL TO EXPLORE</span>
+            <span>SCROLL / EXPLORE</span>
             <ChevronDown size={16} />
           </button>
 
-        </header>
+        </section>
 
-        {/* =================================================
-            ABOUT STRIP
-        ================================================= */}
+        {/* ===================================================
+            INTRO
+        =================================================== */}
 
-        <section className="intro-strip">
+        <section className="statement">
+
+          <div className="statement-number">
+            01
+          </div>
 
           <Reveal>
-            <span className="strip-number">
-              01
-            </span>
-          </Reveal>
 
-          <Reveal delay={80}>
             <p>
-              I build full-stack applications end to end —
-              from React interfaces and REST APIs to
-              Spring Boot services and MySQL databases.
+              I build full-stack applications
+              <em> end to end</em> — from React
+              interfaces and REST APIs to Spring Boot
+              services and MySQL databases.
             </p>
+
           </Reveal>
 
-          <Reveal delay={140}>
-            <div className="strip-symbol">
-              <Sparkles size={20} />
-            </div>
-          </Reveal>
+          <Command
+            className="statement-icon"
+            size={40}
+          />
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             SKILLS
-        ================================================= */}
+        =================================================== */}
 
         <section
           id="skills"
-          className="content-section"
+          className="section"
         >
 
-          <div className="section-container">
+          <div className="section-top">
 
-            <Reveal>
-              <SectionTitle
-                eyebrow="02 / TECHNOLOGY"
-                title={
-                  <>
-                    My technical
-                    <span> stack.</span>
-                  </>
-                }
-                text="A practical collection of technologies I use to design, build and deploy web applications."
-              />
-            </Reveal>
+            <span>
+              01 / TECHNOLOGY
+            </span>
 
-            <div className="skills-grid">
+            <span>
+              STACK_INDEX
+            </span>
 
-              {SKILLS.map((skill, index) => {
+          </div>
 
-                const Icon = skill.icon
+          <Reveal>
 
-                return (
-                  <Reveal
-                    key={skill.title}
-                    delay={index * 70}
-                    className="skill-card"
-                  >
+            <div className="section-title">
 
-                    <div className="skill-card-top">
-                      <span>
-                        {skill.number}
-                      </span>
+              <span>MY</span>
 
+              <h2>
+                TECHNICAL
+                <em> STACK</em>
+              </h2>
+
+              <p>
+                A practical collection of technologies
+                used to design, build and deploy
+                applications.
+              </p>
+
+            </div>
+
+          </Reveal>
+
+          <div className="terminal-stack">
+
+            <div className="terminal-header">
+
+              <div className="terminal-dots">
+                <i />
+                <i />
+                <i />
+              </div>
+
+              <span>
+                rahul@developer:~/skills
+              </span>
+
+              <span>
+                ACTIVE
+              </span>
+
+            </div>
+
+            {SKILLS.map((skill, index) => {
+
+              const Icon = skill.icon
+
+              return (
+                <Reveal
+                  key={skill.title}
+                  delay={index * 60}
+                >
+
+                  <div className="terminal-row">
+
+                    <div className="terminal-number">
+                      {skill.number}
+                    </div>
+
+                    <div className="terminal-icon">
                       <Icon size={22} />
                     </div>
 
-                    <h3>
-                      {skill.title}
-                    </h3>
+                    <div className="terminal-info">
 
-                    <p>
-                      {skill.description}
-                    </p>
+                      <h3>
+                        {skill.title}
+                      </h3>
 
-                    <div className="skill-pills">
+                      <p>
+                        {skill.description}
+                      </p>
+
+                    </div>
+
+                    <div className="terminal-tools">
+
                       {skill.items.map((item) => (
                         <span key={item}>
                           {item}
                         </span>
                       ))}
+
                     </div>
 
-                  </Reveal>
-                )
-              })}
+                  </div>
 
-            </div>
+                </Reveal>
+              )
+            })}
 
           </div>
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             EXPERIENCE
-        ================================================= */}
+        =================================================== */}
 
         <section
           id="experience"
-          className="content-section experience-section"
+          className="section experience-section"
         >
 
-          <div className="section-container">
+          <div className="section-top">
 
-            <Reveal>
-              <SectionTitle
-                eyebrow="03 / EXPERIENCE"
-                title={
-                  <>
-                    Where I've
-                    <span> worked.</span>
-                  </>
-                }
-                text="Hands-on development experience combined with continuous project building."
-              />
-            </Reveal>
+            <span>
+              02 / EXPERIENCE
+            </span>
 
-            <div className="experience-list">
+            <span>
+              TIMELINE
+            </span>
 
-              {EXPERIENCE.map((experience, index) => (
-                <Reveal
-                  key={experience.company}
-                  delay={index * 100}
-                  className="experience-card"
-                >
+          </div>
 
-                  <div className="experience-year">
+          <Reveal>
+
+            <div className="section-title">
+
+              <span>WHERE I'VE</span>
+
+              <h2>
+                WORKED<span>.</span>
+              </h2>
+
+              <p>
+                Hands-on development experience combined
+                with continuous project building.
+              </p>
+
+            </div>
+
+          </Reveal>
+
+          <div className="timeline">
+
+            {EXPERIENCE.map((experience, index) => (
+
+              <Reveal
+                key={experience.company}
+                delay={index * 100}
+              >
+
+                <article className="timeline-item">
+
+                  <div className="timeline-year">
                     {experience.year}
                   </div>
 
-                  <div className="experience-content">
+                  <div className="timeline-node">
+                    <span />
+                  </div>
 
-                    <span className="experience-label">
+                  <div className="timeline-content">
+
+                    <div className="timeline-company">
                       {experience.company}
-                    </span>
+                    </div>
 
                     <h3>
                       {experience.role}
                     </h3>
 
-                    <div className="experience-location">
+                    <div className="timeline-location">
                       <MapPin size={14} />
                       {experience.location}
                     </div>
@@ -983,37 +1092,45 @@ function App() {
                       {experience.description}
                     </p>
 
-                    <div className="experience-tags">
-                      {experience.skills.map((skill) => (
-                        <span key={skill}>
-                          {skill}
-                        </span>
-                      ))}
+                    <div className="timeline-skills">
+
+                      {experience.skills.map(
+                        (skill) => (
+                          <span key={skill}>
+                            {skill}
+                          </span>
+                        )
+                      )}
+
                     </div>
 
                   </div>
 
-                  <div className="experience-arrow">
-                    <Briefcase size={22} />
-                  </div>
+                  <Briefcase
+                    className="timeline-icon"
+                    size={24}
+                  />
 
-                </Reveal>
-              ))}
+                </article>
 
-            </div>
+              </Reveal>
 
-            <Reveal
-              delay={160}
-              className="education-card"
-            >
+            ))}
 
-              <div className="education-icon">
-                <GraduationCap size={25} />
+          </div>
+
+          <Reveal delay={160}>
+
+            <div className="education-system">
+
+              <div className="education-symbol">
+                <GraduationCap size={28} />
               </div>
 
               <div>
+
                 <span>
-                  EDUCATION
+                  EDUCATION / 2023 — 2026
                 </span>
 
                 <h3>
@@ -1025,148 +1142,202 @@ function App() {
                   · CGPA: 8.00 / 10
                 </p>
 
-                <small>
-                  2023 — 2026 · Bengaluru
-                </small>
               </div>
 
-            </Reveal>
+              <strong>
+                B.E. CSE
+              </strong>
 
-          </div>
+            </div>
+
+          </Reveal>
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             PROJECTS
-        ================================================= */}
+        =================================================== */}
 
         <section
           id="projects"
-          className="content-section projects-section"
+          className="section projects-section"
         >
 
-          <div className="section-container">
+          <div className="section-top">
 
-            <Reveal>
-              <SectionTitle
-                eyebrow="04 / SELECTED WORK"
-                title={
-                  <>
-                    Projects that
-                    <span> actually ship.</span>
-                  </>
-                }
-                text="Real applications demonstrating frontend, backend, database, authentication and deployment skills."
-              />
-            </Reveal>
+            <span>
+              03 / SELECTED WORK
+            </span>
 
-            <div className="projects-list">
+            <span>
+              LIVE_SYSTEMS
+            </span>
 
-              {PROJECTS.map((project, index) => (
-                <Reveal
-                  key={project.title}
-                  delay={index * 130}
-                >
-                  <ProjectCard
-                    project={project}
-                  />
-                </Reveal>
-              ))}
+          </div>
+
+          <Reveal>
+
+            <div className="section-title">
+
+              <span>PROJECTS THAT</span>
+
+              <h2>
+                ACTUALLY
+                <em> SHIP.</em>
+              </h2>
+
+              <p>
+                Real applications demonstrating frontend,
+                backend, database, authentication and
+                deployment skills.
+              </p>
 
             </div>
+
+          </Reveal>
+
+          <div className="projects-container">
+
+            {PROJECTS.map((project, index) => (
+
+              <Reveal
+                key={project.title}
+                delay={index * 120}
+              >
+
+                <ProjectPanel
+                  project={project}
+                />
+
+              </Reveal>
+
+            ))}
 
           </div>
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             CERTIFICATIONS
-        ================================================= */}
+        =================================================== */}
 
         <section
           id="certifications"
-          className="content-section"
+          className="section"
         >
 
-          <div className="section-container">
+          <div className="section-top">
 
-            <Reveal>
-              <SectionTitle
-                eyebrow="05 / CERTIFICATIONS"
-                title={
-                  <>
-                    Learning
-                    <span> never stops.</span>
-                  </>
-                }
-                text="Certifications supporting my Java and programming fundamentals."
-              />
-            </Reveal>
+            <span>
+              04 / CERTIFICATIONS
+            </span>
 
-            <div className="cert-grid">
+            <span>
+              KNOWLEDGE
+            </span>
 
-              {CERTIFICATIONS.map((cert, index) => (
-                <Reveal
-                  key={cert.title}
-                  delay={index * 100}
-                  className="cert-card"
-                >
+          </div>
 
-                  <div className="cert-icon">
-                    <Award size={22} />
-                  </div>
+          <Reveal>
 
-                  <div>
-                    <span>
-                      {cert.issuer}
-                    </span>
+            <div className="section-title">
 
-                    <h3>
-                      {cert.title}
-                    </h3>
-                  </div>
+              <span>LEARNING</span>
 
-                  <ArrowUpRight
-                    size={20}
-                    className="cert-arrow"
-                  />
-
-                </Reveal>
-              ))}
+              <h2>
+                NEVER
+                <em> STOPS.</em>
+              </h2>
 
             </div>
+
+          </Reveal>
+
+          <div className="cert-system">
+
+            {CERTIFICATIONS.map(
+              (cert, index) => (
+
+                <Reveal
+                  key={cert.title}
+                  delay={index * 90}
+                >
+
+                  <article className="cert-row">
+
+                    <span className="cert-number">
+                      0{index + 1}
+                    </span>
+
+                    <Award size={23} />
+
+                    <div>
+
+                      <span>
+                        {cert.issuer}
+                      </span>
+
+                      <h3>
+                        {cert.title}
+                      </h3>
+
+                    </div>
+
+                    <ArrowUpRight
+                      size={20}
+                    />
+
+                  </article>
+
+                </Reveal>
+
+              )
+            )}
 
           </div>
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             APPROACH
-        ================================================= */}
+        =================================================== */}
 
         <section
           id="approach"
-          className="content-section approach-section"
+          className="section approach-section"
         >
 
-          <div className="section-container">
+          <div className="section-top">
 
-            <Reveal>
-              <SectionTitle
-                eyebrow="06 / APPROACH"
-                title={
-                  <>
-                    How I
-                    <span> build.</span>
-                  </>
-                }
-                text="My development approach is simple: understand the problem, build the right structure and keep improving the result."
-              />
-            </Reveal>
+            <span>
+              05 / APPROACH
+            </span>
 
-            <div className="approach-grid">
+            <span>
+              HOW_I_BUILD
+            </span>
 
-              {APPROACH.map((item, index) => {
+          </div>
+
+          <Reveal>
+
+            <div className="section-title">
+
+              <span>MY DEVELOPMENT</span>
+
+              <h2>
+                BUILDING
+                <em> LOGIC.</em>
+              </h2>
+
+            </div>
+
+          </Reveal>
+
+          <div className="approach-system">
+
+            {APPROACH.map(
+              (item, index) => {
 
                 const Icon = item.icon
 
@@ -1174,55 +1345,67 @@ function App() {
                   <Reveal
                     key={item.title}
                     delay={index * 90}
-                    className="approach-card"
                   >
 
-                    <span className="approach-number">
-                      0{index + 1}
-                    </span>
+                    <article className="approach-row">
 
-                    <Icon size={25} />
+                      <div className="approach-index">
+                        0{index + 1}
+                      </div>
 
-                    <h3>
-                      {item.title}
-                    </h3>
+                      <Icon size={28} />
 
-                    <p>
-                      {item.text}
-                    </p>
+                      <div>
+
+                        <h3>
+                          {item.title}
+                        </h3>
+
+                        <p>
+                          {item.text}
+                        </p>
+
+                      </div>
+
+                      <ArrowUpRight
+                        size={19}
+                      />
+
+                    </article>
 
                   </Reveal>
                 )
-              })}
-
-            </div>
+              }
+            )}
 
           </div>
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             CONTACT
-        ================================================= */}
+        =================================================== */}
 
         <section
           id="contact"
           className="contact-section"
         >
 
-          <div className="contact-container">
+          <div className="contact-command">
 
             <Reveal>
 
-              <div className="contact-eyebrow">
-                <span />
-                07 / CONTACT
+              <div className="contact-code">
+                06 / CONTACT
+              </div>
+
+              <div className="contact-prompt">
+                <span>&gt;</span>
+                LET'S BUILD SOMETHING
               </div>
 
               <h2>
-                Let's build
-                <br />
-                something <em>great.</em>
+                GREAT<span>.</span>
               </h2>
 
               <p>
@@ -1233,54 +1416,55 @@ function App() {
 
             </Reveal>
 
-            <div className="contact-grid">
+            <div className="contact-list">
 
-              {CONTACTS.map((contact, index) => {
+              {CONTACTS.map(
+                (contact, index) => {
 
-                const Icon = contact.icon
+                  const Icon = contact.icon
 
-                return (
-                  <Reveal
-                    key={contact.label}
-                    delay={index * 70}
-                  >
-
-                    <a
-                      href={contact.href}
-                      target={
-                        contact.label === 'Email' ||
-                        contact.label === 'Phone'
-                          ? undefined
-                          : '_blank'
-                      }
-                      rel="noreferrer"
-                      className="contact-card"
+                  return (
+                    <Reveal
+                      key={contact.label}
+                      delay={index * 70}
                     >
 
-                      <div className="contact-icon">
+                      <a
+                        href={contact.href}
+                        target={
+                          contact.label === 'EMAIL' ||
+                          contact.label === 'PHONE'
+                            ? undefined
+                            : '_blank'
+                        }
+                        rel="noreferrer"
+                        className="contact-row"
+                      >
+
                         <Icon size={20} />
-                      </div>
 
-                      <div>
-                        <span>
-                          {contact.label}
-                        </span>
+                        <div>
 
-                        <strong>
-                          {contact.value}
-                        </strong>
-                      </div>
+                          <span>
+                            {contact.label}
+                          </span>
 
-                      <ArrowUpRight
-                        size={18}
-                        className="contact-arrow"
-                      />
+                          <strong>
+                            {contact.value}
+                          </strong>
 
-                    </a>
+                        </div>
 
-                  </Reveal>
-                )
-              })}
+                        <ArrowUpRight
+                          size={19}
+                        />
+
+                      </a>
+
+                    </Reveal>
+                  )
+                }
+              )}
 
             </div>
 
@@ -1288,14 +1472,14 @@ function App() {
 
         </section>
 
-        {/* =================================================
+        {/* ===================================================
             FOOTER
-        ================================================= */}
+        =================================================== */}
 
         <footer className="footer">
 
           <span>
-            © 2026 Rahul S.
+            RAHUL S. / 2026
           </span>
 
           <span>
@@ -1308,7 +1492,8 @@ function App() {
 
         </footer>
 
-      </div>
+      </main>
+
     </div>
   )
 }
