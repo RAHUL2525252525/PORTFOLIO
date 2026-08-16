@@ -1,860 +1,1588 @@
-import React, { useEffect, useState } from "react";
-import "./index.css";
+import { useEffect, useRef, useState } from 'react'
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Phone,
+  ArrowUpRight,
+  MapPin,
+  GraduationCap,
+  Briefcase,
+  Award,
+  CheckCircle2,
+  Code2,
+  Layers,
+  ShieldCheck,
+  Database,
+  Wrench,
+  ExternalLink,
+  Terminal,
+  ChevronDown,
+} from 'lucide-react'
+import './index.css'
 
-const BACKEND_URL = "https://banksphere-backend-b96m.onrender.com";
-const FRONTEND_URL = "https://banksphere-frontend.vercel.app";
+const STACK_ROTATE = [
+  'React.js',
+  'Spring Boot',
+  'MySQL',
+  'REST APIs',
+  'Spring Security',
+]
 
-/*
-  Online cinematic background.
-  No video file is required in your project.
-*/
-const VIDEO_URL =
-  "https://cdn.coverr.co/videos/coverr-futuristic-city-1573/1080p.mp4";
+const NAV = [
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Work' },
+  { id: 'certifications', label: 'Certifications' },
+  { id: 'approach', label: 'Approach' },
+  { id: 'contact', label: 'Contact' },
+]
 
-const skills = {
-  Languages: ["Java", "JavaScript (ES6+)", "SQL", "HTML5", "CSS3"],
-  Frameworks: [
-    "Spring Boot",
-    "Spring MVC",
-    "Spring Security",
-    "Spring Data JPA",
-    "Hibernate",
-    "React.js",
-    "Axios",
-  ],
-  "APIs & Security": [
-    "REST API Design",
-    "JWT Authentication",
-    "Role-Based Access Control (RBAC)",
-    "OAuth concepts",
-  ],
-  Databases: [
-    "MySQL",
-    "SQL",
-    "Database Design",
-    "Normalization",
-    "Relational Data Modeling",
-  ],
-  Architecture: [
-    "Layered Architecture",
-    "MVC",
-    "Exception Handling",
-    "DTO Pattern",
-  ],
-  "Cloud & DevOps": [
-    "Docker",
-    "Docker Compose",
-    "Maven",
-    "Git",
-    "GitHub",
-    "CI/CD basics",
-    "Vercel",
-    "Render",
-    "Aiven",
-  ],
-  "Testing & Practices": [
-    "JUnit 5",
-    "Mockito",
-    "Postman",
-    "Agile / Scrum",
-    "Code Reviews",
-    "Unit Testing",
-  ],
-  "Core CS": [
-    "Data Structures & Algorithms",
-    "Object-Oriented Programming (OOP)",
-    "DBMS",
-    "Software Engineering Principles",
-  ],
-};
+const SKILL_GROUPS = [
+  {
+    cat: 'Languages',
+    items: ['Java', 'JavaScript (ES6)', 'SQL'],
+  },
+  {
+    cat: 'Frontend',
+    items: [
+      'React.js',
+      'HTML5',
+      'CSS3',
+      'JSX',
+      'Responsive Design',
+      'Flexbox',
+      'CSS Grid',
+    ],
+  },
+  {
+    cat: 'Backend',
+    items: [
+      'Java',
+      'Spring Boot',
+      'Spring MVC',
+      'REST APIs',
+      'Spring Data JPA',
+      'Hibernate',
+    ],
+  },
+  {
+    cat: 'Database',
+    items: [
+      'MySQL',
+      'SQL',
+      'Database Design',
+      'CRUD Operations',
+    ],
+  },
+  {
+    cat: 'Security',
+    items: [
+      'Spring Security',
+      'JWT Authentication',
+      'Role-Based Access Control',
+    ],
+  },
+  {
+    cat: 'Testing',
+    items: ['JUnit 5', 'Mockito'],
+  },
+  {
+    cat: 'Core CS',
+    items: [
+      'OOP',
+      'Data Structures & Algorithms',
+      'DBMS',
+      'Agile Development',
+    ],
+  },
+  {
+    cat: 'Tools & Deployment',
+    items: [
+      'Git',
+      'GitHub',
+      'VS Code',
+      'IntelliJ IDEA',
+      'Vite',
+      'Docker',
+      'Docker Compose',
+      'AWS EC2',
+      'Vercel',
+      'Render',
+    ],
+  },
+]
 
-function App() {
-  const [active, setActive] = useState("home");
-  const [menuOpen, setMenuOpen] = useState(false);
+const APPROACH = [
+  {
+    icon: Code2,
+    title: 'Frontend Presentation',
+    subtitle: 'Client',
+    items: [
+      'React.js',
+      'JSX',
+      'HTML5',
+      'CSS3',
+      'Flexbox / Grid',
+      'Vite',
+    ],
+    blurb:
+      'Responsive interfaces and reusable component structure, built for consistent behaviour across breakpoints.',
+  },
+  {
+    icon: Layers,
+    title: 'Backend Logic & APIs',
+    subtitle: 'Service Layer',
+    items: [
+      'Java',
+      'Spring Boot',
+      'Spring MVC',
+      'REST APIs',
+      'Spring Data JPA',
+      'Hibernate',
+    ],
+    blurb:
+      'Controller → Service → Repository layering, exposing REST endpoints consumed directly by the frontend.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Auth & Access Control',
+    subtitle: 'Security',
+    items: [
+      'Spring Security',
+      'JWT Authentication',
+      'Role-Based Access Control',
+    ],
+    blurb:
+      'Stateless authentication and route-level authorization for protected user and admin operations.',
+  },
+  {
+    icon: Database,
+    title: 'Data Persistence',
+    subtitle: 'Database',
+    items: [
+      'MySQL',
+      'Database Design',
+      'CRUD Operations',
+    ],
+    blurb:
+      'Relational schema design across users, roles, accounts, products, and orders.',
+  },
+  {
+    icon: Wrench,
+    title: 'Build & Deployment',
+    subtitle: 'Infrastructure',
+    items: [
+      'Git',
+      'GitHub',
+      'Docker',
+      'Docker Compose',
+      'AWS EC2',
+      'Vercel',
+      'Render',
+    ],
+    blurb:
+      'Version-controlled workflows, containerized environments, and cloud-hosted delivery.',
+  },
+]
+
+const EXPERIENCE = [
+  {
+    role: 'Web Development Intern',
+    company: 'MR Tech Lab',
+    time: '2026',
+    place: 'Bengaluru',
+    points: [
+      'Gained hands-on exposure to full-stack development using HTML, CSS, JavaScript, React.js, Java, Spring Boot, REST APIs, and MySQL.',
+      'Developed responsive frontend interfaces and integrated REST APIs with backend services for dynamic data handling.',
+      'Practiced database integration, authentication, CRUD operations, Git-based development, and application deployment.',
+    ],
+  },
+]
+
+const EDUCATION = [
+  {
+    school: 'Dr. ACS College of Engineering',
+    degree: 'B.E. in Computer Science and Engineering',
+    time: '2023 – 2026 · Bengaluru',
+  },
+]
+
+const PROJECTS = [
+  {
+    id: '01',
+    title: 'ShopSphere',
+    tag: 'Full-Stack E-Commerce Application',
+    tech: [
+      'React.js',
+      'Java',
+      'Spring Boot',
+      'Spring Data JPA',
+      'REST APIs',
+      'MySQL',
+      'Git',
+    ],
+    highlights: [
+      'Built an e-commerce platform supporting product browsing, search, cart, wishlist, checkout, and order management.',
+      'Developed role-based admin functionality for managing products, inventory, users, and orders.',
+      'Integrated Spring Boot REST APIs with React.js and MySQL for end-to-end data management.',
+      'Implemented authentication and secure order-management workflows.',
+    ],
+    note:
+      'Backend is deployed on Render. Start/wake the backend first if it has gone to sleep, then open the frontend.',
+    links: [
+      {
+        label: 'Live site',
+        href: 'https://shopsphere-8m8f.vercel.app/',
+      },
+      {
+        label: 'Backend API',
+        href: 'https://shopsphere-backend-5umn.onrender.com',
+      },
+    ],
+    featured: true,
+  },
+
+  {
+    id: '02',
+    title: 'Online Banking System',
+    tag: 'Full-Stack Banking Application',
+    tech: [
+      'React.js',
+      'Java',
+      'Spring Boot',
+      'Spring Security',
+      'JWT',
+      'Spring Data JPA',
+      'MySQL',
+      'Docker',
+    ],
+    highlights: [
+      'Developed a secure full-stack banking application with registration, login, account management, and transaction workflows.',
+      'Built REST APIs using Spring Boot and Spring Data JPA with a layered Controller, Service, and Repository architecture.',
+      'Implemented JWT authentication and role-based access control using Spring Security for protected user and admin operations.',
+      'Designed MySQL database entities and relationships for users, roles, accounts, and transactions.',
+      'Containerized the application environment using Docker and Docker Compose.',
+    ],
+    note:
+      'Render free-tier note: wake the BankSphere backend before opening the frontend if the backend has been sleeping.',
+    links: [
+      {
+        label: 'Live frontend',
+        href: 'https://banksphere-frontend.vercel.app',
+      },
+      {
+        label: 'Wake backend',
+        href: 'https://banksphere-backend-b96m.onrender.com',
+      },
+    ],
+    featured: true,
+  },
+]
+
+const CERTS = [
+  {
+    name: 'Introduction to Java',
+    by: 'Infosys Springboard',
+  },
+  {
+    name: 'Java Programming Fundamentals',
+    by: 'Infosys Springboard',
+  },
+]
+
+const CONTACTS = [
+  {
+    icon: Mail,
+    label: 'Email',
+    value: 'Srinivasrahul838@gmail.com',
+    href: 'mailto:Srinivasrahul838@gmail.com',
+  },
+  {
+    icon: Phone,
+    label: 'Phone',
+    value: '+91 73376 34886',
+    href: 'tel:+917337634886',
+  },
+  {
+    icon: Linkedin,
+    label: 'LinkedIn',
+    value: 'linkedin.com/in/rahul-s',
+    href: 'https://www.linkedin.com/in/rahul-s-6460b1238',
+  },
+  {
+    icon: Github,
+    label: 'GitHub',
+    value: 'github.com/RAHUL2525252525',
+    href: 'https://github.com/RAHUL2525252525',
+  },
+]
+
+function useTypewriter(
+  words,
+  typeSpeed = 65,
+  deleteSpeed = 32,
+  pause = 1400
+) {
+  const [text, setText] = useState('')
+  const [wordIndex, setWordIndex] = useState(0)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
+    const current = words[wordIndex % words.length]
+    let timer
+
+    if (!deleting && text === current) {
+      timer = setTimeout(() => setDeleting(true), pause)
+    } else if (deleting && text === '') {
+      setDeleting(false)
+      setWordIndex((i) => (i + 1) % words.length)
+    } else {
+      timer = setTimeout(() => {
+        setText((value) =>
+          deleting
+            ? current.slice(0, value.length - 1)
+            : current.slice(0, value.length + 1)
+        )
+      }, deleting ? deleteSpeed : typeSpeed)
+    }
+
+    return () => clearTimeout(timer)
+  }, [
+    text,
+    deleting,
+    wordIndex,
+    words,
+    typeSpeed,
+    deleteSpeed,
+    pause,
+  ])
+
+  return text
+}
+
+function useReveal() {
+  const ref = useRef(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const element = ref.current
+
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.12 }
+    )
+
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [])
+
+  return [ref, inView]
+}
+
+function Reveal({
+  children,
+  className = '',
+  delay = 0,
+  as: Tag = 'div',
+}) {
+  const [ref, inView] = useReveal()
+
+  return (
+    <Tag
+      ref={ref}
+      className={`reveal ${inView ? 'in' : ''} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </Tag>
+  )
+}
+
+function useActiveSection() {
+  const [active, setActive] = useState('about')
+
+  useEffect(() => {
+    const sections = NAV.map((item) =>
+      document.getElementById(item.id)
+    ).filter(Boolean)
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActive(entry.target.id);
+            setActive(entry.target.id)
           }
-        });
+        })
       },
       {
-        rootMargin: "-35% 0px -55% 0px",
+        rootMargin: '-35% 0px -55% 0px',
       }
-    );
+    )
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((section) => observer.observe(section))
 
-    return () => observer.disconnect();
-  }, []);
+    return () => observer.disconnect()
+  }, [])
 
-  const goTo = (id) => {
-    setMenuOpen(false);
+  return active
+}
 
-    const element = document.getElementById(id);
+function useScrolledPast(threshold = 30) {
+  const [past, setPast] = useState(false)
 
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+  useEffect(() => {
+    const handleScroll = () => {
+      setPast(window.scrollY > threshold)
     }
-  };
+
+    handleScroll()
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [threshold])
+
+  return past
+}
+
+function SectionLabel({ index, label }) {
+  return (
+    <div className="section-label">
+      <span className="section-index">{index}</span>
+      <span className="section-name">{label}</span>
+      <span className="section-rule" />
+    </div>
+  )
+}
+
+function ProfileCard() {
+  const rows = [
+    {
+      icon: MapPin,
+      k: 'Location',
+      v: 'Bengaluru, India',
+    },
+    {
+      icon: Briefcase,
+      k: 'Focus',
+      v: 'Java · Spring Boot · React',
+    },
+    {
+      icon: GraduationCap,
+      k: 'Education',
+      v: 'B.E. Computer Science, 2026',
+    },
+  ]
 
   return (
-    <div className="site">
+    <div className="profile-console">
+      <div className="console-top">
+        <div className="window-dots">
+          <span />
+          <span />
+          <span />
+        </div>
 
-      {/* =====================================================
-          VIDEO BACKGROUND
-      ====================================================== */}
+        <span className="console-title">
+          rahul.dev / profile
+        </span>
 
+        <span className="console-status">
+          ONLINE
+        </span>
+      </div>
+
+      <div className="console-screen">
+        <div className="console-grid" />
+
+        <div className="profile-photo-wrap">
+          <img
+            src="/profile.png"
+            alt="Rahul S"
+            className="profile-photo"
+          />
+          <span className="photo-ring" />
+        </div>
+
+        <div className="profile-terminal">
+          <span className="terminal-comment">
+            // candidate_profile
+          </span>
+
+          <p className="console-command">
+            $ whoami
+          </p>
+
+          <h3>
+            Rahul S<span>.</span>
+          </h3>
+
+          <p className="console-role">
+            Full Stack Developer
+          </p>
+
+          <div className="console-status-large">
+            <span className="status-dot" />
+            Available for opportunities
+          </div>
+
+          <div className="console-divider" />
+
+          <div className="console-info">
+            {rows.map((row) => {
+              const Icon = row.icon
+
+              return (
+                <div
+                  className="console-info-row"
+                  key={row.k}
+                >
+                  <div className="console-icon">
+                    <Icon size={15} />
+                  </div>
+
+                  <div>
+                    <span>{row.k}</span>
+                    <strong>{row.v}</strong>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="console-stack">
+            <span>STACK</span>
+
+            <div>
+              {STACK_ROTATE.slice(0, 4).map((item) => (
+                <b key={item}>{item}</b>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="console-corner">
+          2026
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function App() {
+  const typed = useTypewriter(STACK_ROTATE)
+  const active = useActiveSection()
+  const scrolled = useScrolledPast()
+
+  const scrollTo = (id) => {
+    document
+      .getElementById(id)
+      ?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+  }
+
+  return (
+    <div className="app">
+
+      {/* FULL SCREEN VIDEO BACKGROUND */}
       <video
-        className="bg-video"
+        className="site-video"
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
+        aria-hidden="true"
       >
-        <source src={VIDEO_URL} type="video/mp4" />
+        <source
+          src="https://videos.pexels.com/video-files/2759477/2759477-sd_426_240_30fps.mp4"
+          type="video/mp4"
+        />
       </video>
 
-      <div className="video-dark"></div>
-      <div className="video-color"></div>
-      <div className="scanlines"></div>
+      <div className="video-tint" />
+      <div className="scanlines" />
+      <div className="paper-grid" />
+      <div className="noise" />
 
-      {/* =====================================================
-          NAVIGATION
-      ====================================================== */}
+      {/* NAVIGATION */}
 
-      <header className="topbar">
+      <nav
+        className={`site-nav ${
+          scrolled ? 'scrolled' : ''
+        }`}
+      >
+        <div className="nav-inner">
 
-        <button
-          className="brand"
-          onClick={() => goTo("home")}
-          aria-label="Go home"
-        >
-          <span className="brand-symbol">
-            R
-          </span>
+          <button
+            className="logo-btn"
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              })
+            }
+          >
+            <span className="logo-mark">
+              R
+            </span>
 
-          <span className="brand-text">
-            RAHUL<span>S</span>
-          </span>
-        </button>
+            <span className="logo-text">
+              RAHUL<span>.DEV</span>
+            </span>
+          </button>
 
-        <nav className={menuOpen ? "navigation open" : "navigation"}>
+          <div className="tab-bar">
+            {NAV.map((item) => (
+              <button
+                key={item.id}
+                className={`tab ${
+                  active === item.id ? 'active' : ''
+                }`}
+                onClick={() => scrollTo(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
 
-          {[
-            ["home", "HOME"],
-            ["about", "ABOUT"],
-            ["skills", "SKILLS"],
-            ["experience", "EXPERIENCE"],
-            ["projects", "PROJECTS"],
-            ["contact", "CONTACT"],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              className={active === id ? "nav-active" : ""}
-              onClick={() => goTo(id)}
-            >
-              <span>0{id === "home" ? "1" : id === "about" ? "2" : id === "skills" ? "3" : id === "experience" ? "4" : id === "projects" ? "5" : "6"}</span>
-              {label}
-            </button>
-          ))}
+          <a
+            className="nav-contact"
+            href="mailto:Srinivasrahul838@gmail.com"
+          >
+            Let's talk
+            <ArrowUpRight size={15} />
+          </a>
+        </div>
+      </nav>
 
-        </nav>
+      {/* HERO */}
 
-        <div className="top-status">
-          <i></i>
-          OPEN TO WORK
+      <header id="hero" className="hero">
+
+        <div className="hero-orbit orbit-a" />
+        <div className="hero-orbit orbit-b" />
+
+        <div className="hero-inner">
+
+          <div className="hero-copy">
+
+            <Reveal>
+              <div className="hero-index">
+                <span>00</span>
+                <i />
+                PORTFOLIO / 2026
+              </div>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <p className="hero-kicker">
+                <span className="kicker-line" />
+                JAVA FULL STACK DEVELOPER
+              </p>
+            </Reveal>
+
+            <Reveal delay={130}>
+              <h1 className="hero-name">
+                Rahul
+                <em>S.</em>
+              </h1>
+            </Reveal>
+
+            <Reveal delay={180}>
+              <div className="hero-role-row">
+                <span>
+                  Full Stack Developer
+                </span>
+
+                <span className="role-arrow">
+                  ↗
+                </span>
+              </div>
+            </Reveal>
+
+            <Reveal delay={220}>
+              <div className="hero-stack">
+                <span>
+                  Currently building with
+                </span>
+
+                <strong>
+                  {typed}
+                </strong>
+
+                <span className="type-cursor" />
+              </div>
+            </Reveal>
+
+            <Reveal delay={260}>
+              <p className="hero-desc">
+                Full stack developer skilled in Java,
+                Spring Boot, React.js, REST APIs, and
+                MySQL — with hands-on experience building
+                secure, responsive web applications.
+                Strong in backend API development,
+                frontend integration, database management,
+                and authentication.
+              </p>
+            </Reveal>
+
+            <Reveal delay={310}>
+              <div className="hero-cta">
+
+                <button
+                  className="button-black"
+                  onClick={() => scrollTo('projects')}
+                >
+                  View selected work
+                  <ArrowUpRight size={17} />
+                </button>
+
+                <button
+                  className="button-outline"
+                  onClick={() => scrollTo('contact')}
+                >
+                  Contact me
+                </button>
+
+              </div>
+            </Reveal>
+
+            <Reveal delay={350}>
+              <div className="hero-meta">
+
+                <span>
+                  <GraduationCap size={15} />
+                  B.E. Computer Science
+                </span>
+
+                <span>
+                  <MapPin size={15} />
+                  Bengaluru, India
+                </span>
+
+              </div>
+            </Reveal>
+
+          </div>
+
+          <Reveal
+            delay={160}
+            className="hero-profile"
+          >
+            <ProfileCard />
+          </Reveal>
+
         </div>
 
         <button
-          className="mobile-menu"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation"
+          className="scroll-indicator"
+          onClick={() => scrollTo('about')}
+          aria-label="Scroll to about"
         >
-          <span></span>
-          <span></span>
+          <span>SCROLL</span>
+          <ChevronDown size={15} />
         </button>
 
       </header>
 
-      {/* =====================================================
-          MAIN
-      ====================================================== */}
-
       <main>
 
-        {/* ===================================================
-            HERO
-        ==================================================== */}
-
-        <section id="home" className="hero">
-
-          <div className="hero-grid"></div>
-
-          <div className="hero-content">
-
-            <div className="hero-tag">
-              <span className="pulse"></span>
-              SOFTWARE ENGINEER
-            </div>
-
-            <h1>
-              RAHUL
-              <span className="outlined">S.</span>
-            </h1>
-
-            <div className="hero-subtitle">
-              JAVA <span>/</span> SPRING BOOT <span>/</span> REACT
-            </div>
-
-            <p className="hero-summary">
-              Software Engineer with hands-on experience building full-stack
-              web applications using Java, Spring Boot, and React.js.
-            </p>
-
-            <div className="hero-buttons">
-
-              <button
-                className="neon-button"
-                onClick={() => goTo("projects")}
-              >
-                <span>EXPLORE WORK</span>
-                <b>↗</b>
-              </button>
-
-              <button
-                className="ghost-button"
-                onClick={() => goTo("contact")}
-              >
-                CONTACT ME
-              </button>
-
-            </div>
-
-          </div>
-
-          {/* PROFILE */}
-
-          <div className="hero-profile">
-
-            <div className="profile-label label-top">
-              <span>IDENTITY</span>
-              <b>RAHUL S</b>
-            </div>
-
-            <div className="profile-orb">
-
-              <div className="orb-ring ring-a"></div>
-              <div className="orb-ring ring-b"></div>
-              <div className="orb-ring ring-c"></div>
-
-              <div className="profile-photo-wrap">
-
-                <img
-                  src="/profile.jpg"
-                  alt="Rahul S"
-                  className="profile-photo"
-                />
-
-                <div className="photo-glow"></div>
-
-              </div>
-
-              <div className="orb-cross cross-one"></div>
-              <div className="orb-cross cross-two"></div>
-
-            </div>
-
-            <div className="profile-label label-bottom">
-              <span>LOCATION</span>
-              <b>BENGALURU / INDIA</b>
-            </div>
-
-          </div>
-
-          <div className="hero-corner">
-            <span>SCROLL</span>
-            <div></div>
-            <span>↓</span>
-          </div>
-
-          <div className="hero-index">
-            01 <span>/</span> 06
-          </div>
-
-        </section>
-
-        {/* ===================================================
-            ABOUT
-        ==================================================== */}
-
-        <section id="about" className="section about">
-
-          <div className="section-head">
-            <span>02</span>
-            <p>ABOUT</p>
-            <div></div>
-          </div>
-
-          <div className="about-layout">
-
-            <div className="section-title">
-
-              <small>PROFILE</small>
-
-              <h2>
-                BUILDING
-                <br />
-                <span>WITH PURPOSE.</span>
-              </h2>
-
-            </div>
-
-            <div className="about-copy">
-
-              <p className="big-copy">
-                Software Engineer with hands-on experience building full-stack
-                web applications using Java, Spring Boot, and React.js.
-              </p>
-
-              <p>
-                Skilled in REST API design, JWT-based authentication and
-                authorization, role-based access control (RBAC), relational
-                database design (MySQL), and Agile software delivery.
-              </p>
-
-              <p>
-                Experienced with Docker containerization, unit testing
-                (JUnit, Mockito), and version control (Git). Strong foundation
-                in data structures, algorithms, and object-oriented design.
-              </p>
-
-              <div className="about-counters">
-
-                <div>
-                  <strong>8.00</strong>
-                  <span>CGPA / 10</span>
-                </div>
-
-                <div>
-                  <strong>2026</strong>
-                  <span>GRADUATION</span>
-                </div>
-
-                <div>
-                  <strong>01</strong>
-                  <span>INTERNSHIP</span>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* ===================================================
-            SKILLS
-        ==================================================== */}
-
-        <section id="skills" className="section skills">
-
-          <div className="section-head">
-            <span>03</span>
-            <p>TECH STACK</p>
-            <div></div>
-          </div>
-
-          <div className="skills-intro">
-
-            <div>
-              <small>TECHNICAL SKILLS</small>
-
-              <h2>
-                THE
-                <br />
-                <span>STACK.</span>
-              </h2>
-            </div>
-
-            <p>
-              Technologies, frameworks, architecture patterns and development
-              practices from my professional toolkit.
-            </p>
-
-          </div>
-
-          <div className="skills-matrix">
-
-            {Object.entries(skills).map(([category, items], index) => (
-              <div className="skill-card" key={category}>
-
-                <div className="skill-number">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-
-                <h3>{category}</h3>
-
-                <div className="skill-list">
-
-                  {items.map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
-
-                </div>
-
-              </div>
-            ))}
-
-          </div>
-
-        </section>
-
-        {/* ===================================================
-            EXPERIENCE
-        ==================================================== */}
-
-        <section id="experience" className="section experience">
-
-          <div className="section-head">
-            <span>04</span>
-            <p>EXPERIENCE</p>
-            <div></div>
-          </div>
-
-          <div className="experience-layout">
-
-            <div className="experience-date">
-              <span>01 / 2026</span>
-              <div></div>
-              <span>05 / 2026</span>
-            </div>
-
-            <div className="experience-main">
-
-              <div className="experience-heading">
-
-                <div>
-                  <small>WEB DEVELOPMENT INTERN</small>
-
-                  <h2>
-                    MR TECH
-                    <br />
-                    <span>LAB</span>
-                  </h2>
-                </div>
-
-                <span className="location">
-                  BENGALURU
+        {/* ABOUT */}
+
+        <section
+          id="about"
+          className="section about-section"
+        >
+          <div className="section-container">
+
+            <Reveal>
+              <SectionLabel
+                index="01"
+                label="About"
+              />
+            </Reveal>
+
+            <div className="about-layout">
+
+              <Reveal delay={80}>
+                <h2 className="massive-title">
+                  Frontend-focused,
                   <br />
-                  KARNATAKA
-                </span>
+                  <span>
+                    shipped full stack.
+                  </span>
+                </h2>
+              </Reveal>
 
-              </div>
+              <Reveal delay={140}>
+                <div className="about-copy">
 
-              <div className="experience-line"></div>
+                  <span className="copy-number">
+                    / 01
+                  </span>
 
-              <div className="experience-points">
-
-                <div>
-                  <span>01</span>
                   <p>
-                    Built responsive, cross-browser user interfaces using
-                    HTML, CSS, and JavaScript, translating design requirements
-                    into functional web pages.
+                    I build web applications end to end —
+                    <strong> React</strong> interfaces wired
+                    to <strong>Spring Boot</strong> services,
+                    with data modelled in <strong>MySQL</strong>
+                    and protected by
+                    <strong> Spring Security</strong> and JWT.
+                    I care about how a request actually moves
+                    through a system, and I write it in clean,
+                    testable layers rather than one large tangle.
                   </p>
-                </div>
 
-                <div>
-                  <span>02</span>
-                  <p>
-                    Integrated Firebase backend services, including Google
-                    Authentication, to implement secure user sign-in and
-                    session management.
-                  </p>
                 </div>
+              </Reveal>
 
-                <div>
-                  <span>03</span>
-                  <p>
-                    Collaborated with cross-functional teammates in an Agile,
-                    Git-based workflow to implement, test, and ship UI features
-                    on schedule.
-                  </p>
-                </div>
+            </div>
 
-              </div>
+            <div className="fact-grid">
+
+              {[
+                {
+                  label: 'Core Stack',
+                  value: 'Java · Spring Boot · React',
+                  number: 'A',
+                },
+                {
+                  label: 'Projects Shipped',
+                  value: '2 full-stack applications',
+                  number: 'B',
+                },
+                {
+                  label: 'Based In',
+                  value: 'Bengaluru, India',
+                  number: 'C',
+                },
+              ].map((fact, index) => (
+
+                <Reveal
+                  key={fact.label}
+                  delay={index * 70}
+                  className="fact-card"
+                >
+                  <span className="fact-letter">
+                    {fact.number}
+                  </span>
+
+                  <span className="fact-label">
+                    {fact.label}
+                  </span>
+
+                  <strong>
+                    {fact.value}
+                  </strong>
+
+                  <ArrowUpRight
+                    className="fact-arrow"
+                    size={18}
+                  />
+                </Reveal>
+
+              ))}
 
             </div>
 
           </div>
-
         </section>
 
-        {/* ===================================================
-            PROJECTS
-        ==================================================== */}
+        {/* SKILLS */}
 
-        <section id="projects" className="section projects">
+        <section
+          id="skills"
+          className="section"
+        >
+          <div className="section-container">
 
-          <div className="section-head">
-            <span>05</span>
-            <p>SELECTED PROJECTS</p>
-            <div></div>
+            <Reveal>
+              <SectionLabel
+                index="02"
+                label="Skills"
+              />
+            </Reveal>
+
+            <Reveal delay={80}>
+              <div className="section-heading-row">
+
+                <h2 className="massive-title">
+                  Technical
+                  <span> inventory.</span>
+                </h2>
+
+                <p>
+                  A practical stack focused on building,
+                  securing and deploying full-stack
+                  applications.
+                </p>
+
+              </div>
+            </Reveal>
+
+            <div className="skills-table">
+
+              {SKILL_GROUPS.map(
+                (group, index) => (
+
+                  <Reveal
+                    key={group.cat}
+                    delay={index * 35}
+                    className="skill-row"
+                  >
+
+                    <span className="skill-number">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <h3>
+                      {group.cat}
+                    </h3>
+
+                    <div className="skill-list">
+                      {group.items.map(
+                        (skill) => (
+                          <span key={skill}>
+                            {skill}
+                          </span>
+                        )
+                      )}
+                    </div>
+
+                    <ArrowUpRight
+                      className="skill-arrow"
+                      size={17}
+                    />
+
+                  </Reveal>
+
+                )
+              )}
+
+            </div>
+
           </div>
-
-          <div className="projects-intro">
-
-            <h2>
-              SELECTED
-              <br />
-              <span>WORK.</span>
-            </h2>
-
-            <p>
-              Full-stack applications developed using Java, Spring Boot,
-              React.js, MySQL, REST APIs, Spring Security and Docker.
-            </p>
-
-          </div>
-
-          {/* SHOPSPHERE */}
-
-          <article className="project project-purple">
-
-            <div className="project-glow"></div>
-
-            <div className="project-number">
-              PROJECT
-              <strong>01</strong>
-            </div>
-
-            <div className="project-content">
-
-              <div className="project-meta">
-                05 / 2026 — 06 / 2026
-              </div>
-
-              <h3>
-                Shop
-                <span>Sphere</span>
-              </h3>
-
-              <p className="project-type">
-                FULL STACK E-COMMERCE WEB APPLICATION
-              </p>
-
-              <p className="project-description">
-                Architected a full-stack e-commerce platform spanning 6 core
-                modules: browsing, search, cart, wishlist, checkout, and
-                order management using layered controller/service/repository
-                design.
-              </p>
-
-              <div className="project-details">
-
-                <div>
-                  <span>ROLE BASED ACCESS</span>
-                  <p>ADMIN / CUSTOMER</p>
-                </div>
-
-                <div>
-                  <span>REST APIS</span>
-                  <p>15+ ENDPOINTS</p>
-                </div>
-
-                <div>
-                  <span>UI</span>
-                  <p>RESPONSIVE REACT</p>
-                </div>
-
-              </div>
-
-              <div className="project-tech-row">
-                <span>JAVA 17</span>
-                <span>SPRING BOOT 3</span>
-                <span>REACT.JS</span>
-                <span>SPRING DATA JPA</span>
-                <span>MYSQL</span>
-                <span>REST APIs</span>
-              </div>
-
-            </div>
-
-          </article>
-
-          {/* BANKSPHERE */}
-
-          <article className="project project-cyan">
-
-            <div className="project-glow"></div>
-
-            <div className="project-number">
-              PROJECT
-              <strong>02</strong>
-            </div>
-
-            <div className="project-content">
-
-              <div className="project-meta">
-                06 / 2026 — 07 / 2026
-              </div>
-
-              <h3>
-                Online
-                <span>Banking</span>
-              </h3>
-
-              <p className="project-type">
-                FULL STACK BANKING APPLICATION
-              </p>
-
-              <p className="project-description">
-                Developed a secure banking backend supporting user
-                registration, login, account management, and transaction
-                workflows.
-              </p>
-
-              <div className="project-details">
-
-                <div>
-                  <span>AUTHENTICATION</span>
-                  <p>STATELESS JWT</p>
-                </div>
-
-                <div>
-                  <span>ACCESS CONTROL</span>
-                  <p>3 PERMISSION LEVELS</p>
-                </div>
-
-                <div>
-                  <span>DATABASE</span>
-                  <p>8+ ENTITIES</p>
-                </div>
-
-              </div>
-
-              <div className="project-tech-row">
-                <span>JAVA 17</span>
-                <span>SPRING BOOT 3</span>
-                <span>SPRING SECURITY</span>
-                <span>REACT.JS</span>
-                <span>MYSQL</span>
-                <span>DOCKER</span>
-              </div>
-
-              <div className="project-links">
-
-                <a
-                  href={FRONTEND_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>LIVE FRONTEND</span>
-                  ↗
-                </a>
-
-                <a
-                  href={BACKEND_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>BACKEND</span>
-                  ↗
-                </a>
-
-              </div>
-
-              <div className="render-note">
-
-                <div className="render-icon">!</div>
-
-                <div>
-                  <strong>RENDER BACKEND</strong>
-
-                  <p>
-                    The backend is deployed on Render and may sleep after
-                    inactivity. Start/wake the backend first and wait a few
-                    seconds before using the frontend.
-                  </p>
-                </div>
-
-              </div>
-
-            </div>
-
-          </article>
-
         </section>
 
-        {/* ===================================================
-            EDUCATION
-        ==================================================== */}
+        {/* EXPERIENCE */}
 
-        <section className="section education">
+        <section
+          id="experience"
+          className="section experience-section"
+        >
+          <div className="section-container">
 
-          <div className="section-head">
-            <span>06</span>
-            <p>EDUCATION & CERTIFICATION</p>
-            <div></div>
-          </div>
+            <Reveal>
+              <SectionLabel
+                index="03"
+                label="Experience"
+              />
+            </Reveal>
 
-          <div className="education-layout">
-
-            <div className="education-card">
-
-              <small>2023 — 2026</small>
-
-              <h2>
-                B.E.
-                <br />
-                <span>COMPUTER SCIENCE</span>
+            <Reveal delay={80}>
+              <h2 className="massive-title">
+                Experience &
+                <span> education.</span>
               </h2>
+            </Reveal>
 
-              <p>
-                Dr. ACS College of Engineering
-                <br />
-                Bengaluru, Karnataka
-              </p>
+            <div className="experience-layout">
 
-              <div className="cgpa">
-                <strong>8.00</strong>
-                <span>/ 10 CGPA</span>
+              <div className="timeline-rail">
+                <span>2026</span>
+
+                <div className="rail-line">
+                  <i />
+                </div>
+
+                <span>NOW</span>
+              </div>
+
+              <div className="experience-content">
+
+                {EXPERIENCE.map(
+                  (experience) => (
+
+                    <Reveal
+                      key={experience.company}
+                      className="experience-block"
+                    >
+
+                      <div className="experience-top">
+
+                        <div>
+
+                          <span className="eyebrow">
+                            EXPERIENCE
+                          </span>
+
+                          <h3>
+                            {experience.role}
+                          </h3>
+
+                          <p>
+                            {experience.company} ·{' '}
+                            {experience.place}
+                          </p>
+
+                        </div>
+
+                        <span className="year-tag">
+                          {experience.time}
+                        </span>
+
+                      </div>
+
+                      <ul>
+
+                        {experience.points.map(
+                          (point) => (
+
+                            <li key={point}>
+
+                              <CheckCircle2 size={15} />
+
+                              <span>
+                                {point}
+                              </span>
+
+                            </li>
+
+                          )
+                        )}
+
+                      </ul>
+
+                    </Reveal>
+
+                  )
+                )}
+
+                <Reveal
+                  delay={100}
+                  className="education-block"
+                >
+
+                  <div className="education-icon">
+                    <GraduationCap size={22} />
+                  </div>
+
+                  <div>
+
+                    <span className="eyebrow">
+                      EDUCATION
+                    </span>
+
+                    <h3>
+                      {EDUCATION[0].school}
+                    </h3>
+
+                    <p>
+                      {EDUCATION[0].degree}
+                    </p>
+
+                    <small>
+                      {EDUCATION[0].time}
+                    </small>
+
+                  </div>
+
+                </Reveal>
+
               </div>
 
             </div>
+
+          </div>
+        </section>
+
+        {/* PROJECTS */}
+
+        <section
+          id="projects"
+          className="section projects-section"
+        >
+          <div className="section-container">
+
+            <Reveal>
+              <SectionLabel
+                index="04"
+                label="Selected Work"
+              />
+            </Reveal>
+
+            <Reveal delay={80}>
+              <div className="section-heading-row">
+
+                <h2 className="massive-title">
+                  Projects that
+                  <span> ship.</span>
+                </h2>
+
+                <p>
+                  Full-stack applications demonstrating
+                  frontend, backend, security and database
+                  integration.
+                </p>
+
+              </div>
+            </Reveal>
+
+            <div className="projects">
+
+              {PROJECTS.map(
+                (project, index) => (
+
+                  <Reveal
+                    key={project.id}
+                    delay={index * 100}
+                    className={`project ${
+                      index === 0
+                        ? 'project-main'
+                        : ''
+                    }`}
+                  >
+
+                    <div className="project-number">
+                      {project.id}
+                    </div>
+
+                    <div className="project-header">
+
+                      <div>
+
+                        <span className="project-tag">
+                          {project.tag}
+                        </span>
+
+                        <h3>
+                          {project.title}
+                        </h3>
+
+                      </div>
+
+                      {project.featured && (
+                        <span className="featured">
+                          FEATURED
+                        </span>
+                      )}
+
+                    </div>
+
+                    <div className="project-body">
+
+                      <div className="project-description">
+
+                        <span className="project-label">
+                          WHAT I BUILT
+                        </span>
+
+                        <ul>
+
+                          {project.highlights.map(
+                            (highlight) => (
+
+                              <li key={highlight}>
+                                <span />
+                                {highlight}
+                              </li>
+
+                            )
+                          )}
+
+                        </ul>
+
+                      </div>
+
+                      <div className="project-side">
+
+                        <span className="project-label">
+                          STACK
+                        </span>
+
+                        <div className="project-tech">
+
+                          {project.tech.map(
+                            (tech) => (
+                              <span key={tech}>
+                                {tech}
+                              </span>
+                            )
+                          )}
+
+                        </div>
+
+                        {project.note && (
+                          <p className="project-note">
+                            {project.note}
+                          </p>
+                        )}
+
+                        {project.links && (
+                          <div className="project-links">
+
+                            {project.links.map(
+                              (link) => (
+
+                                <a
+                                  key={link.label}
+                                  href={link.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {link.label}
+                                  <ExternalLink size={14} />
+                                </a>
+
+                              )
+                            )}
+
+                          </div>
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </Reveal>
+
+                )
+              )}
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* CERTIFICATIONS */}
+
+        <section
+          id="certifications"
+          className="section"
+        >
+          <div className="section-container">
+
+            <Reveal>
+              <SectionLabel
+                index="05"
+                label="Certifications"
+              />
+            </Reveal>
+
+            <Reveal delay={80}>
+              <h2 className="massive-title">
+                Certifications
+                <span> & learning.</span>
+              </h2>
+            </Reveal>
 
             <div className="certifications">
 
-              <small>CERTIFICATIONS</small>
+              {CERTS.map(
+                (certification, index) => (
 
-              <div className="certificate">
-                <span>01</span>
-                <p>
-                  Java Programming Fundamentals
-                  <small>Infosys Springboard</small>
-                </p>
-                <b>↗</b>
-              </div>
+                  <Reveal
+                    key={certification.name}
+                    delay={index * 80}
+                    className="certification"
+                  >
 
-              <div className="certificate">
-                <span>02</span>
-                <p>
-                  Introduction to Java
-                  <small>Infosys Springboard</small>
-                </p>
-                <b>↗</b>
-              </div>
+                    <span className="cert-index">
+                      0{index + 1}
+                    </span>
+
+                    <div className="cert-icon">
+                      <Award size={20} />
+                    </div>
+
+                    <div>
+
+                      <h3>
+                        {certification.name}
+                      </h3>
+
+                      <p>
+                        {certification.by}
+                      </p>
+
+                    </div>
+
+                    <CheckCircle2
+                      className="cert-check"
+                      size={19}
+                    />
+
+                  </Reveal>
+
+                )
+              )}
 
             </div>
 
           </div>
-
         </section>
 
-        {/* ===================================================
-            CONTACT
-        ==================================================== */}
+        {/* APPROACH */}
 
-        <section id="contact" className="section contact">
+        <section
+          id="approach"
+          className="section architecture-section"
+        >
+          <div className="section-container">
 
-          <div className="contact-grid">
+            <Reveal>
+              <SectionLabel
+                index="06"
+                label="Approach"
+              />
+            </Reveal>
 
-            <div>
+            <Reveal delay={80}>
+              <div className="section-heading-row">
 
-              <small>GET IN TOUCH</small>
+                <h2 className="massive-title">
+                  How I structure
+                  <span> an application.</span>
+                </h2>
 
-              <h2>
-                LET'S
-                <br />
-                <span>CONNECT.</span>
-              </h2>
+                <p>
+                  Client to service to schema — the layers
+                  a request passes through, and what runs
+                  each one.
+                </p>
+
+              </div>
+            </Reveal>
+
+            <div className="architecture">
+
+              {APPROACH.map(
+                (layer, index) => {
+
+                  const Icon = layer.icon
+
+                  return (
+                    <Reveal
+                      key={layer.title}
+                      delay={index * 70}
+                      className="architecture-node"
+                    >
+
+                      <div className="node-top">
+                        <span>
+                          0{index + 1}
+                        </span>
+
+                        <Icon size={20} />
+                      </div>
+
+                      <span className="node-subtitle">
+                        {layer.subtitle}
+                      </span>
+
+                      <h3>
+                        {layer.title}
+                      </h3>
+
+                      <p>
+                        {layer.blurb}
+                      </p>
+
+                      <div className="node-items">
+
+                        {layer.items.map(
+                          (item) => (
+                            <span key={item}>
+                              {item}
+                            </span>
+                          )
+                        )}
+
+                      </div>
+
+                      {index <
+                        APPROACH.length - 1 && (
+                        <div className="architecture-arrow">
+                          →
+                        </div>
+                      )}
+
+                    </Reveal>
+                  )
+                }
+              )}
 
             </div>
 
-            <div className="contact-info">
+          </div>
+        </section>
 
-              <p>
-                Interested in opportunities where I can contribute as a
-                Software Engineer or Frontend Developer.
-              </p>
+        {/* CONTACT */}
 
-              <a
-                className="email"
-                href="mailto:Srinivasrahul838@gmail.com"
-              >
-                Srinivasrahul838@gmail.com
-                <span>↗</span>
-              </a>
+        <section
+          id="contact"
+          className="section contact-section"
+        >
+          <div className="section-container">
 
-              <a
-                className="phone"
-                href="tel:7337634886"
-              >
-                +91 7337634886
-              </a>
+            <Reveal>
+              <SectionLabel
+                index="07"
+                label="Contact"
+              />
+            </Reveal>
 
-              <div className="contact-social">
+            <div className="contact-terminal">
 
-                <a
-                  href="https://www.linkedin.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LINKEDIN ↗
-                </a>
+              <div className="terminal-header">
 
-                <a
-                  href="https://github.com/RAHUL2525252525"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GITHUB ↗
-                </a>
+                <div className="window-dots">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+
+                <span>
+                  rahul@developer:~
+                </span>
+
+                <Terminal size={15} />
+
+              </div>
+
+              <div className="terminal-content">
+
+                <Reveal>
+
+                  <span className="terminal-line">
+                    $ ./start-conversation
+                  </span>
+
+                  <h2>
+                    Let's build
+                    <span> something.</span>
+                  </h2>
+
+                  <p>
+                    Open to Full Stack, Java/Spring Boot,
+                    and React roles. Based in Bengaluru,
+                    India.
+                  </p>
+
+                  <a
+                    className="terminal-button"
+                    href="mailto:Srinivasrahul838@gmail.com"
+                  >
+                    Start a conversation
+                    <ArrowUpRight size={18} />
+                  </a>
+
+                </Reveal>
 
               </div>
 
             </div>
 
-          </div>
+            <div className="contact-grid">
 
+              {CONTACTS.map(
+                (contact, index) => {
+
+                  const Icon = contact.icon
+
+                  return (
+                    <Reveal
+                      key={contact.label}
+                      delay={index * 60}
+                      className="contact-item"
+                    >
+
+                      <a
+                        href={contact.href}
+                        target={
+                          contact.href.startsWith(
+                            'http'
+                          )
+                            ? '_blank'
+                            : undefined
+                        }
+                        rel="noopener noreferrer"
+                      >
+
+                        <span className="contact-icon">
+                          <Icon size={17} />
+                        </span>
+
+                        <span>
+
+                          <small>
+                            {contact.label}
+                          </small>
+
+                          <strong>
+                            {contact.value}
+                          </strong>
+
+                        </span>
+
+                        <ArrowUpRight
+                          className="contact-arrow"
+                          size={16}
+                        />
+
+                      </a>
+
+                    </Reveal>
+                  )
+                }
+              )}
+
+            </div>
+
+          </div>
         </section>
 
       </main>
 
-      {/* =====================================================
-          FOOTER
-      ====================================================== */}
+      <footer className="site-footer">
 
-      <footer>
+        <div className="footer-inner">
 
-        <div>
-          RAHUL S. / SOFTWARE ENGINEER
-        </div>
+          <span>
+            © 2026 Rahul S
+          </span>
 
-        <div className="footer-center">
-          <span></span>
-          BENGALURU / INDIA
-        </div>
+          <span>
+            Full Stack Developer · Bengaluru, India
+          </span>
 
-        <div>
-          © 2026
+          <span className="footer-code">
+            BUILD / 2026
+          </span>
+
         </div>
 
       </footer>
 
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
