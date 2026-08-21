@@ -1,15 +1,14 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import "./index.css";
 
-// New background clip — dark, drifting particle field (Pexels,
-// free license, no attribution required). Different mood from
-// the original neon-overlay clip: quieter, more premium, reads
-// as depth rather than a flat color wash.
+// New background clip — a bright, fluid colour-gradient loop
+// (Pexels, free license, no attribution required). Sits at
+// very low opacity behind the paper-white canvas: it adds a
+// faint drift of colour rather than the dark cinematic wash
+// the previous cyberpunk theme used, which fits the bold
+// creative-agency direction instead of fighting it.
 const VIDEO_URL =
-  "https://videos.pexels.com/video-files/29919008/12841733_1920_1080_30fps.mp4";
+  "https://videos.pexels.com/video-files/8333185/8333185-hd_1080_1080_30fps.mp4";
 
 const NAV_ITEMS = [
   ["home", "HOME"],
@@ -76,12 +75,7 @@ const SKILL_GROUPS = [
   {
     number: "04",
     title: "DATABASE",
-    skills: [
-      "MySQL",
-      "SQL",
-      "Database Design",
-      "CRUD Operations",
-    ],
+    skills: ["MySQL", "SQL", "Database Design", "CRUD Operations"],
   },
   {
     number: "05",
@@ -210,23 +204,99 @@ function Arrow() {
   return <span className="arrow-symbol">↗</span>;
 }
 
+// Hand-painted stroke shapes — the theme's signature element.
+// Four flat, organic paint-brush strokes in the accent palette,
+// layered behind the portrait like a creative-studio splash.
+function PaintStrokes() {
+  return (
+    <div className="paint-strokes" aria-hidden="true">
+      <svg
+        className="stroke-pink"
+        viewBox="0 0 200 260"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M40 10C10 40 5 90 30 130C55 170 20 200 45 235C70 270 150 255 175 210C200 165 160 150 170 105C180 60 150 20 110 10C80 3 60 -5 40 10Z"
+          fill="#ff2e8a"
+        />
+      </svg>
+      <svg
+        className="stroke-orange"
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M20 60C5 100 30 140 70 150C110 160 100 195 145 190C190 185 195 130 175 95C155 60 175 30 145 12C115 -6 70 5 45 25C25 40 30 35 20 60Z"
+          fill="#ff6a2b"
+        />
+      </svg>
+      <svg
+        className="stroke-violet"
+        viewBox="0 0 220 220"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M30 40C0 80 10 130 45 155C80 180 60 210 105 215C150 220 190 180 195 135C200 90 165 75 165 40C165 5 120 -10 85 5C55 18 55 5 30 40Z"
+          fill="#7b5cfa"
+        />
+      </svg>
+      <svg
+        className="stroke-lime"
+        viewBox="0 0 160 140"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M15 40C0 65 15 95 45 100C75 105 65 130 100 128C135 126 150 95 135 65C120 35 140 20 115 8C90 -4 55 3 35 18C20 29 25 25 15 40Z"
+          fill="#c6ff3d"
+        />
+      </svg>
+    </div>
+  );
+}
+
+// Rotating "available for freelance" stamp — a circular badge
+// with curved type, the recognisable mark of the bold agency
+// direction. Pure CSS spin, respects reduced-motion via CSS.
+function FreelanceBadge() {
+  return (
+    <div className="portrait-tag" aria-hidden="true">
+      <svg viewBox="0 0 120 120" width="118" height="118">
+        <defs>
+          <path
+            id="badge-circle"
+            d="M 60,60 m -44,0 a 44,44 0 1,1 88,0 a 44,44 0 1,1 -88,0"
+          />
+        </defs>
+        <text fill="#c6ff3d" fontSize="9.3" letterSpacing="2.2">
+          <textPath href="#badge-circle" startOffset="0%">
+            AVAILABLE FOR FREELANCE · OPEN TO ROLES ·
+          </textPath>
+        </text>
+      </svg>
+      <small>R.S</small>
+    </div>
+  );
+}
+
 function App() {
   const typed = useTypewriter(STACK);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("home");
 
   useEffect(() => {
-    const sections = NAV_ITEMS.map(([id]) =>
-      document.getElementById(id)
-    ).filter(Boolean);
+    const sections = NAV_ITEMS.map(([id]) => document.getElementById(id)).filter(
+      Boolean
+    );
 
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) => b.intersectionRatio - a.intersectionRatio
-          )[0];
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
         if (visible) {
           setActive(visible.target.id);
@@ -250,7 +320,6 @@ function App() {
 
   return (
     <div className="site">
-
       {/* VIDEO BACKGROUND */}
 
       <video
@@ -267,26 +336,15 @@ function App() {
 
       <div className="video-darkness" />
       <div className="video-color-wash" />
-      <div className="scanlines" />
-      <div className="noise-layer" />
-
-      <div className="orb orb-one" />
-      <div className="orb orb-two" />
-      <div className="orb orb-three" />
 
       {/* NAVIGATION */}
 
       <header className="topbar">
-
-        <button
-          className="brand"
-          onClick={() => navigate("home")}
-          aria-label="Go home"
-        >
+        <button className="brand" onClick={() => navigate("home")} aria-label="Go home">
           <span className="brand-symbol">R</span>
 
           <span className="brand-copy">
-            <strong>RAHUL</strong>
+            <strong>rahul.s</strong>
             <small>JAVA FULL STACK DEVELOPER</small>
           </span>
         </button>
@@ -295,11 +353,7 @@ function App() {
           {NAV_ITEMS.map(([id, label], index) => (
             <button
               key={id}
-              className={
-                active === id
-                  ? "nav-item active"
-                  : "nav-item"
-              }
+              className={active === id ? "nav-item active" : "nav-item"}
               onClick={() => navigate(id)}
             >
               <span>0{index}</span>
@@ -308,10 +362,7 @@ function App() {
           ))}
         </nav>
 
-        <a
-          className="top-contact"
-          href="mailto:Srinivasrahul838@gmail.com"
-        >
+        <a className="top-contact" href="mailto:Srinivasrahul838@gmail.com">
           <span>LET'S TALK</span>
           <Arrow />
         </a>
@@ -325,17 +376,13 @@ function App() {
           <span />
           <span />
         </button>
-
       </header>
 
       {/* MOBILE NAV */}
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         {NAV_ITEMS.map(([id, label], index) => (
-          <button
-            key={id}
-            onClick={() => navigate(id)}
-          >
+          <button key={id} onClick={() => navigate(id)}>
             <small>0{index}</small>
             {label}
             <Arrow />
@@ -344,15 +391,11 @@ function App() {
       </div>
 
       <main>
-
         {/* HERO */}
 
         <section id="home" className="hero">
-
           <div className="hero-grid">
-
             <div className="hero-left">
-
               <div className="live-line">
                 <span className="live-dot" />
                 AVAILABLE FOR OPPORTUNITIES
@@ -372,7 +415,7 @@ function App() {
 
               <h1>
                 Rahul
-                <span>S.</span>
+                <span> Sreenivas.</span>
               </h1>
 
               <div className="type-line">
@@ -382,33 +425,23 @@ function App() {
               </div>
 
               <p className="hero-description">
-                Full Stack Developer skilled in React.js, Java,
-                and Spring Boot with strong hands-on experience
-                building secure, end-to-end web applications
-                from UI to database.
+                Full Stack Developer skilled in React.js, Java, and Spring Boot
+                with strong hands-on experience building secure, end-to-end web
+                applications from UI to database.
               </p>
 
               <div className="hero-actions">
-
-                <button
-                  className="neon-button primary"
-                  onClick={() => navigate("projects")}
-                >
-                  EXPLORE MY WORK
+                <button className="neon-button primary" onClick={() => navigate("projects")}>
+                  VIEW MY WORK
                   <Arrow />
                 </button>
 
-                <button
-                  className="neon-button secondary"
-                  onClick={() => navigate("contact")}
-                >
-                  CONTACT ME
+                <button className="neon-button secondary" onClick={() => navigate("contact")}>
+                  LET'S TALK
                 </button>
-
               </div>
 
               <div className="hero-facts">
-
                 <div>
                   <small>LOCATION</small>
                   <strong>Bengaluru, India</strong>
@@ -423,61 +456,39 @@ function App() {
                   <small>CGPA</small>
                   <strong>8.00</strong>
                 </div>
-
               </div>
-
             </div>
 
             {/* PROFILE */}
 
             <div className="hero-visual">
-
               <div className="visual-label label-top">
                 <span>PROFILE_NODE</span>
                 <b>ONLINE</b>
               </div>
 
               <div className="orbit-system">
-
-                <div className="orbit orbit-a" />
-                <div className="orbit orbit-b" />
-                <div className="orbit orbit-c" />
-
-                <div className="orbit-dot dot-one" />
-                <div className="orbit-dot dot-two" />
-                <div className="orbit-dot dot-three" />
+                <PaintStrokes />
 
                 <div className="portrait-frame">
-                  <div className="portrait-glow" />
-
-                  <img
-                    src="/rahul-profile.jpg"
-                    alt="Rahul S"
-                    className="profile-image"
-                  />
+                  <img src="/rahul-profile.jpg" alt="Rahul S" className="profile-image" />
                 </div>
 
-                <div className="portrait-tag">
-                  <span>R.S</span>
-                  <small>2026</small>
-                </div>
+                <FreelanceBadge />
 
+                <div className="code-float">
+                  <span>// candidate_profile</span>
+                  <strong>&gt; whoami</strong>
+                  <p>Java Full Stack Developer</p>
+                  <small>JAVA · REACT · SPRING · MYSQL</small>
+                </div>
               </div>
 
               <div className="visual-label label-bottom">
                 <span>STATUS</span>
                 <b>BUILDING / DEPLOYING</b>
               </div>
-
-              <div className="code-float">
-                <span>// candidate_profile</span>
-                <strong>&gt; whoami</strong>
-                <p>Java Full Stack Developer</p>
-                <small>JAVA · REACT · SPRING · MYSQL</small>
-              </div>
-
             </div>
-
           </div>
 
           <div className="hero-bottom">
@@ -489,13 +500,11 @@ function App() {
 
             <span>00 / 06</span>
           </div>
-
         </section>
 
         {/* ABOUT */}
 
         <section id="about" className="section about">
-
           <div className="section-heading">
             <span className="section-number">01</span>
 
@@ -510,31 +519,25 @@ function App() {
           </div>
 
           <div className="about-content">
-
             <div className="about-statement">
-
-              <span className="quote-mark">“</span>
+              <span className="quote-mark">"</span>
 
               <p>
-                Full Stack Developer skilled in React.js, Java,
-                and Spring Boot with strong hands-on experience
-                building secure, end-to-end web applications
-                from UI to database.
+                Full Stack Developer skilled in React.js, Java, and Spring Boot
+                with strong hands-on experience building secure, end-to-end web
+                applications from UI to database.
               </p>
 
               <span className="about-line" />
 
               <p className="about-secondary">
-                Proven ability to independently architect and
-                deliver full-stack projects — REST APIs, JWT
-                authentication, RBAC, and MySQL database design
-                — in Agile environments.
+                Proven ability to independently architect and deliver full-stack
+                projects — REST APIs, JWT authentication, RBAC, and MySQL
+                database design — in Agile environments.
               </p>
-
             </div>
 
             <div className="about-terminal">
-
               <div className="terminal-top">
                 <span />
                 <span />
@@ -543,81 +546,60 @@ function App() {
               </div>
 
               <div className="terminal-body">
-
                 <p>
                   <b>$</b> cat profile.json
                 </p>
 
                 <div className="terminal-json">
-
                   <span>{"{"}</span>
-
                   <span>
                     <i>"role"</i>: "Java Full Stack Developer",
                   </span>
-
                   <span>
                     <i>"focus"</i>: "Production Web Apps",
                   </span>
-
                   <span>
                     <i>"frontend"</i>: "React.js",
                   </span>
-
                   <span>
                     <i>"backend"</i>: "Java + Spring Boot",
                   </span>
-
                   <span>
                     <i>"database"</i>: "MySQL",
                   </span>
-
                   <span>
                     <i>"security"</i>: "JWT + RBAC",
                   </span>
-
                   <span>{"}"}</span>
-
                 </div>
 
                 <p className="terminal-success">
                   <b>✓</b> profile loaded successfully
                 </p>
-
               </div>
-
             </div>
-
           </div>
-
         </section>
 
         {/* SKILLS */}
 
         <section id="skills" className="section skills">
-
           <div className="section-heading">
-
             <span className="section-number">02</span>
 
             <div>
               <small>TECH STACK</small>
-
               <h2>
                 Tools I
                 <br />
                 build with.
               </h2>
             </div>
-
           </div>
 
           <div className="skills-layout">
-
             <div className="skill-intro">
-
               <div className="radar">
-
                 <div className="radar-ring ring-one" />
                 <div className="radar-ring ring-two" />
                 <div className="radar-ring ring-three" />
@@ -625,88 +607,58 @@ function App() {
                 <div className="radar-cross horizontal" />
                 <div className="radar-cross vertical" />
 
-                <div className="radar-center">
-                  RS
-                </div>
+                <div className="radar-center">RS</div>
 
                 {STACK.map((item, index) => (
-                  <span
-                    key={item}
-                    className={`radar-node node-${index + 1}`}
-                  >
+                  <span key={item} className={`radar-node node-${index + 1}`}>
                     {item}
                   </span>
                 ))}
-
               </div>
 
               <p>
-                A practical stack focused on building responsive
-                frontends, secure REST APIs, relational databases
-                and deployable full-stack systems.
+                A practical stack focused on building responsive frontends,
+                secure REST APIs, relational databases and deployable
+                full-stack systems.
               </p>
-
             </div>
 
             <div className="skill-groups">
-
               {SKILL_GROUPS.map((group) => (
-
-                <article
-                  className="skill-group"
-                  key={group.number}
-                >
-
+                <article className="skill-group" key={group.number}>
                   <div className="skill-group-top">
-
                     <span>{group.number}</span>
-
                     <h3>{group.title}</h3>
-
                   </div>
 
                   <div className="skill-list">
-
                     {group.skills.map((skill) => (
-                      <span key={skill}>
-                        {skill}
-                      </span>
+                      <span key={skill}>{skill}</span>
                     ))}
-
                   </div>
-
                 </article>
-
               ))}
-
             </div>
-
           </div>
-
         </section>
 
         {/* EXPERIENCE */}
 
         <section id="experience" className="section experience">
-
           <div className="section-heading">
-
             <span className="section-number">03</span>
 
             <div>
               <small>CAREER</small>
-
               <h2>
                 Experience
                 <br />
                 that ships.
               </h2>
             </div>
-
           </div>
 
           <div className="experience-wrapper">
-
             <div className="experience-year">
               <span>2026</span>
               <i />
@@ -714,223 +666,120 @@ function App() {
             </div>
 
             <article className="experience-main">
-
               <div className="experience-header">
-
                 <div>
-
-                  <small>
-                    WEB DEVELOPMENT INTERN
-                  </small>
-
-                  <h3>
-                    {EXPERIENCE.company}
-                  </h3>
-
-                  <p>
-                    {EXPERIENCE.location}
-                  </p>
-
+                  <small>WEB DEVELOPMENT INTERN</small>
+                  <h3>{EXPERIENCE.company}</h3>
+                  <p>{EXPERIENCE.location}</p>
                 </div>
 
-                <span className="experience-period">
-                  {EXPERIENCE.period}
-                </span>
-
+                <span className="experience-period">{EXPERIENCE.period}</span>
               </div>
 
               <div className="experience-points">
-
-                {EXPERIENCE.points.map(
-                  (point, index) => (
-
-                    <div key={point}>
-
-                      <span>
-                        0{index + 1}
-                      </span>
-
-                      <p>{point}</p>
-
-                    </div>
-
-                  )
-                )}
-
+                {EXPERIENCE.points.map((point, index) => (
+                  <div key={point}>
+                    <span>0{index + 1}</span>
+                    <p>{point}</p>
+                  </div>
+                ))}
               </div>
 
               <div className="experience-stack">
-
                 <span>REACT.JS</span>
                 <span>JAVA</span>
                 <span>SPRING BOOT</span>
                 <span>MYSQL</span>
                 <span>REST API</span>
                 <span>GIT</span>
-
               </div>
-
             </article>
-
           </div>
 
           <div className="education-strip">
-
-            <div className="education-number">
-              EDU
-            </div>
+            <div className="education-number">EDU</div>
 
             <div>
-
-              <small>
-                B.E. COMPUTER SCIENCE AND ENGINEERING
-              </small>
-
-              <h3>
-                Dr. ACS College of Engineering
-              </h3>
-
-              <p>
-                Bengaluru · 2023 — 2026
-              </p>
-
+              <small>B.E. COMPUTER SCIENCE AND ENGINEERING</small>
+              <h3>Dr. ACS College of Engineering</h3>
+              <p>Bengaluru · 2023 — 2026</p>
             </div>
 
             <strong>8.00</strong>
-
           </div>
-
         </section>
 
         {/* PROJECTS */}
 
         <section id="projects" className="section projects">
-
           <div className="section-heading project-heading">
-
             <span className="section-number">04</span>
 
             <div>
-
               <small>SELECTED WORK</small>
-
               <h2>
                 Things I've
                 <br />
                 actually shipped.
               </h2>
-
             </div>
 
             <p>
-              End-to-end applications demonstrating frontend,
-              backend, authentication, database design, testing
-              and deployment.
+              End-to-end applications demonstrating frontend, backend,
+              authentication, database design, testing and deployment.
             </p>
-
           </div>
 
           <div className="projects-list">
-
             {PROJECTS.map((project) => (
-
-              <article
-                className="project-showcase"
-                key={project.number}
-              >
-
+              <article className="project-showcase" key={project.number}>
                 <div className="project-index">
-
-                  <span>
-                    {project.number}
-                  </span>
-
-                  <small>
-                    {project.year}
-                  </small>
-
+                  <span>{project.number}</span>
+                  <small>{project.year}</small>
                 </div>
 
                 <div className="project-main-info">
-
-                  <div className="project-category">
-                    {project.category}
-                  </div>
+                  <div className="project-category">{project.category}</div>
 
                   <h3>{project.title}</h3>
-
                   <h4>{project.subtitle}</h4>
 
-                  <p className="project-description">
-                    {project.description}
-                  </p>
+                  <p className="project-description">{project.description}</p>
 
                   <div className="project-stack">
-
-                    {project.stack
-                      .split(" · ")
-                      .map((item) => (
-                        <span key={item}>
-                          {item}
-                        </span>
-                      ))}
-
+                    {project.stack.split(" · ").map((item) => (
+                      <span key={item}>{item}</span>
+                    ))}
                   </div>
-
                 </div>
 
                 <div className="project-details">
-
                   <div className="project-points">
+                    <small>WHAT I BUILT</small>
 
-                    <small>
-                      WHAT I BUILT
-                    </small>
-
-                    {project.points.map(
-                      (point, index) => (
-
-                        <div key={point}>
-
-                          <span>
-                            0{index + 1}
-                          </span>
-
-                          <p>{point}</p>
-
-                        </div>
-
-                      )
-                    )}
-
+                    {project.points.map((point, index) => (
+                      <div key={point}>
+                        <span>0{index + 1}</span>
+                        <p>{point}</p>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="project-links">
-
                     <div className="render-warning">
-
                       <span>⚠</span>
 
                       <p>
-
-                        <strong>
-                          START BACKEND FIRST
-                        </strong>
-
+                        <strong>START BACKEND FIRST</strong>
                         <br />
-
-                        The backend is deployed on Render
-                        and may sleep on the free tier.
-                        Open the backend first and wait
-                        around 30–50 seconds for it to wake
-                        up, then open the frontend.
-
+                        The backend is deployed on Render and may sleep on the
+                        free tier. Open the backend first and wait around
+                        30–50 seconds for it to wake up, then open the
+                        frontend.
                       </p>
-
                     </div>
 
                     <div className="project-buttons">
-
                       <a
                         href={project.backend}
                         target="_blank"
@@ -950,95 +799,54 @@ function App() {
                         LIVE FRONTEND
                         <Arrow />
                       </a>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </article>
-
             ))}
-
           </div>
-
         </section>
 
         {/* CERTIFICATIONS */}
 
         <section className="section certifications">
-
           <div className="section-heading">
-
             <span className="section-number">05</span>
 
             <div>
-
               <small>CREDENTIALS</small>
-
               <h2>
                 Learning
                 <br />
                 never stops.
               </h2>
-
             </div>
-
           </div>
 
           <div className="cert-grid">
-
             <article className="cert-card">
-
               <span>01</span>
-
-              <small>
-                INFOSYS SPRINGBOARD
-              </small>
-
-              <h3>
-                Java Programming Fundamentals
-              </h3>
-
+              <small>INFOSYS SPRINGBOARD</small>
+              <h3>Java Programming Fundamentals</h3>
               <div>JAVA</div>
-
             </article>
 
             <article className="cert-card">
-
               <span>02</span>
-
-              <small>
-                INFOSYS SPRINGBOARD
-              </small>
-
-              <h3>
-                Introduction to Java
-              </h3>
-
+              <small>INFOSYS SPRINGBOARD</small>
+              <h3>Introduction to Java</h3>
               <div>JAVA</div>
-
             </article>
-
           </div>
-
         </section>
 
         {/* CONTACT */}
 
-        <section
-          id="contact"
-          className="contact-section"
-        >
-
+        <section id="contact" className="contact-section">
           <div className="contact-glow" />
 
           <div className="contact-content">
-
-            <span className="contact-label">
-              06 / CONTACT
-            </span>
+            <span className="contact-label">06 / CONTACT</span>
 
             <h2>
               Let's build
@@ -1047,29 +855,21 @@ function App() {
             </h2>
 
             <p>
-              Looking for opportunities to build
-              production-grade web applications and
-              contribute as a Full Stack or Frontend
+              Looking for opportunities to build production-grade web
+              applications and contribute as a Full Stack or Frontend
               Developer.
             </p>
 
             {/* CONTACT CARDS */}
 
             <div className="social-links">
-
-              <a
-                href="tel:7337634886"
-                className="social-card"
-              >
+              <a href="tel:7337634886" className="social-card">
                 <span>PHONE</span>
                 <strong>7337634886</strong>
                 <Arrow />
               </a>
 
-              <a
-                href="mailto:Srinivasrahul838@gmail.com"
-                className="social-card"
-              >
+              <a href="mailto:Srinivasrahul838@gmail.com" className="social-card">
                 <span>EMAIL</span>
                 <strong>Srinivasrahul838@gmail.com</strong>
                 <Arrow />
@@ -1096,43 +896,22 @@ function App() {
                 <strong>RAHUL S.</strong>
                 <Arrow />
               </a>
-
             </div>
 
             <div className="contact-meta">
-
               <span>RAHUL S</span>
-
-              <span>
-                BENGALURU, INDIA
-              </span>
-
+              <span>BENGALURU, INDIA</span>
               <span>2026</span>
-
             </div>
-
           </div>
-
         </section>
-
       </main>
 
       <footer className="footer">
-
-        <span>
-          RAHUL.S / JAVA FULL STACK DEVELOPER
-        </span>
-
-        <span>
-          BUILT WITH REACT.JS
-        </span>
-
-        <span>
-          © 2026
-        </span>
-
+        <span>RAHUL.S / JAVA FULL STACK DEVELOPER</span>
+        <span>BUILT WITH REACT.JS</span>
+        <span>© 2026</span>
       </footer>
-
     </div>
   );
 }
