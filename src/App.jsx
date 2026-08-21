@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 
-// New background clip — dark, drifting particle field (Pexels,
-// free license, no attribution required). Different mood from
-// the original neon-overlay clip: quieter, more premium, reads
-// as depth rather than a flat color wash.
 const VIDEO_URL =
   "https://videos.pexels.com/video-files/29919008/12841733_1920_1080_30fps.mp4";
 
@@ -248,7 +244,7 @@ function App() {
   return (
     <div className="site">
 
-      {/* VIDEO BACKGROUND */}
+      {/* CINEMATIC VIDEO BACKGROUND */}
 
       <video
         className="background-video"
@@ -262,14 +258,10 @@ function App() {
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
 
-      <div className="video-darkness" />
-      <div className="video-color-wash" />
-      <div className="scanlines" />
+      <div className="video-overlay" />
+      <div className="video-vignette" />
+      <div className="grid-overlay" />
       <div className="noise-layer" />
-
-      <div className="orb orb-one" />
-      <div className="orb orb-two" />
-      <div className="orb orb-three" />
 
       {/* NAVIGATION */}
 
@@ -434,30 +426,31 @@ function App() {
                 <b>ONLINE</b>
               </div>
 
-              <div className="orbit-system">
+              <div className="profile-orbit">
 
-                <div className="orbit orbit-a" />
-                <div className="orbit orbit-b" />
-                <div className="orbit orbit-c" />
+                <div className="orbit-line orbit-one" />
+                <div className="orbit-line orbit-two" />
 
-                <div className="orbit-dot dot-one" />
-                <div className="orbit-dot dot-two" />
-                <div className="orbit-dot dot-three" />
+                <div className="profile-halo" />
 
                 <div className="portrait-frame">
-                  <div className="portrait-glow" />
-
-                  <img
-                    src="/rahul-profile.jpg"
-                    alt="Rahul S"
-                    className="profile-image"
-                  />
+                  <div className="portrait-inner">
+                    <img
+                      src="/rahul-profile.jpg"
+                      alt="Rahul S"
+                      className="profile-image"
+                    />
+                  </div>
                 </div>
 
-                <div className="portrait-tag">
+                <div className="profile-number">
                   <span>R.S</span>
                   <small>2026</small>
                 </div>
+
+                <div className="profile-point point-one" />
+                <div className="profile-point point-two" />
+                <div className="profile-point point-three" />
 
               </div>
 
@@ -467,10 +460,17 @@ function App() {
               </div>
 
               <div className="code-float">
+
                 <span>// candidate_profile</span>
+
                 <strong>&gt; whoami</strong>
+
                 <p>Java Full Stack Developer</p>
-                <small>JAVA · REACT · SPRING · MYSQL</small>
+
+                <small>
+                  JAVA · REACT · SPRING · MYSQL
+                </small>
+
               </div>
 
             </div>
@@ -494,16 +494,19 @@ function App() {
         <section id="about" className="section about">
 
           <div className="section-heading">
+
             <span className="section-number">01</span>
 
             <div>
               <small>IDENTITY</small>
+
               <h2>
                 Built from UI
                 <br />
                 to database.
               </h2>
             </div>
+
           </div>
 
           <div className="about-content">
@@ -533,9 +536,12 @@ function App() {
             <div className="about-terminal">
 
               <div className="terminal-top">
-                <span />
-                <span />
-                <span />
+                <div className="terminal-dots">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+
                 <small>rahul@developer:~</small>
               </div>
 
@@ -598,6 +604,7 @@ function App() {
             <span className="section-number">02</span>
 
             <div>
+
               <small>TECH STACK</small>
 
               <h2>
@@ -605,6 +612,7 @@ function App() {
                 <br />
                 build with.
               </h2>
+
             </div>
 
           </div>
@@ -691,6 +699,7 @@ function App() {
             <span className="section-number">03</span>
 
             <div>
+
               <small>CAREER</small>
 
               <h2>
@@ -698,6 +707,7 @@ function App() {
                 <br />
                 that ships.
               </h2>
+
             </div>
 
           </div>
@@ -705,9 +715,11 @@ function App() {
           <div className="experience-wrapper">
 
             <div className="experience-year">
+
               <span>2026</span>
               <i />
               <span>NOW</span>
+
             </div>
 
             <article className="experience-main">
@@ -1049,8 +1061,6 @@ function App() {
               contribute as a Full Stack or Frontend
               Developer.
             </p>
-
-            {/* CONTACT CARDS */}
 
             <div className="social-links">
 
