@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 
+// New background clip — dark, drifting particle field (Pexels,
+// free license, no attribution required). Different mood from
+// the original neon-overlay clip: quieter, more premium, reads
+// as depth rather than a flat color wash.
 const VIDEO_URL =
   "https://videos.pexels.com/video-files/29919008/12841733_1920_1080_30fps.mp4";
 
@@ -244,6 +248,8 @@ function App() {
   return (
     <div className="site">
 
+      {/* VIDEO BACKGROUND */}
+
       <video
         className="background-video"
         autoPlay
@@ -274,10 +280,10 @@ function App() {
           onClick={() => navigate("home")}
           aria-label="Go home"
         >
-          <span className="brand-symbol">RS</span>
+          <span className="brand-symbol">R</span>
 
           <span className="brand-copy">
-            <strong>RAHUL S.</strong>
+            <strong>RAHUL</strong>
             <small>JAVA FULL STACK DEVELOPER</small>
           </span>
         </button>
@@ -293,7 +299,7 @@ function App() {
               }
               onClick={() => navigate(id)}
             >
-              <span>0{index + 1}</span>
+              <span>0{index}</span>
               {label}
             </button>
           ))}
@@ -327,7 +333,7 @@ function App() {
             key={id}
             onClick={() => navigate(id)}
           >
-            <small>0{index + 1}</small>
+            <small>0{index}</small>
             {label}
             <Arrow />
           </button>
@@ -352,17 +358,18 @@ function App() {
               <div className="hero-index">
                 <span>01</span>
                 <i />
-                INIT.PORTFOLIO_2026
+                PORTFOLIO / 2026
               </div>
 
               <p className="hero-kicker">
                 JAVA FULL STACK DEVELOPER
+                <b>+</b>
+                SOFTWARE ENGINEER
               </p>
 
               <h1>
-                I BUILD
-                <br />
-                <span>EXPERIENCES</span>
+                Rahul
+                <span>S.</span>
               </h1>
 
               <div className="type-line">
@@ -487,19 +494,16 @@ function App() {
         <section id="about" className="section about">
 
           <div className="section-heading">
-
             <span className="section-number">01</span>
 
             <div>
-              <small>// ABOUT ME</small>
-
+              <small>IDENTITY</small>
               <h2>
-                Know Me
+                Built from UI
                 <br />
-                Better_
+                to database.
               </h2>
             </div>
-
           </div>
 
           <div className="about-content">
@@ -532,53 +536,49 @@ function App() {
                 <span />
                 <span />
                 <span />
-                <small>INFO / RAHUL.S</small>
+                <small>rahul@developer:~</small>
               </div>
 
               <div className="terminal-body">
 
                 <p>
-                  <b>//</b> PROFILE_INFORMATION
+                  <b>$</b> cat profile.json
                 </p>
 
                 <div className="terminal-json">
 
+                  <span>{"{"}</span>
+
                   <span>
-                    <i>Name:</i> Rahul S.
+                    <i>"role"</i>: "Java Full Stack Developer",
                   </span>
 
                   <span>
-                    <i>Role:</i> Full Stack Developer
+                    <i>"focus"</i>: "Production Web Apps",
                   </span>
 
                   <span>
-                    <i>Experience:</i> 2026
+                    <i>"frontend"</i>: "React.js",
                   </span>
 
                   <span>
-                    <i>Frontend:</i> React.js
+                    <i>"backend"</i>: "Java + Spring Boot",
                   </span>
 
                   <span>
-                    <i>Backend:</i> Java + Spring Boot
+                    <i>"database"</i>: "MySQL",
                   </span>
 
                   <span>
-                    <i>Database:</i> MySQL
+                    <i>"security"</i>: "JWT + RBAC",
                   </span>
 
-                  <span>
-                    <i>Security:</i> JWT + RBAC
-                  </span>
-
-                  <span>
-                    <i>Location:</i> Bengaluru, India
-                  </span>
+                  <span>{"}"}</span>
 
                 </div>
 
                 <p className="terminal-success">
-                  <b>✓</b> PROFILE LOADED
+                  <b>✓</b> profile loaded successfully
                 </p>
 
               </div>
@@ -598,10 +598,12 @@ function App() {
             <span className="section-number">02</span>
 
             <div>
-              <small>// SKILLS</small>
+              <small>TECH STACK</small>
 
               <h2>
-                My Skills_
+                Tools I
+                <br />
+                build with.
               </h2>
             </div>
 
@@ -646,14 +648,18 @@ function App() {
             <div className="skill-groups">
 
               {SKILL_GROUPS.map((group) => (
+
                 <article
                   className="skill-group"
                   key={group.number}
                 >
 
                   <div className="skill-group-top">
+
                     <span>{group.number}</span>
+
                     <h3>{group.title}</h3>
+
                   </div>
 
                   <div className="skill-list">
@@ -667,6 +673,7 @@ function App() {
                   </div>
 
                 </article>
+
               ))}
 
             </div>
@@ -684,10 +691,12 @@ function App() {
             <span className="section-number">03</span>
 
             <div>
-              <small>// EXPERIENCE</small>
+              <small>CAREER</small>
 
               <h2>
-                My Journey_
+                Experience
+                <br />
+                that ships.
               </h2>
             </div>
 
@@ -731,6 +740,7 @@ function App() {
 
                 {EXPERIENCE.points.map(
                   (point, index) => (
+
                     <div key={point}>
 
                       <span>
@@ -740,18 +750,21 @@ function App() {
                       <p>{point}</p>
 
                     </div>
+
                   )
                 )}
 
               </div>
 
               <div className="experience-stack">
+
                 <span>REACT.JS</span>
                 <span>JAVA</span>
                 <span>SPRING BOOT</span>
                 <span>MYSQL</span>
                 <span>REST API</span>
                 <span>GIT</span>
+
               </div>
 
             </article>
@@ -796,10 +809,12 @@ function App() {
 
             <div>
 
-              <small>// PROJECTS</small>
+              <small>SELECTED WORK</small>
 
               <h2>
-                My Projects_
+                Things I've
+                <br />
+                actually shipped.
               </h2>
 
             </div>
@@ -815,6 +830,7 @@ function App() {
           <div className="projects-list">
 
             {PROJECTS.map((project) => (
+
               <article
                 className="project-showcase"
                 key={project.number}
@@ -870,6 +886,7 @@ function App() {
 
                     {project.points.map(
                       (point, index) => (
+
                         <div key={point}>
 
                           <span>
@@ -879,6 +896,7 @@ function App() {
                           <p>{point}</p>
 
                         </div>
+
                       )
                     )}
 
@@ -937,6 +955,7 @@ function App() {
                 </div>
 
               </article>
+
             ))}
 
           </div>
@@ -953,7 +972,7 @@ function App() {
 
             <div>
 
-              <small>// CREDENTIALS</small>
+              <small>CREDENTIALS</small>
 
               <h2>
                 Learning
@@ -1015,13 +1034,13 @@ function App() {
           <div className="contact-content">
 
             <span className="contact-label">
-              // CONTACT
+              06 / CONTACT
             </span>
 
             <h2>
-              Get In
+              Let's build
               <br />
-              <span>Touch_</span>
+              something <span>real.</span>
             </h2>
 
             <p>
@@ -1030,6 +1049,8 @@ function App() {
               contribute as a Full Stack or Frontend
               Developer.
             </p>
+
+            {/* CONTACT CARDS */}
 
             <div className="social-links">
 
