@@ -1,107 +1,240 @@
+
+
+
 import React, { useEffect, useState } from "react";
 import "./index.css";
 
-/* =========================================================
-   ASSETS
-========================================================= */
-
+// New background clip — dark, drifting particle field (Pexels,
+// free license, no attribution required). Different mood from
+// the original neon-overlay clip: quieter, more premium, reads
+// as depth rather than a flat color wash.
 const VIDEO_URL =
-  "https://cdn.coverr.co/videos/coverr-a-black-and-white-city-at-night-1574/1080p.mp4";
-
-const PROFILE_IMAGE = "/profile.jpg";
-
-/* =========================================================
-   DATA
-========================================================= */
+  "https://videos.pexels.com/video-files/29919008/12841733_1920_1080_30fps.mp4";
 
 const NAV_ITEMS = [
-  ["home", "INDEX"],
-  ["about", "PROFILE"],
-  ["skills", "STACK"],
+  ["home", "HOME"],
+  ["about", "ABOUT"],
+  ["skills", "SKILLS"],
   ["experience", "EXPERIENCE"],
   ["projects", "WORK"],
   ["contact", "CONTACT"],
 ];
 
-const SKILLS = [
+const STACK = [
+  "React.js",
   "Java",
-  "JavaScript",
-  "React",
-  "HTML5",
-  "CSS3",
   "Spring Boot",
-  "Spring MVC",
-  "Spring Data JPA",
-  "Hibernate",
-  "Spring Security",
+  "JavaScript",
   "MySQL",
-  "REST API",
+  "REST APIs",
   "JWT",
-  "Git",
-  "GitHub",
   "Docker",
+];
+
+const SKILL_GROUPS = [
+  {
+    number: "01",
+    title: "FRONTEND",
+    skills: [
+      "React.js",
+      "React Hooks",
+      "React Router",
+      "JavaScript (ES6+)",
+      "HTML5",
+      "CSS3",
+      "Responsive Web Design",
+      "Axios",
+      "RESTful API Integration",
+      "Component based architecture",
+      "Form validation",
+      "State management",
+    ],
+  },
+  {
+    number: "02",
+    title: "BACKEND",
+    skills: [
+      "Java",
+      "Spring Boot",
+      "Spring MVC",
+      "REST API Design",
+      "Spring Data JPA",
+      "Hibernate",
+      "Microservices",
+      "Exception Handling",
+    ],
+  },
+  {
+    number: "03",
+    title: "SECURITY",
+    skills: [
+      "Spring Security",
+      "JWT Authentication",
+      "Role-Based Access Control (RBAC)",
+    ],
+  },
+  {
+    number: "04",
+    title: "DATABASE",
+    skills: [
+      "MySQL",
+      "SQL",
+      "Database Design",
+      "CRUD Operations",
+    ],
+  },
+  {
+    number: "05",
+    title: "DEVOPS",
+    skills: [
+      "Docker",
+      "Docker Compose",
+      "Maven",
+      "Git",
+      "Aiven",
+      "Vercel",
+      "Render",
+    ],
+  },
+  {
+    number: "06",
+    title: "TESTING / CS",
+    skills: [
+      "JUnit 5",
+      "Mockito",
+      "Postman",
+      "Agile Development",
+      "Data Structures & Algorithms",
+      "OOP",
+      "DBMS",
+    ],
+  },
 ];
 
 const PROJECTS = [
   {
     number: "01",
-    title: "SHOPSPHERE",
-    type: "FULL STACK E-COMMERCE",
+    year: "05/2026 — 06/2026",
+    category: "FULL STACK / E-COMMERCE",
+    title: "ShopSphere",
+    subtitle: "Full Stack E-Commerce Web Application",
+    stack:
+      "React.js · Java · Spring Boot · Spring Data JPA · REST APIs · MySQL",
     description:
-      "A modern e-commerce platform built with React and Spring Boot with product management, authentication, APIs and MySQL persistence.",
-    stack: ["React", "Spring Boot", "MySQL", "REST API"],
+      "A full-stack e-commerce platform spanning product browsing, search, cart, wishlist, checkout, and order management.",
+    points: [
+      "Architected an e-commerce platform spanning 6 core modules — product browsing, search, cart, wishlist, checkout, and order management — using a layered Controller/Service/Repository architecture.",
+      "Engineered role-based admin functionality across 2 user roles (admin, customer) for managing products, inventory, users, and orders.",
+      "Integrated secure authentication and order-management workflows via REST APIs connecting the React.js frontend to the Spring Boot backend, covering 15+ endpoints.",
+    ],
+    live: "https://shopsphere-8m8f.vercel.app/",
+    backend: "https://shopsphere-backend-5umn.onrender.com",
   },
   {
     number: "02",
-    title: "BANKSPHERE",
-    type: "BANKING SYSTEM",
+    year: "07/2026 — 08/2026",
+    category: "FULL STACK / BANKING",
+    title: "BankSphere",
+    subtitle: "Online Banking System — Full Stack Banking Application",
+    stack:
+      "React.js · Java · Spring Boot · Spring Security · JWT · Spring Data JPA · MySQL · Docker",
     description:
-      "A full-stack banking application focused on secure authentication, account management, role-based access and transactional APIs.",
-    stack: ["Java", "Spring Boot", "JWT", "MySQL"],
-  },
-  {
-    number: "03",
-    title: "AI PLANT DOCTOR",
-    type: "AI WEB APPLICATION",
-    description:
-      "An AI-powered application designed to help users identify plant-related problems and receive useful recommendations.",
-    stack: ["React", "AI API", "JavaScript"],
+      "A secure full-stack banking application supporting registration, authentication, account management and transaction workflows.",
+    points: [
+      "Developed a secure banking application supporting user registration, login, account management, and transaction workflows.",
+      "Implemented JWT authentication and role-based access control (RBAC) using Spring Security to protect user and admin operations across 3 access levels.",
+      "Designed a normalized MySQL schema with 8+ entities (users, roles, accounts, transactions) and defined relational integrity constraints.",
+      "Containerized the full application stack (frontend, backend, database) using Docker and Docker Compose, enabling one-command setup for local and deployment environments.",
+      "Wrote unit tests for service-layer business logic using JUnit 5 and Mockito to validate transaction and authentication flows.",
+    ],
+    live: "https://banksphere-frontend.vercel.app",
+    backend: "https://banksphere-backend-b96m.onrender.com",
   },
 ];
 
-/* =========================================================
-   APP
-========================================================= */
+const EXPERIENCE = {
+  role: "Web Development Intern",
+  company: "MR Tech Lab",
+  period: "01/2026 — 05/2026",
+  location: "Bengaluru",
+  points: [
+    "Owned end-to-end development of 2+ full-stack modules using React.js, Java, Spring Boot, and MySQL, from API design through frontend integration.",
+    "Built and integrated REST APIs with backend services to support dynamic data handling, implementing authentication and CRUD operations within an Agile, Git-based deployment workflow.",
+  ],
+};
 
-function App() {
-  const [activeSection, setActiveSection] = useState("home");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+function useTypewriter(words) {
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoaded(true);
-    }, 300);
+    const word = words[index];
+
+    const timer = setTimeout(
+      () => {
+        if (!deleting) {
+          const next = word.slice(0, text.length + 1);
+          setText(next);
+
+          if (next === word) {
+            setDeleting(true);
+          }
+        } else {
+          const next = word.slice(0, text.length - 1);
+          setText(next);
+
+          if (next === "") {
+            setDeleting(false);
+            setIndex((prev) => (prev + 1) % words.length);
+          }
+        }
+      },
+      deleting ? 55 : text.length === word.length ? 1400 : 85
+    );
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [text, deleting, index, words]);
+
+  return text;
+}
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+function Arrow() {
+  return <span className="arrow-symbol">↗</span>;
+}
+
+function App() {
+  const typed = useTypewriter(STACK);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState("home");
 
   useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
+    const sections = NAV_ITEMS.map(([id]) =>
+      document.getElementById(id)
+    ).filter(Boolean);
 
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          .sort(
+            (a, b) => b.intersectionRatio - a.intersectionRatio
+          )[0];
 
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id);
+        if (visible) {
+          setActive(visible.target.id);
         }
       },
       {
-        threshold: [0.2, 0.4, 0.6],
-        rootMargin: "-15% 0px -55% 0px",
+        threshold: [0.15, 0.35, 0.6],
+        rootMargin: "-20% 0px -45% 0px",
       }
     );
 
@@ -110,462 +243,896 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-
+  const navigate = (id) => {
     setMenuOpen(false);
+    scrollToSection(id);
   };
 
   return (
-    <div className={`site ${loaded ? "loaded" : ""}`}>
-      {/* =====================================================
-          BACKGROUND VIDEO
-      ===================================================== */}
+    <div className="site">
 
-      <div className="video-layer">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        >
-          <source src={VIDEO_URL} type="video/mp4" />
-        </video>
+      {/* VIDEO BACKGROUND */}
 
-        <div className="video-dark" />
-        <div className="noise" />
-      </div>
+      <video
+        className="background-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src={VIDEO_URL} type="video/mp4" />
+      </video>
 
-      {/* =====================================================
-          TOP BAR
-      ===================================================== */}
+      <div className="video-darkness" />
+      <div className="video-color-wash" />
+      <div className="scanlines" />
+      <div className="noise-layer" />
+
+      <div className="orb orb-one" />
+      <div className="orb orb-two" />
+      <div className="orb orb-three" />
+
+      {/* NAVIGATION */}
 
       <header className="topbar">
+
         <button
           className="brand"
-          onClick={() => scrollToSection("home")}
-          aria-label="Go to home"
+          onClick={() => navigate("home")}
+          aria-label="Go home"
         >
-          <span className="brand-mark">R</span>
-          <span className="brand-text">RAHUL S.</span>
+          <span className="brand-symbol">R</span>
+
+          <span className="brand-copy">
+            <strong>RAHUL</strong>
+            <small>JAVA FULL STACK DEVELOPER</small>
+          </span>
         </button>
 
-        <div className="top-status">
-          <span className="status-dot" />
-          <span>AVAILABLE FOR WORK</span>
-        </div>
+        <nav className="desktop-nav">
+          {NAV_ITEMS.map(([id, label], index) => (
+            <button
+              key={id}
+              className={
+                active === id
+                  ? "nav-item active"
+                  : "nav-item"
+              }
+              onClick={() => navigate(id)}
+            >
+              <span>0{index}</span>
+              {label}
+            </button>
+          ))}
+        </nav>
+
+        <a
+          className="top-contact"
+          href="mailto:Srinivasrahul838@gmail.com"
+        >
+          <span>LET'S TALK</span>
+          <Arrow />
+        </a>
 
         <button
-          className={`menu-button ${menuOpen ? "active" : ""}`}
-          onClick={() => setMenuOpen(!menuOpen)}
+          className="menu-button"
+          onClick={() => setMenuOpen((prev) => !prev)}
           aria-label="Toggle navigation"
         >
           <span />
           <span />
+          <span />
         </button>
+
       </header>
 
-      {/* =====================================================
-          NAVIGATION
-      ===================================================== */}
+      {/* MOBILE NAV */}
 
-      <nav className={`navigation ${menuOpen ? "open" : ""}`}>
-        <div className="nav-line" />
-
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         {NAV_ITEMS.map(([id, label], index) => (
           <button
             key={id}
-            className={activeSection === id ? "active" : ""}
-            onClick={() => scrollToSection(id)}
+            onClick={() => navigate(id)}
           >
-            <span className="nav-number">
-              0{index + 1}
-            </span>
-
-            <span className="nav-label">
-              {label}
-            </span>
+            <small>0{index}</small>
+            {label}
+            <Arrow />
           </button>
         ))}
-      </nav>
-
-      {/* =====================================================
-          SIDE INFO
-      ===================================================== */}
-
-      <aside className="side-info">
-        <span>BENGALURU</span>
-        <span>INDIA</span>
-      </aside>
-
-      {/* =====================================================
-          MAIN
-      ===================================================== */}
+      </div>
 
       <main>
-        {/* ===================================================
-            HOME
-        =================================================== */}
 
-        <section id="home" className="hero section">
-          <div className="hero-content">
-            <div className="hero-index">
-              <span>01</span>
-              <span>PORTFOLIO / 2026</span>
-            </div>
+        {/* HERO */}
 
-            <div className="hero-title-wrap">
-              <p className="eyebrow">
+        <section id="home" className="hero">
+
+          <div className="hero-grid">
+
+            <div className="hero-left">
+
+              <div className="live-line">
+                <span className="live-dot" />
+                AVAILABLE FOR OPPORTUNITIES
+              </div>
+
+              <div className="hero-index">
+                <span>01</span>
+                <i />
+                PORTFOLIO / 2026
+              </div>
+
+              <p className="hero-kicker">
                 JAVA FULL STACK DEVELOPER
+                <b>+</b>
+                SOFTWARE ENGINEER
               </p>
 
               <h1>
-                RAHUL
+                Rahul
                 <span>S.</span>
               </h1>
 
-              <div className="hero-rule" />
-            </div>
+              <div className="type-line">
+                <span>BUILDING WITH</span>
+                <strong>{typed}</strong>
+                <i />
+              </div>
 
-            <div className="hero-bottom">
               <p className="hero-description">
-                I build digital products with clean interfaces,
-                reliable backend systems and a focus on solving
-                real-world problems.
+                Full Stack Developer skilled in React.js, Java,
+                and Spring Boot with strong hands-on experience
+                building secure, end-to-end web applications
+                from UI to database.
               </p>
 
-              <button
-                className="discover"
-                onClick={() => scrollToSection("about")}
-              >
-                <span>DISCOVER PROFILE</span>
-                <span className="arrow">↓</span>
-              </button>
+              <div className="hero-actions">
+
+                <button
+                  className="neon-button primary"
+                  onClick={() => navigate("projects")}
+                >
+                  EXPLORE MY WORK
+                  <Arrow />
+                </button>
+
+                <button
+                  className="neon-button secondary"
+                  onClick={() => navigate("contact")}
+                >
+                  CONTACT ME
+                </button>
+
+              </div>
+
+              <div className="hero-facts">
+
+                <div>
+                  <small>LOCATION</small>
+                  <strong>Bengaluru, India</strong>
+                </div>
+
+                <div>
+                  <small>EDUCATION</small>
+                  <strong>B.E. Computer Science</strong>
+                </div>
+
+                <div>
+                  <small>CGPA</small>
+                  <strong>8.00</strong>
+                </div>
+
+              </div>
+
             </div>
-          </div>
 
-          <div className="hero-image">
-            <div className="image-frame">
-              <img
-                src={PROFILE_IMAGE}
-                alt="Rahul S."
-                onError={(e) => {
-                  e.currentTarget.style.opacity = "0";
-                }}
-              />
+            {/* PROFILE */}
 
-              <div className="image-number">RS / 01</div>
+            <div className="hero-visual">
+
+              <div className="visual-label label-top">
+                <span>PROFILE_NODE</span>
+                <b>ONLINE</b>
+              </div>
+
+              <div className="orbit-system">
+
+                <div className="orbit orbit-a" />
+                <div className="orbit orbit-b" />
+                <div className="orbit orbit-c" />
+
+                <div className="orbit-dot dot-one" />
+                <div className="orbit-dot dot-two" />
+                <div className="orbit-dot dot-three" />
+
+                <div className="portrait-frame">
+                  <div className="portrait-glow" />
+
+                  <img
+                    src="/rahul-profile.jpg"
+                    alt="Rahul S"
+                    className="profile-image"
+                  />
+                </div>
+
+                <div className="portrait-tag">
+                  <span>R.S</span>
+                  <small>2026</small>
+                </div>
+
+              </div>
+
+              <div className="visual-label label-bottom">
+                <span>STATUS</span>
+                <b>BUILDING / DEPLOYING</b>
+              </div>
+
+              <div className="code-float">
+                <span>// candidate_profile</span>
+                <strong>&gt; whoami</strong>
+                <p>Java Full Stack Developer</p>
+                <small>JAVA · REACT · SPRING · MYSQL</small>
+              </div>
+
             </div>
+
           </div>
 
-          <div className="scroll-indicator">
-            <span>SCROLL</span>
-            <div />
+          <div className="hero-bottom">
+            <span>SCROLL TO EXPLORE</span>
+
+            <div className="scroll-line">
+              <i />
+            </div>
+
+            <span>00 / 06</span>
           </div>
+
         </section>
 
-        {/* ===================================================
-            ABOUT
-        =================================================== */}
+        {/* ABOUT */}
 
-        <section id="about" className="section profile-section">
+        <section id="about" className="section about">
+
           <div className="section-heading">
-            <span className="section-number">02</span>
-            <span className="section-name">PROFILE</span>
+            <span className="section-number">01</span>
+
+            <div>
+              <small>IDENTITY</small>
+              <h2>
+                Built from UI
+                <br />
+                to database.
+              </h2>
+            </div>
           </div>
 
-          <div className="profile-layout">
-            <div className="massive-text">
-              <span>BUILD</span>
-              <span>THINK</span>
-              <span>SHIP</span>
+          <div className="about-content">
+
+            <div className="about-statement">
+
+              <span className="quote-mark">“</span>
+
+              <p>
+                Full Stack Developer skilled in React.js, Java,
+                and Spring Boot with strong hands-on experience
+                building secure, end-to-end web applications
+                from UI to database.
+              </p>
+
+              <span className="about-line" />
+
+              <p className="about-secondary">
+                Proven ability to independently architect and
+                deliver full-stack projects — REST APIs, JWT
+                authentication, RBAC, and MySQL database design
+                — in Agile environments.
+              </p>
+
             </div>
 
-            <div className="profile-copy">
-              <p className="small-label">
-                / ABOUT ME
-              </p>
+            <div className="about-terminal">
+
+              <div className="terminal-top">
+                <span />
+                <span />
+                <span />
+                <small>rahul@developer:~</small>
+              </div>
+
+              <div className="terminal-body">
+
+                <p>
+                  <b>$</b> cat profile.json
+                </p>
+
+                <div className="terminal-json">
+
+                  <span>{"{"}</span>
+
+                  <span>
+                    <i>"role"</i>: "Java Full Stack Developer",
+                  </span>
+
+                  <span>
+                    <i>"focus"</i>: "Production Web Apps",
+                  </span>
+
+                  <span>
+                    <i>"frontend"</i>: "React.js",
+                  </span>
+
+                  <span>
+                    <i>"backend"</i>: "Java + Spring Boot",
+                  </span>
+
+                  <span>
+                    <i>"database"</i>: "MySQL",
+                  </span>
+
+                  <span>
+                    <i>"security"</i>: "JWT + RBAC",
+                  </span>
+
+                  <span>{"}"}</span>
+
+                </div>
+
+                <p className="terminal-success">
+                  <b>✓</b> profile loaded successfully
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* SKILLS */}
+
+        <section id="skills" className="section skills">
+
+          <div className="section-heading">
+
+            <span className="section-number">02</span>
+
+            <div>
+              <small>TECH STACK</small>
 
               <h2>
-                Developer focused on
-                <em> useful software.</em>
+                Tools I
+                <br />
+                build with.
               </h2>
-
-              <p>
-                I'm Rahul, a Computer Science Engineering graduate
-                interested in building modern web applications.
-                My current focus is Java, React and full-stack
-                development.
-              </p>
-
-              <p>
-                I enjoy taking an idea from the initial concept
-                through frontend development, backend APIs,
-                database integration and deployment.
-              </p>
-
-              <div className="profile-meta">
-                <div>
-                  <span>EDUCATION</span>
-                  <strong>B.E. COMPUTER SCIENCE</strong>
-                </div>
-
-                <div>
-                  <span>FOCUS</span>
-                  <strong>FULL STACK DEVELOPMENT</strong>
-                </div>
-
-                <div>
-                  <span>LOCATION</span>
-                  <strong>BENGALURU, INDIA</strong>
-                </div>
-              </div>
             </div>
+
           </div>
+
+          <div className="skills-layout">
+
+            <div className="skill-intro">
+
+              <div className="radar">
+
+                <div className="radar-ring ring-one" />
+                <div className="radar-ring ring-two" />
+                <div className="radar-ring ring-three" />
+
+                <div className="radar-cross horizontal" />
+                <div className="radar-cross vertical" />
+
+                <div className="radar-center">
+                  RS
+                </div>
+
+                {STACK.map((item, index) => (
+                  <span
+                    key={item}
+                    className={`radar-node node-${index + 1}`}
+                  >
+                    {item}
+                  </span>
+                ))}
+
+              </div>
+
+              <p>
+                A practical stack focused on building responsive
+                frontends, secure REST APIs, relational databases
+                and deployable full-stack systems.
+              </p>
+
+            </div>
+
+            <div className="skill-groups">
+
+              {SKILL_GROUPS.map((group) => (
+
+                <article
+                  className="skill-group"
+                  key={group.number}
+                >
+
+                  <div className="skill-group-top">
+
+                    <span>{group.number}</span>
+
+                    <h3>{group.title}</h3>
+
+                  </div>
+
+                  <div className="skill-list">
+
+                    {group.skills.map((skill) => (
+                      <span key={skill}>
+                        {skill}
+                      </span>
+                    ))}
+
+                  </div>
+
+                </article>
+
+              ))}
+
+            </div>
+
+          </div>
+
         </section>
 
-        {/* ===================================================
-            SKILLS
-        =================================================== */}
+        {/* EXPERIENCE */}
 
-        <section id="skills" className="section stack-section">
+        <section id="experience" className="section experience">
+
           <div className="section-heading">
+
             <span className="section-number">03</span>
-            <span className="section-name">STACK</span>
+
+            <div>
+              <small>CAREER</small>
+
+              <h2>
+                Experience
+                <br />
+                that ships.
+              </h2>
+            </div>
+
           </div>
 
-          <div className="stack-intro">
-            <p className="small-label">
-              / TECHNOLOGIES
-            </p>
+          <div className="experience-wrapper">
 
-            <h2>
-              Tools I use to
-              <br />
-              <span>turn ideas into systems.</span>
-            </h2>
-          </div>
+            <div className="experience-year">
+              <span>2026</span>
+              <i />
+              <span>NOW</span>
+            </div>
 
-          <div className="skills-grid">
-            {SKILLS.map((skill, index) => (
-              <div className="skill-item" key={skill}>
-                <span>
-                  {String(index + 1).padStart(2, "0")}
+            <article className="experience-main">
+
+              <div className="experience-header">
+
+                <div>
+
+                  <small>
+                    WEB DEVELOPMENT INTERN
+                  </small>
+
+                  <h3>
+                    {EXPERIENCE.company}
+                  </h3>
+
+                  <p>
+                    {EXPERIENCE.location}
+                  </p>
+
+                </div>
+
+                <span className="experience-period">
+                  {EXPERIENCE.period}
                 </span>
 
-                <strong>{skill}</strong>
-
-                <i>↗</i>
               </div>
-            ))}
+
+              <div className="experience-points">
+
+                {EXPERIENCE.points.map(
+                  (point, index) => (
+
+                    <div key={point}>
+
+                      <span>
+                        0{index + 1}
+                      </span>
+
+                      <p>{point}</p>
+
+                    </div>
+
+                  )
+                )}
+
+              </div>
+
+              <div className="experience-stack">
+
+                <span>REACT.JS</span>
+                <span>JAVA</span>
+                <span>SPRING BOOT</span>
+                <span>MYSQL</span>
+                <span>REST API</span>
+                <span>GIT</span>
+
+              </div>
+
+            </article>
+
           </div>
-        </section>
 
-        {/* ===================================================
-            EXPERIENCE
-        =================================================== */}
+          <div className="education-strip">
 
-        <section id="experience" className="section experience-section">
-          <div className="section-heading">
-            <span className="section-number">04</span>
-            <span className="section-name">EXPERIENCE</span>
-          </div>
+            <div className="education-number">
+              EDU
+            </div>
 
-          <div className="experience-layout">
-            <div className="experience-title">
-              <p className="small-label">
-                / JOURNEY
+            <div>
+
+              <small>
+                B.E. COMPUTER SCIENCE AND ENGINEERING
+              </small>
+
+              <h3>
+                Dr. ACS College of Engineering
+              </h3>
+
+              <p>
+                Bengaluru · 2023 — 2026
               </p>
 
-              <h2>
-                Learning by
-                <br />
-                <span>building.</span>
-              </h2>
             </div>
 
-            <div className="timeline">
-              <div className="timeline-item">
-                <div className="timeline-date">
-                  2025 — 2026
-                </div>
+            <strong>8.00</strong>
 
-                <div className="timeline-marker" />
-
-                <div className="timeline-content">
-                  <p>SOFTWARE DEVELOPMENT</p>
-                  <h3>FULL STACK PROJECTS</h3>
-                  <span>
-                    React / Java / Spring Boot / MySQL
-                  </span>
-
-                  <p className="timeline-description">
-                    Built and worked on full-stack applications
-                    involving frontend interfaces, REST APIs,
-                    authentication, databases and deployment.
-                  </p>
-                </div>
-              </div>
-
-              <div className="timeline-item">
-                <div className="timeline-date">
-                  2023 — 2026
-                </div>
-
-                <div className="timeline-marker" />
-
-                <div className="timeline-content">
-                  <p>EDUCATION</p>
-                  <h3>COMPUTER SCIENCE ENGINEERING</h3>
-                  <span>
-                    B.E. / ACS COLLEGE OF ENGINEERING
-                  </span>
-
-                  <p className="timeline-description">
-                    Developed a strong foundation in programming,
-                    databases, web development, software engineering
-                    and computer science fundamentals.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
+
         </section>
 
-        {/* ===================================================
-            PROJECTS
-        =================================================== */}
+        {/* PROJECTS */}
 
-        <section id="projects" className="section projects-section">
-          <div className="section-heading">
-            <span className="section-number">05</span>
-            <span className="section-name">SELECTED WORK</span>
-          </div>
+        <section id="projects" className="section projects">
 
-          <div className="projects-intro">
-            <p className="small-label">
-              / PROJECT ARCHIVE
+          <div className="section-heading project-heading">
+
+            <span className="section-number">04</span>
+
+            <div>
+
+              <small>SELECTED WORK</small>
+
+              <h2>
+                Things I've
+                <br />
+                actually shipped.
+              </h2>
+
+            </div>
+
+            <p>
+              End-to-end applications demonstrating frontend,
+              backend, authentication, database design, testing
+              and deployment.
             </p>
 
-            <h2>
-              Things I've
-              <br />
-              <span>built.</span>
-            </h2>
           </div>
 
-          <div className="project-list">
+          <div className="projects-list">
+
             {PROJECTS.map((project) => (
+
               <article
-                className="project-row"
+                className="project-showcase"
                 key={project.number}
               >
-                <div className="project-number">
-                  {project.number}
+
+                <div className="project-index">
+
+                  <span>
+                    {project.number}
+                  </span>
+
+                  <small>
+                    {project.year}
+                  </small>
+
                 </div>
 
-                <div className="project-main">
-                  <p>{project.type}</p>
+                <div className="project-main-info">
+
+                  <div className="project-category">
+                    {project.category}
+                  </div>
 
                   <h3>{project.title}</h3>
 
+                  <h4>{project.subtitle}</h4>
+
+                  <p className="project-description">
+                    {project.description}
+                  </p>
+
                   <div className="project-stack">
-                    {project.stack.map((item) => (
-                      <span key={item}>
-                        {item}
-                      </span>
-                    ))}
+
+                    {project.stack
+                      .split(" · ")
+                      .map((item) => (
+                        <span key={item}>
+                          {item}
+                        </span>
+                      ))}
+
                   </div>
+
                 </div>
 
-                <div className="project-description">
-                  <p>{project.description}</p>
+                <div className="project-details">
 
-                  <button
-                    className="project-arrow"
-                    aria-label={`View ${project.title}`}
-                  >
-                    ↗
-                  </button>
+                  <div className="project-points">
+
+                    <small>
+                      WHAT I BUILT
+                    </small>
+
+                    {project.points.map(
+                      (point, index) => (
+
+                        <div key={point}>
+
+                          <span>
+                            0{index + 1}
+                          </span>
+
+                          <p>{point}</p>
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
+                  <div className="project-links">
+
+                    <div className="render-warning">
+
+                      <span>⚠</span>
+
+                      <p>
+
+                        <strong>
+                          START BACKEND FIRST
+                        </strong>
+
+                        <br />
+
+                        The backend is deployed on Render
+                        and may sleep on the free tier.
+                        Open the backend first and wait
+                        around 30–50 seconds for it to wake
+                        up, then open the frontend.
+
+                      </p>
+
+                    </div>
+
+                    <div className="project-buttons">
+
+                      <a
+                        href={project.backend}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-link backend"
+                      >
+                        BACKEND
+                        <Arrow />
+                      </a>
+
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-link live"
+                      >
+                        LIVE FRONTEND
+                        <Arrow />
+                      </a>
+
+                    </div>
+
+                  </div>
+
                 </div>
+
               </article>
+
             ))}
+
           </div>
+
         </section>
 
-        {/* ===================================================
-            CONTACT
-        =================================================== */}
+        {/* CERTIFICATIONS */}
 
-        <section id="contact" className="section contact-section">
-          <div className="contact-top">
-            <div className="section-heading">
-              <span className="section-number">06</span>
-              <span className="section-name">CONTACT</span>
+        <section className="section certifications">
+
+          <div className="section-heading">
+
+            <span className="section-number">05</span>
+
+            <div>
+
+              <small>CREDENTIALS</small>
+
+              <h2>
+                Learning
+                <br />
+                never stops.
+              </h2>
+
             </div>
 
-            <p className="small-label">
-              / LET'S BUILD SOMETHING
-            </p>
           </div>
+
+          <div className="cert-grid">
+
+            <article className="cert-card">
+
+              <span>01</span>
+
+              <small>
+                INFOSYS SPRINGBOARD
+              </small>
+
+              <h3>
+                Java Programming Fundamentals
+              </h3>
+
+              <div>JAVA</div>
+
+            </article>
+
+            <article className="cert-card">
+
+              <span>02</span>
+
+              <small>
+                INFOSYS SPRINGBOARD
+              </small>
+
+              <h3>
+                Introduction to Java
+              </h3>
+
+              <div>JAVA</div>
+
+            </article>
+
+          </div>
+
+        </section>
+
+        {/* CONTACT */}
+
+        <section
+          id="contact"
+          className="contact-section"
+        >
+
+          <div className="contact-glow" />
 
           <div className="contact-content">
+
+            <span className="contact-label">
+              06 / CONTACT
+            </span>
+
             <h2>
-              HAVE A
+              Let's build
               <br />
-              <span>PROJECT?</span>
+              something <span>real.</span>
             </h2>
 
-            <a
-              href="mailto:rahul@example.com"
-              className="email-link"
-            >
-              <span>rahul@example.com</span>
-              <strong>↗</strong>
-            </a>
-          </div>
+            <p>
+              Looking for opportunities to build
+              production-grade web applications and
+              contribute as a Full Stack or Frontend
+              Developer.
+            </p>
 
-          <div className="contact-footer">
-            <div>
-              <span>RAHUL S.</span>
-              <small>JAVA FULL STACK DEVELOPER</small>
-            </div>
+            {/* CONTACT CARDS */}
 
-            <div className="footer-links">
+            <div className="social-links">
+
               <a
-                href="https://github.com/"
-                target="_blank"
-                rel="noreferrer"
+                href="tel:7337634886"
+                className="social-card"
               >
-                GITHUB ↗
+                <span>PHONE</span>
+                <strong>7337634886</strong>
+                <Arrow />
               </a>
 
               <a
-                href="https://www.linkedin.com/"
+                href="mailto:Srinivasrahul838@gmail.com"
+                className="social-card"
+              >
+                <span>EMAIL</span>
+                <strong>Srinivasrahul838@gmail.com</strong>
+                <Arrow />
+              </a>
+
+              <a
+                href="https://github.com/RAHUL2525252525"
                 target="_blank"
                 rel="noreferrer"
+                className="social-card"
               >
-                LINKEDIN ↗
+                <span>GITHUB</span>
+                <strong>RAHUL2525252525</strong>
+                <Arrow />
               </a>
+
+              <a
+                href="https://www.linkedin.com/in/rahul-s-6460b1238"
+                target="_blank"
+                rel="noreferrer"
+                className="social-card"
+              >
+                <span>LINKEDIN</span>
+                <strong>RAHUL S.</strong>
+                <Arrow />
+              </a>
+
             </div>
 
-            <span>
-              © 2026
-            </span>
+            <div className="contact-meta">
+
+              <span>RAHUL S</span>
+
+              <span>
+                BENGALURU, INDIA
+              </span>
+
+              <span>2026</span>
+
+            </div>
+
           </div>
+
         </section>
+
       </main>
+
+      <footer className="footer">
+
+        <span>
+          RAHUL.S / JAVA FULL STACK DEVELOPER
+        </span>
+
+        <span>
+          BUILT WITH REACT.JS
+        </span>
+
+        <span>
+          © 2026
+        </span>
+
+      </footer>
+
     </div>
   );
 }
