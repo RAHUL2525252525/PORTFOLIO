@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 
+// New background clip — dark, drifting particle field (Pexels,
+// free license, no attribution required). Different mood from
+// the original neon-overlay clip: quieter, more premium, reads
+// as depth rather than a flat color wash.
+const VIDEO_URL =
+  "https://videos.pexels.com/video-files/29919008/12841733_1920_1080_30fps.mp4";
+
 const NAV_ITEMS = [
   ["home", "HOME"],
   ["about", "ABOUT"],
@@ -200,27 +207,6 @@ function Arrow() {
   return <span className="arrow-symbol">↗</span>;
 }
 
-/* =========================================================
-   ANIMATED MESH BACKGROUND
-   Replaces the external stock-footage video with a
-   lightweight, dependency-free animated gradient mesh.
-   Same layered look (dark wash + neon/cyan glow + grain)
-   but loads instantly, never buffers, and has no license
-   or bandwidth concerns.
-========================================================= */
-
-function MeshBackground() {
-  return (
-    <div className="mesh-background" aria-hidden="true">
-      <div className="mesh-blob blob-a" />
-      <div className="mesh-blob blob-b" />
-      <div className="mesh-blob blob-c" />
-      <div className="mesh-blob blob-d" />
-      <div className="mesh-grid" />
-    </div>
-  );
-}
-
 function App() {
   const typed = useTypewriter(STACK);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -262,9 +248,19 @@ function App() {
   return (
     <div className="site">
 
-      {/* ANIMATED MESH BACKGROUND (replaces stock video) */}
+      {/* VIDEO BACKGROUND */}
 
-      <MeshBackground />
+      <video
+        className="background-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src={VIDEO_URL} type="video/mp4" />
+      </video>
 
       <div className="video-darkness" />
       <div className="video-color-wash" />
