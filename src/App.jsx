@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useEffect, useState } from "react";
 import "./index.css";
 
@@ -21,6 +17,8 @@ const NAV_ITEMS = [
   ["contact", "CONTACT"],
 ];
 
+// Keep this list at 8 items — the radar's node-1..node-8
+// positioning in index.css is hardcoded to 8 nodes.
 const STACK = [
   "React.js",
   "Java",
@@ -72,6 +70,8 @@ const SKILL_GROUPS = [
       "Spring Security",
       "JWT Authentication",
       "Role-Based Access Control (RBAC)",
+      "Firebase Authentication",
+      "Google OAuth",
     ],
   },
   {
@@ -108,6 +108,20 @@ const SKILL_GROUPS = [
       "Data Structures & Algorithms",
       "OOP",
       "DBMS",
+    ],
+  },
+  {
+    number: "07",
+    title: "PYTHON / AI",
+    skills: [
+      "Python",
+      "Flask",
+      "Firebase Authentication",
+      "Google OAuth",
+      "Groq API",
+      "OpenRouter API",
+      "Gemini API",
+      "REST API Integration",
     ],
   },
 ];
@@ -151,6 +165,56 @@ const PROJECTS = [
     live: "https://banksphere-frontend.vercel.app",
     backend: "https://banksphere-backend-b96m.onrender.com",
   },
+  {
+    number: "03",
+    year: "2026",
+    category: "PYTHON / FLASK / AI",
+    title: "Life Decision Assistant",
+    subtitle: "AI-Powered Decision Support Web App",
+    stack:
+      "Python · Flask · HTML/CSS/JS · Firebase Auth · Groq API · OpenRouter API · Gemini API",
+    description:
+      "An AI-assisted decision-support app that helps users reason through choices, built with Flask and Firebase authentication.",
+    points: [
+      "Built the full application in Python/Flask with Firebase-based user registration and login.",
+      "Integrated multiple LLM providers — Groq, OpenRouter, and Gemini APIs — behind a single Flask backend to generate decision recommendations.",
+    ],
+    live: "https://life-decision-assistant-63pu.onrender.com",
+    singleService: true,
+  },
+  {
+    number: "04",
+    year: "2026",
+    category: "PYTHON / FLASK / AI",
+    title: "AI Exam Companion",
+    subtitle: "AI-Powered Study & Exam Prep Web App",
+    stack: "Python · Flask · HTML/CSS/JS · Firebase Auth · Groq API",
+    description:
+      "A study companion that generates practice questions and exam guidance, built on the same Flask/Firebase foundation.",
+    points: [
+      "Built with the same Python/Flask backend and Firebase authentication approach as Life Decision Assistant.",
+      "Used the Groq API to generate practice questions and exam guidance tailored to the user's input.",
+    ],
+    live: "https://ai-exam-companion-ghzc.onrender.com",
+    singleService: true,
+  },
+  {
+    number: "05",
+    year: "2026",
+    category: "PYTHON / FLASK / AI",
+    title: "Digital Dashboard",
+    subtitle: "AI-Assisted Personal Dashboard",
+    stack:
+      "Python · Flask · HTML/CSS/JS · Firebase Auth · Google OAuth · Groq API",
+    description:
+      "A personal dashboard app extending the Flask/Firebase stack with Google sign-in and Groq-powered features.",
+    points: [
+      "Built on the same Python/Flask and Firebase authentication foundation as the other projects.",
+      "Added Google OAuth as a second sign-in option and used the Groq API to power AI-assisted dashboard features.",
+    ],
+    live: "https://digital-dashboard1.onrender.com",
+    singleService: true,
+  },
 ];
 
 const EXPERIENCE = {
@@ -161,6 +225,7 @@ const EXPERIENCE = {
   points: [
     "Owned end-to-end development of 2+ full-stack modules using React.js, Java, Spring Boot, and MySQL, from API design through frontend integration.",
     "Built and integrated REST APIs with backend services to support dynamic data handling, implementing authentication and CRUD operations within an Agile, Git-based deployment workflow.",
+    "Independently designed and shipped 3 Python/Flask web applications with Firebase authentication, later extending them with Groq, OpenRouter, and Gemini API integrations — applying the same full-stack fundamentals carried into Java-based project work.",
   ],
 };
 
@@ -386,7 +451,9 @@ function App() {
                 Full Stack Developer skilled in React.js, Java,
                 and Spring Boot with strong hands-on experience
                 building secure, end-to-end web applications
-                from UI to database.
+                from UI to database — plus hands-on project
+                experience building AI-integrated apps with
+                Python and Flask.
               </p>
 
               <div className="hero-actions">
@@ -529,7 +596,10 @@ function App() {
                 Proven ability to independently architect and
                 deliver full-stack projects — REST APIs, JWT
                 authentication, RBAC, and MySQL database design
-                — in Agile environments.
+                — in Agile environments. Also brings hands-on
+                experience building AI-integrated apps with
+                Python, Flask, Firebase/Google auth, and LLM
+                APIs like Groq, OpenRouter, and Gemini.
               </p>
 
             </div>
@@ -575,6 +645,10 @@ function App() {
 
                   <span>
                     <i>"security"</i>: "JWT + RBAC",
+                  </span>
+
+                  <span>
+                    <i>"also_hands_on"</i>: "Python + Flask + LLM APIs",
                   </span>
 
                   <span>{"}"}</span>
@@ -644,7 +718,9 @@ function App() {
               <p>
                 A practical stack focused on building responsive
                 frontends, secure REST APIs, relational databases
-                and deployable full-stack systems.
+                and deployable full-stack systems — with Python/
+                Flask and LLM API integrations as a hands-on
+                secondary track.
               </p>
 
             </div>
@@ -768,6 +844,8 @@ function App() {
                 <span>MYSQL</span>
                 <span>REST API</span>
                 <span>GIT</span>
+                <span>PYTHON</span>
+                <span>FLASK</span>
 
               </div>
 
@@ -826,7 +904,8 @@ function App() {
             <p>
               End-to-end applications demonstrating frontend,
               backend, authentication, database design, testing
-              and deployment.
+              and deployment — spanning Java/Spring Boot systems
+              and hands-on Python/Flask + AI API projects.
             </p>
 
           </div>
@@ -915,16 +994,29 @@ function App() {
                       <p>
 
                         <strong>
-                          START BACKEND FIRST
+                          {project.singleService
+                            ? "APP MAY TAKE A MOMENT TO WAKE UP"
+                            : "START BACKEND FIRST"}
                         </strong>
 
                         <br />
 
-                        The backend is deployed on Render
-                        and may sleep on the free tier.
-                        Open the backend first and wait
-                        around 30–50 seconds for it to wake
-                        up, then open the frontend.
+                        {project.singleService ? (
+                          <>
+                            This app is deployed on Render's
+                            free tier and may sleep after
+                            inactivity. Give it around 30–50
+                            seconds to wake up after opening.
+                          </>
+                        ) : (
+                          <>
+                            The backend is deployed on Render
+                            and may sleep on the free tier.
+                            Open the backend first and wait
+                            around 30–50 seconds for it to wake
+                            up, then open the frontend.
+                          </>
+                        )}
 
                       </p>
 
@@ -932,15 +1024,17 @@ function App() {
 
                     <div className="project-buttons">
 
-                      <a
-                        href={project.backend}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="project-link backend"
-                      >
-                        BACKEND
-                        <Arrow />
-                      </a>
+                      {!project.singleService && (
+                        <a
+                          href={project.backend}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="project-link backend"
+                        >
+                          BACKEND
+                          <Arrow />
+                        </a>
+                      )}
 
                       <a
                         href={project.live}
@@ -948,7 +1042,7 @@ function App() {
                         rel="noreferrer"
                         className="project-link live"
                       >
-                        LIVE FRONTEND
+                        {project.singleService ? "LIVE APP" : "LIVE FRONTEND"}
                         <Arrow />
                       </a>
 
