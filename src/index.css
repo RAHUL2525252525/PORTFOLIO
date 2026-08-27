@@ -93,10 +93,6 @@ a {
 
 /* =========================================================
    VIDEO BACKGROUND
-   Dark, slow-moving particle footage (Pexels, free
-   license). Layered under a black wash + a violet/cyan/
-   pink "holographic" color wash so it reads as one
-   cohesive, cinematic black theme rather than a raw clip.
 ========================================================= */
 
 .background-video {
@@ -2342,13 +2338,8 @@ button:hover .arrow-symbol {
 
 /* =========================================================
    SIGNATURE TREATMENTS
-   The unique layer of this design: a serif display face
-   for headlines, an animated holographic gradient on key
-   accent words, and glass panels (blurred, translucent,
-   soft-lit) replacing flat cards everywhere.
 ========================================================= */
 
-/* Distinctive serif display type on every major headline */
 .hero h1,
 .section-heading h2,
 .contact-content h2,
@@ -2380,7 +2371,6 @@ button:hover .arrow-symbol {
   font-weight: 500;
 }
 
-/* Animated holographic gradient text on the accent words */
 .hero h1 span,
 .contact-content h2 span {
   background: linear-gradient(
@@ -2411,8 +2401,6 @@ button:hover .arrow-symbol {
   }
 }
 
-/* Glass panels: replace the flat translucent cards with
-   blurred, backlit glass so the video reads through them */
 .skill-group,
 .experience-main,
 .project-showcase,
@@ -2434,7 +2422,6 @@ button:hover .arrow-symbol {
     0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
-/* Multi-color glow instead of a flat single-color one */
 .brand-symbol {
   box-shadow:
     0 0 20px rgba(139, 92, 246, 0.14),
@@ -2471,8 +2458,6 @@ button:hover .arrow-symbol {
   background: rgba(139, 92, 246, 0.05);
 }
 
-/* Warm gold accent, used sparingly, for credentials —
-   keeps the palette from reading as a single hue */
 .cert-card > div {
   color: var(--gold);
   border-color: rgba(216, 178, 106, 0.35);
@@ -2593,8 +2578,6 @@ button:hover .arrow-symbol {
     display: flex;
   }
 
-  /* MOBILE MENU */
-
   .mobile-menu {
     position: fixed;
 
@@ -2669,8 +2652,6 @@ button:hover .arrow-symbol {
   .mobile-menu button small {
     color: var(--neon);
   }
-
-  /* HERO */
 
   .hero {
     min-height: auto;
@@ -2754,8 +2735,6 @@ button:hover .arrow-symbol {
     height: 320px;
   }
 
-  /* CIRCULAR PROFILE - MOBILE */
-
   .portrait-frame {
     width: 190px;
 
@@ -2808,8 +2787,6 @@ button:hover .arrow-symbol {
     margin-top: 20px;
   }
 
-  /* SECTIONS */
-
   .section {
     padding: 95px 0;
   }
@@ -2825,8 +2802,6 @@ button:hover .arrow-symbol {
   .section-heading h2 {
     font-size: 43px;
   }
-
-  /* ABOUT */
 
   .about-content {
     grid-template-columns: 1fr;
@@ -2853,8 +2828,6 @@ button:hover .arrow-symbol {
 
     gap: 7px;
   }
-
-  /* SKILLS */
 
   .radar {
     width: 300px;
@@ -2934,8 +2907,6 @@ button:hover .arrow-symbol {
     min-height: auto;
   }
 
-  /* EXPERIENCE */
-
   .experience-wrapper {
     grid-template-columns: 1fr;
 
@@ -2990,8 +2961,6 @@ button:hover .arrow-symbol {
     grid-column: 2;
   }
 
-  /* PROJECTS */
-
   .project-heading {
     grid-template-columns: 45px 1fr;
   }
@@ -3044,13 +3013,9 @@ button:hover .arrow-symbol {
     width: 100%;
   }
 
-  /* CERTIFICATIONS */
-
   .cert-grid {
     grid-template-columns: 1fr;
   }
-
-  /* CONTACT */
 
   .contact-section {
     min-height: auto;
@@ -3095,8 +3060,6 @@ button:hover .arrow-symbol {
 
     margin-top: 40px;
   }
-
-  /* FOOTER */
 
   .footer {
     flex-direction: column;
@@ -3143,8 +3106,6 @@ button:hover .arrow-symbol {
 
     height: 280px;
   }
-
-  /* CIRCULAR PROFILE - VERY SMALL MOBILE */
 
   .portrait-frame {
     width: 165px;
@@ -3262,17 +3223,3 @@ button:hover .arrow-symbol {
 /* =========================================================
    END
 ========================================================= */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
