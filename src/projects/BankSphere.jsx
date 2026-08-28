@@ -1,263 +1,119 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 
-import img14 from "../assets/projects/banksphere/14.png";
-import img15 from "../assets/projects/banksphere/15.png";
-import img16 from "../assets/projects/banksphere/16.png";
-import img17 from "../assets/projects/banksphere/17.png";
-import img18 from "../assets/projects/banksphere/18.png";
-import img19 from "../assets/projects/banksphere/19.png";
-import img20 from "../assets/projects/banksphere/20.png";
-import img21 from "../assets/projects/banksphere/21.png";
-import img22 from "../assets/projects/banksphere/22.png";
-import img23 from "../assets/projects/banksphere/23.png";
+import image14 from "../assets/projects/banksphere/14.png";
+import image15 from "../assets/projects/banksphere/15.png";
+import image16 from "../assets/projects/banksphere/16.png";
+import image17 from "../assets/projects/banksphere/17.png";
+import image18 from "../assets/projects/banksphere/18.png";
+import image19 from "../assets/projects/banksphere/19.png";
+import image20 from "../assets/projects/banksphere/20.png";
+import image21 from "../assets/projects/banksphere/21.png";
+import image22 from "../assets/projects/banksphere/22.png";
+import image23 from "../assets/projects/banksphere/23.png";
 
 const screenshots = [
-  img14, img15, img16, img17, img18,
-  img19, img20, img21, img22, img23
+  image14,
+  image15,
+  image16,
+  image17,
+  image18,
+  image19,
+  image20,
+  image21,
+  image22,
+  image23,
 ];
 
 export default function BankSphere() {
-  const [selectedImage, setSelectedImage] = useState(null);
-
   return (
-    <>
-      <style>{`
-        .bank-page {
-          min-height: 100vh;
-          background: #050505;
-          color: #fff;
-          padding: 70px 7%;
-          font-family: Inter, Arial, sans-serif;
-        }
+    <div className="project-page">
+      <div className="project-page-container">
 
-        .bank-wrapper {
-          max-width: 1250px;
-          margin: auto;
-        }
+        <Link to="/" className="back-button">
+          <ArrowLeft size={18} />
+          Back to Portfolio
+        </Link>
 
-        .bank-back {
-          color: #aaa;
-          text-decoration: none;
-          display: inline-block;
-          margin-bottom: 45px;
-        }
+        <div className="project-hero">
+          <span className="project-label">FULL STACK BANKING APPLICATION</span>
 
-        .bank-back:hover {
-          color: white;
-        }
+          <h1>Online Banking System</h1>
 
-        .bank-label {
-          color: #888;
-          letter-spacing: 3px;
-          text-transform: uppercase;
-          font-size: 13px;
-        }
-
-        .bank-title {
-          font-size: clamp(48px, 8vw, 100px);
-          margin: 15px 0;
-          line-height: 1;
-        }
-
-        .bank-description {
-          max-width: 850px;
-          color: #aaa;
-          font-size: 19px;
-          line-height: 1.8;
-          margin-bottom: 70px;
-        }
-
-        .bank-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 70px;
-          margin-bottom: 70px;
-        }
-
-        .bank-section h2 {
-          font-size: 27px;
-          margin-bottom: 20px;
-        }
-
-        .bank-section p {
-          color: #aaa;
-          line-height: 1.8;
-        }
-
-        .bank-tech {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .bank-tech span {
-          border: 1px solid #292929;
-          background: #0d0d0d;
-          padding: 9px 15px;
-          border-radius: 30px;
-          font-size: 14px;
-          color: #ddd;
-        }
-
-        .bank-features {
-          padding-left: 20px;
-          color: #aaa;
-          line-height: 2;
-        }
-
-        .bank-shots-title {
-          font-size: 32px;
-          margin-bottom: 30px;
-        }
-
-        .bank-shots {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 25px;
-        }
-
-        .bank-shot {
-          overflow: hidden;
-          border-radius: 15px;
-          border: 1px solid #222;
-          cursor: pointer;
-          transition: .3s;
-        }
-
-        .bank-shot:hover {
-          transform: translateY(-6px);
-          border-color: #555;
-        }
-
-        .bank-shot img {
-          width: 100%;
-          display: block;
-        }
-
-        .bank-lightbox {
-          position: fixed;
-          inset: 0;
-          background: rgba(0,0,0,.95);
-          z-index: 9999;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 30px;
-        }
-
-        .bank-lightbox img {
-          max-width: 95%;
-          max-height: 90vh;
-        }
-
-        .bank-close {
-          position: fixed;
-          right: 30px;
-          top: 20px;
-          font-size: 40px;
-          cursor: pointer;
-        }
-
-        @media(max-width:750px) {
-          .bank-grid,
-          .bank-shots {
-            grid-template-columns: 1fr;
-          }
-
-          .bank-page {
-            padding: 45px 5%;
-          }
-        }
-      `}</style>
-
-      <main className="bank-page">
-        <div className="bank-wrapper">
-
-          <a href="/" className="bank-back">
-            ← Back to Portfolio
-          </a>
-
-          <div className="bank-label">
-            Full Stack Banking Application
-          </div>
-
-          <h1 className="bank-title">
-            BankSphere
-          </h1>
-
-          <p className="bank-description">
-            A secure full-stack online banking application built using
-            Java 17, Spring Boot 3, Spring Security, JWT, React.js,
-            MySQL and Docker.
+          <p>
+            Secure full-stack banking application with JWT authentication,
+            role-based access control and Docker containerization.
           </p>
 
-          <div className="bank-grid">
+          <div className="project-tags">
+            <span>Java 17</span>
+            <span>Spring Boot 3</span>
+            <span>Spring Security</span>
+            <span>JWT</span>
+            <span>React.js</span>
+            <span>MySQL</span>
+            <span>Docker</span>
+          </div>
+        </div>
 
-            <section className="bank-section">
-              <h2>Overview</h2>
+        <section className="project-content">
+          <h2>Project Overview</h2>
 
+          <p>
+            Online Banking System is a full-stack banking application
+            designed around secure authentication, authorization,
+            normalized database design and containerized deployment.
+          </p>
+
+          <div className="feature-grid">
+            <div>
+              <h3>Security</h3>
               <p>
-                BankSphere is designed around secure banking workflows,
-                stateless authentication and role-based authorization.
-                The system manages banking operations through REST APIs
-                backed by a normalized relational database.
+                Stateless JWT authentication with Spring Security.
               </p>
-            </section>
+            </div>
 
-            <section className="bank-section">
-              <h2>Technology Stack</h2>
-
-              <div className="bank-tech">
-                <span>Java 17</span>
-                <span>Spring Boot 3</span>
-                <span>Spring Security</span>
-                <span>JWT</span>
-                <span>React.js</span>
-                <span>MySQL</span>
-                <span>REST APIs</span>
-                <span>Docker</span>
-                <span>Docker Compose</span>
-              </div>
-            </section>
-
-            <section className="bank-section">
-              <h2>Key Features</h2>
-
-              <ul className="bank-features">
-                <li>JWT Authentication</li>
-                <li>Role-Based Authorization</li>
-                <li>Secure Banking Operations</li>
-                <li>Customer Management</li>
-                <li>Account Management</li>
-                <li>Transaction Processing</li>
-                <li>Normalized MySQL Database</li>
-                <li>REST API Architecture</li>
-              </ul>
-            </section>
-
-            <section className="bank-section">
-              <h2>Security</h2>
-
+            <div>
+              <h3>Authorization</h3>
               <p>
-                Implemented stateless JWT authentication with Spring Security
-                and permission-based access control to protect banking
-                operations and restrict unauthorized access.
+                Three permission tiers with role-based access control.
               </p>
-            </section>
+            </div>
 
+            <div>
+              <h3>Database</h3>
+              <p>
+                Normalized MySQL schema with relational constraints.
+              </p>
+            </div>
+
+            <div>
+              <h3>DevOps</h3>
+              <p>
+                Docker Compose for full-stack environment setup.
+              </p>
+            </div>
           </div>
 
-          <h2 className="bank-shots-title">
-            Project Screenshots
-          </h2>
+          <h2>Key Features</h2>
 
-          <div className="bank-shots">
+          <ul className="feature-list">
+            <li>JWT authentication</li>
+            <li>Role-based authorization</li>
+            <li>Secure banking operations</li>
+            <li>Normalized relational database</li>
+            <li>Spring Security integration</li>
+            <li>Docker Compose setup</li>
+            <li>JUnit 5 testing</li>
+            <li>Mockito unit testing</li>
+          </ul>
+
+          <h2>Project Screenshots</h2>
+
+          <div className="screenshots-grid">
             {screenshots.map((image, index) => (
-              <div
-                className="bank-shot"
-                key={index}
-                onClick={() => setSelectedImage(image)}
-              >
+              <div className="screenshot-card" key={image}>
                 <img
                   src={image}
                   alt={`BankSphere screenshot ${index + 1}`}
@@ -266,18 +122,19 @@ export default function BankSphere() {
             ))}
           </div>
 
-        </div>
-
-        {selectedImage && (
-          <div
-            className="bank-lightbox"
-            onClick={() => setSelectedImage(null)}
-          >
-            <span className="bank-close">×</span>
-            <img src={selectedImage} alt="BankSphere preview" />
+          <div className="project-actions">
+            <a
+              href="https://github.com/RAHUL2525252525"
+              target="_blank"
+              rel="noreferrer"
+              className="project-action-button"
+            >
+              GitHub
+              <ExternalLink size={17} />
+            </a>
           </div>
-        )}
-      </main>
-    </>
+        </section>
+      </div>
+    </div>
   );
 }
