@@ -1,370 +1,596 @@
 import React from "react";
 
-const imageFiles = import.meta.glob(
-  "../assets/projects/shopsphere/*.png.png",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
-
-const images = Object.entries(imageFiles)
-  .sort(([a], [b]) => {
-    const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    return numberA - numberB;
-  })
-  .map(([, src]) => src);
-
-const features = [
-  {
-    number: "01",
-    title: "Product Management",
-    text: "Built product browsing, search and catalog management functionality across the application."
-  },
-  {
-    number: "02",
-    title: "Shopping Cart",
-    text: "Implemented cart workflows with centralized frontend state handling and validation."
-  },
-  {
-    number: "03",
-    title: "Wishlist",
-    text: "Enabled customers to save products and manage their wishlist through REST APIs."
-  },
-  {
-    number: "04",
-    title: "Checkout Flow",
-    text: "Created a validated checkout workflow connecting cart data with order creation."
-  },
-  {
-    number: "05",
-    title: "Order Management",
-    text: "Implemented customer order tracking and administrative order operations."
-  },
-  {
-    number: "06",
-    title: "RBAC",
-    text: "Separated ADMIN and CUSTOMER capabilities with role-based access restrictions."
-  }
-];
-
 export default function ShopSphere() {
+  const screenshots = Array.from(
+    { length: 13 },
+    (_, i) => `/${i + 1}.png.png`
+  );
+
   return (
-    <div className="case-page shopsphere-page">
+    <>
+      <style>{`
+        .project-page {
+          min-height: 100vh;
+          background: #f5f5f2;
+          color: #111214;
+          font-family: "DM Sans", Arial, sans-serif;
+        }
 
-      {/* NAV */}
-      <nav className="case-nav">
-        <a href="#/" className="case-back">
-          <span>←</span>
-          Back to Portfolio
-        </a>
+        .project-nav {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          height: 76px;
+          padding: 0 6%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(245,245,242,.9);
+          backdrop-filter: blur(18px);
+          border-bottom: 1px solid #dedfdc;
+        }
 
-        <div className="case-nav-center">
-          <span className="case-dot"></span>
-          SOFTWARE ENGINEER
-        </div>
+        .project-logo {
+          font-family: "Space Grotesk", sans-serif;
+          font-size: 19px;
+          font-weight: 700;
+        }
 
-        <span className="case-number">01 / 05</span>
-      </nav>
+        .project-logo span {
+          color: #3457d5;
+        }
 
-      {/* HERO */}
-      <section className="case-hero">
+        .back-link {
+          color: #72757c;
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+        }
 
-        <div className="case-hero-copy">
+        .back-link:hover {
+          color: #3457d5;
+        }
+
+        .project-hero {
+          max-width: 1240px;
+          margin: auto;
+          padding: 110px 25px 80px;
+        }
+
+        .project-kicker {
+          color: #3457d5;
+          font-family: monospace;
+          font-size: 11px;
+          letter-spacing: 2px;
+          margin-bottom: 25px;
+        }
+
+        .project-hero h1 {
+          max-width: 1000px;
+          margin: 0;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: clamp(60px, 10vw, 140px);
+          line-height: .85;
+          letter-spacing: -7px;
+        }
+
+        .project-hero h1 span {
+          color: #3457d5;
+        }
+
+        .project-subtitle {
+          max-width: 720px;
+          margin-top: 35px;
+          color: #72757c;
+          font-size: 18px;
+          line-height: 1.8;
+        }
+
+        .project-meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 35px;
+        }
+
+        .project-meta span {
+          padding: 9px 14px;
+          border: 1px solid #d2d3d0;
+          border-radius: 100px;
+          color: #555860;
+          font-size: 11px;
+        }
+
+        .hero-image {
+          margin-top: 75px;
+          width: 100%;
+          border-radius: 32px;
+          overflow: hidden;
+          background: #e6e6e2;
+          box-shadow: 0 30px 80px rgba(0,0,0,.08);
+        }
+
+        .hero-image img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+
+        .project-content {
+          max-width: 1240px;
+          margin: auto;
+          padding: 40px 25px 120px;
+        }
+
+        .overview-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 80px;
+          padding: 80px 0;
+          border-bottom: 1px solid #dedfdc;
+        }
+
+        .section-label {
+          color: #3457d5;
+          font-family: monospace;
+          font-size: 10px;
+          letter-spacing: 2px;
+          margin-bottom: 18px;
+        }
+
+        .overview-grid h2,
+        .case-section h2 {
+          font-family: "Space Grotesk", sans-serif;
+          font-size: clamp(35px, 5vw, 65px);
+          line-height: 1;
+          letter-spacing: -3px;
+          margin: 0 0 25px;
+        }
+
+        .overview-grid p,
+        .case-section p,
+        .case-section li {
+          color: #686b72;
+          font-size: 15px;
+          line-height: 1.85;
+        }
+
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 15px;
+          margin-top: 40px;
+        }
+
+        .feature-card {
+          padding: 30px;
+          min-height: 190px;
+          background: white;
+          border: 1px solid #dedfdc;
+          border-radius: 22px;
+        }
+
+        .feature-card strong {
+          display: block;
+          color: #3457d5;
+          font-family: monospace;
+          font-size: 11px;
+          margin-bottom: 25px;
+        }
+
+        .feature-card h3 {
+          font-family: "Space Grotesk", sans-serif;
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+
+        .feature-card p {
+          font-size: 12px;
+          line-height: 1.7;
+        }
+
+        .case-section {
+          padding: 100px 0;
+          border-bottom: 1px solid #dedfdc;
+        }
+
+        .case-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 70px;
+        }
+
+        .case-section ul {
+          padding-left: 20px;
+        }
+
+        .case-section li {
+          margin-bottom: 14px;
+        }
+
+        .tech-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 9px;
+          margin-top: 25px;
+        }
+
+        .tech-list span {
+          padding: 9px 13px;
+          background: #111214;
+          color: white;
+          border-radius: 100px;
+          font-size: 11px;
+        }
+
+        .screenshots {
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          gap: 20px;
+          margin-top: 45px;
+        }
+
+        .screenshot {
+          overflow: hidden;
+          border-radius: 20px;
+          background: white;
+          border: 1px solid #dedfdc;
+          box-shadow: 0 15px 40px rgba(0,0,0,.05);
+        }
+
+        .screenshot img {
+          display: block;
+          width: 100%;
+          height: auto;
+          transition: transform .5s ease;
+        }
+
+        .screenshot:hover img {
+          transform: scale(1.025);
+        }
+
+        .architecture {
+          padding: 35px;
+          background: #111214;
+          color: white;
+          border-radius: 28px;
+          margin-top: 35px;
+          font-family: monospace;
+          font-size: 13px;
+          line-height: 2;
+          overflow-x: auto;
+        }
+
+        .project-footer {
+          margin-top: 80px;
+          padding: 50px;
+          background: #3457d5;
+          color: white;
+          border-radius: 30px;
+          text-align: center;
+        }
+
+        .project-footer h2 {
+          font-family: "Space Grotesk", sans-serif;
+          font-size: clamp(40px,6vw,75px);
+          letter-spacing: -3px;
+          margin: 0 0 25px;
+        }
+
+        .project-footer a {
+          display: inline-block;
+          padding: 14px 22px;
+          border-radius: 100px;
+          background: white;
+          color: #111214;
+          text-decoration: none;
+          font-weight: 700;
+          font-size: 12px;
+        }
+
+        @media(max-width:800px) {
+          .project-hero {
+            padding-top: 75px;
+          }
+
+          .project-hero h1 {
+            letter-spacing: -4px;
+          }
+
+          .overview-grid,
+          .case-grid {
+            grid-template-columns: 1fr;
+            gap: 35px;
+          }
+
+          .feature-grid,
+          .screenshots {
+            grid-template-columns: 1fr;
+          }
+
+          .project-content {
+            padding-bottom: 70px;
+          }
+        }
+
+        @media(max-width:500px) {
+          .project-nav {
+            padding: 0 18px;
+          }
+
+          .project-hero,
+          .project-content {
+            padding-left: 18px;
+            padding-right: 18px;
+          }
+
+          .hero-image {
+            margin-top: 45px;
+            border-radius: 20px;
+          }
+
+          .case-section {
+            padding: 70px 0;
+          }
+
+          .project-footer {
+            padding: 35px 20px;
+          }
+        }
+      `}</style>
+
+      <div className="project-page">
+
+        <nav className="project-nav">
+          <a href="/" className="back-link">← Back to Portfolio</a>
+          <div className="project-logo">
+            RAHUL<span>.</span>
+          </div>
+        </nav>
+
+        <header className="project-hero">
 
           <div className="project-kicker">
-            <span>JAVA FULL STACK</span>
-            <span>•</span>
-            <span>04/2026 — 06/2026</span>
+            01 / JAVA FULL STACK / E-COMMERCE
           </div>
 
           <h1>
-            Shop
-            <span>Sphere</span>
+            Shop<span>Sphere</span>
           </h1>
 
-          <p className="case-tagline">
-            Full Stack E-Commerce
-            <br />
-            Web Application
+          <p className="project-subtitle">
+            A complete full-stack e-commerce platform designed and
+            developed using Java, Spring Boot, React.js and MySQL.
+            The application covers product discovery, cart,
+            wishlist, checkout and order management workflows.
           </p>
 
-          <p className="case-intro">
-            A production-style e-commerce platform built with Java,
-            Spring Boot and React.js, featuring product discovery,
-            cart, wishlist, checkout and order management workflows.
-          </p>
-
-          <div className="case-hero-tags">
+          <div className="project-meta">
             <span>Java 17</span>
             <span>Spring Boot 3</span>
             <span>React.js</span>
+            <span>Spring Data JPA</span>
             <span>MySQL</span>
+            <span>REST APIs</span>
           </div>
 
-        </div>
-
-        <div className="hero-project-visual">
-
-          <div className="visual-glow"></div>
-
-          {images.length > 0 && (
-            <img
-              src={images[0]}
-              alt="ShopSphere application"
-            />
-          )}
-
-          <div className="visual-label">
-            <span>01</span>
-            LIVE APPLICATION VIEW
+          <div className="hero-image">
+            <img src={screenshots[0]} alt="ShopSphere dashboard" />
           </div>
 
-        </div>
+        </header>
 
-      </section>
+        <main className="project-content">
 
-      {/* OVERVIEW */}
-      <section className="case-section overview-section">
+          <section className="overview-grid">
 
-        <div className="section-eyebrow">
-          01 — OVERVIEW
-        </div>
+            <div>
+              <div className="section-label">01 / OVERVIEW</div>
+              <h2>Built like a real product.</h2>
+            </div>
 
-        <div className="overview-grid">
+            <div>
+              <p>
+                ShopSphere was built to demonstrate complete
+                full-stack application development rather than
+                only frontend implementation.
+              </p>
 
-          <div>
-            <h2>
-              Building a complete
-              <span> commerce experience.</span>
-            </h2>
-          </div>
+              <p>
+                The project connects a React frontend to a
+                Spring Boot REST backend and a MySQL relational
+                database through a layered architecture.
+              </p>
+            </div>
 
-          <div className="overview-text">
-            <p>
-              ShopSphere was developed as a full-stack application
-              connecting a React frontend with a Java Spring Boot
-              backend and MySQL database.
-            </p>
+          </section>
 
-            <p>
-              The application follows a layered architecture using
-              Controller, Service and Repository layers, keeping
-              business logic separated from API and persistence concerns.
-            </p>
+          <section className="case-section">
 
-            <div className="stat-row">
+            <div className="section-label">02 / CORE FEATURES</div>
+
+            <h2>Everything needed for an online store.</h2>
+
+            <div className="feature-grid">
+
+              <div className="feature-card">
+                <strong>01</strong>
+                <h3>Product Discovery</h3>
+                <p>
+                  Product browsing, search and structured
+                  product information.
+                </p>
+              </div>
+
+              <div className="feature-card">
+                <strong>02</strong>
+                <h3>Cart & Wishlist</h3>
+                <p>
+                  Persistent cart and wishlist workflows
+                  connected to authenticated users.
+                </p>
+              </div>
+
+              <div className="feature-card">
+                <strong>03</strong>
+                <h3>Checkout</h3>
+                <p>
+                  Checkout and order creation workflow with
+                  validated backend requests.
+                </p>
+              </div>
+
+              <div className="feature-card">
+                <strong>04</strong>
+                <h3>Order Management</h3>
+                <p>
+                  Users can access and manage their order
+                  information through REST APIs.
+                </p>
+              </div>
+
+              <div className="feature-card">
+                <strong>05</strong>
+                <h3>Admin Features</h3>
+                <p>
+                  Administrative product and application
+                  management functionality.
+                </p>
+              </div>
+
+              <div className="feature-card">
+                <strong>06</strong>
+                <h3>Validation</h3>
+                <p>
+                  Backend validation and structured exception
+                  handling for API requests.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section className="case-section">
+
+            <div className="case-grid">
+
               <div>
-                <strong>6+</strong>
-                <small>MODULES</small>
+                <div className="section-label">03 / ARCHITECTURE</div>
+                <h2>Layered backend architecture.</h2>
               </div>
 
               <div>
-                <strong>15+</strong>
-                <small>REST ENDPOINTS</small>
+                <p>
+                  The backend follows a structured Controller,
+                  Service and Repository approach.
+                </p>
+
+                <div className="architecture">
+                  React.js
+                  <br />
+                  ↓
+                  <br />
+                  Axios / REST API
+                  <br />
+                  ↓
+                  <br />
+                  Spring Boot Controller
+                  <br />
+                  ↓
+                  <br />
+                  Service Layer
+                  <br />
+                  ↓
+                  <br />
+                  Spring Data JPA / Hibernate
+                  <br />
+                  ↓
+                  <br />
+                  MySQL Database
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section className="case-section">
+
+            <div className="section-label">04 / TECHNOLOGY</div>
+
+            <h2>Technology stack.</h2>
+
+            <div className="tech-list">
+              <span>Java 17</span>
+              <span>Spring Boot</span>
+              <span>Spring MVC</span>
+              <span>Spring Data JPA</span>
+              <span>Hibernate</span>
+              <span>React.js</span>
+              <span>Axios</span>
+              <span>MySQL</span>
+              <span>REST API</span>
+              <span>Maven</span>
+              <span>Git</span>
+            </div>
+
+          </section>
+
+          <section className="case-section">
+
+            <div className="section-label">05 / SCREENSHOTS</div>
+
+            <h2>Product walkthrough.</h2>
+
+            <div className="screenshots">
+              {screenshots.map((image, index) => (
+                <div className="screenshot" key={image}>
+                  <img
+                    src={image}
+                    alt={`ShopSphere screen ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+
+          </section>
+
+          <section className="case-section">
+
+            <div className="case-grid">
+
+              <div>
+                <div className="section-label">06 / ENGINEERING</div>
+                <h2>What this project demonstrates.</h2>
               </div>
 
               <div>
-                <strong>2</strong>
-                <small>USER ROLES</small>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* FEATURE SECTION */}
-      <section className="case-section">
-
-        <div className="section-eyebrow">
-          02 — FUNCTIONALITY
-        </div>
-
-        <div className="section-heading">
-          <h2>
-            What I
-            <span> built.</span>
-          </h2>
-
-          <p>
-            Core application workflows implemented across frontend,
-            backend and database layers.
-          </p>
-        </div>
-
-        <div className="premium-feature-grid">
-
-          {features.map((feature) => (
-            <article className="premium-feature" key={feature.number}>
-
-              <div className="feature-number">
-                {feature.number}
+                <ul>
+                  <li>Full-stack Java development</li>
+                  <li>REST API design</li>
+                  <li>Relational database modelling</li>
+                  <li>JPA and Hibernate persistence</li>
+                  <li>React component development</li>
+                  <li>API integration with Axios</li>
+                  <li>Validation and error handling</li>
+                  <li>Role-based application functionality</li>
+                </ul>
               </div>
 
-              <div>
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
-              </div>
+            </div>
 
-              <span className="feature-arrow">↗</span>
+          </section>
 
-            </article>
-          ))}
-
-        </div>
-
-      </section>
-
-      {/* ARCHITECTURE */}
-      <section className="architecture-section">
-
-        <div className="section-eyebrow">
-          03 — ENGINEERING
-        </div>
-
-        <div className="architecture-content">
-
-          <div>
-            <h2>
-              Layered
-              <span> architecture.</span>
-            </h2>
-
-            <p>
-              The backend was structured to maintain clear separation
-              between request handling, business logic and database
-              persistence.
-            </p>
+          <div className="project-footer">
+            <h2>More projects.</h2>
+            <a href="/">← Return to Portfolio</a>
           </div>
 
-          <div className="architecture-stack">
+        </main>
 
-            <div className="architecture-card">
-              <b>01</b>
-              <strong>Controller</strong>
-              <span>REST API endpoints</span>
-            </div>
-
-            <div className="architecture-line"></div>
-
-            <div className="architecture-card">
-              <b>02</b>
-              <strong>Service</strong>
-              <span>Business logic</span>
-            </div>
-
-            <div className="architecture-line"></div>
-
-            <div className="architecture-card">
-              <b>03</b>
-              <strong>Repository</strong>
-              <span>Data persistence</span>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* TECHNOLOGY */}
-      <section className="case-section">
-
-        <div className="section-eyebrow">
-          04 — TECHNOLOGY
-        </div>
-
-        <div className="technology-wrapper">
-
-          <h2>
-            Technology
-            <span> stack.</span>
-          </h2>
-
-          <div className="large-tech-list">
-            {[
-              "Java 17",
-              "Spring Boot 3",
-              "Spring MVC",
-              "Spring Data JPA",
-              "Hibernate",
-              "React.js",
-              "REST APIs",
-              "MySQL",
-              "Maven",
-              "Git"
-            ].map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* SCREENSHOTS */}
-      <section className="screens-section">
-
-        <div className="section-eyebrow">
-          05 — APPLICATION
-        </div>
-
-        <div className="section-heading">
-          <h2>
-            Inside
-            <span> ShopSphere.</span>
-          </h2>
-
-          <p>
-            Selected application screens from the project.
-          </p>
-        </div>
-
-        <div className="case-gallery">
-
-          {images.map((image, index) => (
-            <div
-              className={`gallery-shot ${
-                index === 0 ? "gallery-featured" : ""
-              }`}
-              key={image}
-            >
-              <img
-                src={image}
-                alt={`ShopSphere screen ${index + 1}`}
-              />
-
-              <span>
-                SCREEN {String(index + 1).padStart(2, "0")}
-              </span>
-            </div>
-          ))}
-
-        </div>
-
-      </section>
-
-      {/* FOOTER */}
-      <footer className="case-footer">
-
-        <div>
-          <span>PROJECT 01</span>
-          <h2>
-            Shop
-            <em>Sphere</em>
-          </h2>
-        </div>
-
-        <a href="#/" className="footer-back">
-          Back to portfolio ↑
-        </a>
-
-      </footer>
-
-    </div>
+      </div>
+    </>
   );
 }
