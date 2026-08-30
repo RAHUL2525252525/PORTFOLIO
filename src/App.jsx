@@ -11,16 +11,27 @@ const projects = [
     id: "shopsphere",
     title: "ShopSphere",
     subtitle: "Full Stack E-Commerce Web Application",
+    stack: "Java Full Stack",
+    highlight: "15+ REST endpoints across 6 modules",
     description:
-      "A full-stack e-commerce platform built with Java, Spring Boot, React.js, Spring Data JPA, MySQL and REST APIs.",
-    tech: ["Java 17", "Spring Boot 3", "React.js", "MySQL", "REST APIs"],
+      "A layered full-stack e-commerce system built with Spring Boot and React.js, with role-based access separating admin and customer operations.",
+    tech: [
+      "Java 17",
+      "Spring Boot 3",
+      "React.js",
+      "Spring Data JPA",
+      "MySQL",
+      "REST APIs",
+    ],
   },
   {
     id: "banksphere",
     title: "BankSphere",
     subtitle: "Online Banking System",
+    stack: "Java Full Stack",
+    highlight: "JWT auth across 3 permission tiers",
     description:
-      "A secure full-stack banking application with JWT authentication, role-based access control, MySQL and Docker.",
+      "A secure banking application with stateless JWT authentication, a normalized MySQL schema across 8+ related entities, and full Docker Compose containerization.",
     tech: [
       "Java 17",
       "Spring Boot 3",
@@ -28,30 +39,45 @@ const projects = [
       "JWT",
       "React.js",
       "MySQL",
+      "Docker",
     ],
   },
   {
     id: "lifedecisionassistant",
     title: "Life Decision Assistant",
-    subtitle: "AI-Powered Decision Support Application",
+    subtitle: "AI-Powered Decision Support App",
+    stack: "Python / Flask",
+    highlight: "3 AI providers integrated behind one backend",
     description:
-      "An AI-powered web application designed to help users analyze decisions and explore possible outcomes.",
-    tech: ["Python", "Flask", "Firebase", "Groq API", "OpenRouter", "Gemini"],
+      "An AI-powered Flask web app that helps users analyze decisions using multiple LLM providers, with Firebase handling authentication.",
+    tech: [
+      "Python",
+      "Flask",
+      "Firebase",
+      "Groq API",
+      "OpenRouter API",
+      "Gemini API",
+      "JavaScript",
+    ],
   },
   {
     id: "aiexamcompanion",
     title: "AI Exam Companion",
-    subtitle: "AI-Powered Exam Preparation Application",
+    subtitle: "AI-Powered Exam Preparation App",
+    stack: "Python / Flask",
+    highlight: "AI-generated practice questions via Groq API",
     description:
-      "An AI-powered study companion for generating practice questions and supporting exam preparation.",
-    tech: ["Python", "Flask", "Firebase", "Groq API"],
+      "A Flask-based study companion that generates practice questions using the Groq API, with MongoDB storing question sets and session data.",
+    tech: ["Python", "Flask", "MongoDB", "Groq API", "JavaScript"],
   },
   {
     id: "digitalanalyticsdashboard",
     title: "Digital Analytics Dashboard",
     subtitle: "Interactive Analytics Dashboard",
+    stack: "Python / Flask",
+    highlight: "Google OAuth + Firebase auth flow",
     description:
-      "A responsive analytics dashboard designed to present digital data through an organized and interactive interface.",
+      "A responsive analytics dashboard built with Flask, using Google OAuth and Firebase for authentication and organized data presentation.",
     tech: ["Python", "Flask", "Firebase", "Google OAuth", "JavaScript"],
   },
 ];
@@ -114,12 +140,29 @@ function App() {
             <a href="#education">Education</a>
             <a href="#certifications">Certifications</a>
           </div>
+
+          <a
+            href="/Rahul_S_ResumeFullStack.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="nav-resume-button"
+          >
+            Resume
+          </a>
         </div>
       </nav>
 
       {/* HERO */}
       <section id="home" className="hero-section">
         <div className="hero-content">
+          <div className="hero-photo-wrap">
+            <img
+              src="/rahul-profile.jpg"
+              alt="Rahul S"
+              className="hero-photo"
+            />
+          </div>
+
           <p className="hero-small">HELLO, I'M</p>
 
           <h1>
@@ -129,8 +172,10 @@ function App() {
           <h2>Software Engineer</h2>
 
           <p className="hero-description">
-            Software Engineer with hands-on experience building full-stack web
-            applications using Java, Spring Boot, and React.js.
+            Software Engineer specializing in{" "}
+            <strong>Java full-stack development</strong> (Spring Boot +
+            React.js), with hands-on experience extending those foundations
+            into AI-powered Python/Flask applications.
           </p>
 
           <div className="hero-buttons">
@@ -138,14 +183,17 @@ function App() {
               View My Projects
             </a>
 
-            <a href="#about" className="secondary-button">
-              About Me
+            <a
+              href="/Rahul_S_ResumeFullStack.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="secondary-button"
+            >
+              Download Resume
             </a>
           </div>
 
-          <div className="hero-location">
-            📍 Bangalore, Karnataka
-          </div>
+          <div className="hero-location">📍 Bangalore, Karnataka</div>
         </div>
       </section>
 
@@ -162,8 +210,9 @@ function App() {
           <div className="about-grid">
             <div>
               <p>
-                Software Engineer with hands-on experience building full-stack
-                web applications using Java, Spring Boot, and React.js.
+                Software Engineer with hands-on experience building
+                full-stack web applications using Java, Spring Boot, and
+                React.js — my primary stack and core area of strength.
               </p>
 
               <p>
@@ -173,8 +222,10 @@ function App() {
               </p>
 
               <p>
-                Experienced with Docker containerization, unit testing using
-                JUnit and Mockito, and version control with Git.
+                Alongside my Java full-stack work, I've independently built
+                and shipped several Python/Flask applications integrating AI
+                APIs, Firebase, and OAuth — applying the same architectural
+                discipline to a second stack.
               </p>
             </div>
 
@@ -210,13 +261,7 @@ function App() {
           <div className="skills-grid">
             <SkillGroup
               title="Languages"
-              items={[
-                "Java",
-                "JavaScript (ES6+)",
-                "SQL",
-                "HTML5",
-                "CSS3",
-              ]}
+              items={["Java", "JavaScript (ES6+)", "SQL", "HTML5", "CSS3", "Python"]}
             />
 
             <SkillGroup
@@ -229,6 +274,7 @@ function App() {
                 "Hibernate",
                 "React.js",
                 "Axios",
+                "Flask",
               ]}
             />
 
@@ -238,6 +284,7 @@ function App() {
                 "REST API Design",
                 "JWT Authentication",
                 "Role-Based Access Control (RBAC)",
+                "OAuth (Google)",
               ]}
             />
 
@@ -245,7 +292,8 @@ function App() {
               title="Databases"
               items={[
                 "MySQL",
-                "SQL",
+                "PostgreSQL",
+                "MongoDB",
                 "Database Design",
                 "Normalization",
                 "Relational Data Modeling",
@@ -273,10 +321,18 @@ function App() {
                 "Git",
                 "GitHub",
                 "GitHub Actions",
+                "AWS EC2",
+                "AWS S3",
+                "CI/CD",
                 "Vercel",
                 "Render",
                 "Aiven",
               ]}
+            />
+
+            <SkillGroup
+              title="AI & Integrations"
+              items={["Groq API", "OpenRouter API", "Gemini API", "Firebase"]}
             />
 
             <SkillGroup
@@ -363,32 +419,37 @@ function App() {
           </h2>
 
           <p className="projects-intro">
-            Click any project to open its dedicated project interface with
-            screenshots, technology stack, features and implementation
-            details.
+            Two full-stack Java systems built on Spring Boot and React, plus
+            three Python/Flask applications exploring AI integrations,
+            authentication, and dashboards. Click any project for a full
+            breakdown with screenshots.
           </p>
 
           <div className="projects-grid">
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <article
                 className="project-card"
                 key={project.id}
-                onClick={() =>
-                  navigateTo(`/projects/${project.id}`)
-                }
+                onClick={() => navigateTo(`/projects/${project.id}`)}
               >
-                <div className="project-number">
-                  0{index + 1}
-                </div>
-
                 <div className="project-content">
-                  <p className="project-category">
-                    {project.subtitle}
-                  </p>
+                  <div className="project-badges">
+                    <span
+                      className={`stack-badge ${
+                        project.stack === "Java Full Stack" ? "java" : "python"
+                      }`}
+                    >
+                      {project.stack}
+                    </span>
+                  </div>
+
+                  <p className="project-category">{project.subtitle}</p>
 
                   <h3>{project.title}</h3>
 
                   <p>{project.description}</p>
+
+                  <div className="project-highlight">★ {project.highlight}</div>
 
                   <div className="project-tech">
                     {project.tech.map((tech) => (
@@ -425,13 +486,9 @@ function App() {
             <div className="education-year">2026</div>
 
             <div>
-              <h3>
-                B.E., Computer Science and Engineering
-              </h3>
+              <h3>B.E., Computer Science and Engineering</h3>
 
-              <h4>
-                Dr. ACS College of Engineering
-              </h4>
+              <h4>Dr. ACS College of Engineering</h4>
 
               <p>Bengaluru, Karnataka</p>
 
@@ -482,16 +539,11 @@ function App() {
             <span> great together.</span>
           </h2>
 
-          <a
-            href="mailto:Srinivasrahul838@gmail.com"
-            className="email-link"
-          >
+          <a href="mailto:Srinivasrahul838@gmail.com" className="email-link">
             Srinivasrahul838@gmail.com
           </a>
 
-          <p className="phone">
-            +91 7337634886
-          </p>
+          <p className="phone">+91 7337634886</p>
 
           <div className="social-links">
             <a
@@ -506,9 +558,7 @@ function App() {
               LinkedIn
             </a>
 
-            <a href="#home">
-              Back to Top ↑
-            </a>
+            <a href="#home">Back to Top ↑</a>
           </div>
         </div>
       </section>
