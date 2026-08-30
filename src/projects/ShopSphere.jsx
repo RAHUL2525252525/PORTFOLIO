@@ -1,358 +1,114 @@
 import React from "react";
+import FlipBook from "../components/FlipBook";
 
-const imageFiles = import.meta.glob(
-  "../assets/projects/shopsphere/*.png.png",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
+const imageFiles = import.meta.glob("../assets/projects/shopsphere/*.png.png", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 
 const images = Object.entries(imageFiles)
   .sort(([a], [b]) => {
     const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
     const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
-
     return numberA - numberB;
   })
   .map(([, src]) => src);
 
 export default function ShopSphere() {
   return (
-    <>
-      <style>{`
-        .project-page {
-          min-height: 100vh;
-          background: #080808;
-          color: white;
-          padding-bottom: 100px;
-        }
+    <div className="project-page">
+      <nav className="project-nav">
+        <a href="#/" className="back-link">
+          ← Back to Portfolio
+        </a>
+        <div className="project-logo">RAHUL S</div>
+      </nav>
 
-        .project-nav {
-          height: 75px;
-          padding: 0 6%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          border-bottom: 1px solid #222;
-          background: rgba(8,8,8,.9);
-          position: sticky;
-          top: 0;
-          z-index: 20;
-          backdrop-filter: blur(15px);
-        }
+      <header className="project-hero">
+        <p className="label">PROJECT 01</p>
+        <div className="stack-pill java">Java Full Stack</div>
 
-        .back-link {
-          color: #aaa;
-          text-decoration: none;
-          font-size: 14px;
-        }
+        <h1>
+          Shop<span>Sphere</span>
+        </h1>
 
-        .back-link:hover {
-          color: #8b5cf6;
-        }
+        <p className="project-subtitle">Full Stack E-Commerce Web Application</p>
 
-        .project-logo {
-          font-weight: 900;
-          letter-spacing: 1px;
-        }
+        <p className="project-description">
+          ShopSphere is a full-stack e-commerce system built using Java, Spring
+          Boot, React.js, Spring Data JPA and MySQL. The application provides
+          product browsing, search, cart, wishlist, checkout and order
+          management functionality with separate ADMIN and CUSTOMER operations
+          across 6 modules and 15+ validated REST endpoints.
+        </p>
 
-        .project-hero {
-          max-width: 1200px;
-          margin: auto;
-          padding: 100px 25px 70px;
-        }
-
-        .stack-pill {
-          display: inline-block;
-          padding: 6px 14px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: .5px;
-          text-transform: uppercase;
-          background: rgba(139,92,246,.15);
-          color: #c4b5fd;
-          border: 1px solid rgba(139,92,246,.4);
-          margin-bottom: 18px;
-        }
-
-        .label {
-          color: #8b5cf6;
-          letter-spacing: 3px;
-          font-size: 12px;
-          font-weight: 800;
-        }
-
-        .project-hero h1 {
-          font-size: clamp(50px, 8vw, 100px);
-          line-height: .95;
-          margin: 20px 0;
-          letter-spacing: -5px;
-        }
-
-        .project-hero h1 span {
-          color: #8b5cf6;
-        }
-
-        .project-subtitle {
-          color: #aaa;
-          font-size: 22px;
-        }
-
-        .project-description {
-          max-width: 800px;
-          color: #888;
-          font-size: 17px;
-          margin-top: 25px;
-        }
-
-        .meta-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          margin-top: 45px;
-        }
-
-        .meta-card {
-          border: 1px solid #282828;
-          padding: 25px;
-          border-radius: 12px;
-          background: #101010;
-        }
-
-        .meta-card small {
-          color: #666;
-          display: block;
-          margin-bottom: 8px;
-        }
-
-        .meta-card strong {
-          color: #ddd;
-        }
-
-        .content {
-          max-width: 1200px;
-          margin: auto;
-          padding: 0 25px;
-        }
-
-        .content h2 {
-          font-size: 38px;
-          margin: 70px 0 30px;
-        }
-
-        .content h2 span {
-          color: #8b5cf6;
-        }
-
-        .feature-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
-        }
-
-        .feature {
-          border: 1px solid #262626;
-          padding: 25px;
-          border-radius: 12px;
-          background: #101010;
-        }
-
-        .feature h3 {
-          margin-bottom: 8px;
-        }
-
-        .feature p {
-          color: #777;
-          font-size: 14px;
-        }
-
-        .tech-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .tech {
-          padding: 9px 14px;
-          border: 1px solid #333;
-          border-radius: 7px;
-          color: #aaa;
-          background: #111;
-          font-size: 13px;
-        }
-
-        .gallery {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 25px;
-        }
-
-        .gallery-item {
-          background: #111;
-          border: 1px solid #282828;
-          border-radius: 14px;
-          overflow: hidden;
-        }
-
-        .gallery-item img {
-          display: block;
-          width: 100%;
-          height: auto;
-        }
-
-        .image-number {
-          padding: 10px 15px;
-          color: #666;
-          font-size: 12px;
-        }
-
-        .empty-gallery {
-          color: #666;
-          border: 1px dashed #292929;
-          border-radius: 14px;
-          padding: 40px;
-          text-align: center;
-        }
-
-        @media(max-width: 800px) {
-          .meta-grid,
-          .feature-grid,
-          .gallery {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
-
-      <div className="project-page">
-        <nav className="project-nav">
-          <a href="#/" className="back-link">
-            ← Back to Portfolio
-          </a>
-
-          <div className="project-logo">RAHUL S</div>
-        </nav>
-
-        <header className="project-hero">
-          <p className="label">PROJECT 01</p>
-
-          <div className="stack-pill">Java Full Stack</div>
-
-          <h1>
-            Shop<span>Sphere</span>
-          </h1>
-
-          <p className="project-subtitle">
-            Full Stack E-Commerce Web Application
-          </p>
-
-          <p className="project-description">
-            ShopSphere is a full-stack e-commerce system built using Java,
-            Spring Boot, React.js, Spring Data JPA and MySQL. The application
-            provides product browsing, search, cart, wishlist, checkout and
-            order management functionality with separate ADMIN and CUSTOMER
-            operations across 6 modules and 15+ validated REST endpoints.
-          </p>
-
-          <div className="meta-grid">
-            <div className="meta-card">
-              <small>ROLE</small>
-              <strong>Full Stack Developer</strong>
-            </div>
-
-            <div className="meta-card">
-              <small>PERIOD</small>
-              <strong>04/2026 – 06/2026</strong>
-            </div>
-
-            <div className="meta-card">
-              <small>ARCHITECTURE</small>
-              <strong>Layered Architecture</strong>
-            </div>
+        <div className="meta-grid">
+          <div className="meta-card">
+            <small>ROLE</small>
+            <strong>Full Stack Developer</strong>
           </div>
-        </header>
-
-        <main className="content">
-          <h2>
-            Key <span>features</span>
-          </h2>
-
-          <div className="feature-grid">
-            <div className="feature">
-              <h3>Product Management</h3>
-              <p>Product browsing, search and catalog management across the store.</p>
-            </div>
-
-            <div className="feature">
-              <h3>Shopping Cart</h3>
-              <p>Centralized state management with client-side validation, reducing state-sync issues.</p>
-            </div>
-
-            <div className="feature">
-              <h3>Wishlist</h3>
-              <p>Customers can save products for later across sessions.</p>
-            </div>
-
-            <div className="feature">
-              <h3>Checkout</h3>
-              <p>Validated checkout and order creation workflow.</p>
-            </div>
-
-            <div className="feature">
-              <h3>Order Management</h3>
-              <p>Customer order tracking and administrative order operations.</p>
-            </div>
-
-            <div className="feature">
-              <h3>Role-Based Access</h3>
-              <p>ADMIN and CUSTOMER roles with restricted, boundary-tested operations.</p>
-            </div>
+          <div className="meta-card">
+            <small>PERIOD</small>
+            <strong>04/2026 – 06/2026</strong>
           </div>
-
-          <h2>
-            Technology <span>stack</span>
-          </h2>
-
-          <div className="tech-list">
-            {[
-              "Java 17",
-              "Spring Boot 3",
-              "Spring Data JPA",
-              "Hibernate",
-              "React.js",
-              "REST APIs",
-              "MySQL",
-              "Maven",
-              "Git",
-            ].map((item) => (
-              <span className="tech" key={item}>
-                {item}
-              </span>
-            ))}
+          <div className="meta-card">
+            <small>ARCHITECTURE</small>
+            <strong>Layered Architecture</strong>
           </div>
+        </div>
+      </header>
 
-          <h2>
-            Project <span>screenshots</span>
-          </h2>
+      <main className="content">
+        <h2>
+          Key <span>features</span>
+        </h2>
 
-          {images.length > 0 ? (
-            <div className="gallery">
-              {images.map((src, index) => (
-                <div className="gallery-item" key={src}>
-                  <img src={src} alt={`ShopSphere screenshot ${index + 1}`} />
-                  <div className="image-number">Screenshot {index + 1}</div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty-gallery">
-              Screenshots coming soon — check back shortly.
-            </div>
-          )}
-        </main>
-      </div>
-    </>
+        <div className="feature-grid">
+          <div className="feature">
+            <h3>Product Management</h3>
+            <p>Product browsing, search and catalog management across the store.</p>
+          </div>
+          <div className="feature">
+            <h3>Shopping Cart</h3>
+            <p>Centralized state management with client-side validation, reducing state-sync issues.</p>
+          </div>
+          <div className="feature">
+            <h3>Wishlist</h3>
+            <p>Customers can save products for later across sessions.</p>
+          </div>
+          <div className="feature">
+            <h3>Checkout</h3>
+            <p>Validated checkout and order creation workflow.</p>
+          </div>
+          <div className="feature">
+            <h3>Order Management</h3>
+            <p>Customer order tracking and administrative order operations.</p>
+          </div>
+          <div className="feature">
+            <h3>Role-Based Access</h3>
+            <p>ADMIN and CUSTOMER roles with restricted, boundary-tested operations.</p>
+          </div>
+        </div>
+
+        <h2>
+          Technology <span>stack</span>
+        </h2>
+
+        <div className="tech-list">
+          {["Java 17", "Spring Boot 3", "Spring Data JPA", "Hibernate", "React.js", "REST APIs", "MySQL", "Maven", "Git"].map((item) => (
+            <span className="tech" key={item}>
+              {item}
+            </span>
+          ))}
+        </div>
+
+        <h2>
+          Project <span>notebook</span>
+        </h2>
+
+        <FlipBook images={images} projectName="ShopSphere" />
+      </main>
+    </div>
   );
 }
