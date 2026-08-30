@@ -1,20 +1,4 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  Phone,
-  ExternalLink,
-  Code2,
-  Database,
-  Cloud,
-  ShieldCheck,
-  GraduationCap,
-  Briefcase,
-  Award,
-  ArrowRight,
-} from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 import ShopSphere from "./projects/ShopSphere";
 import BankSphere from "./projects/BankSphere";
@@ -24,261 +8,321 @@ import DigitalAnalyticsDashboard from "./projects/DigitalAnalyticsDashboard";
 
 const projects = [
   {
+    id: "shopsphere",
     title: "ShopSphere",
+    subtitle: "Full Stack E-Commerce Web Application",
     description:
-      "Full Stack E-Commerce Web Application built using Java, Spring Boot, React.js, Spring Data JPA and MySQL.",
-    tech: "Java 17 • Spring Boot 3 • React.js • MySQL • REST APIs",
-    path: "/projects/shopsphere",
+      "A full-stack e-commerce platform built with Java, Spring Boot, React.js, Spring Data JPA, MySQL and REST APIs.",
+    tech: ["Java 17", "Spring Boot 3", "React.js", "MySQL", "REST APIs"],
   },
   {
-    title: "Online Banking System",
+    id: "banksphere",
+    title: "BankSphere",
+    subtitle: "Online Banking System",
     description:
-      "Secure full-stack banking application with JWT authentication, role-based access control and Docker.",
-    tech: "Java 17 • Spring Boot 3 • Spring Security • React.js • MySQL • Docker",
-    path: "/projects/banksphere",
+      "A secure full-stack banking application with JWT authentication, role-based access control, MySQL and Docker.",
+    tech: [
+      "Java 17",
+      "Spring Boot 3",
+      "Spring Security",
+      "JWT",
+      "React.js",
+      "MySQL",
+    ],
   },
   {
+    id: "lifedecisionassistant",
     title: "Life Decision Assistant",
+    subtitle: "AI-Powered Decision Support Application",
     description:
-      "Decision-support application designed to help users evaluate options and make structured decisions.",
-    tech: "React.js • JavaScript • Python • Flask • Firebase",
-    path: "/projects/lifedecisionassistant",
+      "An AI-powered web application designed to help users analyze decisions and explore possible outcomes.",
+    tech: ["Python", "Flask", "Firebase", "Groq API", "OpenRouter", "Gemini"],
   },
   {
+    id: "aiexamcompanion",
     title: "AI Exam Companion",
+    subtitle: "AI-Powered Exam Preparation Application",
     description:
-      "AI-powered examination assistant featuring mock tests, revision assistance, mentor chat and performance analytics.",
-    tech: "React.js • Python • Flask • AI APIs • JSON",
-    path: "/projects/aiexamcompanion",
+      "An AI-powered study companion for generating practice questions and supporting exam preparation.",
+    tech: ["Python", "Flask", "Firebase", "Groq API"],
   },
   {
+    id: "digitalanalyticsdashboard",
     title: "Digital Analytics Dashboard",
+    subtitle: "Interactive Analytics Dashboard",
     description:
-      "Interactive analytics dashboard for presenting business and application data through visual insights.",
-    tech: "React.js • JavaScript • REST APIs • Charts • Responsive UI",
-    path: "/projects/digitalanalyticsdashboard",
+      "A responsive analytics dashboard designed to present digital data through an organized and interactive interface.",
+    tech: ["Python", "Flask", "Firebase", "Google OAuth", "JavaScript"],
   },
 ];
 
-function Home() {
+function navigateTo(hash) {
+  window.location.hash = hash;
+}
+
+function App() {
+  const [route, setRoute] = useState(window.location.hash || "#/");
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setRoute(window.location.hash || "#/");
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  if (route === "#/projects/shopsphere") {
+    return <ShopSphere />;
+  }
+
+  if (route === "#/projects/banksphere") {
+    return <BankSphere />;
+  }
+
+  if (route === "#/projects/lifedecisionassistant") {
+    return <LifeDecisionAssistant />;
+  }
+
+  if (route === "#/projects/aiexamcompanion") {
+    return <AIExamCompanion />;
+  }
+
+  if (route === "#/projects/digitalanalyticsdashboard") {
+    return <DigitalAnalyticsDashboard />;
+  }
+
   return (
     <div className="portfolio">
-      <header className="navbar">
+      {/* NAVBAR */}
+      <nav className="navbar">
         <div className="nav-container">
-          <Link to="/" className="logo">
+          <a href="#/" className="logo">
             RAHUL<span>S</span>
-          </Link>
+          </a>
 
-          <nav>
+          <div className="nav-links">
+            <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
             <a href="#experience">Experience</a>
             <a href="#projects">Projects</a>
             <a href="#education">Education</a>
-            <a href="#contact">Contact</a>
-          </nav>
+            <a href="#certifications">Certifications</a>
+          </div>
         </div>
-      </header>
+      </nav>
 
-      <main>
-        {/* HERO */}
-        <section className="hero" id="about">
-          <div className="hero-content">
-            <p className="eyebrow">SOFTWARE ENGINEER</p>
+      {/* HERO */}
+      <section id="home" className="hero-section">
+        <div className="hero-content">
+          <p className="hero-small">HELLO, I'M</p>
 
-            <h1>
-              Hi, I'm <span>Rahul S</span>
-            </h1>
+          <h1>
+            Rahul <span>S</span>
+          </h1>
 
-            <h2>Full Stack Developer</h2>
+          <h2>Software Engineer</h2>
 
-            <p className="hero-description">
-              Software Engineer with hands-on experience building full-stack
-              web applications using Java, Spring Boot, and React.js.
-            </p>
+          <p className="hero-description">
+            Software Engineer with hands-on experience building full-stack web
+            applications using Java, Spring Boot, and React.js.
+          </p>
 
-            <div className="hero-buttons">
-              <a href="#projects" className="primary-button">
-                View Projects <ArrowRight size={18} />
-              </a>
+          <div className="hero-buttons">
+            <a href="#projects" className="primary-button">
+              View My Projects
+            </a>
 
-              <a href="#contact" className="secondary-button">
-                Contact Me
-              </a>
-            </div>
-
-            <div className="social-links">
-              <a
-                href="https://github.com/RAHUL2525252525"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Github size={20} />
-              </a>
-
-              <a href="#" target="_blank" rel="noreferrer">
-                <Linkedin size={20} />
-              </a>
-
-              <a href="mailto:Srinivasrahul838@gmail.com">
-                <Mail size={20} />
-              </a>
-            </div>
+            <a href="#about" className="secondary-button">
+              About Me
+            </a>
           </div>
 
-          <div className="hero-card">
-            <div className="code-window">
-              <div className="window-header">
-                <span></span>
-                <span></span>
-                <span></span>
+          <div className="hero-location">
+            📍 Bangalore, Karnataka
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="section">
+        <div className="section-container">
+          <p className="section-label">ABOUT ME</p>
+
+          <h2 className="section-title">
+            Building reliable & scalable
+            <span> full-stack applications.</span>
+          </h2>
+
+          <div className="about-grid">
+            <div>
+              <p>
+                Software Engineer with hands-on experience building full-stack
+                web applications using Java, Spring Boot, and React.js.
+              </p>
+
+              <p>
+                Skilled in REST API design, JWT-based authentication and
+                authorization, role-based access control (RBAC), relational
+                database design using MySQL, and Agile software delivery.
+              </p>
+
+              <p>
+                Experienced with Docker containerization, unit testing using
+                JUnit and Mockito, and version control with Git.
+              </p>
+            </div>
+
+            <div className="about-card">
+              <div>
+                <strong>B.E.</strong>
+                <span>Computer Science & Engineering</span>
               </div>
 
-              <pre>
-{`class SoftwareEngineer {
+              <div>
+                <strong>8.00</strong>
+                <span>CGPA / 10</span>
+              </div>
 
-  String name = "Rahul S";
-  String location = "Bangalore";
-
-  String[] skills = {
-    "Java",
-    "Spring Boot",
-    "React.js",
-    "MySQL",
-    "Docker"
-  };
-
-  String goal() {
-    return "Build scalable software";
-  }
-}`}
-              </pre>
+              <div>
+                <strong>2026</strong>
+                <span>Graduated</span>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* SUMMARY */}
-        <section className="section">
-          <div className="section-heading">
-            <span>01</span>
-            <h2>Professional Summary</h2>
-          </div>
+      {/* SKILLS */}
+      <section id="skills" className="section dark-section">
+        <div className="section-container">
+          <p className="section-label">TECHNICAL SKILLS</p>
 
-          <div className="summary-card">
-            <p>
-              Software Engineer with hands-on experience building full-stack
-              web applications using Java, Spring Boot, and React.js. Skilled
-              in REST API design, JWT-based authentication and authorization,
-              role-based access control (RBAC), relational database design
-              (MySQL), and Agile software delivery. Experienced with Docker
-              containerization, unit testing (JUnit, Mockito), and version
-              control (Git). Comfortable collaborating with cross-functional,
-              distributed teams in Agile delivery environments. Strong
-              foundation in data structures, algorithms, and object-oriented
-              design.
-            </p>
-          </div>
-        </section>
-
-        {/* SKILLS */}
-        <section className="section" id="skills">
-          <div className="section-heading">
-            <span>02</span>
-            <h2>Technical Skills</h2>
-          </div>
+          <h2 className="section-title">
+            Technologies I <span>work with.</span>
+          </h2>
 
           <div className="skills-grid">
-            <div className="skill-card">
-              <Code2 />
-              <h3>Languages</h3>
-              <p>Java, JavaScript (ES6+), SQL, HTML5, CSS3</p>
-            </div>
+            <SkillGroup
+              title="Languages"
+              items={[
+                "Java",
+                "JavaScript (ES6+)",
+                "SQL",
+                "HTML5",
+                "CSS3",
+              ]}
+            />
 
-            <div className="skill-card">
-              <Code2 />
-              <h3>Frameworks & Libraries</h3>
-              <p>
-                Spring Boot, Spring MVC, Spring Security, Spring Data JPA,
-                Hibernate, React.js, Axios
-              </p>
-            </div>
+            <SkillGroup
+              title="Frameworks & Libraries"
+              items={[
+                "Spring Boot",
+                "Spring MVC",
+                "Spring Security",
+                "Spring Data JPA",
+                "Hibernate",
+                "React.js",
+                "Axios",
+              ]}
+            />
 
-            <div className="skill-card">
-              <ShieldCheck />
-              <h3>APIs & Security</h3>
-              <p>
-                REST API Design, JWT Authentication, Role-Based Access Control
-                (RBAC)
-              </p>
-            </div>
+            <SkillGroup
+              title="APIs & Security"
+              items={[
+                "REST API Design",
+                "JWT Authentication",
+                "Role-Based Access Control (RBAC)",
+              ]}
+            />
 
-            <div className="skill-card">
-              <Database />
-              <h3>Databases</h3>
-              <p>
-                MySQL, SQL, Database Design, Normalization, Relational Data
-                Modeling
-              </p>
-            </div>
+            <SkillGroup
+              title="Databases"
+              items={[
+                "MySQL",
+                "SQL",
+                "Database Design",
+                "Normalization",
+                "Relational Data Modeling",
+              ]}
+            />
 
-            <div className="skill-card">
-              <Code2 />
-              <h3>Architecture</h3>
-              <p>
-                Layered Architecture, Microservices, MVC, Exception Handling,
-                DTO Pattern
-              </p>
-            </div>
+            <SkillGroup
+              title="Architecture"
+              items={[
+                "Layered Architecture",
+                "Controller / Service / Repository",
+                "Microservices",
+                "MVC",
+                "Exception Handling",
+                "DTO Pattern",
+              ]}
+            />
 
-            <div className="skill-card">
-              <Cloud />
-              <h3>Cloud & DevOps</h3>
-              <p>
-                Docker, Docker Compose, Maven, Git, GitHub, GitHub Actions,
-                Vercel, Render, Aiven
-              </p>
-            </div>
+            <SkillGroup
+              title="Cloud & DevOps"
+              items={[
+                "Docker",
+                "Docker Compose",
+                "Maven",
+                "Git",
+                "GitHub",
+                "GitHub Actions",
+                "Vercel",
+                "Render",
+                "Aiven",
+              ]}
+            />
 
-            <div className="skill-card">
-              <ShieldCheck />
-              <h3>Testing & Practices</h3>
-              <p>
-                JUnit 5, Mockito, Postman, Agile / Scrum, Code Reviews, Unit
-                Testing
-              </p>
-            </div>
+            <SkillGroup
+              title="Testing & Practices"
+              items={[
+                "JUnit 5",
+                "Mockito",
+                "Postman",
+                "Agile / Scrum",
+                "Code Reviews",
+                "Unit Testing",
+              ]}
+            />
 
-            <div className="skill-card">
-              <Database />
-              <h3>Core CS</h3>
-              <p>
-                Data Structures & Algorithms, OOP, DBMS, Software Engineering
-                Principles
-              </p>
-            </div>
+            <SkillGroup
+              title="Core CS"
+              items={[
+                "Data Structures & Algorithms",
+                "Object-Oriented Programming (OOP)",
+                "DBMS",
+                "Software Engineering Principles",
+              ]}
+            />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* EXPERIENCE */}
-        <section className="section" id="experience">
-          <div className="section-heading">
-            <span>03</span>
-            <h2>Professional Experience</h2>
-          </div>
+      {/* EXPERIENCE */}
+      <section id="experience" className="section">
+        <div className="section-container">
+          <p className="section-label">PROFESSIONAL EXPERIENCE</p>
 
-          <div className="timeline-card">
-            <div className="timeline-top">
+          <h2 className="section-title">
+            My <span>experience.</span>
+          </h2>
+
+          <div className="experience-card">
+            <div className="experience-header">
               <div>
                 <h3>Web Development Intern</h3>
                 <h4>MR Tech Lab</h4>
+                <p>Bengaluru, Karnataka</p>
               </div>
 
-              <div className="date">01/2026 – 05/2026</div>
+              <span className="date">01/2026 – 05/2026</span>
             </div>
-
-            <p className="location">
-              Bengaluru, Karnataka
-            </p>
 
             <ul>
               <li>
@@ -306,48 +350,79 @@ function Home() {
               </li>
             </ul>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* PROJECTS */}
-        <section className="section" id="projects">
-          <div className="section-heading">
-            <span>04</span>
-            <h2>Projects</h2>
-          </div>
+      {/* PROJECTS */}
+      <section id="projects" className="section projects-section">
+        <div className="section-container">
+          <p className="section-label">PROJECTS</p>
+
+          <h2 className="section-title">
+            Selected <span>projects.</span>
+          </h2>
+
+          <p className="projects-intro">
+            Click any project to open its dedicated project interface with
+            screenshots, technology stack, features and implementation
+            details.
+          </p>
 
           <div className="projects-grid">
             {projects.map((project, index) => (
-              <div className="project-card" key={project.title}>
+              <article
+                className="project-card"
+                key={project.id}
+                onClick={() =>
+                  navigateTo(`/projects/${project.id}`)
+                }
+              >
                 <div className="project-number">
                   0{index + 1}
                 </div>
 
-                <h3>{project.title}</h3>
+                <div className="project-content">
+                  <p className="project-category">
+                    {project.subtitle}
+                  </p>
 
-                <p>{project.description}</p>
+                  <h3>{project.title}</h3>
 
-                <div className="project-tech">
-                  {project.tech}
+                  <p>{project.description}</p>
+
+                  <div className="project-tech">
+                    {project.tech.map((tech) => (
+                      <span key={tech}>{tech}</span>
+                    ))}
+                  </div>
+
+                  <button
+                    className="project-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigateTo(`/projects/${project.id}`);
+                    }}
+                  >
+                    View Project →
+                  </button>
                 </div>
-
-                <Link to={project.path} className="project-button">
-                  View Project
-                  <ExternalLink size={17} />
-                </Link>
-              </div>
+              </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* EDUCATION */}
-        <section className="section" id="education">
-          <div className="section-heading">
-            <span>05</span>
-            <h2>Education</h2>
-          </div>
+      {/* EDUCATION */}
+      <section id="education" className="section dark-section">
+        <div className="section-container">
+          <p className="section-label">EDUCATION</p>
+
+          <h2 className="section-title">
+            Academic <span>background.</span>
+          </h2>
 
           <div className="education-card">
-            <GraduationCap size={35} />
+            <div className="education-year">2026</div>
 
             <div>
               <h3>
@@ -358,31 +433,28 @@ function Home() {
                 Dr. ACS College of Engineering
               </h4>
 
-              <p>
-                Bengaluru, Karnataka
-              </p>
+              <p>Bengaluru, Karnataka</p>
 
-              <p>
+              <div className="cgpa">
                 CGPA: <strong>8.00 / 10</strong>
-              </p>
-
-              <p>
-                Graduated 2026
-              </p>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CERTIFICATIONS */}
-        <section className="section">
-          <div className="section-heading">
-            <span>06</span>
-            <h2>Certifications</h2>
-          </div>
+      {/* CERTIFICATIONS */}
+      <section id="certifications" className="section">
+        <div className="section-container">
+          <p className="section-label">CERTIFICATIONS</p>
 
-          <div className="certifications">
+          <h2 className="section-title">
+            Professional <span>certifications.</span>
+          </h2>
+
+          <div className="certifications-grid">
             <div className="certificate-card">
-              <Award />
+              <span className="certificate-icon">01</span>
               <div>
                 <h3>Java Programming Fundamentals</h3>
                 <p>Infosys Springboard</p>
@@ -390,97 +462,76 @@ function Home() {
             </div>
 
             <div className="certificate-card">
-              <Award />
+              <span className="certificate-icon">02</span>
               <div>
                 <h3>Introduction to Java</h3>
                 <p>Infosys Springboard</p>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CONTACT */}
-        <section className="section contact-section" id="contact">
-          <div className="section-heading">
-            <span>07</span>
-            <h2>Contact</h2>
-          </div>
+      {/* CONTACT */}
+      <section className="contact-section">
+        <div className="section-container">
+          <p className="section-label">GET IN TOUCH</p>
 
-          <div className="contact-grid">
-            <a href="mailto:Srinivasrahul838@gmail.com">
-              <Mail />
-              <div>
-                <small>Email</small>
-                <strong>Srinivasrahul838@gmail.com</strong>
-              </div>
-            </a>
+          <h2>
+            Let's build something
+            <span> great together.</span>
+          </h2>
 
-            <a href="tel:7337634886">
-              <Phone />
-              <div>
-                <small>Phone</small>
-                <strong>7337634886</strong>
-              </div>
-            </a>
+          <a
+            href="mailto:Srinivasrahul838@gmail.com"
+            className="email-link"
+          >
+            Srinivasrahul838@gmail.com
+          </a>
 
+          <p className="phone">
+            +91 7337634886
+          </p>
+
+          <div className="social-links">
             <a
               href="https://github.com/RAHUL2525252525"
               target="_blank"
               rel="noreferrer"
             >
-              <Github />
-              <div>
-                <small>GitHub</small>
-                <strong>RAHUL2525252525</strong>
-              </div>
+              GitHub
+            </a>
+
+            <a href="#" onClick={(e) => e.preventDefault()}>
+              LinkedIn
+            </a>
+
+            <a href="#home">
+              Back to Top ↑
             </a>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       <footer>
-        <p>© 2026 Rahul S. Built with React.js.</p>
+        <p>© 2026 Rahul S. All rights reserved.</p>
       </footer>
     </div>
   );
 }
 
-export default function App() {
+function SkillGroup({ title, items }) {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
+    <div className="skill-group">
+      <h3>{title}</h3>
 
-        <Route
-          path="/projects/shopsphere"
-          element={<ShopSphere />}
-        />
-
-        <Route
-          path="/projects/banksphere"
-          element={<BankSphere />}
-        />
-
-        <Route
-          path="/projects/lifedecisionassistant"
-          element={<LifeDecisionAssistant />}
-        />
-
-        <Route
-          path="/projects/aiexamcompanion"
-          element={<AIExamCompanion />}
-        />
-
-        <Route
-          path="/projects/digitalanalyticsdashboard"
-          element={<DigitalAnalyticsDashboard />}
-        />
-
-        <Route
-          path="*"
-          element={<Home />}
-        />
-      </Routes>
-    </BrowserRouter>
+      <div className="skill-list">
+        {items.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+      </div>
+    </div>
   );
 }
+
+export default App;
