@@ -149,7 +149,7 @@ function Hero() {
             I build <strong>production-grade full-stack applications</strong> —
             from schema to shipped feature. My core work is layered Java
             systems with Spring Boot and React, backed by validated REST
-            APIs and role-based access control. Alongside that, I've got
+            APIs and role-based access control. Alongside that, I&rsquo;ve got
             hands-on experience building lightweight Python/Flask tools that
             wire up AI APIs and Firebase.
           </p>
@@ -184,7 +184,7 @@ function About() {
         <div className="about-grid">
           <Reveal>
             <p>
-              I'm a Java-focused full-stack developer who enjoys owning a
+              I&rsquo;m a Java-focused full-stack developer who enjoys owning a
               feature end to end — designing the data model, wiring the Spring
               Boot service layer, and shipping a React interface that holds up
               under real usage.
@@ -195,12 +195,12 @@ function About() {
               banking application, both built on layered
               controller/service/repository architecture with JWT auth, RBAC,
               and 15+ tested REST endpoints. Alongside that, during my
-              internship and personal projects I've picked up hands-on
+              internship and personal projects I&rsquo;ve picked up hands-on
               experience building Python/Flask tools that integrate AI APIs
               and Firebase — practical, but not where I focus my depth.
             </p>
             <p>
-              I care about code that's boring in the best way — predictable,
+              I care about code that&rsquo;s boring in the best way — predictable,
               documented, and easy for the next developer to extend.
             </p>
           </Reveal>
@@ -310,7 +310,7 @@ function Experience() {
         <Reveal>
           <p className="section-label">Experience</p>
           <h2 className="section-title">
-            Where I've been <span>building</span>.
+            Where I&rsquo;ve been <span>building</span>.
           </h2>
         </Reveal>
 
@@ -593,7 +593,7 @@ function Contact() {
       <Reveal>
         <p className="section-label">Contact</p>
         <h2>
-          Let's build something <span>reliable</span> together.
+          Let&rsquo;s build something <span>reliable</span> together.
         </h2>
 
         <a href="mailto:Srinivasrahul838@gmail.com" className="email-link">
@@ -608,7 +608,4 @@ function Contact() {
           <a href="#" target="_blank" rel="noreferrer">
             LinkedIn ↗
           </a>
-        </div>
-      </Reveal>
-    </section>
-  )
+        </div
