@@ -7,7 +7,7 @@ import AIExamCompanion from "./projects/AIExamCompanion";
 import DigitalAnalyticsDashboard from "./projects/DigitalAnalyticsDashboard";
 
 /* =========================================================
-   ROUTING
+   PROJECT ROUTES
    ========================================================= */
 
 const ROUTES = {
@@ -17,6 +17,10 @@ const ROUTES = {
   aiexamcompanion: AIExamCompanion,
   digitalanalyticsdashboard: DigitalAnalyticsDashboard,
 };
+
+/* =========================================================
+   HASH ROUTING
+   ========================================================= */
 
 function useHashRoute() {
   const getRoute = () =>
@@ -85,11 +89,12 @@ function Reveal({
 }
 
 /* =========================================================
-   MAIN APP
+   APP
    ========================================================= */
 
 export default function App() {
   const route = useHashRoute();
+
   const ProjectPage = ROUTES[route];
 
   if (ProjectPage) {
@@ -98,18 +103,29 @@ export default function App() {
 
   return (
     <div className="portfolio">
+
       <Navbar />
-      <Hero />
-      <EngineeringProfile />
-      <About />
-      <Skills />
-      <Experience />
-      <Projects />
-      <Architecture />
-      <Education />
-      <Certifications />
-      <Contact />
+
+      <main>
+        <Hero />
+
+        <About />
+
+        <Skills />
+
+        <Experience />
+
+        <Projects />
+
+        <Education />
+
+        <Certifications />
+
+        <Contact />
+      </main>
+
       <Footer />
+
     </div>
   );
 }
@@ -120,31 +136,59 @@ export default function App() {
 
 function Navbar() {
   return (
-    <nav className="navbar">
-      <div className="nav-container">
-        <a href="#" className="logo">
-          RS<span>/</span>26
+    <header className="navbar">
+
+      <div className="nav-inner">
+
+        <a href="#" className="nav-logo">
+          <span className="nav-logo-index">01</span>
+          <span className="nav-logo-name">
+            RAHUL<span>.</span>
+          </span>
         </a>
 
-        <div className="nav-links">
-          <a href="#about">About</a>
-          <a href="#skills">Stack</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#architecture">Engineering</a>
-          <a href="#contact">Contact</a>
-        </div>
+        <nav className="nav-links">
+
+          <a href="#about">
+            <span>01</span>
+            About
+          </a>
+
+          <a href="#skills">
+            <span>02</span>
+            Skills
+          </a>
+
+          <a href="#experience">
+            <span>03</span>
+            Experience
+          </a>
+
+          <a href="#projects">
+            <span>04</span>
+            Work
+          </a>
+
+          <a href="#contact">
+            <span>05</span>
+            Contact
+          </a>
+
+        </nav>
 
         <a
           href="/Rahul_S_ResumeFullStack.pdf"
-          className="nav-resume-button"
+          className="nav-resume"
           target="_blank"
           rel="noreferrer"
         >
-          RESUME <span>↗</span>
+          <span>RESUME</span>
+          <span>↗</span>
         </a>
+
       </div>
-    </nav>
+
+    </header>
   );
 }
 
@@ -155,152 +199,87 @@ function Navbar() {
 function Hero() {
   return (
     <section className="hero-section">
-      <div className="hero-grid" />
+
+      <div className="hero-grid-lines" />
+
       <div className="hero-glow hero-glow-one" />
       <div className="hero-glow hero-glow-two" />
 
-      <div className="hero-topline">
+      <div className="hero-top-meta">
+
         <span>SOFTWARE ENGINEER</span>
-        <span>JAVA FULL STACK</span>
-        <span>01 / 05</span>
+
+        <span className="meta-line" />
+
+        <span>BENGALURU / INDIA</span>
+
+        <span className="meta-status">
+          <i />
+          OPEN TO WORK
+        </span>
+
       </div>
 
       <div className="hero-content">
-        <div className="hero-identity">
-          <div className="hero-photo-wrap">
-            <div className="hero-photo-ring">
-              <img src="/rahul-profile.jpg" alt="Rahul S" />
-            </div>
 
-            <div className="photo-status">
-              <span />
-              OPEN TO OPPORTUNITIES
-            </div>
-          </div>
-
-          <div className="hero-location">
-            <span className="location-line" />
-            BENGALURU, INDIA
-          </div>
+        <div className="hero-side-label">
+          <span>FULL STACK</span>
+          <span>ENGINEERING</span>
+          <span>2026</span>
         </div>
 
-        <div className="hero-copy">
-          <p className="eyebrow">
-            JAVA / SPRING BOOT / REACT / DATABASES
+        <div className="hero-main">
+
+          <p className="hero-eyebrow">
+            JAVA · SPRING BOOT · REACT · MYSQL
           </p>
 
           <h1>
-            I BUILD
+            RAHUL
             <br />
-            <span>BACKENDS</span>
-            <br />
-            THAT SHIP.
+            <span>S</span>
           </h1>
 
-          <div className="hero-bottom">
-            <p className="hero-description">
-              Software Engineer focused on building{" "}
-              <strong>
-                full-stack applications with Java, Spring Boot and React.js.
-              </strong>{" "}
-              I work across REST APIs, authentication, relational data,
-              validation and production-oriented application architecture.
+          <div className="hero-title-row">
+
+            <div className="hero-title">
+              SOFTWARE
+              <br />
+              ENGINEER
+            </div>
+
+            <p className="hero-intro">
+              I build full-stack applications with Java, Spring Boot
+              and React — designing the backend architecture,
+              database layer, security model and frontend experience
+              as one system.
             </p>
 
-            <div className="hero-actions">
-              <a href="#projects" className="hero-primary">
-                Explore My Work
-                <span>↗</span>
-              </a>
-
-              <a href="#contact" className="hero-secondary">
-                Let's Talk
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="hero-stack-bar">
-        <span>JAVA 17</span>
-        <i />
-        <span>SPRING BOOT 3</span>
-        <i />
-        <span>SPRING SECURITY</span>
-        <i />
-        <span>REACT.JS</span>
-        <i />
-        <span>MYSQL</span>
-        <i />
-        <span>DOCKER</span>
-      </div>
-    </section>
-  );
-}
-
-/* =========================================================
-   ENGINEERING PROFILE
-   ========================================================= */
-
-function EngineeringProfile() {
-  const stats = [
-    {
-      number: "02",
-      label: "JAVA FULL-STACK",
-      detail: "CORE PROJECTS",
-    },
-    {
-      number: "03",
-      label: "PYTHON / FLASK",
-      detail: "HANDS-ON APPS",
-    },
-    {
-      number: "15+",
-      label: "REST ENDPOINTS",
-      detail: "VALIDATED",
-    },
-    {
-      number: "08+",
-      label: "RELATIONAL",
-      detail: "ENTITIES",
-    },
-  ];
-
-  return (
-    <section className="signal-section">
-      <div className="signal-container">
-        <Reveal className="signal-heading">
-          <div>
-            <p className="section-code">01 — ENGINEERING SIGNAL</p>
-            <h2>
-              Not just UI.
-              <br />
-              <span>Full-stack ownership.</span>
-            </h2>
           </div>
 
-          <p>
-            My strongest hands-on work is in Java full-stack development,
-            especially Spring Boot, REST APIs, Spring Security, relational
-            databases and React.js. Python/Flask is an additional hands-on
-            area through applied web and AI projects.
-          </p>
-        </Reveal>
-
-        <div className="signal-stats">
-          {stats.map((stat, index) => (
-            <Reveal
-              key={stat.label}
-              className="signal-stat"
-              style={{ transitionDelay: `${index * 80}ms` }}
-            >
-              <span className="stat-number">{stat.number}</span>
-              <span className="stat-label">{stat.label}</span>
-              <span className="stat-detail">{stat.detail}</span>
-            </Reveal>
-          ))}
         </div>
+
       </div>
+
+      <div className="hero-bottom">
+
+        <div className="hero-scroll">
+          <span className="scroll-arrow">↓</span>
+          <span>SCROLL TO EXPLORE</span>
+        </div>
+
+        <div className="hero-stack">
+
+          <span>JAVA 17</span>
+          <span>SPRING BOOT</span>
+          <span>SPRING SECURITY</span>
+          <span>REACT</span>
+          <span>MYSQL</span>
+
+        </div>
+
+      </div>
+
     </section>
   );
 }
@@ -312,84 +291,98 @@ function EngineeringProfile() {
 function About() {
   return (
     <section id="about" className="section about-section">
-      <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">02 — ABOUT</p>
-              <h2 className="section-title">
-                I think in
-                <br />
-                <span>systems.</span>
-              </h2>
-            </div>
 
-            <div className="section-index">PROFILE / 002</div>
-          </div>
+      <div className="section-number">01</div>
+
+      <div className="section-container">
+
+        <Reveal className="section-heading">
+
+          <p className="section-kicker">
+            / PROFILE
+          </p>
+
+          <h2>
+            ENGINEERING
+            <br />
+            <span>WITH PURPOSE.</span>
+          </h2>
+
         </Reveal>
 
         <div className="about-layout">
-          <Reveal className="about-main">
-            <p className="large-copy">
-              I'm a software engineer who enjoys taking a feature from
-              database design to backend logic to the final React interface.
+
+          <Reveal className="about-statement">
+
+            <div className="statement-mark">
+              +
+            </div>
+
+            <p>
+              Software Engineer focused on building reliable
+              full-stack systems using Java, Spring Boot,
+              React.js and relational databases.
+            </p>
+
+          </Reveal>
+
+          <Reveal className="about-copy">
+
+            <p>
+              My strongest hands-on experience is in Java full-stack
+              development. I enjoy taking a feature from database
+              design and backend architecture through REST APIs,
+              authentication and finally into the React interface.
             </p>
 
             <p>
-              My primary development experience is centered around Java,
-              Spring Boot and React.js. I've built full-stack systems involving
-              authentication, authorization, role-based workflows, REST APIs,
-              relational database design, validation and containerized
-              environments.
+              My project work includes ShopSphere, a full-stack
+              e-commerce platform, and Online Banking System,
+              a security-focused banking application using
+              Spring Security and JWT.
             </p>
 
             <p>
-              My Python experience is hands-on and project-based. During my
-              internship and personal work, I built web applications using
-              Python/Flask, Firebase and AI APIs, giving me practical exposure
-              to another backend ecosystem without positioning Python as my
-              primary stack.
+              I also have hands-on experience with Python and Flask,
+              where I built web applications integrating AI APIs,
+              Firebase and MongoDB.
             </p>
+
+            <a href="#projects" className="text-link">
+              EXPLORE SELECTED WORK
+              <span>↗</span>
+            </a>
+
           </Reveal>
 
-          <Reveal className="about-terminal">
-            <div className="terminal-header">
-              <span />
-              <span />
-              <span />
-              <label>rahul@engineer:~</label>
-            </div>
-
-            <div className="terminal-body">
-              <p>
-                <b>$</b> whoami
-              </p>
-
-              <strong>Java Full Stack Developer</strong>
-
-              <p>
-                <b>$</b> primary_stack
-              </p>
-
-              <strong>Java / Spring Boot / React / MySQL</strong>
-
-              <p>
-                <b>$</b> engineering_focus
-              </p>
-
-              <strong>APIs / Security / Data / Architecture</strong>
-
-              <p>
-                <b>$</b> status
-              </p>
-
-              <strong className="terminal-green">
-                BUILDING → LEARNING → SHIPPING
-              </strong>
-            </div>
-          </Reveal>
         </div>
+
+        <div className="about-metrics">
+
+          <div>
+            <strong>02</strong>
+            <span>JAVA FULL STACK<br />CORE PROJECTS</span>
+          </div>
+
+          <div>
+            <strong>15+</strong>
+            <span>REST API<br />ENDPOINTS</span>
+          </div>
+
+          <div>
+            <strong>08+</strong>
+            <span>RELATIONAL<br />ENTITIES</span>
+          </div>
+
+          <div>
+            <strong>03</strong>
+            <span>PYTHON / FLASK<br />APPLICATIONS</span>
+          </div>
+
+        </div>
+
       </div>
+
     </section>
   );
 }
@@ -402,8 +395,9 @@ function Skills() {
   const groups = [
     {
       number: "01",
-      title: "JAVA BACKEND",
-      primary: true,
+      title: "JAVA / BACKEND",
+      description:
+        "Primary engineering stack for full-stack application development.",
       items: [
         "Java 17",
         "Spring Boot",
@@ -411,13 +405,15 @@ function Skills() {
         "Spring Security",
         "Spring Data JPA",
         "Hibernate",
-        "Maven",
         "REST APIs",
+        "Maven",
       ],
     },
     {
       number: "02",
       title: "FRONTEND",
+      description:
+        "Building responsive interfaces connected to production-style APIs.",
       items: [
         "React.js",
         "JavaScript ES6+",
@@ -432,6 +428,8 @@ function Skills() {
     {
       number: "03",
       title: "DATABASES",
+      description:
+        "Relational modeling, constraints and practical data persistence.",
       items: [
         "MySQL",
         "PostgreSQL",
@@ -445,6 +443,8 @@ function Skills() {
     {
       number: "04",
       title: "SECURITY / ARCHITECTURE",
+      description:
+        "Application structure and secure backend workflows.",
       items: [
         "JWT Authentication",
         "RBAC",
@@ -458,6 +458,8 @@ function Skills() {
     {
       number: "05",
       title: "DEVOPS / CLOUD",
+      description:
+        "Containerization, source control and deployment fundamentals.",
       items: [
         "Docker",
         "Docker Compose",
@@ -474,7 +476,9 @@ function Skills() {
     },
     {
       number: "06",
-      title: "TESTING / PRACTICES",
+      title: "TESTING / CS",
+      description:
+        "Engineering fundamentals used while building and validating software.",
       items: [
         "JUnit 5",
         "Mockito",
@@ -482,77 +486,74 @@ function Skills() {
         "Unit Testing",
         "Agile / Scrum",
         "Code Reviews",
-        "Software Engineering",
-      ],
-    },
-    {
-      number: "07",
-      title: "CORE CS",
-      items: [
-        "Data Structures",
-        "Algorithms",
+        "DSA",
         "OOP",
         "DBMS",
-        "Software Engineering Principles",
-      ],
-    },
-    {
-      number: "08",
-      title: "PYTHON — HANDS-ON",
-      items: [
-        "Python",
-        "Flask",
-        "Firebase",
-        "Groq API",
-        "Gemini API",
-        "OpenRouter API",
+        "Software Engineering",
       ],
     },
   ];
 
   return (
     <section id="skills" className="section skills-section">
-      <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">03 — TECHNICAL STACK</p>
-              <h2 className="section-title">
-                The tools
-                <br />
-                behind the <span>work.</span>
-              </h2>
-            </div>
 
-            <div className="section-index">STACK / 008</div>
-          </div>
+      <div className="section-number">02</div>
+
+      <div className="section-container">
+
+        <Reveal className="section-heading">
+
+          <p className="section-kicker">
+            / TECHNICAL CAPABILITIES
+          </p>
+
+          <h2>
+            THE TOOLS
+            <br />
+            <span>BEHIND THE WORK.</span>
+          </h2>
+
         </Reveal>
 
-        <div className="skills-command-grid">
-          {groups.map((group, index) => (
+        <div className="skills-list">
+
+          {groups.map((group) => (
+
             <Reveal
               key={group.number}
-              className={`skill-command-card ${
-                group.primary ? "primary-skill" : ""
-              }`}
-              style={{ transitionDelay: `${index * 45}ms` }}
+              className="skill-row"
             >
-              <div className="skill-card-top">
-                <span>{group.number}</span>
-                <span>///</span>
+
+              <div className="skill-number">
+                {group.number}
               </div>
 
-              <h3>{group.title}</h3>
+              <div className="skill-title">
+
+                <h3>{group.title}</h3>
+
+                <p>{group.description}</p>
+
+              </div>
 
               <div className="skill-items">
+
                 {group.items.map((item) => (
-                  <span key={item}>{item}</span>
+                  <span key={item}>
+                    {item}
+                  </span>
                 ))}
+
               </div>
+
             </Reveal>
+
           ))}
+
         </div>
+
       </div>
+
     </section>
   );
 }
@@ -564,137 +565,111 @@ function Skills() {
 function Experience() {
   return (
     <section id="experience" className="section experience-section">
+
+      <div className="section-number">03</div>
+
       <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">04 — EXPERIENCE</p>
-              <h2 className="section-title">
-                Building,
-                <br />
-                <span>not watching.</span>
-              </h2>
-            </div>
 
-            <div className="section-index">CAREER / 004</div>
-          </div>
+        <Reveal className="section-heading">
+
+          <p className="section-kicker">
+            / EXPERIENCE
+          </p>
+
+          <h2>
+            WHERE I
+            <br />
+            <span>BUILT.</span>
+          </h2>
+
         </Reveal>
 
-        <Reveal>
-          <div className="experience-shell">
-            <div className="experience-marker">
-              <span>01</span>
-              <div />
-            </div>
+        <Reveal className="experience-layout">
 
-            <div className="experience-content">
-              <div className="experience-top">
-                <div>
-                  <p className="experience-type">INTERNSHIP</p>
-                  <h3>Web Development Intern</h3>
-                  <h4>MR Tech Lab</h4>
-                </div>
+          <div className="experience-index">
+            01
+          </div>
 
-                <div className="experience-date">
-                  JAN
-                  <strong>2026</strong>
-                  —
-                  MAY
-                  <strong>2026</strong>
-                </div>
-              </div>
+          <div className="experience-main">
 
-              <div className="experience-description">
-                <p>
-                  Worked across frontend development, authentication and
-                  full-stack web application delivery in a Git-based Agile
-                  workflow.
+            <div className="experience-top">
+
+              <div>
+
+                <p className="experience-type">
+                  INTERNSHIP
                 </p>
+
+                <h3>
+                  Web Development
+                  <br />
+                  Intern
+                </h3>
+
+                <p className="experience-company">
+                  MR TECH LAB · BENGALURU
+                </p>
+
               </div>
 
-              <div className="experience-grid">
-                <div>
-                  <span className="experience-number">01</span>
-                  <h5>Frontend Delivery</h5>
-                  <p>
-                    Translated design specifications into responsive
-                    HTML/CSS/JavaScript interfaces with consistent browser
-                    rendering.
-                  </p>
-                </div>
-
-                <div>
-                  <span className="experience-number">02</span>
-                  <h5>Authentication</h5>
-                  <p>
-                    Integrated Firebase Authentication and session management,
-                    resolving authentication issues identified during QA.
-                  </p>
-                </div>
-
-                <div>
-                  <span className="experience-number">03</span>
-                  <h5>Hands-on Python</h5>
-                  <p>
-                    Independently built and shipped three web applications
-                    using Python/Flask, Firebase and frontend technologies.
-                  </p>
-                </div>
-
-                <div>
-                  <span className="experience-number">04</span>
-                  <h5>Agile Delivery</h5>
-                  <p>
-                    Collaborated with teammates in Git-based sprints and
-                    delivered assigned features on schedule.
-                  </p>
-                </div>
+              <div className="experience-date">
+                JAN 2026
+                <br />
+                —
+                <br />
+                MAY 2026
               </div>
+
             </div>
+
+            <div className="experience-divider" />
+
+            <div className="experience-description">
+
+              <p>
+                Translated design specifications into responsive
+                HTML/CSS/JS interfaces and worked across Chrome,
+                Firefox and Safari.
+              </p>
+
+              <p>
+                Integrated Firebase Authentication and session
+                management, resolving authentication issues
+                identified during QA.
+              </p>
+
+              <p>
+                Independently built and shipped three web
+                applications using HTML/CSS/JS, Python/Flask
+                and Firebase.
+              </p>
+
+              <p>
+                Collaborated in an Agile, Git-based workflow and
+                delivered assigned UI features across multiple
+                development sprints.
+              </p>
+
+            </div>
+
+            <div className="experience-tools">
+
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+              <span>Python</span>
+              <span>Flask</span>
+              <span>Firebase</span>
+              <span>Git</span>
+
+            </div>
+
           </div>
+
         </Reveal>
 
-        <Reveal>
-          <div className="java-track">
-            <div className="java-track-label">
-              <span>CORE DEVELOPMENT TRACK</span>
-              <strong>JAVA FULL STACK</strong>
-            </div>
-
-            <div className="java-track-line">
-              <div className="track-node">
-                <span>01</span>
-                <b>JAVA 17</b>
-              </div>
-
-              <div className="track-node">
-                <span>02</span>
-                <b>SPRING BOOT</b>
-              </div>
-
-              <div className="track-node">
-                <span>03</span>
-                <b>SECURITY</b>
-              </div>
-
-              <div className="track-node">
-                <span>04</span>
-                <b>DATABASE</b>
-              </div>
-
-              <div className="track-node">
-                <span>05</span>
-                <b>REACT</b>
-              </div>
-
-              <div className="track-node">
-                <span>06</span>
-                <b>DOCKER</b>
-              </div>
-            </div>
-          </div>
-        </Reveal>
       </div>
+
     </section>
   );
 }
@@ -706,33 +681,42 @@ function Experience() {
 const PROJECTS = [
   {
     route: "shopsphere",
-    stack: "java",
-    stackLabel: "JAVA / SPRING BOOT",
-    category: "PROJECT 01",
     number: "01",
+    type: "JAVA / FULL STACK",
     name: "ShopSphere",
-    desc: "Full-stack e-commerce platform engineered around product discovery, cart, wishlist, checkout and order management with separate ADMIN and CUSTOMER workflows.",
-    highlight: "6 MODULES · 15+ VALIDATED REST ENDPOINTS",
+    short:
+      "Full-stack e-commerce platform engineered around layered Spring Boot architecture and React.",
+    description:
+      "A production-style e-commerce system covering product browsing, cart, wishlist, checkout and order management.",
+    stats: [
+      "6 MODULES",
+      "15+ REST APIs",
+      "ADMIN / CUSTOMER",
+    ],
     tech: [
       "Java 17",
       "Spring Boot 3",
-      "Spring Data JPA",
       "React.js",
+      "Spring Data JPA",
       "MySQL",
       "REST APIs",
-      "RBAC",
     ],
-    tag: "PRIMARY JAVA PROJECT",
   },
+
   {
     route: "banksphere",
-    stack: "java",
-    stackLabel: "JAVA / SPRING SECURITY",
-    category: "PROJECT 02",
     number: "02",
-    name: "BankSphere",
-    desc: "Role-based banking application focused on stateless JWT authentication, transactional workflows, relational integrity and controlled access across multiple permission tiers.",
-    highlight: "JWT SECURITY · 3 PERMISSION TIERS · 8+ ENTITIES",
+    type: "JAVA / SECURITY",
+    name: "Online Banking System",
+    short:
+      "Security-focused banking application built around JWT authentication and role-based workflows.",
+    description:
+      "A full-stack banking system with account, transaction and administrative workflows backed by normalized relational data.",
+    stats: [
+      "JWT SECURITY",
+      "3 PERMISSION TIERS",
+      "8+ ENTITIES",
+    ],
     tech: [
       "Java 17",
       "Spring Boot 3",
@@ -742,19 +726,23 @@ const PROJECTS = [
       "MySQL",
       "PostgreSQL",
       "Docker",
-      "JUnit 5",
     ],
-    tag: "PRIMARY JAVA PROJECT",
   },
+
   {
     route: "lifedecisionassistant",
-    stack: "python",
-    stackLabel: "PYTHON / FLASK",
-    category: "PROJECT 03",
     number: "03",
+    type: "PYTHON / FLASK",
     name: "Life Decision Assistant",
-    desc: "Applied AI decision-support web application using Flask and multiple external LLM providers behind a unified backend interface.",
-    highlight: "HANDS-ON PYTHON · 3 AI PROVIDERS",
+    short:
+      "AI-assisted decision support application connecting multiple LLM providers behind one backend.",
+    description:
+      "Hands-on Python/Flask project integrating Groq, Gemini and OpenRouter APIs with Firebase authentication.",
+    stats: [
+      "3 LLM PROVIDERS",
+      "PYTHON / FLASK",
+      "FIREBASE",
+    ],
     tech: [
       "Python",
       "Flask",
@@ -763,31 +751,50 @@ const PROJECTS = [
       "Gemini API",
       "OpenRouter",
     ],
-    tag: "HANDS-ON PYTHON",
   },
+
   {
     route: "aiexamcompanion",
-    stack: "python",
-    stackLabel: "PYTHON / FLASK",
-    category: "PROJECT 04",
     number: "04",
+    type: "PYTHON / FLASK",
     name: "AI Exam Companion",
-    desc: "AI-assisted exam preparation application designed to generate practice questions and maintain user session history.",
-    highlight: "HANDS-ON PYTHON · AI QUESTION GENERATION",
-    tech: ["Python", "Flask", "MongoDB", "Groq API"],
-    tag: "HANDS-ON PYTHON",
+    short:
+      "AI-powered exam preparation application for generating practice questions and tracking sessions.",
+    description:
+      "Hands-on Flask application using AI generation and MongoDB-based session history.",
+    stats: [
+      "AI QUESTIONS",
+      "MONGODB",
+      "FLASK",
+    ],
+    tech: [
+      "Python",
+      "Flask",
+      "MongoDB",
+      "Groq API",
+    ],
   },
+
   {
     route: "digitalanalyticsdashboard",
-    stack: "js",
-    stackLabel: "JAVASCRIPT / FIREBASE",
-    category: "PROJECT 05",
     number: "05",
+    type: "JAVASCRIPT / FIREBASE",
     name: "Digital Analytics Dashboard",
-    desc: "Analytics dashboard combining Google OAuth authentication, Firebase-backed data and client-side visual reporting.",
-    highlight: "GOOGLE OAUTH · FIREBASE · ANALYTICS",
-    tech: ["JavaScript", "Firebase", "Google OAuth", "Chart.js"],
-    tag: "WEB APPLICATION",
+    short:
+      "Analytics interface with OAuth authentication and Firebase-backed application data.",
+    description:
+      "Hands-on web application focused on authenticated analytics and data visualization.",
+    stats: [
+      "GOOGLE OAUTH",
+      "FIREBASE",
+      "CHART.JS",
+    ],
+    tech: [
+      "JavaScript",
+      "Firebase",
+      "Google OAuth",
+      "Chart.js",
+    ],
   },
 ];
 
@@ -798,221 +805,111 @@ const PROJECTS = [
 function Projects() {
   return (
     <section id="projects" className="section projects-section">
+
+      <div className="section-number">04</div>
+
       <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">05 — SELECTED WORK</p>
-              <h2 className="section-title">
-                Systems I've
-                <br />
-                <span>actually built.</span>
-              </h2>
-            </div>
 
-            <div className="section-index">WORK / 005</div>
-          </div>
+        <Reveal className="projects-heading">
 
-          <div className="projects-intro-row">
-            <p>
-              Two core Java full-stack systems form the center of my
-              development work, supported by hands-on Python/Flask applications
-              and additional web tooling.
+          <div>
+
+            <p className="section-kicker">
+              / SELECTED WORK
             </p>
 
-            <span>05 PROJECTS / 2026</span>
+            <h2>
+              SYSTEMS
+              <br />
+              <span>I'VE BUILT.</span>
+            </h2>
+
           </div>
+
+          <p className="projects-heading-copy">
+            My primary project work is centered around Java,
+            Spring Boot, React and relational database systems.
+            Python/Flask projects represent additional
+            hands-on application development and AI integration.
+          </p>
+
         </Reveal>
 
-        <div className="projects-command-grid">
-          {PROJECTS.map((project, index) => (
+        <div className="projects-list">
+
+          {PROJECTS.map((project) => (
+
             <Reveal
               key={project.route}
-              className={`project-command-card project-${index + 1}`}
-              style={{ transitionDelay: `${index * 70}ms` }}
+              className="project-item"
             >
+
               <button
-                className="project-open-area"
+                className="project-open"
                 onClick={() => {
                   window.location.hash = `/${project.route}`;
                 }}
                 aria-label={`Open ${project.name}`}
               >
-                <div className="project-card-no">
+
+                <div className="project-number">
                   {project.number}
-                  <span>↗</span>
                 </div>
 
-                <div className="project-card-top">
-                  <span className={`project-stack ${project.stack}`}>
-                    {project.stackLabel}
+                <div className="project-main">
+
+                  <div className="project-meta">
+                    {project.type}
+                  </div>
+
+                  <h3>
+                    {project.name}
+                  </h3>
+
+                  <p className="project-short">
+                    {project.short}
+                  </p>
+
+                  <div className="project-stat-row">
+
+                    {project.stats.map((stat) => (
+                      <span key={stat}>
+                        {stat}
+                      </span>
+                    ))}
+
+                  </div>
+
+                </div>
+
+                <div className="project-side">
+
+                  <span className="project-arrow">
+                    ↗
                   </span>
 
-                  <span className="project-tag">{project.tag}</span>
-                </div>
+                  <div className="project-tech-list">
 
-                <div className="project-card-main">
-                  <p>{project.category}</p>
-
-                  <h3>{project.name}</h3>
-
-                  <div className="project-line" />
-
-                  <span>{project.desc}</span>
-                </div>
-
-                <div className="project-card-bottom">
-                  <div className="project-tech-row">
                     {project.tech.slice(0, 5).map((tech) => (
-                      <span key={tech}>{tech}</span>
+                      <span key={tech}>
+                        {tech}
+                      </span>
                     ))}
+
                   </div>
 
-                  <div className="project-highlight-new">
-                    {project.highlight}
-                  </div>
-
-                  <div className="open-project">
-                    OPEN CASE STUDY <b>↗</b>
-                  </div>
                 </div>
+
               </button>
+
             </Reveal>
+
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
-/* =========================================================
-   ARCHITECTURE
-   ========================================================= */
-
-function Architecture() {
-  const layers = [
-    {
-      number: "01",
-      title: "CLIENT",
-      tech: "React.js / JavaScript",
-      description:
-        "Responsive interfaces, client-side validation, state handling and API integration.",
-    },
-    {
-      number: "02",
-      title: "API",
-      tech: "REST / Axios",
-      description:
-        "Structured REST endpoints connecting frontend workflows with backend services.",
-    },
-    {
-      number: "03",
-      title: "SERVICE",
-      tech: "Spring Boot / MVC",
-      description:
-        "Layered Controller → Service → Repository architecture with DTOs and exception handling.",
-    },
-    {
-      number: "04",
-      title: "SECURITY",
-      tech: "Spring Security / JWT",
-      description:
-        "Stateless authentication and role-based authorization across protected workflows.",
-    },
-    {
-      number: "05",
-      title: "DATA",
-      tech: "MySQL / PostgreSQL",
-      description:
-        "Normalized relational schemas, constraints, relationships and database integrity.",
-    },
-    {
-      number: "06",
-      title: "DELIVERY",
-      tech: "Docker / GitHub / Cloud",
-      description:
-        "Containerized environments, version control, CI/CD exposure and cloud deployment.",
-    },
-  ];
-
-  return (
-    <section id="architecture" className="section architecture-section">
-      <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">06 — ENGINEERING APPROACH</p>
-              <h2 className="section-title">
-                From
-                <br />
-                <span>request → runtime.</span>
-              </h2>
-            </div>
-
-            <div className="section-index">ARCH / 006</div>
-          </div>
-        </Reveal>
-
-        <Reveal>
-          <div className="architecture-intro">
-            <p>
-              I don't treat frontend, backend and database as separate
-              islands. My Java projects are built as connected systems where
-              the data model, API contract, security boundary and UI workflow
-              support each other.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="architecture-stack">
-          {layers.map((layer, index) => (
-            <Reveal
-              key={layer.number}
-              className="architecture-layer"
-              style={{ transitionDelay: `${index * 60}ms` }}
-            >
-              <div className="architecture-number">{layer.number}</div>
-
-              <div className="architecture-title">
-                <span>{layer.title}</span>
-                <strong>{layer.tech}</strong>
-              </div>
-
-              <p>{layer.description}</p>
-
-              <div className="architecture-arrow">→</div>
-            </Reveal>
-          ))}
         </div>
 
-        <Reveal>
-          <div className="engineering-principles">
-            <div className="principle">
-              <span>01</span>
-              <strong>SECURITY FIRST</strong>
-              <p>JWT + RBAC + validation</p>
-            </div>
-
-            <div className="principle">
-              <span>02</span>
-              <strong>DATA INTEGRITY</strong>
-              <p>Normalization + constraints</p>
-            </div>
-
-            <div className="principle">
-              <span>03</span>
-              <strong>TESTABLE CODE</strong>
-              <p>JUnit 5 + Mockito</p>
-            </div>
-
-            <div className="principle">
-              <span>04</span>
-              <strong>SHIP READY</strong>
-              <p>Docker + Git + CI/CD</p>
-            </div>
-          </div>
-        </Reveal>
       </div>
+
     </section>
   );
 }
@@ -1024,123 +921,139 @@ function Architecture() {
 function Education() {
   return (
     <section id="education" className="section education-section">
+
+      <div className="section-number">05</div>
+
       <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">07 — EDUCATION</p>
-              <h2 className="section-title">
-                Foundation
-                <br />
-                <span>matters.</span>
-              </h2>
-            </div>
 
-            <div className="section-index">EDU / 007</div>
-          </div>
+        <Reveal className="section-heading">
+
+          <p className="section-kicker">
+            / EDUCATION
+          </p>
+
+          <h2>
+            FOUNDATION
+            <br />
+            <span>MATTERS.</span>
+          </h2>
+
         </Reveal>
 
-        <Reveal>
-          <div className="education-command">
-            <div className="education-big">B.E.</div>
+        <Reveal className="education-layout">
 
-            <div className="education-main">
-              <p className="education-label">
-                COMPUTER SCIENCE AND ENGINEERING
-              </p>
-
-              <h3>Dr. ACS College of Engineering</h3>
-
-              <p className="education-location">
-                Bengaluru, Karnataka · Graduated 2026
-              </p>
-
-              <div className="education-meta">
-                <div>
-                  <span>DEGREE</span>
-                  <strong>Bachelor of Engineering</strong>
-                </div>
-
-                <div>
-                  <span>FIELD</span>
-                  <strong>Computer Science & Engineering</strong>
-                </div>
-
-                <div>
-                  <span>CGPA</span>
-                  <strong>8.00 / 10</strong>
-                </div>
-              </div>
-            </div>
+          <div className="education-mark">
+            B.E
           </div>
+
+          <div className="education-main">
+
+            <p className="education-label">
+              BACHELOR OF ENGINEERING
+            </p>
+
+            <h3>
+              Computer Science
+              <br />
+              and Engineering
+            </h3>
+
+            <p className="education-institute">
+              Dr. ACS College of Engineering
+              <br />
+              Bengaluru, Karnataka
+            </p>
+
+          </div>
+
+          <div className="education-score">
+
+            <span>CGPA</span>
+
+            <strong>
+              8.00
+            </strong>
+
+            <small>
+              / 10
+            </small>
+
+            <p>
+              GRADUATED 2026
+            </p>
+
+          </div>
+
         </Reveal>
+
       </div>
+
     </section>
   );
 }
 
 /* =========================================================
-   CERTIFICATIONS / LEARNING
+   CERTIFICATIONS
    ========================================================= */
 
 function Certifications() {
-  const items = [
-    {
-      number: "01",
-      title: "DATA STRUCTURES",
-      text: "Building a stronger foundation in problem solving and algorithmic thinking.",
-    },
-    {
-      number: "02",
-      title: "OBJECT-ORIENTED DESIGN",
-      text: "Applying OOP principles throughout Java application development.",
-    },
-    {
-      number: "03",
-      title: "BACKEND ENGINEERING",
-      text: "Deepening Spring Boot, security, APIs, persistence and architecture.",
-    },
-    {
-      number: "04",
-      title: "CLOUD & DEVOPS",
-      text: "Hands-on exposure to Docker, deployment platforms, GitHub Actions and AWS.",
-    },
+  const certifications = [
+    "Java Full Stack Development",
+    "Spring Boot & REST APIs",
+    "React.js Fundamentals",
+    "SQL & Database Design",
   ];
 
   return (
-    <section className="section learning-section">
-      <div className="section-container">
-        <Reveal>
-          <div className="section-header">
-            <div>
-              <p className="section-code">08 — CONTINUOUS LEARNING</p>
-              <h2 className="section-title">
-                Still
-                <br />
-                <span>leveling up.</span>
-              </h2>
-            </div>
+    <section className="section certification-section">
 
-            <div className="section-index">LEARN / 008</div>
-          </div>
+      <div className="section-number">06</div>
+
+      <div className="section-container">
+
+        <Reveal className="section-heading">
+
+          <p className="section-kicker">
+            / CONTINUOUS LEARNING
+          </p>
+
+          <h2>
+            ALWAYS
+            <br />
+            <span>IMPROVING.</span>
+          </h2>
+
         </Reveal>
 
-        <div className="learning-grid">
-          {items.map((item, index) => (
+        <div className="certification-list">
+
+          {certifications.map((cert, index) => (
+
             <Reveal
-              key={item.number}
-              className="learning-card"
-              style={{ transitionDelay: `${index * 60}ms` }}
+              key={cert}
+              className="certification-item"
             >
-              <span>{item.number}</span>
 
-              <h3>{item.title}</h3>
+              <span>
+                0{index + 1}
+              </span>
 
-              <p>{item.text}</p>
+              <h3>
+                {cert}
+              </h3>
+
+              <i>
+                ↗
+              </i>
+
             </Reveal>
+
           ))}
+
         </div>
+
       </div>
+
     </section>
   );
 }
@@ -1152,24 +1065,30 @@ function Certifications() {
 function Contact() {
   return (
     <section id="contact" className="contact-section">
+
       <div className="contact-grid" />
 
-      <Reveal>
-        <p className="section-code">09 — CONTACT</p>
+      <div className="contact-container">
 
-        <h2>
-          HAVE A
-          <br />
-          <span>PROBLEM TO BUILD?</span>
-        </h2>
+        <Reveal>
 
-        <p className="contact-description">
-          I'm looking for opportunities where I can contribute as a Java
-          full-stack developer, work on real systems and continue growing as
-          an engineer.
-        </p>
+          <p className="section-kicker">
+            / GET IN TOUCH
+          </p>
 
-        <div className="contact-actions">
+          <h2>
+            LET'S BUILD
+            <br />
+            <span>SOMETHING.</span>
+          </h2>
+
+          <p className="contact-description">
+            Looking for an opportunity to contribute to real
+            software products, work with strong engineering
+            teams and continue growing as a Java full-stack
+            engineer.
+          </p>
+
           <a
             href="mailto:Srinivasrahul838@gmail.com"
             className="contact-email"
@@ -1178,29 +1097,42 @@ function Contact() {
             <span>↗</span>
           </a>
 
-          <a href="tel:+917337634886" className="contact-phone">
-            +91 73376 34886
-          </a>
-        </div>
+          <div className="contact-details">
 
-        <div className="social-links">
-          <a
-            href="https://github.com/RAHUL2525252525"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub <span>↗</span>
-          </a>
+            <span>
+              +91 7337634886
+            </span>
 
-          <a href="#about">
-            LinkedIn <span>↗</span>
-          </a>
+            <span>
+              BENGALURU, INDIA
+            </span>
 
-          <a href="/Rahul_S_ResumeFullStack.pdf" target="_blank" rel="noreferrer">
-            Resume <span>↗</span>
-          </a>
-        </div>
-      </Reveal>
+          </div>
+
+          <div className="contact-social">
+
+            <a
+              href="https://github.com/RAHUL2525252525"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GITHUB ↗
+            </a>
+
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LINKEDIN ↗
+            </a>
+
+          </div>
+
+        </Reveal>
+
+      </div>
+
     </section>
   );
 }
@@ -1211,18 +1143,20 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer>
-      <div className="footer-left">
-        RAHUL S<span>/</span>26
+    <footer className="footer">
+
+      <div>
+        RAHUL S
       </div>
 
-      <div className="footer-center">
-        JAVA FULL STACK · SOFTWARE ENGINEER
+      <div>
+        SOFTWARE ENGINEER
       </div>
 
-      <div className="footer-right">
-        © {new Date().getFullYear()} ALL RIGHTS RESERVED
+      <div>
+        © {new Date().getFullYear()}
       </div>
+
     </footer>
   );
 }
