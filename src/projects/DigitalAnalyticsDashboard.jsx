@@ -1,396 +1,577 @@
 import React from "react";
 
-const imageFiles = import.meta.glob(
-  "../assets/projects/digitalanalyticsdashboard/*.png.png",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
-
-const images = Object.entries(imageFiles)
-  .sort(([a], [b]) => {
-    const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    return numberA - numberB;
-  })
-  .map(([, src]) => src);
-
-const features = [
-  {
-    number: "01",
-    title: "Google OAuth",
-    text: "Implemented Google-based authentication for secure dashboard access."
-  },
-  {
-    number: "02",
-    title: "Analytics Overview",
-    text: "Designed dashboard views that surface important activity and usage metrics."
-  },
-  {
-    number: "03",
-    title: "Firebase Data",
-    text: "Used Firebase as the application's data layer for storing dashboard information."
-  },
-  {
-    number: "04",
-    title: "Visual Reporting",
-    text: "Presented data through visual metric components to make trends easier to understand."
-  },
-  {
-    number: "05",
-    title: "Session Tracking",
-    text: "Tracked application activity across user sessions for reporting."
-  },
-  {
-    number: "06",
-    title: "Responsive Design",
-    text: "Built an interface that adapts across desktop and mobile screen sizes."
-  }
-];
-
 export default function DigitalAnalyticsDashboard() {
+  const screenshots = Array.from(
+    { length: 5 },
+    (_, i) => `/${i + 38}.png.png`
+  );
+
   return (
-    <div className="case-page dashboard-page">
+    <>
+      <style>{`
+        .dashboard-page {
+          min-height:100vh;
+          background:#f5f5f2;
+          color:#111214;
+          font-family:"DM Sans",Arial,sans-serif;
+        }
 
-      <nav className="case-nav">
+        .dashboard-nav {
+          height:76px;
+          position:sticky;
+          top:0;
+          z-index:100;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:0 6%;
+          background:rgba(245,245,242,.9);
+          backdrop-filter:blur(18px);
+          border-bottom:1px solid #ddd;
+        }
 
-        <a href="#/" className="case-back">
-          <span>←</span>
-          Back to Portfolio
-        </a>
+        .dashboard-nav a {
+          color:#72757c;
+          text-decoration:none;
+          font-size:13px;
+          font-weight:600;
+        }
 
-        <div className="case-nav-center">
-          <span className="case-dot"></span>
-          SOFTWARE ENGINEER
-        </div>
+        .dashboard-logo {
+          font-family:"Space Grotesk",sans-serif;
+          font-weight:700;
+        }
 
-        <span className="case-number">05 / 05</span>
+        .dashboard-logo span {
+          color:#3457d5;
+        }
 
-      </nav>
+        .dashboard-hero,
+        .dashboard-content {
+          max-width:1240px;
+          margin:auto;
+          padding-left:25px;
+          padding-right:25px;
+        }
 
-      <section className="case-hero">
+        .dashboard-hero {
+          padding-top:110px;
+          padding-bottom:80px;
+        }
 
-        <div className="case-hero-copy">
+        .dashboard-label {
+          color:#3457d5;
+          font-family:monospace;
+          font-size:10px;
+          letter-spacing:2px;
+        }
 
-          <div className="project-kicker">
+        .dashboard-hero h1 {
+          margin-top:25px;
+          max-width:1100px;
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(52px,9vw,125px);
+          line-height:.87;
+          letter-spacing:-6px;
+        }
 
-            <span>JAVASCRIPT / FIREBASE</span>
+        .dashboard-hero h1 span {
+          color:#3457d5;
+        }
 
-            <span>•</span>
+        .dashboard-description {
+          max-width:760px;
+          margin-top:35px;
+          color:#70737a;
+          font-size:18px;
+          line-height:1.8;
+        }
 
-            <span>HANDS-ON PROJECT</span>
+        .dashboard-tags {
+          display:flex;
+          flex-wrap:wrap;
+          gap:9px;
+          margin-top:30px;
+        }
 
+        .dashboard-tags span {
+          padding:9px 14px;
+          border:1px solid #d1d2cf;
+          border-radius:100px;
+          font-size:11px;
+        }
+
+        .dashboard-cover {
+          margin-top:70px;
+          overflow:hidden;
+          border-radius:32px;
+          box-shadow:0 30px 80px rgba(0,0,0,.08);
+        }
+
+        .dashboard-cover img {
+          display:block;
+          width:100%;
+        }
+
+        .dashboard-section {
+          padding:100px 0;
+          border-top:1px solid #ddd;
+        }
+
+        .dashboard-grid {
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:80px;
+        }
+
+        .dashboard-section h2 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(38px,5vw,66px);
+          line-height:1;
+          letter-spacing:-3px;
+          margin:18px 0 25px;
+        }
+
+        .dashboard-section p,
+        .dashboard-section li {
+          color:#6d7077;
+          font-size:15px;
+          line-height:1.85;
+        }
+
+        .dashboard-features {
+          display:grid;
+          grid-template-columns:repeat(3,1fr);
+          gap:15px;
+          margin-top:45px;
+        }
+
+        .dashboard-card {
+          min-height:190px;
+          padding:30px;
+          background:white;
+          border:1px solid #ddd;
+          border-radius:22px;
+        }
+
+        .dashboard-card span {
+          color:#3457d5;
+          font-family:monospace;
+          font-size:10px;
+        }
+
+        .dashboard-card h3 {
+          margin:25px 0 10px;
+          font-family:"Space Grotesk",sans-serif;
+          font-size:20px;
+        }
+
+        .dashboard-card p {
+          font-size:12px;
+        }
+
+        .dashboard-flow {
+          padding:35px;
+          margin-top:30px;
+          border-radius:28px;
+          background:#111214;
+          color:white;
+          font-family:monospace;
+          font-size:13px;
+          line-height:2;
+        }
+
+        .dashboard-tech {
+          display:flex;
+          flex-wrap:wrap;
+          gap:9px;
+          margin-top:35px;
+        }
+
+        .dashboard-tech span {
+          padding:9px 14px;
+          background:#111214;
+          color:white;
+          border-radius:100px;
+          font-size:11px;
+        }
+
+        .dashboard-screens {
+          display:grid;
+          grid-template-columns:repeat(2,1fr);
+          gap:20px;
+          margin-top:45px;
+        }
+
+        .dashboard-screen {
+          overflow:hidden;
+          border-radius:20px;
+          border:1px solid #ddd;
+          background:white;
+        }
+
+        .dashboard-screen img {
+          display:block;
+          width:100%;
+          transition:transform .5s ease;
+        }
+
+        .dashboard-screen:hover img {
+          transform:scale(1.025);
+        }
+
+        .dashboard-list {
+          padding-left:20px;
+        }
+
+        .dashboard-end {
+          margin:80px 0;
+          padding:55px;
+          text-align:center;
+          border-radius:30px;
+          background:#3457d5;
+          color:white;
+        }
+
+        .dashboard-end h2 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(40px,6vw,75px);
+          letter-spacing:-3px;
+        }
+
+        .dashboard-end a {
+          display:inline-block;
+          margin-top:20px;
+          padding:14px 22px;
+          border-radius:100px;
+          background:white;
+          color:#111;
+          text-decoration:none;
+          font-size:12px;
+          font-weight:700;
+        }
+
+        @media(max-width:800px) {
+          .dashboard-grid,
+          .dashboard-features,
+          .dashboard-screens {
+            grid-template-columns:1fr;
+          }
+
+          .dashboard-hero h1 {
+            letter-spacing:-4px;
+          }
+        }
+
+        @media(max-width:500px) {
+          .dashboard-hero,
+          .dashboard-content {
+            padding-left:18px;
+            padding-right:18px;
+          }
+
+          .dashboard-cover {
+            border-radius:20px;
+          }
+
+          .dashboard-section {
+            padding:70px 0;
+          }
+
+          .dashboard-end {
+            padding:35px 20px;
+          }
+        }
+      `}</style>
+
+      <div className="dashboard-page">
+
+        <nav className="dashboard-nav">
+          <a href="/">← Back to Portfolio</a>
+
+          <div className="dashboard-logo">
+            RAHUL<span>.</span>
+          </div>
+        </nav>
+
+        <header className="dashboard-hero">
+
+          <div className="dashboard-label">
+            05 / JAVASCRIPT / ANALYTICS
           </div>
 
           <h1>
-            Digital Analytics
-            <span>Dashboard</span>
+            Digital Analytics <span>Dashboard</span>
           </h1>
 
-          <p className="case-tagline">
-            Visual
-            <br />
-            Analytics Experience
+          <p className="dashboard-description">
+            A modern analytics dashboard focused on
+            authenticated access, Firebase-backed data and
+            visual presentation of application metrics.
           </p>
 
-          <p className="case-intro">
-            A responsive analytics dashboard designed to turn
-            application activity into clear, visual metrics with
-            Google authentication and Firebase data integration.
-          </p>
-
-          <div className="case-hero-tags">
-
+          <div className="dashboard-tags">
             <span>JavaScript</span>
             <span>Firebase</span>
             <span>Google OAuth</span>
             <span>Chart.js</span>
-
+            <span>HTML5</span>
+            <span>CSS3</span>
           </div>
 
-        </div>
-
-        <div className="hero-project-visual dashboard-visual">
-
-          <div className="visual-glow"></div>
-
-          {images.length > 0 && (
+          <div className="dashboard-cover">
             <img
-              src={images[0]}
+              src={screenshots[0]}
               alt="Digital Analytics Dashboard"
             />
-          )}
-
-          <div className="visual-label">
-            <span>05</span>
-            ANALYTICS DASHBOARD
           </div>
 
-        </div>
+        </header>
 
-      </section>
+        <main className="dashboard-content">
 
-      <section className="case-section overview-section">
+          <section className="dashboard-section">
 
-        <div className="section-eyebrow">
-          01 — OVERVIEW
-        </div>
-
-        <div className="overview-grid">
-
-          <div>
-
-            <h2>
-              Making data
-              <span> easier to read.</span>
-            </h2>
-
-          </div>
-
-          <div className="overview-text">
-
-            <p>
-              Digital Analytics Dashboard focuses on presenting
-              application activity through a visual dashboard instead
-              of requiring users to work directly with raw data.
-            </p>
-
-            <p>
-              Google OAuth provides authentication while Firebase
-              acts as the application's data layer.
-            </p>
-
-            <div className="stat-row">
+            <div className="dashboard-grid">
 
               <div>
-                <strong>OAuth</strong>
-                <small>AUTHENTICATION</small>
+                <div className="dashboard-label">
+                  01 / OVERVIEW
+                </div>
+
+                <h2>
+                  Turning data into a usable interface.
+                </h2>
               </div>
 
               <div>
-                <strong>Firebase</strong>
-                <small>DATA LAYER</small>
-              </div>
+                <p>
+                  The Digital Analytics Dashboard was built as
+                  a web-based analytics interface with a focus
+                  on authentication, structured data and
+                  visual reporting.
+                </p>
 
-              <div>
-                <strong>Charts</strong>
-                <small>VISUALIZATION</small>
+                <p>
+                  Google OAuth provides convenient authentication
+                  while Firebase acts as the backend data layer.
+                </p>
               </div>
 
             </div>
 
-          </div>
+          </section>
 
-        </div>
+          <section className="dashboard-section">
 
-      </section>
+            <div className="dashboard-label">
+              02 / FEATURES
+            </div>
 
-      <section className="case-section">
+            <h2>
+              A focused analytics experience.
+            </h2>
 
-        <div className="section-eyebrow">
-          02 — FUNCTIONALITY
-        </div>
+            <div className="dashboard-features">
 
-        <div className="section-heading">
+              <div className="dashboard-card">
+                <span>01</span>
+                <h3>Google OAuth</h3>
+                <p>
+                  Authentication through Google OAuth for
+                  convenient user access.
+                </p>
+              </div>
 
-          <h2>
-            Designed for
-            <span> clarity.</span>
-          </h2>
+              <div className="dashboard-card">
+                <span>02</span>
+                <h3>Firebase</h3>
+                <p>
+                  Firebase-backed application data and
+                  authentication infrastructure.
+                </p>
+              </div>
 
-          <p>
-            Dashboard functionality focused on making metrics easier
-            to scan and understand.
-          </p>
+              <div className="dashboard-card">
+                <span>03</span>
+                <h3>Analytics</h3>
+                <p>
+                  Data-focused dashboard views for understanding
+                  application activity.
+                </p>
+              </div>
 
-        </div>
+              <div className="dashboard-card">
+                <span>04</span>
+                <h3>Charts</h3>
+                <p>
+                  Chart-based visualizations make numerical
+                  information easier to understand.
+                </p>
+              </div>
 
-        <div className="premium-feature-grid">
+              <div className="dashboard-card">
+                <span>05</span>
+                <h3>Responsive UI</h3>
+                <p>
+                  Dashboard layouts adapt across desktop,
+                  tablet and mobile screens.
+                </p>
+              </div>
 
-          {features.map((feature) => (
+              <div className="dashboard-card">
+                <span>06</span>
+                <h3>Data Interface</h3>
+                <p>
+                  Clean information hierarchy for quickly
+                  reading application metrics.
+                </p>
+              </div>
 
-            <article
-              className="premium-feature"
-              key={feature.number}
-            >
+            </div>
 
-              <div className="feature-number">
-                {feature.number}
+          </section>
+
+          <section className="dashboard-section">
+
+            <div className="dashboard-grid">
+
+              <div>
+                <div className="dashboard-label">
+                  03 / DATA FLOW
+                </div>
+
+                <h2>
+                  From authentication to analytics.
+                </h2>
               </div>
 
               <div>
 
-                <h3>{feature.title}</h3>
-
-                <p>{feature.text}</p>
+                <div className="dashboard-flow">
+                  User
+                  <br />
+                  ↓
+                  <br />
+                  Google OAuth
+                  <br />
+                  ↓
+                  <br />
+                  Firebase Authentication
+                  <br />
+                  ↓
+                  <br />
+                  Firebase Data
+                  <br />
+                  ↓
+                  <br />
+                  Dashboard
+                  <br />
+                  ↓
+                  <br />
+                  Chart / Analytics Components
+                </div>
 
               </div>
 
-              <span className="feature-arrow">
-                ↗
-              </span>
+            </div>
 
-            </article>
+          </section>
 
-          ))}
+          <section className="dashboard-section">
 
-        </div>
-
-      </section>
-
-      <section className="architecture-section">
-
-        <div className="section-eyebrow">
-          03 — DATA FLOW
-        </div>
-
-        <div className="architecture-content">
-
-          <div>
+            <div className="dashboard-label">
+              04 / TECHNOLOGY
+            </div>
 
             <h2>
-              Data into
-              <span> insight.</span>
+              Technology stack.
             </h2>
 
-            <p>
-              The dashboard brings authentication, application data
-              and visual reporting together in one interface.
-            </p>
-
-          </div>
-
-          <div className="architecture-stack">
-
-            <div className="architecture-card">
-              <b>01</b>
-              <strong>Authentication</strong>
+            <div className="dashboard-tech">
+              <span>JavaScript ES6+</span>
+              <span>Firebase</span>
               <span>Google OAuth</span>
+              <span>Chart.js</span>
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>REST APIs</span>
             </div>
 
-            <div className="architecture-line"></div>
+          </section>
 
-            <div className="architecture-card">
-              <b>02</b>
-              <strong>Firebase</strong>
-              <span>Application data</span>
+          <section className="dashboard-section">
+
+            <div className="dashboard-label">
+              05 / SCREENSHOTS
             </div>
 
-            <div className="architecture-line"></div>
+            <h2>
+              Dashboard walkthrough.
+            </h2>
 
-            <div className="architecture-card">
-              <b>03</b>
-              <strong>Dashboard</strong>
-              <span>Visual analytics</span>
+            <div className="dashboard-screens">
+
+              {screenshots.map((image, index) => (
+                <div
+                  className="dashboard-screen"
+                  key={image}
+                >
+                  <img
+                    src={image}
+                    alt={`Digital Analytics Dashboard screen ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+
             </div>
 
+          </section>
+
+          <section className="dashboard-section">
+
+            <div className="dashboard-grid">
+
+              <div>
+                <div className="dashboard-label">
+                  06 / ENGINEERING
+                </div>
+
+                <h2>
+                  What this project demonstrates.
+                </h2>
+              </div>
+
+              <div>
+                <ul className="dashboard-list">
+                  <li>JavaScript application development</li>
+                  <li>Firebase integration</li>
+                  <li>Google OAuth authentication</li>
+                  <li>Analytics dashboard design</li>
+                  <li>Data visualization</li>
+                  <li>Responsive frontend development</li>
+                  <li>Component-based UI implementation</li>
+                </ul>
+              </div>
+
+            </div>
+
+          </section>
+
+          <div className="dashboard-end">
+            <h2>
+              Explore more projects.
+            </h2>
+
+            <a href="/">
+              ← Return to Portfolio
+            </a>
           </div>
 
-        </div>
+        </main>
 
-      </section>
-
-      <section className="case-section">
-
-        <div className="section-eyebrow">
-          04 — TECHNOLOGY
-        </div>
-
-        <div className="technology-wrapper">
-
-          <h2>
-            Technology
-            <span> stack.</span>
-          </h2>
-
-          <div className="large-tech-list">
-
-            {[
-              "JavaScript",
-              "Firebase",
-              "Google OAuth",
-              "Chart.js",
-              "HTML",
-              "CSS",
-              "Responsive Design"
-            ].map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <section className="screens-section">
-
-        <div className="section-eyebrow">
-          05 — APPLICATION
-        </div>
-
-        <div className="section-heading">
-
-          <h2>
-            Inside the
-            <span> dashboard.</span>
-          </h2>
-
-          <p>
-            Selected views from the analytics experience.
-          </p>
-
-        </div>
-
-        <div className="case-gallery">
-
-          {images.map((image, index) => (
-
-            <div
-              className={`gallery-shot ${
-                index === 0 ? "gallery-featured" : ""
-              }`}
-              key={image}
-            >
-
-              <img
-                src={image}
-                alt={`Digital Analytics Dashboard screen ${index + 1}`}
-              />
-
-              <span>
-                SCREEN {String(index + 1).padStart(2, "0")}
-              </span>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </section>
-
-      <footer className="case-footer">
-
-        <div>
-
-          <span>PROJECT 05</span>
-
-          <h2>
-            Digital Analytics
-            <em>Dashboard</em>
-          </h2>
-
-        </div>
-
-        <a href="#/" className="footer-back">
-          Back to portfolio ↑
-        </a>
-
-      </footer>
-
-    </div>
+      </div>
+    </>
   );
 }
