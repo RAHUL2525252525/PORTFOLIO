@@ -58,6 +58,20 @@ export default function LifeDecisionAssistant() {
           padding: 100px 25px;
         }
 
+        .life-stack-pill {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .5px;
+          text-transform: uppercase;
+          background: rgba(56,189,178,.12);
+          color: #5eead4;
+          border: 1px solid rgba(56,189,178,.35);
+          margin-bottom: 18px;
+        }
+
         .life-label {
           color: #8b5cf6;
           font-size: 12px;
@@ -158,6 +172,14 @@ export default function LifeDecisionAssistant() {
           font-size: 12px;
         }
 
+        .life-empty-gallery {
+          color: #666;
+          border: 1px dashed #292929;
+          border-radius: 14px;
+          padding: 40px;
+          text-align: center;
+        }
+
         @media(max-width:800px) {
           .life-features,
           .life-gallery {
@@ -175,6 +197,8 @@ export default function LifeDecisionAssistant() {
         <main className="life-main">
           <p className="life-label">PROJECT 03</p>
 
+          <div className="life-stack-pill">Python / Flask</div>
+
           <h1>
             Life Decision <span>Assistant</span>
           </h1>
@@ -184,11 +208,11 @@ export default function LifeDecisionAssistant() {
           </p>
 
           <p className="life-description">
-            A Python and Flask based AI web application designed
-            to help users analyze personal decisions by presenting
-            structured perspectives and AI-generated guidance.
-            The application integrates AI APIs behind a Flask
-            backend with Firebase authentication.
+            A Python and Flask based AI web application designed to help
+            users analyze decisions by presenting structured, AI-generated
+            guidance. The backend integrates three different LLM providers
+            behind a unified interface, with Firebase handling
+            authentication.
           </p>
 
           <section className="life-section">
@@ -199,50 +223,32 @@ export default function LifeDecisionAssistant() {
             <div className="life-features">
               <div className="life-feature">
                 <h3>Decision Analysis</h3>
-                <p>
-                  Users can provide a decision and receive
-                  structured AI-assisted analysis.
-                </p>
+                <p>Users provide a decision and receive structured, AI-assisted analysis of possible outcomes.</p>
               </div>
 
               <div className="life-feature">
-                <h3>AI Integration</h3>
-                <p>
-                  Integrated AI services to generate useful
-                  decision-oriented responses.
-                </p>
+                <h3>Multi-Provider AI</h3>
+                <p>Integrates Groq, OpenRouter, and Gemini behind one backend interface for flexible model access.</p>
               </div>
 
               <div className="life-feature">
-                <h3>Authentication</h3>
-                <p>
-                  Firebase authentication provides secure user
-                  sign-in functionality.
-                </p>
+                <h3>Firebase Authentication</h3>
+                <p>Firebase handles secure user sign-in and session management.</p>
               </div>
 
               <div className="life-feature">
                 <h3>Flask Backend</h3>
-                <p>
-                  Python Flask handles application logic and
-                  communication with external AI APIs.
-                </p>
+                <p>Python Flask routes handle request validation and communication with external AI APIs.</p>
               </div>
 
               <div className="life-feature">
-                <h3>Multiple AI APIs</h3>
-                <p>
-                  Designed around Groq, OpenRouter and Gemini
-                  API integrations.
-                </p>
+                <h3>Provider Fallback Logic</h3>
+                <p>Designed so requests can route across providers, reducing single-point API dependency.</p>
               </div>
 
               <div className="life-feature">
                 <h3>Responsive Interface</h3>
-                <p>
-                  Designed as a practical web interface for
-                  desktop and mobile users.
-                </p>
+                <p>Built with HTML, CSS, and JavaScript for a clean experience on desktop and mobile.</p>
               </div>
             </div>
           </section>
@@ -274,22 +280,23 @@ export default function LifeDecisionAssistant() {
               Project <span>screenshots</span>
             </h2>
 
-            <div className="life-gallery">
-              {images.map((src, index) => (
-                <div className="life-gallery-item" key={src}>
-                  <img
-                    src={src}
-                    alt={`Life Decision Assistant screenshot ${
-                      index + 1
-                    }`}
-                  />
-
-                  <p>
-                    Screenshot {index + 1}
-                  </p>
-                </div>
-              ))}
-            </div>
+            {images.length > 0 ? (
+              <div className="life-gallery">
+                {images.map((src, index) => (
+                  <div className="life-gallery-item" key={src}>
+                    <img
+                      src={src}
+                      alt={`Life Decision Assistant screenshot ${index + 1}`}
+                    />
+                    <p>Screenshot {index + 1}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="life-empty-gallery">
+                Screenshots coming soon — check back shortly.
+              </div>
+            )}
           </section>
         </main>
       </div>
