@@ -1,153 +1,314 @@
-import React, { useState } from "react";
+import React from "react";
 
-const images = Array.from(
-  { length: 10 },
-  (_, index) => `/${index + 14}.png.png`
-);
+import image14 from "../assets/projects/banksphere/14.png.png";
+import image15 from "../assets/projects/banksphere/15.png.png";
+import image16 from "../assets/projects/banksphere/16.png.png";
+import image17 from "../assets/projects/banksphere/17.png.png";
+import image18 from "../assets/projects/banksphere/18.png.png";
+import image19 from "../assets/projects/banksphere/19.png.png";
+import image20 from "../assets/projects/banksphere/20.png.png";
+import image21 from "../assets/projects/banksphere/21.png.png";
+import image22 from "../assets/projects/banksphere/22.png.png";
+import image23 from "../assets/projects/banksphere/23.png.png";
+
+const screenshots = [
+  image14, image15, image16, image17, image18,
+  image19, image20, image21, image22, image23
+];
 
 export default function BankSphere() {
-  const [activeImage, setActiveImage] = useState(0);
-
-  const goBack = () => {
-    window.location.hash = "/projects";
-  };
-
   return (
-    <div className="project-page">
+    <>
+      <style>{`
+        .project-page {
+          min-height: 100vh;
+          background: #fffdf7;
+          color: #14213d;
+          font-family: "DM Sans", sans-serif;
+        }
 
-      <header className="project-header">
+        .project-nav {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          min-height: 76px;
+          padding: 0 max(24px, calc((100% - 1180px) / 2));
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(255,253,247,.94);
+          border-bottom: 1px solid #d8e2ef;
+          backdrop-filter: blur(16px);
+        }
 
-        <button className="back-button" onClick={goBack}>
-          ← Back to Portfolio
-        </button>
+        .back-link {
+          color: #123f91;
+          font-weight: 700;
+          font-size: 14px;
+          text-decoration: none;
+          transition: .25s;
+        }
 
-        <span className="project-header-number">
-          02 / 05
-        </span>
+        .back-link:hover {
+          transform: translateX(-5px);
+        }
 
-      </header>
+        .nav-project-name {
+          font-family: "Space Grotesk", sans-serif;
+          font-weight: 700;
+          color: #081a3a;
+        }
 
-      <main className="project-container">
+        .project-container {
+          width: min(1180px, calc(100% - 48px));
+          margin: auto;
+        }
 
-        <section className="project-hero">
+        .project-hero {
+          padding: 100px 0 70px;
+        }
 
-          <div className="project-category">
-            JAVA · SPRING SECURITY · REACT
-          </div>
+        .project-number {
+          color: #123f91;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 2px;
+          margin-bottom: 18px;
+        }
 
-          <h1>BankSphere</h1>
+        .project-tag {
+          display: inline-flex;
+          padding: 8px 14px;
+          border-radius: 50px;
+          background: #eaf1fb;
+          color: #123f91;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          margin-bottom: 25px;
+        }
 
-          <p className="project-subtitle">
-            Secure Online Banking System
-          </p>
+        .project-title {
+          max-width: 900px;
+          margin: 0;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: clamp(52px, 8vw, 100px);
+          line-height: .92;
+          letter-spacing: -5px;
+          color: #081a3a;
+        }
 
-          <p className="project-description">
-            A secure online banking application designed with Java,
-            Spring Boot, Spring Security, React.js and MySQL. The
-            system handles authentication, account management and
-            transaction workflows with JWT-based security and
-            role-based access control.
-          </p>
+        .project-title span {
+          color: #123f91;
+        }
 
-          <div className="project-tech">
-            <span>Java 17</span>
-            <span>Spring Boot</span>
-            <span>Spring Security</span>
-            <span>JWT</span>
-            <span>React.js</span>
-            <span>MySQL</span>
-            <span>Docker</span>
-          </div>
+        .project-description {
+          max-width: 760px;
+          margin-top: 30px;
+          color: #64748b;
+          font-size: 17px;
+          line-height: 1.9;
+        }
 
-        </section>
+        .project-stack {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 30px;
+        }
 
-        <section className="project-gallery">
+        .stack-pill {
+          padding: 9px 14px;
+          border-radius: 50px;
+          border: 1px solid #d8e2ef;
+          background: #f7faff;
+          color: #38506f;
+          font-size: 12px;
+          font-weight: 700;
+        }
 
-          <div className="gallery-main">
+        .project-feature {
+          margin: 30px 0 70px;
+          padding: 30px;
+          border-radius: 26px;
+          background: #f2f6fc;
+          border: 1px solid #d8e2ef;
+        }
 
-            <img
-              src={images[activeImage]}
-              alt={`BankSphere screenshot ${activeImage + 1}`}
-            />
+        .feature-label {
+          color: #123f91;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 2px;
+        }
 
-            <div className="gallery-counter">
-              {activeImage + 1} / {images.length}
+        .feature-text {
+          margin-top: 12px;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: 24px;
+          font-weight: 600;
+          color: #081a3a;
+        }
+
+        .section-heading {
+          margin-bottom: 30px;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: 42px;
+          letter-spacing: -2px;
+          color: #081a3a;
+        }
+
+        .gallery {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 22px;
+          padding-bottom: 100px;
+        }
+
+        .gallery-item {
+          overflow: hidden;
+          border: 1px solid #d8e2ef;
+          border-radius: 20px;
+          background: #fff;
+          box-shadow: 0 8px 30px rgba(18,63,145,.07);
+        }
+
+        .gallery-item img {
+          width: 100%;
+          display: block;
+          aspect-ratio: 16 / 10;
+          object-fit: cover;
+          transition: transform .45s ease;
+        }
+
+        .gallery-item:hover img {
+          transform: scale(1.035);
+        }
+
+        .project-footer {
+          padding: 40px 0 70px;
+          border-top: 1px solid #d8e2ef;
+          display: flex;
+          justify-content: space-between;
+          gap: 20px;
+        }
+
+        .footer-link {
+          color: #123f91;
+          font-weight: 700;
+          text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+          .project-container {
+            width: min(100% - 32px, 1180px);
+          }
+
+          .project-nav {
+            padding: 0 16px;
+          }
+
+          .project-hero {
+            padding: 65px 0 45px;
+          }
+
+          .project-title {
+            font-size: clamp(48px, 15vw, 72px);
+            letter-spacing: -3px;
+          }
+
+          .gallery {
+            grid-template-columns: 1fr;
+            gap: 15px;
+          }
+
+          .project-feature {
+            padding: 22px;
+          }
+
+          .project-footer {
+            flex-direction: column;
+          }
+        }
+      `}</style>
+
+      <main className="project-page">
+        <nav className="project-nav">
+          <a className="back-link" href="#projects">
+            ← Back to Projects
+          </a>
+          <span className="nav-project-name">RAHUL.</span>
+        </nav>
+
+        <div className="project-container">
+          <section className="project-hero">
+            <div className="project-number">02 / SELECTED PROJECT</div>
+
+            <div className="project-tag">
+              JAVA · SECURITY · ONLINE BANKING
             </div>
 
-          </div>
+            <h1 className="project-title">
+              Bank<span>Sphere</span>
+            </h1>
 
-          <div className="gallery-thumbnails">
+            <p className="project-description">
+              A secure online banking application with JWT authentication,
+              role-based authorization and transaction workflows.
+            </p>
 
-            {images.map((image, index) => (
+            <div className="project-stack">
+              {[
+                "Java 17",
+                "Spring Boot",
+                "Spring Security",
+                "JWT",
+                "React.js",
+                "Spring Data JPA",
+                "MySQL",
+                "Docker"
+              ].map((item) => (
+                <span className="stack-pill" key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </section>
 
-              <button
-                key={image}
-                className={`gallery-thumbnail ${
-                  activeImage === index ? "active" : ""
-                }`}
-                onClick={() => setActiveImage(index)}
-              >
+          <section className="project-feature">
+            <div className="feature-label">PROJECT HIGHLIGHT</div>
+            <div className="feature-text">
+              JWT security · 3 permission tiers
+            </div>
+          </section>
 
-                <img
-                  src={image}
-                  alt={`BankSphere ${index + 1}`}
-                />
+          <section>
+            <h2 className="section-heading">Project Screenshots</h2>
 
-                <span>{index + 1}</span>
+            <div className="gallery">
+              {screenshots.map((image, index) => (
+                <div className="gallery-item" key={image}>
+                  <img
+                    src={image}
+                    alt={`BankSphere screenshot ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
 
-              </button>
+          <footer className="project-footer">
+            <a className="footer-link" href="#projects">
+              ← All Projects
+            </a>
 
-            ))}
-
-          </div>
-
-        </section>
-
-        <section className="project-details-grid">
-
-          <div className="project-detail-card">
-            <span>01</span>
-            <h3>Security</h3>
-
-            <ul>
-              <li>JWT authentication</li>
-              <li>Role-based access control</li>
-              <li>Spring Security</li>
-              <li>Protected REST endpoints</li>
-              <li>Secure session workflow</li>
-            </ul>
-          </div>
-
-          <div className="project-detail-card">
-            <span>02</span>
-            <h3>Banking Features</h3>
-
-            <ul>
-              <li>User registration</li>
-              <li>Login and authentication</li>
-              <li>Account management</li>
-              <li>Transaction workflows</li>
-              <li>Role-based operations</li>
-            </ul>
-          </div>
-
-          <div className="project-detail-card">
-            <span>03</span>
-            <h3>Architecture</h3>
-
-            <ul>
-              <li>Spring Boot backend</li>
-              <li>REST API architecture</li>
-              <li>Spring Data JPA</li>
-              <li>MySQL database</li>
-              <li>Docker containerization</li>
-            </ul>
-          </div>
-
-        </section>
-
+            <a className="footer-link" href="#lifedecisionassistant">
+              Next Project →
+            </a>
+          </footer>
+        </div>
       </main>
-
-    </div>
+    </>
   );
 }
