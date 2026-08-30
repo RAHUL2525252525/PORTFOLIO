@@ -1,131 +1,295 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink } from "lucide-react";
 
-import image32 from "../assets/projects/aiexamcompanion/32.png";
-import image33 from "../assets/projects/aiexamcompanion/33.png";
-import image34 from "../assets/projects/aiexamcompanion/34.png";
-import image35 from "../assets/projects/aiexamcompanion/35.png";
-import image36 from "../assets/projects/aiexamcompanion/36.png";
-import image37 from "../assets/projects/aiexamcompanion/37.png";
+const imageFiles = import.meta.glob(
+  "../assets/projects/aiexamcompanion/*.png.png",
+  {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }
+);
 
-const screenshots = [
-  image32,
-  image33,
-  image34,
-  image35,
-  image36,
-  image37,
-];
+const images = Object.entries(imageFiles)
+  .sort(([a], [b]) => {
+    const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
+    const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
+
+    return numberA - numberB;
+  })
+  .map(([, src]) => src);
 
 export default function AIExamCompanion() {
   return (
-    <div className="project-page">
-      <div className="project-page-container">
+    <>
+      <style>{`
+        .exam-page {
+          min-height: 100vh;
+          background: #080808;
+          color: white;
+          padding-bottom: 100px;
+        }
 
-        <Link to="/" className="back-button">
-          <ArrowLeft size={18} />
-          Back to Portfolio
-        </Link>
+        .exam-nav {
+          height: 75px;
+          padding: 0 6%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #222;
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          background: rgba(8,8,8,.9);
+          backdrop-filter: blur(15px);
+        }
 
-        <div className="project-hero">
-          <span className="project-label">
-            AI EDUCATION APPLICATION
-          </span>
+        .exam-nav a {
+          color: #aaa;
+          text-decoration: none;
+        }
 
-          <h1>AI Exam Companion</h1>
+        .exam-nav a:hover {
+          color: #8b5cf6;
+        }
 
-          <p>
-            AI-powered examination assistant featuring mentor chat,
-            mock-test generation, revision assistance and performance
-            analytics.
+        .exam-main {
+          max-width: 1200px;
+          margin: auto;
+          padding: 100px 25px;
+        }
+
+        .exam-label {
+          color: #8b5cf6;
+          letter-spacing: 3px;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .exam-main h1 {
+          font-size: clamp(50px,8vw,95px);
+          line-height: .95;
+          letter-spacing: -5px;
+          margin: 20px 0;
+        }
+
+        .exam-main h1 span {
+          color: #8b5cf6;
+        }
+
+        .exam-subtitle {
+          color: #aaa;
+          font-size: 22px;
+        }
+
+        .exam-description {
+          max-width: 800px;
+          color: #888;
+          font-size: 17px;
+          margin-top: 25px;
+        }
+
+        .exam-section {
+          margin-top: 80px;
+        }
+
+        .exam-section h2 {
+          font-size: 38px;
+          margin-bottom: 30px;
+        }
+
+        .exam-section h2 span {
+          color: #8b5cf6;
+        }
+
+        .exam-features {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 18px;
+        }
+
+        .exam-feature {
+          border: 1px solid #292929;
+          background: #101010;
+          border-radius: 12px;
+          padding: 25px;
+        }
+
+        .exam-feature p {
+          color: #777;
+          font-size: 14px;
+          margin-top: 8px;
+        }
+
+        .exam-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .exam-tech span {
+          padding: 9px 14px;
+          border: 1px solid #333;
+          color: #aaa;
+          border-radius: 7px;
+          font-size: 13px;
+        }
+
+        .exam-gallery {
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          gap: 25px;
+        }
+
+        .exam-image {
+          border: 1px solid #292929;
+          border-radius: 14px;
+          overflow: hidden;
+          background: #111;
+        }
+
+        .exam-image img {
+          width: 100%;
+          display: block;
+        }
+
+        .exam-image p {
+          color: #666;
+          padding: 10px 15px;
+          font-size: 12px;
+        }
+
+        @media(max-width:800px) {
+          .exam-features,
+          .exam-gallery {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
+      <div className="exam-page">
+        <nav className="exam-nav">
+          <a href="#/">← Back to Portfolio</a>
+          <strong>RAHUL S</strong>
+        </nav>
+
+        <main className="exam-main">
+          <p className="exam-label">PROJECT 04</p>
+
+          <h1>
+            AI Exam <span>Companion</span>
+          </h1>
+
+          <p className="exam-subtitle">
+            AI-Powered Exam Preparation Application
           </p>
 
-          <div className="project-tags">
-            <span>React.js</span>
-            <span>Python</span>
-            <span>Flask</span>
-            <span>AI APIs</span>
-            <span>JSON</span>
-          </div>
-        </div>
-
-        <section className="project-content">
-          <h2>Project Overview</h2>
-
-          <p>
-            AI Exam Companion is an educational application designed
-            to support students during exam preparation through AI
-            assistance, practice tests and performance tracking.
+          <p className="exam-description">
+            AI Exam Companion is a Python and Flask based web
+            application created to support exam preparation using
+            AI-generated practice questions and an interactive
+            learning interface.
           </p>
 
-          <div className="feature-grid">
-            <div>
-              <h3>Mentor Chat</h3>
-              <p>
-                Interactive AI-based assistance for learning and doubts.
-              </p>
-            </div>
+          <section className="exam-section">
+            <h2>
+              Key <span>features</span>
+            </h2>
 
-            <div>
-              <h3>Mock Tests</h3>
-              <p>
-                Structured question generation for examination practice.
-              </p>
-            </div>
-
-            <div>
-              <h3>Revision Assistant</h3>
-              <p>
-                Helps students revise important concepts.
-              </p>
-            </div>
-
-            <div>
-              <h3>Analytics</h3>
-              <p>
-                Tracks performance and provides useful insights.
-              </p>
-            </div>
-          </div>
-
-          <h2>Key Features</h2>
-
-          <ul className="feature-list">
-            <li>AI Mentor Chat</li>
-            <li>Mock Test Generator</li>
-            <li>Revision Assistant</li>
-            <li>Performance Analytics</li>
-            <li>Question bank</li>
-            <li>Interactive dashboard</li>
-          </ul>
-
-          <h2>Project Screenshots</h2>
-
-          <div className="screenshots-grid">
-            {screenshots.map((image, index) => (
-              <div className="screenshot-card" key={image}>
-                <img
-                  src={image}
-                  alt={`AI Exam Companion screenshot ${index + 1}`}
-                />
+            <div className="exam-features">
+              <div className="exam-feature">
+                <h3>AI Practice Questions</h3>
+                <p>
+                  Generates practice questions using AI to support
+                  exam preparation.
+                </p>
               </div>
-            ))}
-          </div>
 
-          <div className="project-actions">
-            <a
-              href="https://github.com/RAHUL2525252525"
-              target="_blank"
-              rel="noreferrer"
-              className="project-action-button"
-            >
-              GitHub
-              <ExternalLink size={17} />
-            </a>
-          </div>
-        </section>
+              <div className="exam-feature">
+                <h3>Interactive Learning</h3>
+                <p>
+                  Provides an interactive interface for students
+                  to practice and review questions.
+                </p>
+              </div>
+
+              <div className="exam-feature">
+                <h3>Firebase Authentication</h3>
+                <p>
+                  Firebase authentication enables secure user
+                  access.
+                </p>
+              </div>
+
+              <div className="exam-feature">
+                <h3>Flask Backend</h3>
+                <p>
+                  Flask manages backend routes and AI service
+                  integration.
+                </p>
+              </div>
+
+              <div className="exam-feature">
+                <h3>AI API Integration</h3>
+                <p>
+                  Uses the Groq API for AI-powered question
+                  generation.
+                </p>
+              </div>
+
+              <div className="exam-feature">
+                <h3>Responsive UI</h3>
+                <p>
+                  Designed for a clean and responsive learning
+                  experience.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="exam-section">
+            <h2>
+              Technology <span>stack</span>
+            </h2>
+
+            <div className="exam-tech">
+              {[
+                "Python",
+                "Flask",
+                "Firebase",
+                "Groq API",
+                "HTML",
+                "CSS",
+                "JavaScript",
+              ].map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </section>
+
+          <section className="exam-section">
+            <h2>
+              Project <span>screenshots</span>
+            </h2>
+
+            <div className="exam-gallery">
+              {images.map((src, index) => (
+                <div className="exam-image" key={src}>
+                  <img
+                    src={src}
+                    alt={`AI Exam Companion screenshot ${
+                      index + 1
+                    }`}
+                  />
+
+                  <p>
+                    Screenshot {index + 1}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
       </div>
-    </div>
+    </>
   );
 }
