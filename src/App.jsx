@@ -9,6 +9,18 @@ import DigitalAnalyticsDashboard from "./projects/DigitalAnalyticsDashboard";
 import "./index.css";
 
 /* =========================================================
+   PROJECT SCREENSHOT IMPORTS
+   IMPORTANT:
+   Images are inside src/assets/projects/
+   ========================================================= */
+
+import shopSphereImage from "./assets/projects/shopsphere/1.png.png";
+import bankSphereImage from "./assets/projects/banksphere/14.png.png";
+import lifeDecisionImage from "./assets/projects/lifedecisionassistant/24.png.png";
+import aiExamImage from "./assets/projects/aiexamcompanion/32.png.png";
+import digitalAnalyticsImage from "./assets/projects/digitalanalyticsdashboard/38.png.png";
+
+/* =========================================================
    PROJECT ROUTES
    ========================================================= */
 
@@ -662,7 +674,7 @@ function Experience() {
 
         <div className="experience-list">
 
-          {experiences.map((experience, index) => (
+          {experiences.map((experience) => (
 
             <Reveal
               key={`${experience.company}-${experience.date}`}
@@ -708,13 +720,11 @@ function Experience() {
                 </div>
 
                 <ul>
-
                   {experience.points.map((point) => (
                     <li key={point}>
                       {point}
                     </li>
                   ))}
-
                 </ul>
 
               </div>
@@ -743,7 +753,7 @@ const PROJECTS = [
     category: "JAVA · FULL STACK",
     name: "ShopSphere",
 
-    image: "/1.png.png",
+    image: shopSphereImage,
 
     description:
       "A complete e-commerce platform built with Java and Spring Boot, covering products, cart, wishlist, checkout and order workflows.",
@@ -766,7 +776,7 @@ const PROJECTS = [
     category: "JAVA · SECURITY",
     name: "BankSphere",
 
-    image: "/14.png.png",
+    image: bankSphereImage,
 
     description:
       "A secure online banking application with JWT authentication, role-based authorization and transaction workflows.",
@@ -790,7 +800,7 @@ const PROJECTS = [
     category: "PYTHON · AI",
     name: "Life Decision Assistant",
 
-    image: "/24.png.png",
+    image: lifeDecisionImage,
 
     description:
       "An AI decision-support application that connects multiple LLM providers through a unified Flask backend.",
@@ -814,7 +824,7 @@ const PROJECTS = [
     category: "PYTHON · AI",
     name: "AI Exam Companion",
 
-    image: "/32.png.png",
+    image: aiExamImage,
 
     description:
       "An AI-powered learning application that generates practice questions and manages exam preparation sessions.",
@@ -823,8 +833,9 @@ const PROJECTS = [
       "AI-generated practice question sets",
 
     tech: [
-      "Python",
-      "Flask",
+      "HTML5",
+      "CSS3",
+      "JavaScript",
       "Firebase",
       "Groq API",
     ],
@@ -836,10 +847,10 @@ const PROJECTS = [
     category: "JAVASCRIPT · FIREBASE",
     name: "Digital Analytics Dashboard",
 
-    image: "/38.png.png",
+    image: digitalAnalyticsImage,
 
     description:
-      "A modern analytics dashboard with Google OAuth authentication and Firebase-backed usage data.",
+      "A modern analytics dashboard with Google OAuth authentication, CSV data handling and Firebase-backed functionality.",
 
     highlight:
       "Google OAuth · Firebase backend",
@@ -848,6 +859,7 @@ const PROJECTS = [
       "JavaScript",
       "Firebase",
       "Google OAuth",
+      "Gemini API",
       "Chart.js",
     ],
   },
@@ -904,6 +916,7 @@ function Projects() {
             >
 
               <button
+                type="button"
                 className="project-visual"
                 onClick={() => openProject(project.route)}
                 aria-label={`Open ${project.name}`}
@@ -913,11 +926,6 @@ function Projects() {
                   src={project.image}
                   alt={`${project.name} project preview`}
                   loading="lazy"
-                  onError={(e) => {
-                    console.error(
-                      `Image not found: ${project.image}`
-                    );
-                  }}
                 />
 
                 <div className="project-image-shade" />
@@ -985,6 +993,7 @@ function Projects() {
                 </div>
 
                 <button
+                  type="button"
                   className="project-open-button"
                   onClick={() => openProject(project.route)}
                 >
@@ -1096,41 +1105,41 @@ function Certifications() {
 
     {
       number: "02",
-      title: "Java Full Stack Development",
+      title: "Java Programming Fundamentals",
       organization:
-        "Full-stack development",
+        "Infosys Springboard",
       description:
-        "Full-stack application development with Java ecosystem technologies.",
+        "Java programming fundamentals and core programming concepts.",
       details: "",
     },
 
     {
       number: "03",
-      title: "Spring Boot & REST APIs",
+      title: "Introduction to Java",
       organization:
-        "Backend engineering",
+        "Infosys Springboard",
       description:
-        "Backend development, REST architecture and service design.",
+        "Introduction to Java programming and object-oriented programming concepts.",
       details: "",
     },
 
     {
       number: "04",
-      title: "React.js Development",
+      title: "Software Engineering",
       organization:
-        "Frontend engineering",
+        "Infosys Springboard",
       description:
-        "Modern component-based frontend development.",
+        "Software engineering principles, development practices and engineering fundamentals.",
       details: "",
     },
 
     {
       number: "05",
-      title: "SQL & Database Design",
+      title: "Cloud Computing",
       organization:
-        "Database engineering",
+        "Infosys Springboard",
       description:
-        "Relational modelling, normalization and database fundamentals.",
+        "Cloud computing fundamentals and modern cloud technology concepts.",
       details: "",
     },
   ];
@@ -1278,7 +1287,9 @@ function Contact() {
           </a>
 
           <a
-            href="#"
+            href="https://www.linkedin.com/in/rahul-s-6460b1238/"
+            target="_blank"
+            rel="noreferrer"
           >
             LinkedIn ↗
           </a>
@@ -1318,3 +1329,4 @@ function Footer() {
     </footer>
   );
 }
+
