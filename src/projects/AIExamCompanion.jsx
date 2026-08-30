@@ -58,6 +58,20 @@ export default function AIExamCompanion() {
           padding: 100px 25px;
         }
 
+        .exam-stack-pill {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .5px;
+          text-transform: uppercase;
+          background: rgba(56,189,178,.12);
+          color: #5eead4;
+          border: 1px solid rgba(56,189,178,.35);
+          margin-bottom: 18px;
+        }
+
         .exam-label {
           color: #8b5cf6;
           letter-spacing: 3px;
@@ -158,6 +172,14 @@ export default function AIExamCompanion() {
           font-size: 12px;
         }
 
+        .exam-empty-gallery {
+          color: #666;
+          border: 1px dashed #292929;
+          border-radius: 14px;
+          padding: 40px;
+          text-align: center;
+        }
+
         @media(max-width:800px) {
           .exam-features,
           .exam-gallery {
@@ -175,6 +197,8 @@ export default function AIExamCompanion() {
         <main className="exam-main">
           <p className="exam-label">PROJECT 04</p>
 
+          <div className="exam-stack-pill">Python / Flask</div>
+
           <h1>
             AI Exam <span>Companion</span>
           </h1>
@@ -184,10 +208,10 @@ export default function AIExamCompanion() {
           </p>
 
           <p className="exam-description">
-            AI Exam Companion is a Python and Flask based web
-            application created to support exam preparation using
-            AI-generated practice questions and an interactive
-            learning interface.
+            AI Exam Companion is a Python and Flask based web application
+            created to support exam preparation using AI-generated practice
+            questions. MongoDB stores question sets and session history
+            behind a lightweight Flask API.
           </p>
 
           <section className="exam-section">
@@ -198,50 +222,32 @@ export default function AIExamCompanion() {
             <div className="exam-features">
               <div className="exam-feature">
                 <h3>AI Practice Questions</h3>
-                <p>
-                  Generates practice questions using AI to support
-                  exam preparation.
-                </p>
+                <p>Generates practice questions using the Groq API to support targeted exam preparation.</p>
               </div>
 
               <div className="exam-feature">
                 <h3>Interactive Learning</h3>
-                <p>
-                  Provides an interactive interface for students
-                  to practice and review questions.
-                </p>
+                <p>Provides an interactive interface for students to practice and review questions.</p>
               </div>
 
               <div className="exam-feature">
-                <h3>Firebase Authentication</h3>
-                <p>
-                  Firebase authentication enables secure user
-                  access.
-                </p>
+                <h3>MongoDB Storage</h3>
+                <p>Stores generated question sets and session data in a MongoDB collection.</p>
               </div>
 
               <div className="exam-feature">
                 <h3>Flask Backend</h3>
-                <p>
-                  Flask manages backend routes and AI service
-                  integration.
-                </p>
+                <p>Flask manages backend routes and communication with the Groq API.</p>
               </div>
 
               <div className="exam-feature">
-                <h3>AI API Integration</h3>
-                <p>
-                  Uses the Groq API for AI-powered question
-                  generation.
-                </p>
+                <h3>Groq API Integration</h3>
+                <p>Uses Groq for fast AI-powered question generation.</p>
               </div>
 
               <div className="exam-feature">
                 <h3>Responsive UI</h3>
-                <p>
-                  Designed for a clean and responsive learning
-                  experience.
-                </p>
+                <p>Built with HTML, CSS, and JavaScript for a clean, responsive learning experience.</p>
               </div>
             </div>
           </section>
@@ -255,7 +261,7 @@ export default function AIExamCompanion() {
               {[
                 "Python",
                 "Flask",
-                "Firebase",
+                "MongoDB",
                 "Groq API",
                 "HTML",
                 "CSS",
@@ -271,22 +277,23 @@ export default function AIExamCompanion() {
               Project <span>screenshots</span>
             </h2>
 
-            <div className="exam-gallery">
-              {images.map((src, index) => (
-                <div className="exam-image" key={src}>
-                  <img
-                    src={src}
-                    alt={`AI Exam Companion screenshot ${
-                      index + 1
-                    }`}
-                  />
-
-                  <p>
-                    Screenshot {index + 1}
-                  </p>
-                </div>
-              ))}
-            </div>
+            {images.length > 0 ? (
+              <div className="exam-gallery">
+                {images.map((src, index) => (
+                  <div className="exam-image" key={src}>
+                    <img
+                      src={src}
+                      alt={`AI Exam Companion screenshot ${index + 1}`}
+                    />
+                    <p>Screenshot {index + 1}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="exam-empty-gallery">
+                Screenshots coming soon — check back shortly.
+              </div>
+            )}
           </section>
         </main>
       </div>
