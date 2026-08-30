@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import image38 from "../assets/projects/digitalmarkettinganalytics/38.png.png";
 import image39 from "../assets/projects/digitalmarkettinganalytics/39.png.png";
@@ -15,6 +15,20 @@ const screenshots = [
 ];
 
 export default function DigitalAnalyticsDashboard() {
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  const previousImage = () => {
+    setSelectedImage((current) =>
+      current === 0 ? screenshots.length - 1 : current - 1
+    );
+  };
+
+  const nextImage = () => {
+    setSelectedImage((current) =>
+      current === screenshots.length - 1 ? 0 : current + 1
+    );
+  };
+
   return (
     <>
       <style>{`
@@ -44,11 +58,6 @@ export default function DigitalAnalyticsDashboard() {
           font-weight: 700;
           font-size: 14px;
           text-decoration: none;
-          transition: .25s;
-        }
-
-        .back-link:hover {
-          transform: translateX(-5px);
         }
 
         .nav-project-name {
@@ -156,39 +165,136 @@ export default function DigitalAnalyticsDashboard() {
           color: #081a3a;
         }
 
-        .gallery {
+        .image-viewer {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: 92px minmax(0, 1fr);
           gap: 22px;
-          padding-bottom: 100px;
-        }
-
-        .gallery-item {
-          overflow: hidden;
-          border: 1px solid #d8e2ef;
-          border-radius: 20px;
+          padding: 24px;
           background: #fff;
-          box-shadow: 0 8px 30px rgba(18,63,145,.07);
+          border: 1px solid #d8e2ef;
+          border-radius: 24px;
+          box-shadow: 0 12px 40px rgba(18,63,145,.08);
         }
 
-        .gallery-item img {
+        .thumbnail-column {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          max-height: 650px;
+          overflow-y: auto;
+        }
+
+        .thumbnail {
+          width: 78px;
+          height: 64px;
+          padding: 4px;
+          background: #fff;
+          border: 2px solid #d8e2ef;
+          border-radius: 10px;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+
+        .thumbnail:hover {
+          border-color: #6d8fbd;
+        }
+
+        .thumbnail.active {
+          border-color: #123f91;
+          box-shadow: 0 0 0 2px rgba(18,63,145,.12);
+        }
+
+        .thumbnail img {
           width: 100%;
+          height: 100%;
+          object-fit: contain;
           display: block;
-          aspect-ratio: 16 / 10;
-          object-fit: cover;
-          transition: transform .45s ease;
         }
 
-        .gallery-item:hover img {
-          transform: scale(1.035);
+        .thumbnail-number {
+          text-align: center;
+          font-size: 10px;
+          font-weight: 700;
+          color: #64748b;
+          margin-top: 4px;
+        }
+
+        .main-image-area {
+          min-width: 0;
+          min-height: 620px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f8fafc;
+          border: 1px solid #e1e8f0;
+          border-radius: 18px;
+          overflow: hidden;
+        }
+
+        .main-project-image {
+          width: 100%;
+          height: 620px;
+          object-fit: contain;
+          padding: 18px;
+          display: block;
+        }
+
+        .image-counter {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          z-index: 3;
+          padding: 7px 12px;
+          border-radius: 30px;
+          background: rgba(8,26,58,.88);
+          color: white;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .image-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 4;
+          width: 44px;
+          height: 58px;
+          border: none;
+          border-radius: 10px;
+          background: rgba(255,255,255,.94);
+          color: #123f91;
+          font-size: 30px;
+          cursor: pointer;
+          box-shadow: 0 6px 20px rgba(0,0,0,.12);
+        }
+
+        .image-arrow:hover {
+          background: #123f91;
+          color: white;
+        }
+
+        .image-arrow.left {
+          left: 16px;
+        }
+
+        .image-arrow.right {
+          right: 16px;
+        }
+
+        .gallery-hint {
+          margin-top: 15px;
+          text-align: center;
+          color: #64748b;
+          font-size: 13px;
         }
 
         .project-footer {
+          margin-top: 80px;
           padding: 40px 0 70px;
           border-top: 1px solid #d8e2ef;
           display: flex;
           justify-content: space-between;
-          gap: 20px;
         }
 
         .footer-link {
@@ -212,26 +318,40 @@ export default function DigitalAnalyticsDashboard() {
 
           .project-title {
             font-size: clamp(42px, 13vw, 68px);
-            letter-spacing: -3px;
           }
 
-          .gallery {
+          .image-viewer {
             grid-template-columns: 1fr;
-            gap: 15px;
+            padding: 12px;
           }
 
-          .project-feature {
-            padding: 22px;
+          .thumbnail-column {
+            order: 2;
+            flex-direction: row;
+            max-height: none;
+            overflow-x: auto;
+            overflow-y: hidden;
+          }
+
+          .main-image-area {
+            min-height: 400px;
+          }
+
+          .main-project-image {
+            height: 400px;
           }
 
           .project-footer {
             flex-direction: column;
+            gap: 20px;
           }
         }
       `}</style>
 
       <main className="project-page">
+
         <nav className="project-nav">
+
           <a className="back-link" href="#projects">
             ← Back to Projects
           </a>
@@ -239,10 +359,13 @@ export default function DigitalAnalyticsDashboard() {
           <span className="nav-project-name">
             RAHUL.
           </span>
+
         </nav>
 
         <div className="project-container">
+
           <section className="project-hero">
+
             <div className="project-number">
               05 / SELECTED PROJECT
             </div>
@@ -273,9 +396,11 @@ export default function DigitalAnalyticsDashboard() {
                 </span>
               ))}
             </div>
+
           </section>
 
           <section className="project-feature">
+
             <div className="feature-label">
               PROJECT HIGHLIGHT
             </div>
@@ -283,27 +408,81 @@ export default function DigitalAnalyticsDashboard() {
             <div className="feature-text">
               Google OAuth · Firebase backend
             </div>
+
           </section>
 
           <section>
+
             <h2 className="section-heading">
               Project Screenshots
             </h2>
 
-            <div className="gallery">
-              {screenshots.map((image, index) => (
-                <div className="gallery-item" key={image}>
-                  <img
-                    src={image}
-                    alt={`Digital Analytics Dashboard screenshot ${index + 1}`}
-                    loading="lazy"
-                  />
+            <div className="image-viewer">
+
+              <div className="thumbnail-column">
+
+                {screenshots.map((image, index) => (
+                  <div key={image}>
+
+                    <button
+                      className={`thumbnail ${
+                        selectedImage === index ? "active" : ""
+                      }`}
+                      onClick={() => setSelectedImage(index)}
+                    >
+                      <img
+                        src={image}
+                        alt={`Digital Analytics Dashboard thumbnail ${index + 1}`}
+                      />
+                    </button>
+
+                    <div className="thumbnail-number">
+                      {index + 1}
+                    </div>
+
+                  </div>
+                ))}
+
+              </div>
+
+              <div className="main-image-area">
+
+                <div className="image-counter">
+                  {selectedImage + 1} / {screenshots.length}
                 </div>
-              ))}
+
+                <button
+                  className="image-arrow left"
+                  onClick={previousImage}
+                >
+                  ‹
+                </button>
+
+                <img
+                  className="main-project-image"
+                  src={screenshots[selectedImage]}
+                  alt={`Digital Analytics Dashboard screenshot ${selectedImage + 1}`}
+                />
+
+                <button
+                  className="image-arrow right"
+                  onClick={nextImage}
+                >
+                  ›
+                </button>
+
+              </div>
+
             </div>
+
+            <div className="gallery-hint">
+              Click the thumbnails to view each screen
+            </div>
+
           </section>
 
           <footer className="project-footer">
+
             <a className="footer-link" href="#projects">
               ← All Projects
             </a>
@@ -311,9 +490,13 @@ export default function DigitalAnalyticsDashboard() {
             <a className="footer-link" href="#projects">
               Finish Case Studies →
             </a>
+
           </footer>
+
         </div>
+
       </main>
     </>
   );
 }
+
