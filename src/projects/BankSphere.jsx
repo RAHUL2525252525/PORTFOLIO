@@ -58,6 +58,20 @@ export default function BankSphere() {
           padding: 100px 25px;
         }
 
+        .bank-stack-pill {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .5px;
+          text-transform: uppercase;
+          background: rgba(139,92,246,.15);
+          color: #c4b5fd;
+          border: 1px solid rgba(139,92,246,.4);
+          margin-bottom: 18px;
+        }
+
         .bank-label {
           color: #8b5cf6;
           letter-spacing: 3px;
@@ -175,6 +189,14 @@ export default function BankSphere() {
           padding: 10px 15px;
         }
 
+        .bank-empty-gallery {
+          color: #666;
+          border: 1px dashed #292929;
+          border-radius: 14px;
+          padding: 40px;
+          text-align: center;
+        }
+
         @media(max-width:800px) {
           .bank-info,
           .bank-features,
@@ -193,6 +215,8 @@ export default function BankSphere() {
         <main className="bank-main">
           <p className="bank-label">PROJECT 02</p>
 
+          <div className="bank-stack-pill">Java Full Stack</div>
+
           <h1>
             Bank<span>Sphere</span>
           </h1>
@@ -202,11 +226,11 @@ export default function BankSphere() {
           </p>
 
           <p className="bank-description">
-            BankSphere is a full-stack online banking application
-            developed using Java, Spring Boot, Spring Security,
-            JWT, React.js, MySQL and Docker. It implements secure
-            authentication, authorization, account management and
-            transaction workflows.
+            BankSphere is a full-stack online banking application developed
+            using Java, Spring Boot, Spring Security, JWT, React.js, MySQL
+            and Docker. It implements secure authentication, authorization,
+            account management and transaction workflows across 3 permission
+            tiers, tested for privilege-escalation issues.
           </p>
 
           <div className="bank-info">
@@ -233,49 +257,32 @@ export default function BankSphere() {
           <div className="bank-features">
             <div className="bank-feature">
               <h3>JWT Authentication</h3>
-              <p>
-                Stateless authentication implemented using
-                Spring Security and JWT.
-              </p>
+              <p>Stateless authentication implemented using Spring Security and JWT.</p>
             </div>
 
             <div className="bank-feature">
               <h3>Role-Based Access</h3>
-              <p>
-                Permission-based access control across different
-                user roles.
-              </p>
+              <p>Permission-based access control across 3 user roles, tested against privilege escalation.</p>
             </div>
 
             <div className="bank-feature">
               <h3>Account Management</h3>
-              <p>
-                Banking account workflows and user account
-                management.
-              </p>
+              <p>Banking account workflows and user account administration.</p>
             </div>
 
             <div className="bank-feature">
               <h3>Transactions</h3>
-              <p>
-                Transaction workflows designed around relational
-                data integrity.
-              </p>
+              <p>Transaction workflows designed around relational data integrity.</p>
             </div>
 
             <div className="bank-feature">
               <h3>Normalized Database</h3>
-              <p>
-                MySQL schema with relational constraints across
-                8+ related entities.
-              </p>
+              <p>MySQL schema with relational constraints across 8+ entities, preventing orphaned records.</p>
             </div>
 
             <div className="bank-feature">
               <h3>Docker</h3>
-              <p>
-                Full stack containerized using Docker Compose.
-              </p>
+              <p>Full stack containerized with Docker Compose for one-command environment spin-up.</p>
             </div>
           </div>
 
@@ -304,20 +311,20 @@ export default function BankSphere() {
             Project <span>screenshots</span>
           </h2>
 
-          <div className="bank-gallery">
-            {images.map((src, index) => (
-              <div className="bank-image" key={src}>
-                <img
-                  src={src}
-                  alt={`BankSphere screenshot ${index + 1}`}
-                />
-
-                <p>
-                  Screenshot {index + 1}
-                </p>
-              </div>
-            ))}
-          </div>
+          {images.length > 0 ? (
+            <div className="bank-gallery">
+              {images.map((src, index) => (
+                <div className="bank-image" key={src}>
+                  <img src={src} alt={`BankSphere screenshot ${index + 1}`} />
+                  <p>Screenshot {index + 1}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bank-empty-gallery">
+              Screenshots coming soon — check back shortly.
+            </div>
+          )}
         </main>
       </div>
     </>
