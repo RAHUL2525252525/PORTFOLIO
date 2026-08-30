@@ -64,6 +64,20 @@ export default function ShopSphere() {
           padding: 100px 25px 70px;
         }
 
+        .stack-pill {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .5px;
+          text-transform: uppercase;
+          background: rgba(139,92,246,.15);
+          color: #c4b5fd;
+          border: 1px solid rgba(139,92,246,.4);
+          margin-bottom: 18px;
+        }
+
         .label {
           color: #8b5cf6;
           letter-spacing: 3px;
@@ -195,6 +209,14 @@ export default function ShopSphere() {
           font-size: 12px;
         }
 
+        .empty-gallery {
+          color: #666;
+          border: 1px dashed #292929;
+          border-radius: 14px;
+          padding: 40px;
+          text-align: center;
+        }
+
         @media(max-width: 800px) {
           .meta-grid,
           .feature-grid,
@@ -210,13 +232,13 @@ export default function ShopSphere() {
             ← Back to Portfolio
           </a>
 
-          <div className="project-logo">
-            RAHUL S
-          </div>
+          <div className="project-logo">RAHUL S</div>
         </nav>
 
         <header className="project-hero">
           <p className="label">PROJECT 01</p>
+
+          <div className="stack-pill">Java Full Stack</div>
 
           <h1>
             Shop<span>Sphere</span>
@@ -227,11 +249,11 @@ export default function ShopSphere() {
           </p>
 
           <p className="project-description">
-            ShopSphere is a full-stack e-commerce system built using
-            Java, Spring Boot, React.js, Spring Data JPA and MySQL.
-            The application provides product browsing, search, cart,
-            wishlist, checkout and order management functionality
-            with separate ADMIN and CUSTOMER operations.
+            ShopSphere is a full-stack e-commerce system built using Java,
+            Spring Boot, React.js, Spring Data JPA and MySQL. The application
+            provides product browsing, search, cart, wishlist, checkout and
+            order management functionality with separate ADMIN and CUSTOMER
+            operations across 6 modules and 15+ validated REST endpoints.
           </p>
 
           <div className="meta-grid">
@@ -260,49 +282,32 @@ export default function ShopSphere() {
           <div className="feature-grid">
             <div className="feature">
               <h3>Product Management</h3>
-              <p>
-                Product browsing, search and product management
-                functionality.
-              </p>
+              <p>Product browsing, search and catalog management across the store.</p>
             </div>
 
             <div className="feature">
               <h3>Shopping Cart</h3>
-              <p>
-                Cart workflows with centralized state management
-                and validation.
-              </p>
+              <p>Centralized state management with client-side validation, reducing state-sync issues.</p>
             </div>
 
             <div className="feature">
               <h3>Wishlist</h3>
-              <p>
-                Customers can manage products they want to save
-                for later.
-              </p>
+              <p>Customers can save products for later across sessions.</p>
             </div>
 
             <div className="feature">
               <h3>Checkout</h3>
-              <p>
-                Validated checkout and order creation workflow.
-              </p>
+              <p>Validated checkout and order creation workflow.</p>
             </div>
 
             <div className="feature">
               <h3>Order Management</h3>
-              <p>
-                Customer order workflows and administrative
-                operations.
-              </p>
+              <p>Customer order tracking and administrative order operations.</p>
             </div>
 
             <div className="feature">
-              <h3>RBAC</h3>
-              <p>
-                ADMIN and CUSTOMER roles with restricted
-                operations.
-              </p>
+              <h3>Role-Based Access</h3>
+              <p>ADMIN and CUSTOMER roles with restricted, boundary-tested operations.</p>
             </div>
           </div>
 
@@ -332,20 +337,20 @@ export default function ShopSphere() {
             Project <span>screenshots</span>
           </h2>
 
-          <div className="gallery">
-            {images.map((src, index) => (
-              <div className="gallery-item" key={src}>
-                <img
-                  src={src}
-                  alt={`ShopSphere screenshot ${index + 1}`}
-                />
-
-                <div className="image-number">
-                  Screenshot {index + 1}
+          {images.length > 0 ? (
+            <div className="gallery">
+              {images.map((src, index) => (
+                <div className="gallery-item" key={src}>
+                  <img src={src} alt={`ShopSphere screenshot ${index + 1}`} />
+                  <div className="image-number">Screenshot {index + 1}</div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-gallery">
+              Screenshots coming soon — check back shortly.
+            </div>
+          )}
         </main>
       </div>
     </>
