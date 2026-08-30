@@ -1,393 +1,538 @@
 import React from "react";
 
-const imageFiles = import.meta.glob(
-  "../assets/projects/aiexamcompanion/*.png.png",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
-
-const images = Object.entries(imageFiles)
-  .sort(([a], [b]) => {
-    const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    return numberA - numberB;
-  })
-  .map(([, src]) => src);
-
-const features = [
-  {
-    number: "01",
-    title: "AI Question Generation",
-    text: "Uses the Groq API to generate practice questions for exam preparation."
-  },
-  {
-    number: "02",
-    title: "Interactive Practice",
-    text: "Provides an interactive environment for answering and reviewing generated questions."
-  },
-  {
-    number: "03",
-    title: "Question Storage",
-    text: "MongoDB stores generated question sets and application session data."
-  },
-  {
-    number: "04",
-    title: "Flask Backend",
-    text: "Flask provides backend routes and manages communication with the AI service."
-  },
-  {
-    number: "05",
-    title: "AI Integration",
-    text: "Integrated an external generative AI API into a practical web application."
-  },
-  {
-    number: "06",
-    title: "Responsive UI",
-    text: "Created a responsive frontend using HTML, CSS and JavaScript."
-  }
-];
-
 export default function AIExamCompanion() {
+  const screenshots = Array.from(
+    { length: 6 },
+    (_, i) => `/${i + 32}.png.png`
+  );
+
   return (
-    <div className="case-page python-page">
+    <>
+      <style>{`
+        .exam-page {
+          min-height:100vh;
+          background:#f5f5f2;
+          color:#111214;
+          font-family:"DM Sans",Arial,sans-serif;
+        }
 
-      <nav className="case-nav">
+        .exam-nav {
+          height:76px;
+          position:sticky;
+          top:0;
+          z-index:100;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:0 6%;
+          background:rgba(245,245,242,.9);
+          backdrop-filter:blur(18px);
+          border-bottom:1px solid #ddd;
+        }
 
-        <a href="#/" className="case-back">
-          <span>←</span>
-          Back to Portfolio
-        </a>
+        .exam-nav a {
+          color:#72757c;
+          text-decoration:none;
+          font-size:13px;
+          font-weight:600;
+        }
 
-        <div className="case-nav-center">
-          <span className="case-dot"></span>
-          SOFTWARE ENGINEER
-        </div>
+        .exam-logo {
+          font-family:"Space Grotesk",sans-serif;
+          font-weight:700;
+        }
 
-        <span className="case-number">04 / 05</span>
+        .exam-logo span {
+          color:#3457d5;
+        }
 
-      </nav>
+        .exam-hero,
+        .exam-content {
+          max-width:1240px;
+          margin:auto;
+          padding-left:25px;
+          padding-right:25px;
+        }
 
-      <section className="case-hero">
+        .exam-hero {
+          padding-top:110px;
+          padding-bottom:80px;
+        }
 
-        <div className="case-hero-copy">
+        .exam-label {
+          color:#3457d5;
+          font-family:monospace;
+          font-size:10px;
+          letter-spacing:2px;
+        }
 
-          <div className="project-kicker">
-            <span>PYTHON / FLASK</span>
-            <span>•</span>
-            <span>HANDS-ON PROJECT</span>
+        .exam-hero h1 {
+          margin:25px 0 0;
+          max-width:1050px;
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(55px,9vw,125px);
+          line-height:.87;
+          letter-spacing:-6px;
+        }
+
+        .exam-hero h1 span {
+          color:#3457d5;
+        }
+
+        .exam-description {
+          max-width:750px;
+          margin-top:35px;
+          color:#70737a;
+          font-size:18px;
+          line-height:1.8;
+        }
+
+        .exam-tags {
+          display:flex;
+          flex-wrap:wrap;
+          gap:9px;
+          margin-top:30px;
+        }
+
+        .exam-tags span {
+          border:1px solid #d1d2cf;
+          border-radius:100px;
+          padding:9px 14px;
+          font-size:11px;
+        }
+
+        .exam-cover {
+          margin-top:70px;
+          border-radius:32px;
+          overflow:hidden;
+          box-shadow:0 30px 80px rgba(0,0,0,.08);
+        }
+
+        .exam-cover img {
+          display:block;
+          width:100%;
+        }
+
+        .exam-section {
+          padding:100px 0;
+          border-top:1px solid #ddd;
+        }
+
+        .exam-grid {
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:80px;
+        }
+
+        .exam-section h2 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(38px,5vw,66px);
+          line-height:1;
+          letter-spacing:-3px;
+          margin:18px 0 25px;
+        }
+
+        .exam-section p,
+        .exam-section li {
+          color:#6d7077;
+          font-size:15px;
+          line-height:1.85;
+        }
+
+        .exam-features {
+          display:grid;
+          grid-template-columns:repeat(3,1fr);
+          gap:15px;
+          margin-top:45px;
+        }
+
+        .exam-card {
+          padding:30px;
+          background:white;
+          border:1px solid #ddd;
+          border-radius:22px;
+          min-height:190px;
+        }
+
+        .exam-card span {
+          color:#3457d5;
+          font-family:monospace;
+          font-size:10px;
+        }
+
+        .exam-card h3 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:20px;
+          margin:25px 0 10px;
+        }
+
+        .exam-card p {
+          font-size:12px;
+        }
+
+        .exam-flow {
+          margin-top:35px;
+          padding:35px;
+          background:#111214;
+          color:white;
+          border-radius:28px;
+          font-family:monospace;
+          line-height:2;
+          font-size:13px;
+          overflow-x:auto;
+        }
+
+        .exam-tech {
+          display:flex;
+          flex-wrap:wrap;
+          gap:9px;
+          margin-top:35px;
+        }
+
+        .exam-tech span {
+          padding:9px 14px;
+          background:#111214;
+          color:white;
+          border-radius:100px;
+          font-size:11px;
+        }
+
+        .exam-screens {
+          display:grid;
+          grid-template-columns:repeat(2,1fr);
+          gap:20px;
+          margin-top:45px;
+        }
+
+        .exam-screen {
+          overflow:hidden;
+          border-radius:20px;
+          background:white;
+          border:1px solid #ddd;
+        }
+
+        .exam-screen img {
+          display:block;
+          width:100%;
+          transition:transform .5s ease;
+        }
+
+        .exam-screen:hover img {
+          transform:scale(1.025);
+        }
+
+        .exam-list {
+          padding-left:20px;
+        }
+
+        .exam-end {
+          margin:80px 0;
+          padding:55px;
+          background:#3457d5;
+          border-radius:30px;
+          text-align:center;
+          color:white;
+        }
+
+        .exam-end h2 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(40px,6vw,75px);
+          letter-spacing:-3px;
+        }
+
+        .exam-end a {
+          display:inline-block;
+          margin-top:20px;
+          padding:14px 22px;
+          background:white;
+          color:#111;
+          border-radius:100px;
+          text-decoration:none;
+          font-size:12px;
+          font-weight:700;
+        }
+
+        @media(max-width:800px) {
+          .exam-grid,
+          .exam-features,
+          .exam-screens {
+            grid-template-columns:1fr;
+          }
+
+          .exam-hero h1 {
+            letter-spacing:-4px;
+          }
+        }
+
+        @media(max-width:500px) {
+          .exam-hero,
+          .exam-content {
+            padding-left:18px;
+            padding-right:18px;
+          }
+
+          .exam-cover {
+            border-radius:20px;
+          }
+
+          .exam-section {
+            padding:70px 0;
+          }
+
+          .exam-end {
+            padding:35px 20px;
+          }
+        }
+      `}</style>
+
+      <div className="exam-page">
+
+        <nav className="exam-nav">
+          <a href="/">← Back to Portfolio</a>
+          <div className="exam-logo">
+            RAHUL<span>.</span>
+          </div>
+        </nav>
+
+        <header className="exam-hero">
+
+          <div className="exam-label">
+            04 / PYTHON / AI LEARNING
           </div>
 
           <h1>
-            AI Exam
-            <span>Companion</span>
+            AI Exam <span>Companion</span>
           </h1>
 
-          <p className="case-tagline">
-            AI-Powered
-            <br />
-            Exam Preparation
+          <p className="exam-description">
+            An AI-powered exam preparation application built
+            with Python and Flask. It helps learners practice
+            through dynamically generated questions and
+            structured preparation sessions.
           </p>
 
-          <p className="case-intro">
-            A hands-on Python and Flask application that uses generative
-            AI to create practice questions and provide an interactive
-            exam preparation experience.
-          </p>
-
-          <div className="case-hero-tags">
-
+          <div className="exam-tags">
             <span>Python</span>
             <span>Flask</span>
-            <span>MongoDB</span>
             <span>Groq API</span>
+            <span>Firebase</span>
+            <span>HTML</span>
+            <span>CSS</span>
             <span>JavaScript</span>
-
           </div>
 
-        </div>
-
-        <div className="hero-project-visual ai-visual">
-
-          <div className="visual-glow"></div>
-
-          {images.length > 0 && (
-            <img
-              src={images[0]}
-              alt="AI Exam Companion"
-            />
-          )}
-
-          <div className="visual-label">
-            <span>04</span>
-            AI LEARNING APPLICATION
+          <div className="exam-cover">
+            <img src={screenshots[0]} alt="AI Exam Companion" />
           </div>
 
-        </div>
+        </header>
 
-      </section>
+        <main className="exam-content">
 
-      <section className="case-section overview-section">
+          <section className="exam-section">
 
-        <div className="section-eyebrow">
-          01 — OVERVIEW
-        </div>
-
-        <div className="overview-grid">
-
-          <div>
-
-            <h2>
-              Turning AI into
-              <span> a learning tool.</span>
-            </h2>
-
-          </div>
-
-          <div className="overview-text">
-
-            <p>
-              AI Exam Companion was created as a hands-on Python/Flask
-              project focused on applying generative AI to an
-              educational use case.
-            </p>
-
-            <p>
-              The application connects a lightweight Flask backend with
-              Groq for AI-generated practice questions and MongoDB for
-              application data.
-            </p>
-
-            <div className="stat-row">
+            <div className="exam-grid">
 
               <div>
-                <strong>AI</strong>
-                <small>QUESTION GENERATION</small>
+                <div className="exam-label">01 / PURPOSE</div>
+                <h2>Practice smarter with AI.</h2>
               </div>
 
               <div>
-                <strong>Flask</strong>
-                <small>BACKEND</small>
+                <p>
+                  AI Exam Companion was developed to provide
+                  students with an interactive exam preparation
+                  experience.
+                </p>
+
+                <p>
+                  The application uses an AI API to generate
+                  practice content based on the user's learning
+                  requirements.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section className="exam-section">
+
+            <div className="exam-label">02 / FEATURES</div>
+
+            <h2>Focused on exam preparation.</h2>
+
+            <div className="exam-features">
+
+              <div className="exam-card">
+                <span>01</span>
+                <h3>Question Generation</h3>
+                <p>
+                  AI-generated practice questions for
+                  preparation sessions.
+                </p>
+              </div>
+
+              <div className="exam-card">
+                <span>02</span>
+                <h3>Practice Sessions</h3>
+                <p>
+                  Structured interaction for repeated
+                  question practice.
+                </p>
+              </div>
+
+              <div className="exam-card">
+                <span>03</span>
+                <h3>AI Integration</h3>
+                <p>
+                  Flask backend communicates with the Groq
+                  API for generated content.
+                </p>
+              </div>
+
+              <div className="exam-card">
+                <span>04</span>
+                <h3>Authentication</h3>
+                <p>
+                  Firebase can be used for authenticated
+                  application access.
+                </p>
+              </div>
+
+              <div className="exam-card">
+                <span>05</span>
+                <h3>Responsive UI</h3>
+                <p>
+                  Designed for convenient access across
+                  desktop and mobile screens.
+                </p>
+              </div>
+
+              <div className="exam-card">
+                <span>06</span>
+                <h3>API Backend</h3>
+                <p>
+                  Flask provides the backend layer for
+                  frontend-to-AI communication.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section className="exam-section">
+
+            <div className="exam-grid">
+
+              <div>
+                <div className="exam-label">03 / APPLICATION FLOW</div>
+                <h2>From topic to practice.</h2>
               </div>
 
               <div>
-                <strong>MongoDB</strong>
-                <small>DATABASE</small>
+                <div className="exam-flow">
+                  Student
+                  <br />
+                  ↓
+                  <br />
+                  Select Topic / Input
+                  <br />
+                  ↓
+                  <br />
+                  Flask Backend
+                  <br />
+                  ↓
+                  <br />
+                  Groq API
+                  <br />
+                  ↓
+                  <br />
+                  Generated Questions
+                  <br />
+                  ↓
+                  <br />
+                  Practice Interface
+                </div>
               </div>
 
             </div>
 
-          </div>
+          </section>
 
-        </div>
+          <section className="exam-section">
 
-      </section>
+            <div className="exam-label">04 / TECHNOLOGY</div>
 
-      <section className="case-section">
+            <h2>Technology stack.</h2>
 
-        <div className="section-eyebrow">
-          02 — FUNCTIONALITY
-        </div>
+            <div className="exam-tech">
+              <span>Python</span>
+              <span>Flask</span>
+              <span>Groq API</span>
+              <span>Firebase</span>
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>JavaScript</span>
+              <span>REST APIs</span>
+            </div>
 
-        <div className="section-heading">
+          </section>
 
-          <h2>
-            Built around
-            <span> practice.</span>
-          </h2>
+          <section className="exam-section">
 
-          <p>
-            Features designed around an interactive exam preparation flow.
-          </p>
+            <div className="exam-label">05 / SCREENSHOTS</div>
 
-        </div>
+            <h2>Product walkthrough.</h2>
 
-        <div className="premium-feature-grid">
+            <div className="exam-screens">
+              {screenshots.map((image, index) => (
+                <div className="exam-screen" key={image}>
+                  <img
+                    src={image}
+                    alt={`AI Exam Companion screen ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
 
-          {features.map((feature) => (
+          </section>
 
-            <article
-              className="premium-feature"
-              key={feature.number}
-            >
+          <section className="exam-section">
 
-              <div className="feature-number">
-                {feature.number}
+            <div className="exam-grid">
+
+              <div>
+                <div className="exam-label">06 / ENGINEERING</div>
+                <h2>What I built.</h2>
               </div>
 
               <div>
-
-                <h3>{feature.title}</h3>
-
-                <p>{feature.text}</p>
-
+                <ul className="exam-list">
+                  <li>Python application development</li>
+                  <li>Flask backend implementation</li>
+                  <li>AI API integration</li>
+                  <li>Dynamic content generation</li>
+                  <li>Frontend/backend communication</li>
+                  <li>Authentication integration</li>
+                  <li>Responsive UI implementation</li>
+                </ul>
               </div>
 
-              <span className="feature-arrow">
-                ↗
-              </span>
+            </div>
 
-            </article>
+          </section>
 
-          ))}
-
-        </div>
-
-      </section>
-
-      <section className="architecture-section">
-
-        <div className="section-eyebrow">
-          03 — APPLICATION FLOW
-        </div>
-
-        <div className="architecture-content">
-
-          <div>
-
-            <h2>
-              From prompt
-              <span> to practice.</span>
-            </h2>
-
-            <p>
-              The application connects the user experience,
-              Flask backend and AI service into a simple learning flow.
-            </p>
-
+          <div className="exam-end">
+            <h2>More from my work.</h2>
+            <a href="/">← Return to Portfolio</a>
           </div>
 
-          <div className="architecture-stack">
+        </main>
 
-            <div className="architecture-card">
-              <b>01</b>
-              <strong>User Input</strong>
-              <span>Exam topic / request</span>
-            </div>
-
-            <div className="architecture-line"></div>
-
-            <div className="architecture-card">
-              <b>02</b>
-              <strong>Groq API</strong>
-              <span>Question generation</span>
-            </div>
-
-            <div className="architecture-line"></div>
-
-            <div className="architecture-card">
-              <b>03</b>
-              <strong>Practice</strong>
-              <span>Interactive questions</span>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <section className="case-section">
-
-        <div className="section-eyebrow">
-          04 — TECHNOLOGY
-        </div>
-
-        <div className="technology-wrapper">
-
-          <h2>
-            Technology
-            <span> stack.</span>
-          </h2>
-
-          <div className="large-tech-list">
-
-            {[
-              "Python",
-              "Flask",
-              "MongoDB",
-              "Groq API",
-              "HTML",
-              "CSS",
-              "JavaScript"
-            ].map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <section className="screens-section">
-
-        <div className="section-eyebrow">
-          05 — APPLICATION
-        </div>
-
-        <div className="section-heading">
-
-          <h2>
-            Explore the
-            <span> experience.</span>
-          </h2>
-
-          <p>
-            Selected screens from AI Exam Companion.
-          </p>
-
-        </div>
-
-        <div className="case-gallery">
-
-          {images.map((image, index) => (
-
-            <div
-              className={`gallery-shot ${
-                index === 0 ? "gallery-featured" : ""
-              }`}
-              key={image}
-            >
-
-              <img
-                src={image}
-                alt={`AI Exam Companion screen ${index + 1}`}
-              />
-
-              <span>
-                SCREEN {String(index + 1).padStart(2, "0")}
-              </span>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </section>
-
-      <footer className="case-footer">
-
-        <div>
-
-          <span>PROJECT 04</span>
-
-          <h2>
-            AI Exam
-            <em>Companion</em>
-          </h2>
-
-        </div>
-
-        <a href="#/" className="footer-back">
-          Back to portfolio ↑
-        </a>
-
-      </footer>
-
-    </div>
+      </div>
+    </>
   );
 }
