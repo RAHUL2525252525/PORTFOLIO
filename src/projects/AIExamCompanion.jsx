@@ -1,5 +1,5 @@
 import React from "react";
-import FlipBook from "../components/FlipBook";
+import Gallery from "../components/Gallery";
 
 const imageFiles = import.meta.glob("../assets/projects/aiexamcompanion/*.png.png", {
   eager: true,
@@ -103,10 +103,10 @@ export default function AIExamCompanion() {
         </div>
 
         <h2>
-          Project <span>notebook</span>
+          Project <span>screenshots</span>
         </h2>
 
-        <FlipBook images={images} projectName="AI Exam Companion" />
+        <Gallery images={images} projectName="AI Exam Companion" />
       </main>
     </div>
   );
