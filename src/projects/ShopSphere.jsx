@@ -1,154 +1,316 @@
-import React, { useState } from "react";
+import React from "react";
 
-const images = Array.from(
-  { length: 13 },
-  (_, index) => `/${index + 1}.png.png`
-);
+import image1 from "../assets/projects/shopsphere/1.png.png";
+import image2 from "../assets/projects/shopsphere/2.png.png";
+import image3 from "../assets/projects/shopsphere/3.png.png";
+import image4 from "../assets/projects/shopsphere/4.png.png";
+import image5 from "../assets/projects/shopsphere/5.png.png";
+import image6 from "../assets/projects/shopsphere/6.png.png";
+import image7 from "../assets/projects/shopsphere/7.png.png";
+import image8 from "../assets/projects/shopsphere/8.png.png";
+import image9 from "../assets/projects/shopsphere/9.png.png";
+import image10 from "../assets/projects/shopsphere/10.png.png";
+import image11 from "../assets/projects/shopsphere/11.png.png";
+import image12 from "../assets/projects/shopsphere/12.png.png";
+import image13 from "../assets/projects/shopsphere/13.png.png";
+
+const screenshots = [
+  image1, image2, image3, image4, image5, image6, image7,
+  image8, image9, image10, image11, image12, image13
+];
 
 export default function ShopSphere() {
-  const [activeImage, setActiveImage] = useState(0);
-
-  const goBack = () => {
-    window.location.hash = "/projects";
-  };
-
   return (
-    <div className="project-page">
+    <>
+      <style>{`
+        .project-page {
+          min-height: 100vh;
+          background: #fffdf7;
+          color: #14213d;
+          font-family: "DM Sans", sans-serif;
+        }
 
-      {/* HEADER */}
-      <header className="project-header">
-        <button className="back-button" onClick={goBack}>
-          ← Back to Portfolio
-        </button>
+        .project-nav {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          min-height: 76px;
+          padding: 0 max(24px, calc((100% - 1180px) / 2));
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(255,253,247,.94);
+          border-bottom: 1px solid #d8e2ef;
+          backdrop-filter: blur(16px);
+        }
 
-        <span className="project-header-number">01 / 05</span>
-      </header>
+        .back-link {
+          color: #123f91;
+          font-weight: 700;
+          font-size: 14px;
+          text-decoration: none;
+          transition: .25s;
+        }
 
-      {/* HERO */}
-      <main className="project-container">
+        .back-link:hover {
+          transform: translateX(-5px);
+        }
 
-        <section className="project-hero">
+        .nav-project-name {
+          font-family: "Space Grotesk", sans-serif;
+          font-weight: 700;
+          color: #081a3a;
+        }
 
-          <div className="project-category">
-            JAVA · SPRING BOOT · REACT
-          </div>
+        .project-container {
+          width: min(1180px, calc(100% - 48px));
+          margin: auto;
+        }
 
-          <h1>ShopSphere</h1>
+        .project-hero {
+          padding: 100px 0 70px;
+        }
 
-          <p className="project-subtitle">
-            Full Stack E-Commerce Platform
-          </p>
+        .project-number {
+          color: #123f91;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 2px;
+          margin-bottom: 18px;
+        }
 
-          <p className="project-description">
-            A complete e-commerce platform built using Java, Spring Boot,
-            React.js and MySQL. The application provides product browsing,
-            search, cart, wishlist, checkout and order management features
-            with secure backend APIs.
-          </p>
+        .project-tag {
+          display: inline-flex;
+          padding: 8px 14px;
+          border-radius: 50px;
+          background: #eaf1fb;
+          color: #123f91;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          margin-bottom: 25px;
+        }
 
-          <div className="project-tech">
-            <span>Java 17</span>
-            <span>Spring Boot</span>
-            <span>Spring Data JPA</span>
-            <span>Hibernate</span>
-            <span>React.js</span>
-            <span>MySQL</span>
-            <span>REST APIs</span>
-          </div>
+        .project-title {
+          max-width: 900px;
+          margin: 0;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: clamp(52px, 8vw, 100px);
+          line-height: .92;
+          letter-spacing: -5px;
+          color: #081a3a;
+        }
 
-        </section>
+        .project-title span {
+          color: #123f91;
+        }
 
-        {/* IMAGE GALLERY */}
-        <section className="project-gallery">
+        .project-description {
+          max-width: 760px;
+          margin-top: 30px;
+          color: #64748b;
+          font-size: 17px;
+          line-height: 1.9;
+        }
 
-          <div className="gallery-main">
+        .project-stack {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 30px;
+        }
 
-            <img
-              src={images[activeImage]}
-              alt={`ShopSphere screenshot ${activeImage + 1}`}
-            />
+        .stack-pill {
+          padding: 9px 14px;
+          border-radius: 50px;
+          border: 1px solid #d8e2ef;
+          background: #f7faff;
+          color: #38506f;
+          font-size: 12px;
+          font-weight: 700;
+        }
 
-            <div className="gallery-counter">
-              {activeImage + 1} / {images.length}
+        .project-feature {
+          margin: 30px 0 70px;
+          padding: 30px;
+          border-radius: 26px;
+          background: #f2f6fc;
+          border: 1px solid #d8e2ef;
+        }
+
+        .feature-label {
+          color: #123f91;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 2px;
+        }
+
+        .feature-text {
+          margin-top: 12px;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: 24px;
+          font-weight: 600;
+          color: #081a3a;
+        }
+
+        .section-heading {
+          margin-bottom: 30px;
+          font-family: "Space Grotesk", sans-serif;
+          font-size: 42px;
+          letter-spacing: -2px;
+          color: #081a3a;
+        }
+
+        .gallery {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 22px;
+          padding-bottom: 100px;
+        }
+
+        .gallery-item {
+          overflow: hidden;
+          border: 1px solid #d8e2ef;
+          border-radius: 20px;
+          background: #fff;
+          box-shadow: 0 8px 30px rgba(18,63,145,.07);
+        }
+
+        .gallery-item img {
+          width: 100%;
+          display: block;
+          aspect-ratio: 16 / 10;
+          object-fit: cover;
+          transition: transform .45s ease;
+        }
+
+        .gallery-item:hover img {
+          transform: scale(1.035);
+        }
+
+        .project-footer {
+          padding: 40px 0 70px;
+          border-top: 1px solid #d8e2ef;
+          display: flex;
+          justify-content: space-between;
+          gap: 20px;
+        }
+
+        .footer-link {
+          color: #123f91;
+          font-weight: 700;
+          text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+          .project-container {
+            width: min(100% - 32px, 1180px);
+          }
+
+          .project-nav {
+            padding: 0 16px;
+          }
+
+          .project-hero {
+            padding: 65px 0 45px;
+          }
+
+          .project-title {
+            font-size: clamp(48px, 15vw, 72px);
+            letter-spacing: -3px;
+          }
+
+          .gallery {
+            grid-template-columns: 1fr;
+            gap: 15px;
+          }
+
+          .project-feature {
+            padding: 22px;
+          }
+
+          .project-footer {
+            flex-direction: column;
+          }
+        }
+      `}</style>
+
+      <main className="project-page">
+        <nav className="project-nav">
+          <a className="back-link" href="#projects">
+            ← Back to Projects
+          </a>
+          <span className="nav-project-name">RAHUL.</span>
+        </nav>
+
+        <div className="project-container">
+          <section className="project-hero">
+            <div className="project-number">01 / SELECTED PROJECT</div>
+
+            <div className="project-tag">
+              JAVA · FULL STACK · E-COMMERCE
             </div>
 
-          </div>
+            <h1 className="project-title">
+              Shop<span>Sphere</span>
+            </h1>
 
-          <div className="gallery-thumbnails">
+            <p className="project-description">
+              A complete e-commerce platform built with Java and Spring Boot,
+              covering products, cart, wishlist, checkout and order workflows.
+            </p>
 
-            {images.map((image, index) => (
+            <div className="project-stack">
+              {[
+                "Java 17",
+                "Spring Boot 3",
+                "React.js",
+                "Spring Data JPA",
+                "Hibernate",
+                "MySQL",
+                "REST APIs"
+              ].map((item) => (
+                <span className="stack-pill" key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </section>
 
-              <button
-                key={image}
-                className={`gallery-thumbnail ${
-                  activeImage === index ? "active" : ""
-                }`}
-                onClick={() => setActiveImage(index)}
-              >
+          <section className="project-feature">
+            <div className="feature-label">PROJECT HIGHLIGHT</div>
+            <div className="feature-text">
+              6 modules · 15+ validated REST endpoints
+            </div>
+          </section>
 
-                <img
-                  src={image}
-                  alt={`ShopSphere ${index + 1}`}
-                />
+          <section>
+            <h2 className="section-heading">Project Screenshots</h2>
 
-                <span>{index + 1}</span>
+            <div className="gallery">
+              {screenshots.map((image, index) => (
+                <div className="gallery-item" key={image}>
+                  <img
+                    src={image}
+                    alt={`ShopSphere screenshot ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
 
-              </button>
+          <footer className="project-footer">
+            <a className="footer-link" href="#projects">
+              ← All Projects
+            </a>
 
-            ))}
-
-          </div>
-
-        </section>
-
-        {/* DETAILS */}
-        <section className="project-details-grid">
-
-          <div className="project-detail-card">
-            <span>01</span>
-            <h3>Core Features</h3>
-
-            <ul>
-              <li>Product browsing and search</li>
-              <li>Shopping cart</li>
-              <li>Wishlist management</li>
-              <li>Checkout workflow</li>
-              <li>Order management</li>
-              <li>Admin functionality</li>
-            </ul>
-          </div>
-
-          <div className="project-detail-card">
-            <span>02</span>
-            <h3>Backend</h3>
-
-            <ul>
-              <li>Spring Boot REST APIs</li>
-              <li>Spring Data JPA</li>
-              <li>Hibernate ORM</li>
-              <li>MySQL database</li>
-              <li>Layered architecture</li>
-              <li>Validation and exception handling</li>
-            </ul>
-          </div>
-
-          <div className="project-detail-card">
-            <span>03</span>
-            <h3>Frontend</h3>
-
-            <ul>
-              <li>React.js</li>
-              <li>Responsive UI</li>
-              <li>Axios API integration</li>
-              <li>Component-based architecture</li>
-              <li>Cart and wishlist interfaces</li>
-            </ul>
-          </div>
-
-        </section>
-
+            <a className="footer-link" href="#banksphere">
+              Next Project →
+            </a>
+          </footer>
+        </div>
       </main>
-
-    </div>
+    </>
   );
 }
