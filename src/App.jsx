@@ -10,8 +10,6 @@ import "./index.css";
 
 /* =========================================================
    PROJECT SCREENSHOT IMPORTS
-   IMPORTANT:
-   Images are inside src/assets/projects/
    ========================================================= */
 
 import shopSphereImage from "./assets/projects/shopsphere/1.png.png";
@@ -33,6 +31,20 @@ const ROUTES = {
 };
 
 /* =========================================================
+   SECTION ROUTES
+   These are NOT project pages.
+   ========================================================= */
+
+const SECTION_IDS = [
+  "about",
+  "skills",
+  "experience",
+  "projects",
+  "education",
+  "contact",
+];
+
+/* =========================================================
    HASH ROUTING
    ========================================================= */
 
@@ -44,7 +56,18 @@ function useHashRoute() {
 
   useEffect(() => {
     const onHashChange = () => {
-      setRoute(getRoute());
+      const currentRoute = getRoute();
+
+      /*
+       * Section hashes should not behave like project routes.
+       * Project hashes still work normally.
+       */
+      if (SECTION_IDS.includes(currentRoute)) {
+        setRoute("");
+        return;
+      }
+
+      setRoute(currentRoute);
 
       window.scrollTo({
         top: 0,
@@ -60,6 +83,28 @@ function useHashRoute() {
   }, []);
 
   return route;
+}
+
+/* =========================================================
+   SECTION NAVIGATION
+   ========================================================= */
+
+function scrollToSection(sectionId) {
+  const element = document.getElementById(sectionId);
+
+  if (!element) return;
+
+  /*
+   * Remove project route if one exists.
+   */
+  if (window.location.hash !== `#${sectionId}`) {
+    window.history.replaceState(null, "", `#${sectionId}`);
+  }
+
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 }
 
 /* =========================================================
@@ -155,25 +200,93 @@ function Navbar() {
     };
   }, []);
 
+  const handleNavClick = (event, sectionId) => {
+    event.preventDefault();
+    scrollToSection(sectionId);
+  };
+
   return (
     <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
       <div className="nav-container">
 
-        <a href="#" className="nav-logo">
+        <button
+          type="button"
+          className="nav-logo"
+          onClick={(event) => {
+            event.preventDefault();
+            window.history.replaceState(null, "", "#");
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          aria-label="Go to homepage"
+        >
           <span className="logo-name">RAHUL</span>
           <span className="logo-dot">.</span>
-        </a>
+        </button>
 
         <div className="nav-links">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#education">Education</a>
-          <a href="#contact">Contact</a>
+
+          <a
+            href="#about"
+            onClick={(event) => handleNavClick(event, "about")}
+          >
+            About
+          </a>
+
+          <a
+            href="#skills"
+            onClick={(event) => handleNavClick(event, "skills")}
+          >
+            Skills
+          </a>
+
+          <a
+            href="#experience"
+            onClick={(event) =>
+              handleNavClick(event, "experience")
+            }
+          >
+            Experience
+          </a>
+
+          <a
+            href="#projects"
+            onClick={(event) =>
+              handleNavClick(event, "projects")
+            }
+          >
+            Projects
+          </a>
+
+          <a
+            href="#education"
+            onClick={(event) =>
+              handleNavClick(event, "education")
+            }
+          >
+            Education
+          </a>
+
+          <a
+            href="#contact"
+            onClick={(event) =>
+              handleNavClick(event, "contact")
+            }
+          >
+            Contact
+          </a>
+
         </div>
 
-        <a href="#contact" className="nav-contact">
+        <a
+          href="#contact"
+          className="nav-contact"
+          onClick={(event) =>
+            handleNavClick(event, "contact")
+          }
+        >
           Let's Talk
           <span>↗</span>
         </a>
@@ -233,6 +346,10 @@ function Hero() {
               <a
                 href="#projects"
                 className="hero-primary-button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToSection("projects");
+                }}
               >
                 View Projects
                 <span>↗</span>
@@ -241,6 +358,10 @@ function Hero() {
               <a
                 href="#contact"
                 className="hero-secondary-button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToSection("contact");
+                }}
               >
                 Contact Me
               </a>
@@ -401,7 +522,6 @@ function About() {
    ========================================================= */
 
 function Skills() {
-
   const groups = [
     {
       number: "01",
@@ -418,7 +538,6 @@ function Skills() {
         "Maven",
       ],
     },
-
     {
       number: "02",
       title: "FRONTEND",
@@ -434,7 +553,6 @@ function Skills() {
         "Axios",
       ],
     },
-
     {
       number: "03",
       title: "APIs & ARCHITECTURE",
@@ -451,7 +569,6 @@ function Skills() {
         "Microservices",
       ],
     },
-
     {
       number: "04",
       title: "DATABASES",
@@ -467,7 +584,6 @@ function Skills() {
         "Relational Modeling",
       ],
     },
-
     {
       number: "05",
       title: "CLOUD & DEVOPS",
@@ -487,7 +603,6 @@ function Skills() {
         "Aiven",
       ],
     },
-
     {
       number: "06",
       title: "TESTING & ENGINEERING",
@@ -505,7 +620,6 @@ function Skills() {
         "Software Engineering",
       ],
     },
-
     {
       number: "07",
       title: "PYTHON & AI",
@@ -528,16 +642,19 @@ function Skills() {
   return (
     <section id="skills" className="section skills-section">
 
+      <div className="skills-bg-glow skills-bg-glow-one" />
+      <div className="skills-bg-glow skills-bg-glow-two" />
+
       <div className="section-container">
 
         <Reveal>
 
-          <div className="section-kicker">
+          <div className="section-kicker section-kicker-dark">
             <span>02</span>
             TECHNICAL SKILLS
           </div>
 
-          <h2 className="massive-title">
+          <h2 className="massive-title massive-title-dark">
             Tools I use to
             <br />
             <span>ship software.</span>
@@ -595,7 +712,6 @@ function Skills() {
    ========================================================= */
 
 function Experience() {
-
   const experiences = [
     {
       type: "WEB DEVELOPMENT INTERNSHIP",
@@ -613,7 +729,6 @@ function Experience() {
         "Collaborated using Git and an Agile development workflow across multiple development sprints.",
       ],
     },
-
     {
       type: "AI & DATA SCIENCE INTERNSHIP",
       role: "Artificial Intelligence & Data Science Intern",
@@ -630,7 +745,6 @@ function Experience() {
       ],
       id: "433IS20018",
     },
-
     {
       type: "AI / DEEP LEARNING INTERNSHIP",
       role: "AI, Deep Learning & Data Science Intern",
@@ -655,16 +769,18 @@ function Experience() {
       className="section experience-section"
     >
 
+      <div className="experience-bg-pattern" />
+
       <div className="section-container">
 
         <Reveal>
 
-          <div className="section-kicker">
+          <div className="section-kicker section-kicker-dark">
             <span>03</span>
             EXPERIENCE
           </div>
 
-          <h2 className="massive-title">
+          <h2 className="massive-title massive-title-dark">
             Where I learned
             <br />
             <span>to build.</span>
@@ -746,21 +862,16 @@ function Experience() {
    ========================================================= */
 
 const PROJECTS = [
-
   {
     route: "shopsphere",
     number: "01",
     category: "JAVA · FULL STACK",
     name: "ShopSphere",
-
     image: shopSphereImage,
-
     description:
       "A complete e-commerce platform built with Java and Spring Boot, covering products, cart, wishlist, checkout and order workflows.",
-
     highlight:
       "6 modules · 15+ validated REST endpoints",
-
     tech: [
       "Java 17",
       "Spring Boot 3",
@@ -769,21 +880,16 @@ const PROJECTS = [
       "MySQL",
     ],
   },
-
   {
     route: "banksphere",
     number: "02",
     category: "JAVA · SECURITY",
     name: "BankSphere",
-
     image: bankSphereImage,
-
     description:
       "A secure online banking application with JWT authentication, role-based authorization and transaction workflows.",
-
     highlight:
       "JWT security · 3 permission tiers",
-
     tech: [
       "Java 17",
       "Spring Boot",
@@ -793,21 +899,16 @@ const PROJECTS = [
       "Docker",
     ],
   },
-
   {
     route: "lifedecisionassistant",
     number: "03",
     category: "PYTHON · AI",
     name: "Life Decision Assistant",
-
     image: lifeDecisionImage,
-
     description:
       "An AI decision-support application that connects multiple LLM providers through a unified Flask backend.",
-
     highlight:
       "3 LLM providers behind one API",
-
     tech: [
       "Python",
       "Flask",
@@ -817,21 +918,16 @@ const PROJECTS = [
       "OpenRouter",
     ],
   },
-
   {
     route: "aiexamcompanion",
     number: "04",
     category: "PYTHON · AI",
     name: "AI Exam Companion",
-
     image: aiExamImage,
-
     description:
       "An AI-powered learning application that generates practice questions and manages exam preparation sessions.",
-
     highlight:
       "AI-generated practice question sets",
-
     tech: [
       "HTML5",
       "CSS3",
@@ -840,21 +936,16 @@ const PROJECTS = [
       "Groq API",
     ],
   },
-
   {
     route: "digitalanalyticsdashboard",
     number: "05",
     category: "JAVASCRIPT · FIREBASE",
     name: "Digital Analytics Dashboard",
-
     image: digitalAnalyticsImage,
-
     description:
       "A modern analytics dashboard with Google OAuth authentication, CSV data handling and Firebase-backed functionality.",
-
     highlight:
       "Google OAuth · Firebase backend",
-
     tech: [
       "JavaScript",
       "Firebase",
@@ -863,7 +954,6 @@ const PROJECTS = [
       "Chart.js",
     ],
   },
-
 ];
 
 /* =========================================================
@@ -871,7 +961,6 @@ const PROJECTS = [
    ========================================================= */
 
 function Projects() {
-
   const openProject = (route) => {
     window.location.hash = `/${route}`;
   };
@@ -1090,7 +1179,6 @@ function Education() {
    ========================================================= */
 
 function Certifications() {
-
   const certifications = [
     {
       number: "01",
@@ -1102,7 +1190,6 @@ function Certifications() {
       details:
         "Certificate ID: S4F25_195543",
     },
-
     {
       number: "02",
       title: "Java Programming Fundamentals",
@@ -1112,7 +1199,6 @@ function Certifications() {
         "Java programming fundamentals and core programming concepts.",
       details: "",
     },
-
     {
       number: "03",
       title: "Introduction to Java",
@@ -1122,7 +1208,6 @@ function Certifications() {
         "Introduction to Java programming and object-oriented programming concepts.",
       details: "",
     },
-
     {
       number: "04",
       title: "Software Engineering",
@@ -1132,7 +1217,6 @@ function Certifications() {
         "Software engineering principles, development practices and engineering fundamentals.",
       details: "",
     },
-
     {
       number: "05",
       title: "Cloud Computing",
@@ -1220,6 +1304,19 @@ function Certifications() {
    ========================================================= */
 
 function Contact() {
+  const handleContactNavigation = (event) => {
+    event.preventDefault();
+
+    window.history.replaceState(null, "", "#contact");
+
+    document
+      .getElementById("contact")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  };
+
   return (
     <section
       id="contact"
@@ -1294,7 +1391,10 @@ function Contact() {
             LinkedIn ↗
           </a>
 
-          <a href="#projects">
+          <a
+            href="#projects"
+            onClick={handleContactNavigation}
+          >
             Projects ↗
           </a>
 
