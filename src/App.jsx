@@ -1,4 +1,3 @@
-```jsx
 import React, { useEffect, useRef, useState } from "react";
 
 import ShopSphere from "./projects/ShopSphere";
@@ -1181,4 +1180,4 @@ function Footer() {
     </footer>
   );
 }
-```
+
