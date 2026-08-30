@@ -1,5 +1,5 @@
 import React from "react";
-import FlipBook from "../components/FlipBook";
+import Gallery from "../components/Gallery";
 
 const imageFiles = import.meta.glob("../assets/projects/shopsphere/*.png.png", {
   eager: true,
@@ -104,10 +104,10 @@ export default function ShopSphere() {
         </div>
 
         <h2>
-          Project <span>notebook</span>
+          Project <span>screenshots</span>
         </h2>
 
-        <FlipBook images={images} projectName="ShopSphere" />
+        <Gallery images={images} projectName="ShopSphere" />
       </main>
     </div>
   );
