@@ -1,305 +1,113 @@
 import React from "react";
+import FlipBook from "../components/FlipBook";
 
-const imageFiles = import.meta.glob(
-  "../assets/projects/lifedecisionassistant/*.png.png",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
+const imageFiles = import.meta.glob("../assets/projects/lifedecisionassistant/*.png.png", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 
 const images = Object.entries(imageFiles)
   .sort(([a], [b]) => {
     const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
     const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
-
     return numberA - numberB;
   })
   .map(([, src]) => src);
 
 export default function LifeDecisionAssistant() {
   return (
-    <>
-      <style>{`
-        .life-page {
-          min-height: 100vh;
-          background: #080808;
-          color: white;
-          padding-bottom: 100px;
-        }
+    <div className="project-page">
+      <nav className="project-nav">
+        <a href="#/" className="back-link">
+          ← Back to Portfolio
+        </a>
+        <div className="project-logo">RAHUL S</div>
+      </nav>
 
-        .life-nav {
-          height: 75px;
-          padding: 0 6%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px solid #222;
-          position: sticky;
-          top: 0;
-          z-index: 20;
-          background: rgba(8,8,8,.9);
-          backdrop-filter: blur(15px);
-        }
+      <header className="project-hero">
+        <p className="label">PROJECT 03</p>
+        <div className="stack-pill python">Python / Flask</div>
 
-        .life-nav a {
-          color: #aaa;
-          text-decoration: none;
-        }
+        <h1>
+          Life Decision <span>Assistant</span>
+        </h1>
 
-        .life-nav a:hover {
-          color: #8b5cf6;
-        }
+        <p className="project-subtitle">AI-Powered Decision Support Application</p>
 
-        .life-main {
-          max-width: 1200px;
-          margin: auto;
-          padding: 100px 25px;
-        }
+        <p className="project-description">
+          A Python and Flask based AI web application designed to help users
+          analyze decisions by presenting structured, AI-generated guidance.
+          The backend integrates three different LLM providers behind a
+          unified interface, with Firebase handling authentication.
+        </p>
 
-        .life-stack-pill {
-          display: inline-block;
-          padding: 6px 14px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: .5px;
-          text-transform: uppercase;
-          background: rgba(56,189,178,.12);
-          color: #5eead4;
-          border: 1px solid rgba(56,189,178,.35);
-          margin-bottom: 18px;
-        }
+        <div className="meta-grid">
+          <div className="meta-card">
+            <small>ROLE</small>
+            <strong>Backend / AI Integration</strong>
+          </div>
+          <div className="meta-card">
+            <small>PERIOD</small>
+            <strong>Update project dates</strong>
+          </div>
+          <div className="meta-card">
+            <small>ARCHITECTURE</small>
+            <strong>Multi-Provider API Layer</strong>
+          </div>
+        </div>
+      </header>
 
-        .life-label {
-          color: #8b5cf6;
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 3px;
-        }
+      <main className="content">
+        <h2>
+          Key <span>features</span>
+        </h2>
 
-        .life-main h1 {
-          font-size: clamp(45px,7vw,90px);
-          line-height: .95;
-          letter-spacing: -5px;
-          margin: 20px 0;
-        }
+        <div className="feature-grid">
+          <div className="feature">
+            <h3>Decision Analysis</h3>
+            <p>Users provide a decision and receive structured, AI-assisted analysis of possible outcomes.</p>
+          </div>
+          <div className="feature">
+            <h3>Multi-Provider AI</h3>
+            <p>Integrates Groq, OpenRouter, and Gemini behind one backend interface for flexible model access.</p>
+          </div>
+          <div className="feature">
+            <h3>Firebase Authentication</h3>
+            <p>Firebase handles secure user sign-in and session management.</p>
+          </div>
+          <div className="feature">
+            <h3>Flask Backend</h3>
+            <p>Python Flask routes handle request validation and communication with external AI APIs.</p>
+          </div>
+          <div className="feature">
+            <h3>Provider Fallback Logic</h3>
+            <p>Designed so requests can route across providers, reducing single-point API dependency.</p>
+          </div>
+          <div className="feature">
+            <h3>Responsive Interface</h3>
+            <p>Built with HTML, CSS, and JavaScript for a clean experience on desktop and mobile.</p>
+          </div>
+        </div>
 
-        .life-main h1 span {
-          color: #8b5cf6;
-        }
+        <h2>
+          Technology <span>stack</span>
+        </h2>
 
-        .life-subtitle {
-          color: #aaa;
-          font-size: 22px;
-        }
+        <div className="tech-list">
+          {["Python", "Flask", "Firebase", "Groq API", "OpenRouter API", "Gemini API", "HTML", "CSS", "JavaScript"].map((item) => (
+            <span className="tech" key={item}>
+              {item}
+            </span>
+          ))}
+        </div>
 
-        .life-description {
-          max-width: 800px;
-          color: #888;
-          font-size: 17px;
-          margin-top: 25px;
-        }
+        <h2>
+          Project <span>notebook</span>
+        </h2>
 
-        .life-section {
-          margin-top: 75px;
-        }
-
-        .life-section h2 {
-          font-size: 38px;
-          margin-bottom: 30px;
-        }
-
-        .life-section h2 span {
-          color: #8b5cf6;
-        }
-
-        .life-features {
-          display: grid;
-          grid-template-columns: repeat(3,1fr);
-          gap: 18px;
-        }
-
-        .life-feature {
-          padding: 25px;
-          border: 1px solid #292929;
-          border-radius: 12px;
-          background: #101010;
-        }
-
-        .life-feature p {
-          color: #777;
-          margin-top: 8px;
-          font-size: 14px;
-        }
-
-        .life-tech {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-
-        .life-tech span {
-          padding: 9px 14px;
-          border: 1px solid #333;
-          border-radius: 7px;
-          color: #aaa;
-          font-size: 13px;
-        }
-
-        .life-gallery {
-          display: grid;
-          grid-template-columns: repeat(2,1fr);
-          gap: 25px;
-        }
-
-        .life-gallery-item {
-          overflow: hidden;
-          border: 1px solid #292929;
-          border-radius: 14px;
-          background: #111;
-        }
-
-        .life-gallery-item img {
-          display: block;
-          width: 100%;
-        }
-
-        .life-gallery-item p {
-          padding: 10px 15px;
-          color: #666;
-          font-size: 12px;
-        }
-
-        .life-empty-gallery {
-          color: #666;
-          border: 1px dashed #292929;
-          border-radius: 14px;
-          padding: 40px;
-          text-align: center;
-        }
-
-        @media(max-width:800px) {
-          .life-features,
-          .life-gallery {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
-
-      <div className="life-page">
-        <nav className="life-nav">
-          <a href="#/">← Back to Portfolio</a>
-          <strong>RAHUL S</strong>
-        </nav>
-
-        <main className="life-main">
-          <p className="life-label">PROJECT 03</p>
-
-          <div className="life-stack-pill">Python / Flask</div>
-
-          <h1>
-            Life Decision <span>Assistant</span>
-          </h1>
-
-          <p className="life-subtitle">
-            AI-Powered Decision Support Application
-          </p>
-
-          <p className="life-description">
-            A Python and Flask based AI web application designed to help
-            users analyze decisions by presenting structured, AI-generated
-            guidance. The backend integrates three different LLM providers
-            behind a unified interface, with Firebase handling
-            authentication.
-          </p>
-
-          <section className="life-section">
-            <h2>
-              Key <span>features</span>
-            </h2>
-
-            <div className="life-features">
-              <div className="life-feature">
-                <h3>Decision Analysis</h3>
-                <p>Users provide a decision and receive structured, AI-assisted analysis of possible outcomes.</p>
-              </div>
-
-              <div className="life-feature">
-                <h3>Multi-Provider AI</h3>
-                <p>Integrates Groq, OpenRouter, and Gemini behind one backend interface for flexible model access.</p>
-              </div>
-
-              <div className="life-feature">
-                <h3>Firebase Authentication</h3>
-                <p>Firebase handles secure user sign-in and session management.</p>
-              </div>
-
-              <div className="life-feature">
-                <h3>Flask Backend</h3>
-                <p>Python Flask routes handle request validation and communication with external AI APIs.</p>
-              </div>
-
-              <div className="life-feature">
-                <h3>Provider Fallback Logic</h3>
-                <p>Designed so requests can route across providers, reducing single-point API dependency.</p>
-              </div>
-
-              <div className="life-feature">
-                <h3>Responsive Interface</h3>
-                <p>Built with HTML, CSS, and JavaScript for a clean experience on desktop and mobile.</p>
-              </div>
-            </div>
-          </section>
-
-          <section className="life-section">
-            <h2>
-              Technology <span>stack</span>
-            </h2>
-
-            <div className="life-tech">
-              {[
-                "Python",
-                "Flask",
-                "Firebase",
-                "Groq API",
-                "OpenRouter API",
-                "Gemini API",
-                "HTML",
-                "CSS",
-                "JavaScript",
-              ].map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          </section>
-
-          <section className="life-section">
-            <h2>
-              Project <span>screenshots</span>
-            </h2>
-
-            {images.length > 0 ? (
-              <div className="life-gallery">
-                {images.map((src, index) => (
-                  <div className="life-gallery-item" key={src}>
-                    <img
-                      src={src}
-                      alt={`Life Decision Assistant screenshot ${index + 1}`}
-                    />
-                    <p>Screenshot {index + 1}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="life-empty-gallery">
-                Screenshots coming soon — check back shortly.
-              </div>
-            )}
-          </section>
-        </main>
-      </div>
-    </>
+        <FlipBook images={images} projectName="Life Decision Assistant" />
+      </main>
+    </div>
   );
 }
