@@ -58,6 +58,20 @@ export default function DigitalAnalyticsDashboard() {
           padding: 100px 25px;
         }
 
+        .dashboard-stack-pill {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: .5px;
+          text-transform: uppercase;
+          background: rgba(56,189,178,.12);
+          color: #5eead4;
+          border: 1px solid rgba(56,189,178,.35);
+          margin-bottom: 18px;
+        }
+
         .dashboard-label {
           color: #8b5cf6;
           letter-spacing: 3px;
@@ -158,6 +172,14 @@ export default function DigitalAnalyticsDashboard() {
           font-size: 12px;
         }
 
+        .dashboard-empty-gallery {
+          color: #666;
+          border: 1px dashed #292929;
+          border-radius: 14px;
+          padding: 40px;
+          text-align: center;
+        }
+
         @media(max-width:800px) {
           .dashboard-features,
           .dashboard-gallery {
@@ -175,6 +197,8 @@ export default function DigitalAnalyticsDashboard() {
         <main className="dashboard-main">
           <p className="dashboard-label">PROJECT 05</p>
 
+          <div className="dashboard-stack-pill">Python / Flask</div>
+
           <h1>
             Digital Analytics <span>Dashboard</span>
           </h1>
@@ -184,11 +208,10 @@ export default function DigitalAnalyticsDashboard() {
           </p>
 
           <p className="dashboard-description">
-            A responsive analytics dashboard developed to
-            organize and present digital information through a
-            clean, structured and interactive web interface.
-            The project uses Python/Flask with Firebase and
-            authentication functionality.
+            A responsive analytics dashboard developed to organize and
+            present digital information through a clean, structured web
+            interface. The project uses Python/Flask with Google OAuth and
+            Firebase handling authentication.
           </p>
 
           <section className="dashboard-section">
@@ -199,50 +222,32 @@ export default function DigitalAnalyticsDashboard() {
             <div className="dashboard-features">
               <div className="dashboard-feature">
                 <h3>Analytics Interface</h3>
-                <p>
-                  Presents digital information in a clear
-                  dashboard-oriented interface.
-                </p>
+                <p>Presents digital information in a clear, dashboard-oriented layout.</p>
               </div>
 
               <div className="dashboard-feature">
                 <h3>Responsive Design</h3>
-                <p>
-                  Designed to provide a consistent experience
-                  across different screen sizes.
-                </p>
-              </div>
-
-              <div className="dashboard-feature">
-                <h3>Firebase</h3>
-                <p>
-                  Firebase services are used for application
-                  functionality and authentication.
-                </p>
+                <p>Designed to provide a consistent experience across different screen sizes.</p>
               </div>
 
               <div className="dashboard-feature">
                 <h3>Google OAuth</h3>
-                <p>
-                  Google OAuth authentication provides convenient
-                  sign-in functionality.
-                </p>
+                <p>Google OAuth provides a familiar, low-friction sign-in flow.</p>
+              </div>
+
+              <div className="dashboard-feature">
+                <h3>Firebase</h3>
+                <p>Firebase backs authentication state and application data.</p>
               </div>
 
               <div className="dashboard-feature">
                 <h3>Flask Backend</h3>
-                <p>
-                  Python Flask provides backend application
-                  functionality.
-                </p>
+                <p>Python Flask handles routing and backend application logic.</p>
               </div>
 
               <div className="dashboard-feature">
                 <h3>Clean UI</h3>
-                <p>
-                  Structured dashboard components make information
-                  easier to understand.
-                </p>
+                <p>Structured dashboard components make information easier to scan and understand.</p>
               </div>
             </div>
           </section>
@@ -258,9 +263,9 @@ export default function DigitalAnalyticsDashboard() {
                 "Flask",
                 "Firebase",
                 "Google OAuth",
-                "JavaScript",
                 "HTML",
                 "CSS",
+                "JavaScript",
               ].map((item) => (
                 <span key={item}>{item}</span>
               ))}
@@ -272,22 +277,25 @@ export default function DigitalAnalyticsDashboard() {
               Project <span>screenshots</span>
             </h2>
 
-            <div className="dashboard-gallery">
-              {images.map((src, index) => (
-                <div className="dashboard-image" key={src}>
-                  <img
-                    src={src}
-                    alt={`Digital Analytics Dashboard screenshot ${
-                      index + 1
-                    }`}
-                  />
-
-                  <p>
-                    Screenshot {index + 1}
-                  </p>
-                </div>
-              ))}
-            </div>
+            {images.length > 0 ? (
+              <div className="dashboard-gallery">
+                {images.map((src, index) => (
+                  <div className="dashboard-image" key={src}>
+                    <img
+                      src={src}
+                      alt={`Digital Analytics Dashboard screenshot ${
+                        index + 1
+                      }`}
+                    />
+                    <p>Screenshot {index + 1}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="dashboard-empty-gallery">
+                Screenshots coming soon — check back shortly.
+              </div>
+            )}
           </section>
         </main>
       </div>
