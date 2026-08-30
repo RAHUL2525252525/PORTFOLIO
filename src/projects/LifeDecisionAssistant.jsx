@@ -1,5 +1,5 @@
 import React from "react";
-import FlipBook from "../components/FlipBook";
+import Gallery from "../components/Gallery";
 
 const imageFiles = import.meta.glob("../assets/projects/lifedecisionassistant/*.png.png", {
   eager: true,
@@ -103,10 +103,10 @@ export default function LifeDecisionAssistant() {
         </div>
 
         <h2>
-          Project <span>notebook</span>
+          Project <span>screenshots</span>
         </h2>
 
-        <FlipBook images={images} projectName="Life Decision Assistant" />
+        <Gallery images={images} projectName="Life Decision Assistant" />
       </main>
     </div>
   );
