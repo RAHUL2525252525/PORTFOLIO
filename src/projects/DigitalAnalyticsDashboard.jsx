@@ -1,130 +1,296 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink } from "lucide-react";
 
-import image38 from "../assets/projects/digitalanalyticsdashboard/38.png";
-import image39 from "../assets/projects/digitalanalyticsdashboard/39.png";
-import image40 from "../assets/projects/digitalanalyticsdashboard/40.png";
-import image41 from "../assets/projects/digitalanalyticsdashboard/41.png";
-import image42 from "../assets/projects/digitalanalyticsdashboard/42.png";
+const imageFiles = import.meta.glob(
+  "../assets/projects/digitalanalyticsdashboard/*.png.png",
+  {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }
+);
 
-const screenshots = [
-  image38,
-  image39,
-  image40,
-  image41,
-  image42,
-];
+const images = Object.entries(imageFiles)
+  .sort(([a], [b]) => {
+    const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
+    const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
+
+    return numberA - numberB;
+  })
+  .map(([, src]) => src);
 
 export default function DigitalAnalyticsDashboard() {
   return (
-    <div className="project-page">
-      <div className="project-page-container">
+    <>
+      <style>{`
+        .dashboard-page {
+          min-height: 100vh;
+          background: #080808;
+          color: white;
+          padding-bottom: 100px;
+        }
 
-        <Link to="/" className="back-button">
-          <ArrowLeft size={18} />
-          Back to Portfolio
-        </Link>
+        .dashboard-nav {
+          height: 75px;
+          padding: 0 6%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #222;
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          background: rgba(8,8,8,.9);
+          backdrop-filter: blur(15px);
+        }
 
-        <div className="project-hero">
-          <span className="project-label">
-            ANALYTICS DASHBOARD
-          </span>
+        .dashboard-nav a {
+          color: #aaa;
+          text-decoration: none;
+        }
 
-          <h1>Digital Analytics Dashboard</h1>
+        .dashboard-nav a:hover {
+          color: #8b5cf6;
+        }
 
-          <p>
-            Interactive analytics dashboard designed to present
-            application and business data through clear visual insights.
+        .dashboard-main {
+          max-width: 1200px;
+          margin: auto;
+          padding: 100px 25px;
+        }
+
+        .dashboard-label {
+          color: #8b5cf6;
+          letter-spacing: 3px;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .dashboard-main h1 {
+          font-size: clamp(45px,7vw,90px);
+          line-height: .95;
+          letter-spacing: -5px;
+          margin: 20px 0;
+        }
+
+        .dashboard-main h1 span {
+          color: #8b5cf6;
+        }
+
+        .dashboard-subtitle {
+          color: #aaa;
+          font-size: 22px;
+        }
+
+        .dashboard-description {
+          max-width: 800px;
+          color: #888;
+          font-size: 17px;
+          margin-top: 25px;
+        }
+
+        .dashboard-section {
+          margin-top: 80px;
+        }
+
+        .dashboard-section h2 {
+          font-size: 38px;
+          margin-bottom: 30px;
+        }
+
+        .dashboard-section h2 span {
+          color: #8b5cf6;
+        }
+
+        .dashboard-features {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 18px;
+        }
+
+        .dashboard-feature {
+          padding: 25px;
+          border-radius: 12px;
+          background: #101010;
+          border: 1px solid #292929;
+        }
+
+        .dashboard-feature p {
+          color: #777;
+          font-size: 14px;
+          margin-top: 8px;
+        }
+
+        .dashboard-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .dashboard-tech span {
+          padding: 9px 14px;
+          border: 1px solid #333;
+          color: #aaa;
+          border-radius: 7px;
+          font-size: 13px;
+        }
+
+        .dashboard-gallery {
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          gap: 25px;
+        }
+
+        .dashboard-image {
+          overflow: hidden;
+          background: #111;
+          border: 1px solid #292929;
+          border-radius: 14px;
+        }
+
+        .dashboard-image img {
+          display: block;
+          width: 100%;
+        }
+
+        .dashboard-image p {
+          color: #666;
+          padding: 10px 15px;
+          font-size: 12px;
+        }
+
+        @media(max-width:800px) {
+          .dashboard-features,
+          .dashboard-gallery {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
+      <div className="dashboard-page">
+        <nav className="dashboard-nav">
+          <a href="#/">← Back to Portfolio</a>
+          <strong>RAHUL S</strong>
+        </nav>
+
+        <main className="dashboard-main">
+          <p className="dashboard-label">PROJECT 05</p>
+
+          <h1>
+            Digital Analytics <span>Dashboard</span>
+          </h1>
+
+          <p className="dashboard-subtitle">
+            Interactive Analytics Dashboard
           </p>
 
-          <div className="project-tags">
-            <span>React.js</span>
-            <span>JavaScript</span>
-            <span>REST APIs</span>
-            <span>Charts</span>
-            <span>Responsive UI</span>
-          </div>
-        </div>
-
-        <section className="project-content">
-          <h2>Project Overview</h2>
-
-          <p>
-            Digital Analytics Dashboard provides an interactive
-            interface for monitoring data, identifying trends and
-            presenting key metrics through visual components.
+          <p className="dashboard-description">
+            A responsive analytics dashboard developed to
+            organize and present digital information through a
+            clean, structured and interactive web interface.
+            The project uses Python/Flask with Firebase and
+            authentication functionality.
           </p>
 
-          <div className="feature-grid">
-            <div>
-              <h3>Dashboard</h3>
-              <p>
-                Centralized view of important application metrics.
-              </p>
-            </div>
+          <section className="dashboard-section">
+            <h2>
+              Key <span>features</span>
+            </h2>
 
-            <div>
-              <h3>Analytics</h3>
-              <p>
-                Visual representation of application and business data.
-              </p>
-            </div>
-
-            <div>
-              <h3>API Integration</h3>
-              <p>
-                Designed to consume and display REST API data.
-              </p>
-            </div>
-
-            <div>
-              <h3>Responsive</h3>
-              <p>
-                Designed for desktop and smaller screen sizes.
-              </p>
-            </div>
-          </div>
-
-          <h2>Key Features</h2>
-
-          <ul className="feature-list">
-            <li>Analytics dashboard</li>
-            <li>Metric cards</li>
-            <li>Visual data representation</li>
-            <li>REST API integration</li>
-            <li>Responsive interface</li>
-            <li>Interactive UI components</li>
-          </ul>
-
-          <h2>Project Screenshots</h2>
-
-          <div className="screenshots-grid">
-            {screenshots.map((image, index) => (
-              <div className="screenshot-card" key={image}>
-                <img
-                  src={image}
-                  alt={`Digital Analytics Dashboard screenshot ${
-                    index + 1
-                  }`}
-                />
+            <div className="dashboard-features">
+              <div className="dashboard-feature">
+                <h3>Analytics Interface</h3>
+                <p>
+                  Presents digital information in a clear
+                  dashboard-oriented interface.
+                </p>
               </div>
-            ))}
-          </div>
 
-          <div className="project-actions">
-            <a
-              href="https://github.com/RAHUL2525252525"
-              target="_blank"
-              rel="noreferrer"
-              className="project-action-button"
-            >
-              GitHub
-              <ExternalLink size={17} />
-            </a>
-          </div>
-        </section>
+              <div className="dashboard-feature">
+                <h3>Responsive Design</h3>
+                <p>
+                  Designed to provide a consistent experience
+                  across different screen sizes.
+                </p>
+              </div>
+
+              <div className="dashboard-feature">
+                <h3>Firebase</h3>
+                <p>
+                  Firebase services are used for application
+                  functionality and authentication.
+                </p>
+              </div>
+
+              <div className="dashboard-feature">
+                <h3>Google OAuth</h3>
+                <p>
+                  Google OAuth authentication provides convenient
+                  sign-in functionality.
+                </p>
+              </div>
+
+              <div className="dashboard-feature">
+                <h3>Flask Backend</h3>
+                <p>
+                  Python Flask provides backend application
+                  functionality.
+                </p>
+              </div>
+
+              <div className="dashboard-feature">
+                <h3>Clean UI</h3>
+                <p>
+                  Structured dashboard components make information
+                  easier to understand.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="dashboard-section">
+            <h2>
+              Technology <span>stack</span>
+            </h2>
+
+            <div className="dashboard-tech">
+              {[
+                "Python",
+                "Flask",
+                "Firebase",
+                "Google OAuth",
+                "JavaScript",
+                "HTML",
+                "CSS",
+              ].map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </section>
+
+          <section className="dashboard-section">
+            <h2>
+              Project <span>screenshots</span>
+            </h2>
+
+            <div className="dashboard-gallery">
+              {images.map((src, index) => (
+                <div className="dashboard-image" key={src}>
+                  <img
+                    src={src}
+                    alt={`Digital Analytics Dashboard screenshot ${
+                      index + 1
+                    }`}
+                  />
+
+                  <p>
+                    Screenshot {index + 1}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
       </div>
-    </div>
+    </>
   );
 }
