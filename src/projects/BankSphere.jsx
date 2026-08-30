@@ -1,5 +1,5 @@
 import React from "react";
-import FlipBook from "../components/FlipBook";
+import Gallery from "../components/Gallery";
 
 const imageFiles = import.meta.glob("../assets/projects/banksphere/*.png.png", {
   eager: true,
@@ -104,10 +104,10 @@ export default function BankSphere() {
         </div>
 
         <h2>
-          Project <span>notebook</span>
+          Project <span>screenshots</span>
         </h2>
 
-        <FlipBook images={images} projectName="BankSphere" />
+        <Gallery images={images} projectName="BankSphere" />
       </main>
     </div>
   );
