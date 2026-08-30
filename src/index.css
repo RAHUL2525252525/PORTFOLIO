@@ -1851,7 +1851,6 @@ img {
    ========================================================= */
 
 @media (max-width: 1050px) {
-
   .nav-links {
     gap: 17px;
   }
@@ -1880,11 +1879,9 @@ img {
     grid-template-columns: 50px 220px 1fr;
     gap: 20px;
   }
-
 }
 
 @media (max-width: 800px) {
-
   .navbar {
     padding: 10px 12px;
   }
@@ -1968,11 +1965,9 @@ img {
   .certification-grid {
     grid-template-columns: 1fr;
   }
-
 }
 
 @media (max-width: 560px) {
-
   .section {
     padding: 100px 18px;
   }
@@ -2139,7 +2134,6 @@ img {
   .footer p {
     margin-left: 0;
   }
-
 }
 
 /* =========================================================
@@ -2147,7 +2141,6 @@ img {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
   html {
     scroll-behavior: auto;
   }
@@ -2161,6 +2154,4 @@ img {
 
     transition-duration: 0.001ms !important;
   }
-
 }
-
