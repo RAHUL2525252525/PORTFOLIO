@@ -1,395 +1,539 @@
 import React from "react";
 
-const imageFiles = import.meta.glob(
-  "../assets/projects/lifedecisionassistant/*.png.png",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
-
-const images = Object.entries(imageFiles)
-  .sort(([a], [b]) => {
-    const numberA = parseInt(a.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    const numberB = parseInt(b.match(/(\d+)\.png\.png$/)?.[1] || "0");
-    return numberA - numberB;
-  })
-  .map(([, src]) => src);
-
-const features = [
-  {
-    number: "01",
-    title: "Decision Analysis",
-    text: "Users can submit decisions and receive structured AI-assisted analysis."
-  },
-  {
-    number: "02",
-    title: "Multi-Provider AI",
-    text: "Integrated Groq, OpenRouter and Gemini APIs behind a unified backend."
-  },
-  {
-    number: "03",
-    title: "Firebase Authentication",
-    text: "Implemented Firebase authentication for user sign-in and session handling."
-  },
-  {
-    number: "04",
-    title: "Flask API",
-    text: "Python Flask handles application routes, validation and AI provider communication."
-  },
-  {
-    number: "05",
-    title: "Provider Routing",
-    text: "Designed provider-level routing to reduce dependency on a single AI service."
-  },
-  {
-    number: "06",
-    title: "Responsive Interface",
-    text: "Created a responsive web interface using HTML, CSS and JavaScript."
-  }
-];
-
 export default function LifeDecisionAssistant() {
+  const screenshots = Array.from(
+    { length: 8 },
+    (_, i) => `/${i + 24}.png.png`
+  );
+
   return (
-    <div className="case-page python-page">
+    <>
+      <style>{`
+        .lda-page {
+          min-height:100vh;
+          background:#f5f5f2;
+          color:#111214;
+          font-family:"DM Sans",Arial,sans-serif;
+        }
 
-      <nav className="case-nav">
+        .lda-nav {
+          height:76px;
+          position:sticky;
+          top:0;
+          z-index:100;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          padding:0 6%;
+          background:rgba(245,245,242,.9);
+          backdrop-filter:blur(18px);
+          border-bottom:1px solid #ddd;
+        }
 
-        <a href="#/" className="case-back">
-          <span>←</span>
-          Back to Portfolio
-        </a>
+        .lda-nav a {
+          color:#72757c;
+          text-decoration:none;
+          font-size:13px;
+          font-weight:600;
+        }
 
-        <div className="case-nav-center">
-          <span className="case-dot"></span>
-          SOFTWARE ENGINEER
-        </div>
+        .lda-logo {
+          font-family:"Space Grotesk",sans-serif;
+          font-weight:700;
+        }
 
-        <span className="case-number">03 / 05</span>
+        .lda-logo span {
+          color:#3457d5;
+        }
 
-      </nav>
+        .lda-hero,
+        .lda-content {
+          max-width:1240px;
+          margin:auto;
+          padding-left:25px;
+          padding-right:25px;
+        }
 
-      <section className="case-hero">
+        .lda-hero {
+          padding-top:110px;
+          padding-bottom:80px;
+        }
 
-        <div className="case-hero-copy">
+        .lda-label {
+          color:#3457d5;
+          font-family:monospace;
+          font-size:10px;
+          letter-spacing:2px;
+        }
 
-          <div className="project-kicker">
-            <span>PYTHON / FLASK</span>
-            <span>•</span>
-            <span>HANDS-ON PROJECT</span>
+        .lda-hero h1 {
+          max-width:1050px;
+          margin:25px 0 0;
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(55px,9vw,125px);
+          line-height:.88;
+          letter-spacing:-6px;
+        }
+
+        .lda-hero h1 span {
+          color:#3457d5;
+        }
+
+        .lda-description {
+          max-width:760px;
+          margin-top:35px;
+          color:#70737a;
+          font-size:18px;
+          line-height:1.8;
+        }
+
+        .lda-tags {
+          display:flex;
+          flex-wrap:wrap;
+          gap:9px;
+          margin-top:30px;
+        }
+
+        .lda-tags span {
+          padding:9px 14px;
+          border:1px solid #d2d3d0;
+          border-radius:100px;
+          font-size:11px;
+        }
+
+        .lda-cover {
+          margin-top:70px;
+          overflow:hidden;
+          border-radius:32px;
+          box-shadow:0 30px 80px rgba(0,0,0,.08);
+        }
+
+        .lda-cover img {
+          width:100%;
+          display:block;
+        }
+
+        .lda-section {
+          padding:100px 0;
+          border-top:1px solid #ddd;
+        }
+
+        .lda-grid {
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:80px;
+        }
+
+        .lda-section h2 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(38px,5vw,66px);
+          line-height:1;
+          letter-spacing:-3px;
+          margin:18px 0 25px;
+        }
+
+        .lda-section p,
+        .lda-section li {
+          color:#6d7077;
+          font-size:15px;
+          line-height:1.85;
+        }
+
+        .lda-features {
+          display:grid;
+          grid-template-columns:repeat(3,1fr);
+          gap:15px;
+          margin-top:45px;
+        }
+
+        .lda-card {
+          padding:30px;
+          min-height:190px;
+          border:1px solid #ddd;
+          border-radius:22px;
+          background:white;
+        }
+
+        .lda-card span {
+          color:#3457d5;
+          font-family:monospace;
+          font-size:10px;
+        }
+
+        .lda-card h3 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:20px;
+          margin:25px 0 10px;
+        }
+
+        .lda-card p {
+          font-size:12px;
+        }
+
+        .lda-flow {
+          margin-top:35px;
+          padding:35px;
+          background:#111214;
+          color:#fff;
+          border-radius:28px;
+          font-family:monospace;
+          line-height:2;
+          font-size:13px;
+          overflow-x:auto;
+        }
+
+        .lda-tech {
+          display:flex;
+          flex-wrap:wrap;
+          gap:9px;
+          margin-top:35px;
+        }
+
+        .lda-tech span {
+          background:#111214;
+          color:white;
+          padding:9px 14px;
+          border-radius:100px;
+          font-size:11px;
+        }
+
+        .lda-screens {
+          display:grid;
+          grid-template-columns:repeat(2,1fr);
+          gap:20px;
+          margin-top:45px;
+        }
+
+        .lda-screen {
+          overflow:hidden;
+          border-radius:20px;
+          border:1px solid #ddd;
+          background:white;
+        }
+
+        .lda-screen img {
+          display:block;
+          width:100%;
+          transition:transform .5s ease;
+        }
+
+        .lda-screen:hover img {
+          transform:scale(1.025);
+        }
+
+        .lda-end {
+          margin:80px 0;
+          padding:55px;
+          background:#3457d5;
+          color:white;
+          text-align:center;
+          border-radius:30px;
+        }
+
+        .lda-end h2 {
+          font-family:"Space Grotesk",sans-serif;
+          font-size:clamp(40px,6vw,75px);
+          letter-spacing:-3px;
+        }
+
+        .lda-end a {
+          display:inline-block;
+          margin-top:20px;
+          padding:14px 22px;
+          background:white;
+          color:#111;
+          border-radius:100px;
+          text-decoration:none;
+          font-size:12px;
+          font-weight:700;
+        }
+
+        @media(max-width:800px) {
+          .lda-grid,
+          .lda-features,
+          .lda-screens {
+            grid-template-columns:1fr;
+          }
+
+          .lda-hero h1 {
+            letter-spacing:-4px;
+          }
+        }
+
+        @media(max-width:500px) {
+          .lda-hero,
+          .lda-content {
+            padding-left:18px;
+            padding-right:18px;
+          }
+
+          .lda-cover {
+            border-radius:20px;
+          }
+
+          .lda-section {
+            padding:70px 0;
+          }
+
+          .lda-end {
+            padding:35px 20px;
+          }
+        }
+      `}</style>
+
+      <div className="lda-page">
+
+        <nav className="lda-nav">
+          <a href="/">← Back to Portfolio</a>
+          <div className="lda-logo">
+            RAHUL<span>.</span>
+          </div>
+        </nav>
+
+        <header className="lda-hero">
+
+          <div className="lda-label">
+            03 / PYTHON / AI APPLICATION
           </div>
 
           <h1>
-            Life Decision
-            <span>Assistant</span>
+            Life Decision <span>Assistant</span>
           </h1>
 
-          <p className="case-tagline">
-            AI-Assisted
-            <br />
-            Decision Support
+          <p className="lda-description">
+            An AI-powered decision-support web application built
+            with Python and Flask. The application connects
+            multiple large language model providers behind a
+            unified backend experience.
           </p>
 
-          <p className="case-intro">
-            A hands-on Python and Flask web application integrating
-            multiple AI providers to generate structured decision
-            guidance.
-          </p>
-
-          <div className="case-hero-tags">
-
+          <div className="lda-tags">
             <span>Python</span>
             <span>Flask</span>
             <span>Firebase</span>
-            <span>Groq</span>
-            <span>Gemini</span>
-
+            <span>Groq API</span>
+            <span>Gemini API</span>
+            <span>OpenRouter API</span>
           </div>
 
-        </div>
-
-        <div className="hero-project-visual ai-visual">
-
-          <div className="visual-glow"></div>
-
-          {images.length > 0 && (
-            <img
-              src={images[0]}
-              alt="Life Decision Assistant"
-            />
-          )}
-
-          <div className="visual-label">
-            <span>03</span>
-            AI APPLICATION
+          <div className="lda-cover">
+            <img src={screenshots[0]} alt="Life Decision Assistant" />
           </div>
 
-        </div>
+        </header>
 
-      </section>
+        <main className="lda-content">
 
-      <section className="case-section overview-section">
+          <section className="lda-section">
 
-        <div className="section-eyebrow">
-          01 — OVERVIEW
-        </div>
-
-        <div className="overview-grid">
-
-          <div>
-
-            <h2>
-              Connecting
-              <span> users with AI.</span>
-            </h2>
-
-          </div>
-
-          <div className="overview-text">
-
-            <p>
-              Life Decision Assistant was developed as a hands-on
-              Python/Flask project to explore practical AI API
-              integration.
-            </p>
-
-            <p>
-              The backend provides a unified interface for communicating
-              with multiple LLM providers while Firebase handles
-              authentication.
-            </p>
-
-            <div className="stat-row">
+            <div className="lda-grid">
 
               <div>
-                <strong>3</strong>
-                <small>AI PROVIDERS</small>
+                <div className="lda-label">01 / CONCEPT</div>
+                <h2>AI for structured decisions.</h2>
               </div>
 
               <div>
-                <strong>Flask</strong>
-                <small>BACKEND</small>
+                <p>
+                  The application was designed to help users
+                  think through decisions by providing structured
+                  AI-assisted responses.
+                </p>
+
+                <p>
+                  Instead of depending on one model provider,
+                  the backend integrates multiple AI services
+                  through a unified Flask application.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section className="lda-section">
+
+            <div className="lda-label">02 / FEATURES</div>
+
+            <h2>Designed around the user.</h2>
+
+            <div className="lda-features">
+
+              <div className="lda-card">
+                <span>01</span>
+                <h3>Decision Input</h3>
+                <p>
+                  Users provide context and information about
+                  the decision they are considering.
+                </p>
+              </div>
+
+              <div className="lda-card">
+                <span>02</span>
+                <h3>AI Analysis</h3>
+                <p>
+                  User input is processed through configured
+                  AI providers.
+                </p>
+              </div>
+
+              <div className="lda-card">
+                <span>03</span>
+                <h3>Structured Output</h3>
+                <p>
+                  Responses are presented through a clean,
+                  understandable interface.
+                </p>
+              </div>
+
+              <div className="lda-card">
+                <span>04</span>
+                <h3>Authentication</h3>
+                <p>
+                  Firebase authentication provides account
+                  and access management.
+                </p>
+              </div>
+
+              <div className="lda-card">
+                <span>05</span>
+                <h3>Multiple Providers</h3>
+                <p>
+                  Groq, Gemini and OpenRouter can be integrated
+                  behind the same backend.
+                </p>
+              </div>
+
+              <div className="lda-card">
+                <span>06</span>
+                <h3>Web Experience</h3>
+                <p>
+                  Responsive frontend design makes the
+                  application accessible across devices.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section className="lda-section">
+
+            <div className="lda-grid">
+
+              <div>
+                <div className="lda-label">03 / AI FLOW</div>
+                <h2>One backend. Multiple AI providers.</h2>
               </div>
 
               <div>
-                <strong>Firebase</strong>
-                <small>AUTH</small>
+                <div className="lda-flow">
+                  User Input
+                  <br />
+                  ↓
+                  <br />
+                  Flask API
+                  <br />
+                  ↓
+                  <br />
+                  Request Validation
+                  <br />
+                  ↓
+                  <br />
+                  AI Provider
+                  <br />
+                  ├── Groq
+                  <br />
+                  ├── Gemini
+                  <br />
+                  └── OpenRouter
+                  <br />
+                  ↓
+                  <br />
+                  Structured Response
+                  <br />
+                  ↓
+                  <br />
+                  Frontend
+                </div>
               </div>
 
             </div>
 
-          </div>
+          </section>
 
-        </div>
+          <section className="lda-section">
 
-      </section>
+            <div className="lda-label">04 / TECHNOLOGY</div>
 
-      <section className="case-section">
+            <h2>Technology stack.</h2>
 
-        <div className="section-eyebrow">
-          02 — FUNCTIONALITY
-        </div>
+            <div className="lda-tech">
+              <span>Python</span>
+              <span>Flask</span>
+              <span>Firebase</span>
+              <span>Groq API</span>
+              <span>Gemini API</span>
+              <span>OpenRouter API</span>
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+            </div>
 
-        <div className="section-heading">
+          </section>
 
-          <h2>
-            The application
-            <span> experience.</span>
-          </h2>
+          <section className="lda-section">
 
-          <p>
-            Practical AI and full-stack concepts explored through the project.
-          </p>
+            <div className="lda-label">05 / SCREENSHOTS</div>
 
-        </div>
+            <h2>Application walkthrough.</h2>
 
-        <div className="premium-feature-grid">
+            <div className="lda-screens">
+              {screenshots.map((image, index) => (
+                <div className="lda-screen" key={image}>
+                  <img
+                    src={image}
+                    alt={`Life Decision Assistant screen ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
 
-          {features.map((feature) => (
+          </section>
 
-            <article
-              className="premium-feature"
-              key={feature.number}
-            >
+          <section className="lda-section">
 
-              <div className="feature-number">
-                {feature.number}
+            <div className="lda-grid">
+
+              <div>
+                <div className="lda-label">06 / ENGINEERING</div>
+                <h2>Hands-on AI development.</h2>
               </div>
 
               <div>
-
-                <h3>{feature.title}</h3>
-
-                <p>{feature.text}</p>
-
+                <ul>
+                  <li>Python backend development</li>
+                  <li>Flask API development</li>
+                  <li>Third-party AI API integration</li>
+                  <li>Firebase authentication</li>
+                  <li>Frontend and backend integration</li>
+                  <li>API request handling</li>
+                  <li>Responsive web interface development</li>
+                </ul>
               </div>
 
-              <span className="feature-arrow">
-                ↗
-              </span>
+            </div>
 
-            </article>
+          </section>
 
-          ))}
-
-        </div>
-
-      </section>
-
-      <section className="architecture-section">
-
-        <div className="section-eyebrow">
-          03 — AI INTEGRATION
-        </div>
-
-        <div className="architecture-content">
-
-          <div>
-
-            <h2>
-              One interface.
-              <span> Multiple models.</span>
-            </h2>
-
-            <p>
-              The Flask backend acts as an integration layer between
-              the application and external AI services.
-            </p>
-
+          <div className="lda-end">
+            <h2>Back to the portfolio.</h2>
+            <a href="/">← Return to Portfolio</a>
           </div>
 
-          <div className="architecture-stack">
-
-            <div className="architecture-card">
-              <b>01</b>
-              <strong>Flask API</strong>
-              <span>Request handling</span>
-            </div>
-
-            <div className="architecture-line"></div>
-
-            <div className="architecture-card">
-              <b>02</b>
-              <strong>AI Providers</strong>
-              <span>Groq • Gemini • OpenRouter</span>
-            </div>
-
-            <div className="architecture-line"></div>
-
-            <div className="architecture-card">
-              <b>03</b>
-              <strong>Response</strong>
-              <span>Structured AI guidance</span>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <section className="case-section">
-
-        <div className="section-eyebrow">
-          04 — TECHNOLOGY
-        </div>
-
-        <div className="technology-wrapper">
-
-          <h2>
-            Technology
-            <span> stack.</span>
-          </h2>
-
-          <div className="large-tech-list">
-
-            {[
-              "Python",
-              "Flask",
-              "Firebase",
-              "Groq API",
-              "OpenRouter API",
-              "Gemini API",
-              "HTML",
-              "CSS",
-              "JavaScript"
-            ].map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <section className="screens-section">
-
-        <div className="section-eyebrow">
-          05 — APPLICATION
-        </div>
-
-        <div className="section-heading">
-
-          <h2>
-            Inside the
-            <span> application.</span>
-          </h2>
-
-          <p>
-            Selected screens from the project.
-          </p>
-
-        </div>
-
-        <div className="case-gallery">
-
-          {images.map((image, index) => (
-
-            <div
-              className={`gallery-shot ${
-                index === 0 ? "gallery-featured" : ""
-              }`}
-              key={image}
-            >
-
-              <img
-                src={image}
-                alt={`Life Decision Assistant screen ${index + 1}`}
-              />
-
-              <span>
-                SCREEN {String(index + 1).padStart(2, "0")}
-              </span>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </section>
-
-      <footer className="case-footer">
-
-        <div>
-
-          <span>PROJECT 03</span>
-
-          <h2>
-            Life Decision
-            <em>Assistant</em>
-          </h2>
-
-        </div>
-
-        <a href="#/" className="footer-back">
-          Back to portfolio ↑
-        </a>
-
-      </footer>
-
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
