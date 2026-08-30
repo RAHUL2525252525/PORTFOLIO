@@ -117,9 +117,19 @@ function Hero() {
       </div>
 
       <div className="hero-content">
-        <div className="hero-photo-row">
-          <div className="hero-photo-ring">
-            <img src="/rahul-profile.jpg" alt="Rahul S" />
+        <div className="hero-id">
+          <div className="editor-frame">
+            <div className="editor-glow" />
+            <div className="editor-tab">
+              <span className="dot red" />
+              <span className="dot yellow" />
+              <span className="dot green" />
+              <span className="filename">rahul.jpg</span>
+            </div>
+            <div className="editor-photo">
+              <div className="editor-scanline" />
+              <img src="/rahul-profile.jpg" alt="Rahul S" />
+            </div>
           </div>
 
           <div className="hero-status-chip">
@@ -128,29 +138,33 @@ function Hero() {
           </div>
         </div>
 
-        <h1>
-          Rahul <span>S.</span>
-        </h1>
+        <div className="hero-text">
+          <h1>
+            Rahul <span>S.</span>
+          </h1>
 
-        <h2>Java Full Stack Developer — Spring Boot · React.js · MySQL</h2>
+          <h2>Java Full Stack Developer — Spring Boot · React.js · MySQL</h2>
 
-        <p className="hero-description">
-          I build <strong>production-grade full-stack applications</strong> —
-          from schema to shipped feature. Recent work spans e-commerce
-          platforms, banking systems and AI-assisted tools, with a focus on
-          clean REST APIs and validated, role-based workflows.
-        </p>
+          <p className="hero-description">
+            I build <strong>production-grade full-stack applications</strong> —
+            from schema to shipped feature. My core work is layered Java
+            systems with Spring Boot and React, backed by validated REST
+            APIs and role-based access control. Alongside that, I've got
+            hands-on experience building lightweight Python/Flask tools that
+            wire up AI APIs and Firebase.
+          </p>
 
-        <div className="hero-buttons">
-          <a href="#projects" className="primary-button">
-            View Projects
-          </a>
-          <a href="#contact" className="secondary-button">
-            Get in Touch
-          </a>
+          <div className="hero-buttons">
+            <a href="#projects" className="primary-button">
+              View Projects
+            </a>
+            <a href="#contact" className="secondary-button">
+              Get in Touch
+            </a>
+          </div>
+
+          <p className="hero-location">based in Bengaluru, Karnataka · open to relocation</p>
         </div>
-
-        <p className="hero-location">based in Bengaluru, India · open to relocation</p>
       </div>
     </section>
   );
@@ -177,10 +191,13 @@ function About() {
             </p>
             <p>
               My strongest work has been in structured, validation-heavy
-              systems: e-commerce catalogs, role-based banking flows and
-              layered REST architectures with 15+ tested endpoints. Alongside
-              that, I've built a handful of applied Python/Flask tools that
-              integrate AI APIs to solve everyday problems.
+              systems: a full-stack e-commerce platform and a role-based
+              banking application, both built on layered
+              controller/service/repository architecture with JWT auth, RBAC,
+              and 15+ tested REST endpoints. Alongside that, during my
+              internship and personal projects I've picked up hands-on
+              experience building Python/Flask tools that integrate AI APIs
+              and Firebase — practical, but not where I focus my depth.
             </p>
             <p>
               I care about code that's boring in the best way — predictable,
@@ -211,24 +228,26 @@ function About() {
 }
 
 function Skills() {
-  const groups = [
+  const coreGroups = [
     {
-      title: "CORE — JAVA FULL STACK",
-      items: ["Java 17", "Spring Boot 3", "Spring Data JPA", "Spring Security", "Hibernate", "REST APIs", "MySQL", "Maven"],
+      title: "Languages & Core CS",
+      items: ["Java", "JavaScript (ES6+)", "SQL", "HTML5", "CSS3", "Data Structures & Algorithms", "OOP", "DBMS", "Software Engineering Principles"],
     },
     {
-      title: "FRONTEND",
-      items: ["React.js", "JavaScript (ES6+)", "HTML5", "CSS3", "Responsive Design"],
+      title: "Frameworks & Architecture",
+      items: ["Spring Boot", "Spring MVC", "Spring Security", "Spring Data JPA", "Hibernate", "React.js", "Layered Architecture", "MVC", "DTO Pattern", "Microservices", "Exception Handling"],
     },
     {
-      title: "APPLIED — PYTHON / AI TOOLING",
-      items: ["Python", "Flask", "MongoDB", "Groq API", "Gemini API", "OpenRouter API"],
+      title: "APIs, Auth & Databases",
+      items: ["REST API Design", "JWT Authentication", "Role-Based Access Control", "MySQL", "PostgreSQL", "MongoDB", "Database Design", "Normalization", "Relational Data Modeling"],
     },
     {
-      title: "TOOLS & PLATFORMS",
-      items: ["Git", "GitHub", "Firebase", "Google OAuth", "Postman", "VS Code"],
+      title: "Cloud, DevOps & Testing",
+      items: ["Docker", "Docker Compose", "Maven", "Git", "GitHub", "GitHub Actions", "CI/CD", "AWS EC2", "AWS S3", "Vercel", "Render", "Aiven", "JUnit 5", "Mockito", "Postman", "Bootstrap", "Tailwind CSS", "Axios", "Agile / Scrum"],
     },
   ];
+
+  const appliedItems = ["HTML", "CSS", "JavaScript", "Python", "Flask", "Firebase", "Google Authentication (OAuth)", "Groq API", "Gemini API", "OpenRouter API"];
 
   return (
     <section id="skills" className="section dark-section">
@@ -240,20 +259,45 @@ function Skills() {
           </h2>
         </Reveal>
 
-        <div className="skills-grid">
-          {groups.map((g) => (
-            <Reveal key={g.title}>
+        <Reveal>
+          <div className="skills-tier">
+            <div className="skills-tier-head">
+              <h3>Core — Java Full Stack</h3>
+              <p>primary depth · production-style systems</p>
+            </div>
+            <div className="skills-grid">
+              {coreGroups.map((g) => (
+                <div className="skill-group" key={g.title}>
+                  <h4>{g.title}</h4>
+                  <div className="skill-list">
+                    {g.items.map((s) => (
+                      <span key={s}>{s}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <div className="skills-tier applied">
+            <div className="skills-tier-head">
+              <h3>Applied — Python / AI Tooling</h3>
+              <p>hands-on experience · not my primary focus</p>
+            </div>
+            <div className="skills-grid">
               <div className="skill-group">
-                <h3>{g.title}</h3>
+                <h4>Web + AI integrations</h4>
                 <div className="skill-list">
-                  {g.items.map((s) => (
+                  {appliedItems.map((s) => (
                     <span key={s}>{s}</span>
                   ))}
                 </div>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -274,8 +318,44 @@ function Experience() {
           <div className="experience-card">
             <div className="experience-header">
               <div>
+                <h3>Web Development Intern</h3>
+                <h4>MR Tech Lab</h4>
+                <p>HTML/CSS/JS · Python/Flask · Firebase</p>
+              </div>
+              <div className="date">01/2026 — 05/2026 · Bengaluru</div>
+            </div>
+
+            <ul>
+              <li>
+                Translated design specs into production HTML/CSS/JS, building
+                responsive UI components that rendered consistently across
+                Chrome, Firefox and Safari.
+              </li>
+              <li>
+                Integrated Firebase Authentication and session management to
+                enable secure user sign-in, resolving auth issues found
+                during QA before launch.
+              </li>
+              <li>
+                Independently built and shipped 3 web applications using
+                HTML/CSS/JS, Python/Flask and Firebase — full-stack
+                fundamentals later carried into Java-based project work.
+              </li>
+              <li>
+                Collaborated with cross-functional teammates in an Agile,
+                Git-based workflow, delivering assigned UI features on
+                schedule across multiple sprints.
+              </li>
+            </ul>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <div className="experience-card">
+            <div className="experience-header">
+              <div>
                 <h3>Full Stack Developer</h3>
-                <h4>Self-directed / Freelance Projects</h4>
+                <h4>Self-directed Projects</h4>
                 <p>Java · Spring Boot · React.js · MySQL</p>
               </div>
               <div className="date">2025 — Present</div>
@@ -283,18 +363,21 @@ function Experience() {
 
             <ul>
               <li>
-                Designed and built ShopSphere, a full-stack e-commerce
-                platform with 6 modules and 15+ validated REST endpoints
-                across ADMIN and CUSTOMER roles.
+                Architected ShopSphere, a full-stack e-commerce platform with
+                6 modules and 15+ validated REST endpoints across ADMIN and
+                CUSTOMER roles, on a layered controller/service/repository
+                design.
               </li>
               <li>
-                Built BankSphere, a role-based banking system with JWT
-                authentication enforced across three permission tiers.
+                Built an Online Banking System with stateless JWT
+                authentication via Spring Security, enforcing access control
+                across 3 permission tiers and a normalized MySQL schema
+                across 8+ related entities.
               </li>
               <li>
-                Delivered three applied Python/Flask tools that integrate
-                external AI providers (Groq, Gemini, OpenRouter) behind clean
-                backend interfaces.
+                Containerized the banking system with Docker Compose and
+                validated correctness with JUnit 5 / Mockito, including
+                privilege-escalation edge cases.
               </li>
             </ul>
           </div>
@@ -304,7 +387,7 @@ function Experience() {
   );
 }
 
-const PROJECTS = [
+const FEATURED_PROJECTS = [
   {
     route: "shopsphere",
     stack: "java",
@@ -313,47 +396,44 @@ const PROJECTS = [
     name: "ShopSphere",
     desc: "Full-stack e-commerce platform with product browsing, cart, wishlist, checkout and order management across ADMIN and CUSTOMER roles.",
     highlight: "6 modules · 15+ validated REST endpoints",
-    tech: ["Java 17", "Spring Boot", "React.js", "MySQL"],
+    tech: ["Java 17", "Spring Boot 3", "React.js", "MySQL", "Spring Data JPA"],
   },
   {
     route: "banksphere",
     stack: "java",
     stackLabel: "Java Full Stack",
     category: "PROJECT 02",
-    name: "BankSphere",
-    desc: "Role-based banking application with secure account, transaction and admin workflows enforced through layered backend validation.",
-    highlight: "JWT auth across 3 permission tiers",
-    tech: ["Java 17", "Spring Boot", "Spring Security", "MySQL"],
+    name: "Online Banking System",
+    desc: "Role-based banking application with secure account, transaction and admin workflows, containerized and covered by unit tests.",
+    highlight: "JWT auth across 3 permission tiers · 8+ entity schema",
+    tech: ["Java 17", "Spring Security (JWT)", "MySQL", "PostgreSQL", "Docker"],
   },
+];
+
+const APPLIED_PROJECTS = [
   {
     route: "lifedecisionassistant",
     stack: "python",
-    stackLabel: "Python / Flask",
-    category: "PROJECT 03",
+    stackLabel: "Applied · Python/Flask",
     name: "Life Decision Assistant",
-    desc: "AI-powered decision support app that routes requests across three LLM providers behind one unified backend interface.",
-    highlight: "3 LLM providers behind one API",
+    desc: "Decision-support app routing requests across three LLM providers behind one Flask interface.",
     tech: ["Python", "Flask", "Firebase", "Groq API"],
   },
   {
     route: "aiexamcompanion",
     stack: "python",
-    stackLabel: "Python / Flask",
-    category: "PROJECT 04",
+    stackLabel: "Applied · Python/Flask",
     name: "AI Exam Companion",
-    desc: "Exam preparation tool that generates AI-powered practice questions and stores session history in MongoDB.",
-    highlight: "AI-generated practice question sets",
+    desc: "Exam-prep tool generating AI practice questions, with session history stored in MongoDB.",
     tech: ["Python", "Flask", "MongoDB", "Groq API"],
   },
   {
     route: "digitalanalyticsdashboard",
     stack: "js",
-    stackLabel: "JavaScript / Firebase",
-    category: "PROJECT 05",
+    stackLabel: "Applied · JavaScript",
     name: "Digital Analytics Dashboard",
-    desc: "Analytics dashboard with Google OAuth sign-in and Firebase-backed data storage for tracking key usage metrics.",
-    highlight: "Google OAuth + Firebase backend",
-    tech: ["JavaScript", "Firebase", "Google OAuth", "Chart.js"],
+    desc: "Analytics dashboard with Google OAuth sign-in and a Firebase-backed store for usage metrics.",
+    tech: ["JavaScript", "Firebase", "Google OAuth"],
   },
 ];
 
@@ -367,13 +447,18 @@ function Projects() {
             Selected <span>work</span>.
           </h2>
           <p className="projects-intro">
-            Five shipped projects — two production-style Java systems, and
-            three applied Python tools built around AI APIs.
+            Two production-style Java systems lead the work below; three
+            applied Python/Flask and JavaScript tools, built hands-on around
+            AI APIs and Firebase, follow.
           </p>
         </Reveal>
 
+        <Reveal>
+          <p className="projects-group-label featured">Java Full Stack — Featured</p>
+        </Reveal>
+
         <div className="projects-grid">
-          {PROJECTS.map((p) => (
+          {FEATURED_PROJECTS.map((p) => (
             <Reveal key={p.route}>
               <div
                 className="project-card"
@@ -404,6 +489,34 @@ function Projects() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal>
+          <p className="projects-group-label">Applied — Python/Flask &amp; JavaScript</p>
+        </Reveal>
+
+        <div className="applied-grid">
+          {APPLIED_PROJECTS.map((p) => (
+            <Reveal key={p.route}>
+              <div
+                className="applied-card"
+                onClick={() => {
+                  window.location.hash = `/${p.route}`;
+                }}
+              >
+                <div className="project-badges">
+                  <span className={`stack-badge ${p.stack}`}>{p.stackLabel}</span>
+                </div>
+                <h3>{p.name}</h3>
+                <p>{p.desc}</p>
+                <div className="project-tech">
+                  {p.tech.map((t) => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -424,11 +537,11 @@ function Education() {
           <div className="education-card">
             <div className="education-year">B.E</div>
             <div>
-              <h3>Bachelor of Engineering</h3>
-              <h4>Computer Science / IT</h4>
-              <p>Update institution name and graduation year here</p>
+              <h3>Bachelor of Engineering, Computer Science and Engineering</h3>
+              <h4>Dr. ACS College of Engineering</h4>
+              <p>Bengaluru, Karnataka · Graduated 2026</p>
               <p className="cgpa">
-                CGPA: <strong>update value</strong>
+                CGPA: <strong>8.00 / 10</strong>
               </p>
             </div>
           </div>
@@ -483,10 +596,10 @@ function Contact() {
           Let's build something <span>reliable</span> together.
         </h2>
 
-        <a href="mailto:update-your-email@example.com" className="email-link">
-          update-your-email@example.com
+        <a href="mailto:Srinivasrahul838@gmail.com" className="email-link">
+          Srinivasrahul838@gmail.com
         </a>
-        <p className="phone">+91 — update your phone number</p>
+        <p className="phone">+91 73376 34886 · Bangalore, Karnataka</p>
 
         <div className="social-links">
           <a href="https://github.com/update-your-username" target="_blank" rel="noreferrer">
@@ -498,9 +611,4 @@ function Contact() {
         </div>
       </Reveal>
     </section>
-  );
-}
-
-function Footer() {
-  return <footer>© {new Date().getFullYear()} Rahul S. Built with React.</footer>;
-}
+  )
