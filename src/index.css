@@ -47,6 +47,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px;
 }
 
 body {
@@ -97,6 +98,7 @@ img {
 .section {
   position: relative;
   padding: 125px 0;
+  scroll-margin-top: 90px;
 }
 
 .section-container {
@@ -1192,8 +1194,6 @@ img {
     0 30px 80px rgba(0, 0, 0, 0.28);
 }
 
-/* Project image */
-
 .project-visual {
   position: relative;
 
@@ -1300,8 +1300,6 @@ img {
   font-size: 18px;
 }
 
-/* Project info */
-
 .project-information {
   padding: 42px;
 
@@ -1368,8 +1366,6 @@ img {
   font-weight: 700;
 }
 
-/* Live links */
-
 .project-live-links {
   margin-top: 30px;
 }
@@ -1426,8 +1422,6 @@ img {
   transform: translateY(-2px);
 }
 
-/* Backend note */
-
 .backend-note {
   display: flex;
 
@@ -1473,8 +1467,6 @@ img {
 
   line-height: 1.6;
 }
-
-/* View screenshots button */
 
 .project-open-button {
   align-self: flex-start;
@@ -2044,6 +2036,8 @@ img {
     );
 
   color: white;
+
+  scroll-margin-top: 90px;
 }
 
 .contact-background {
@@ -2374,30 +2368,108 @@ button:focus-visible {
 @media (max-width: 700px) {
   .section {
     padding: 85px 0;
+    scroll-margin-top: 78px;
   }
 
   .section-container {
     width: min(100% - 32px, 600px);
   }
 
+  /* -------------------------------------------------------
+     MOBILE TOPBAR
+     Keep navbar visible.
+     ------------------------------------------------------- */
+
+  .navbar {
+    display: block;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 9999;
+
+    padding: 14px 0;
+
+    min-height: 64px;
+
+    visibility: visible;
+    opacity: 1;
+
+    transform: none;
+
+    background: rgba(255, 253, 247, 0.96);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid var(--border);
+
+    box-shadow: 0 6px 25px rgba(15, 40, 80, 0.08);
+  }
+
+  .navbar-scrolled {
+    padding: 11px 0;
+
+    background: rgba(255, 253, 247, 0.98);
+
+    border-bottom-color: var(--border);
+
+    box-shadow: 0 8px 30px rgba(15, 40, 80, 0.10);
+  }
+
   .nav-container {
     width: calc(100% - 30px);
+
+    min-height: 38px;
+
+    gap: 12px;
   }
+
+  .nav-logo {
+    flex-shrink: 0;
+
+    font-size: 20px;
+  }
+
+  .logo-dot {
+    font-size: 25px;
+  }
+
+  /*
+    IMPORTANT:
+    Do not hide the topbar itself.
+    The desktop navigation links remain hidden on mobile
+    exactly as before, but the navbar/logo/contact remain visible.
+  */
 
   .nav-links {
     display: none;
   }
 
   .nav-contact {
-    padding: 9px 14px;
+    display: inline-flex;
 
-    font-size: 12px;
+    flex-shrink: 0;
+
+    padding: 9px 13px;
+
+    font-size: 11px;
+
+    white-space: nowrap;
   }
 
+  /* Prevent the fixed navbar from covering hero content */
   .hero-content {
     width: calc(100% - 32px);
 
-    padding-top: 100px;
+    padding-top: 115px;
+  }
+
+  .hero-section {
+    scroll-margin-top: 70px;
   }
 
   .hero-topline {
@@ -2630,6 +2702,8 @@ button:focus-visible {
 
   .contact-section {
     padding: 90px 16px;
+
+    scroll-margin-top: 78px;
   }
 
   .contact-inner h2 {
@@ -2697,6 +2771,19 @@ button:focus-visible {
   .project-information {
     padding: 22px;
   }
+
+  .nav-container {
+    width: calc(100% - 22px);
+  }
+
+  .nav-logo {
+    font-size: 18px;
+  }
+
+  .nav-contact {
+    padding: 8px 11px;
+    font-size: 10px;
+  }
 }
 
 /* =========================================================
@@ -2708,7 +2795,7 @@ button:focus-visible {
     scroll-behavior: auto;
   }
 
-  *,
+  * ,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
