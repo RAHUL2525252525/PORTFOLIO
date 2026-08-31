@@ -34,26 +34,85 @@ const ROUTES = {
    HASH ROUTING
    ========================================================= */
 
-function useHashRoute() {
-  const getRoute = () =>
-    window.location.hash.replace(/^#\/?/, "").toLowerCase();
+function getHashRoute() {
+  return window.location.hash.replace(/^#\/?/, "").toLowerCase();
+}
 
-  const [route, setRoute] = useState(getRoute());
+function scrollToSection(route, smooth = true) {
+  if (!route) {
+    window.scrollTo({
+      top: 0,
+      behavior: smooth ? "smooth" : "auto",
+    });
+    return;
+  }
+
+  const section = document.getElementById(route);
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: smooth ? "smooth" : "auto",
+      block: "start",
+    });
+  }
+}
+
+function useHashRoute() {
+  const [route, setRoute] = useState(getHashRoute());
 
   useEffect(() => {
-    const onHashChange = () => {
-      setRoute(getRoute());
+    const handleHashChange = () => {
+      const newRoute = getHashRoute();
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      setRoute(newRoute);
+
+      /*
+       * Project pages should always start from the top.
+       */
+      if (ROUTES[newRoute]) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return;
+      }
+
+      /*
+       * Normal portfolio sections should scroll
+       * directly to that section.
+       */
+      if (newRoute) {
+        requestAnimationFrame(() => {
+          scrollToSection(newRoute, true);
+        });
+      }
     };
 
-    window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+
+    /*
+     * Handle direct loading of:
+     * #about
+     * #skills
+     * #experience
+     * etc.
+     */
+    const initialRoute = getHashRoute();
+
+    if (
+      initialRoute &&
+      !ROUTES[initialRoute]
+    ) {
+      setTimeout(() => {
+        scrollToSection(initialRoute, false);
+      }, 50);
+    }
 
     return () => {
-      window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener(
+        "hashchange",
+        handleHashChange
+      );
     };
   }, []);
 
@@ -98,7 +157,9 @@ function Reveal({
   return (
     <Tag
       ref={ref}
-      className={`reveal ${inView ? "in-view" : ""} ${className}`}
+      className={`reveal ${
+        inView ? "in-view" : ""
+      } ${className}`}
       {...rest}
     >
       {children}
@@ -146,31 +207,156 @@ function Navbar() {
       setScrolled(window.scrollY > 30);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+      { passive: true }
+    );
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
     };
   }, []);
 
+  const handleNavClick = (event, sectionId) => {
+    event.preventDefault();
+
+    /*
+     * Update hash.
+     * useHashRoute() will handle the smooth scroll.
+     */
+    if (
+      window.location.hash.replace(
+        /^#\/?/,
+        ""
+      ).toLowerCase() === sectionId
+    ) {
+      scrollToSection(sectionId, true);
+      return;
+    }
+
+    window.location.hash = `#${sectionId}`;
+  };
+
   return (
-    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+    <nav
+      className={`navbar ${
+        scrolled ? "navbar-scrolled" : ""
+      }`}
+    >
       <div className="nav-container">
-        <a href="#" className="nav-logo">
-          <span className="logo-name">RAHUL</span>
-          <span className="logo-dot">.</span>
+        <a
+          href="#"
+          className="nav-logo"
+          onClick={(event) => {
+            event.preventDefault();
+
+            if (window.location.hash) {
+              window.location.hash = "";
+            } else {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }
+          }}
+        >
+          <span className="logo-name">
+            RAHUL
+          </span>
+
+          <span className="logo-dot">
+            .
+          </span>
         </a>
 
         <div className="nav-links">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#education">Education</a>
-          <a href="#contact">Contact</a>
+          <a
+            href="#about"
+            onClick={(event) =>
+              handleNavClick(
+                event,
+                "about"
+              )
+            }
+          >
+            About
+          </a>
+
+          <a
+            href="#skills"
+            onClick={(event) =>
+              handleNavClick(
+                event,
+                "skills"
+              )
+            }
+          >
+            Skills
+          </a>
+
+          <a
+            href="#experience"
+            onClick={(event) =>
+              handleNavClick(
+                event,
+                "experience"
+              )
+            }
+          >
+            Experience
+          </a>
+
+          <a
+            href="#projects"
+            onClick={(event) =>
+              handleNavClick(
+                event,
+                "projects"
+              )
+            }
+          >
+            Projects
+          </a>
+
+          <a
+            href="#education"
+            onClick={(event) =>
+              handleNavClick(
+                event,
+                "education"
+              )
+            }
+          >
+            Education
+          </a>
+
+          <a
+            href="#contact"
+            onClick={(event) =>
+              handleNavClick(
+                event,
+                "contact"
+              )
+            }
+          >
+            Contact
+          </a>
         </div>
 
-        <a href="#contact" className="nav-contact">
+        <a
+          href="#contact"
+          className="nav-contact"
+          onClick={(event) =>
+            handleNavClick(
+              event,
+              "contact"
+            )
+          }
+        >
           Let's Talk
           <span>↗</span>
         </a>
@@ -215,8 +401,10 @@ function Hero() {
 
             <p className="hero-description">
               I build reliable full-stack applications with
-              <strong> Java, Spring Boot and React.js</strong> —
-              from database design and secure REST APIs to
+              <strong>
+                {" "}Java, Spring Boot and React.js
+              </strong>{" "}
+              — from database design and secure REST APIs to
               production-ready interfaces.
             </p>
 
@@ -224,6 +412,11 @@ function Hero() {
               <a
                 href="#projects"
                 className="hero-primary-button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.location.hash =
+                    "#projects";
+                }}
               >
                 View Projects
                 <span>↗</span>
@@ -232,6 +425,11 @@ function Hero() {
               <a
                 href="#contact"
                 className="hero-secondary-button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.location.hash =
+                    "#contact";
+                }}
               >
                 Contact Me
               </a>
@@ -273,7 +471,9 @@ function Hero() {
         </div>
 
         <div className="hero-bottom">
-          <span>SCROLL TO EXPLORE</span>
+          <span>
+            SCROLL TO EXPLORE
+          </span>
 
           <div className="scroll-line">
             <span />
@@ -292,7 +492,10 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" className="section about-section">
+    <section
+      id="about"
+      className="section about-section"
+    >
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
@@ -303,7 +506,9 @@ function About() {
           <h2 className="massive-title">
             Engineer first.
             <br />
-            <span>Builder always.</span>
+            <span>
+              Builder always.
+            </span>
           </h2>
         </Reveal>
 
@@ -336,22 +541,30 @@ function About() {
           <Reveal className="about-stats">
             <div className="stat-card">
               <strong>2+</strong>
-              <span>JAVA FULL-STACK SYSTEMS</span>
+              <span>
+                JAVA FULL-STACK SYSTEMS
+              </span>
             </div>
 
             <div className="stat-card">
               <strong>15+</strong>
-              <span>REST API ENDPOINTS</span>
+              <span>
+                REST API ENDPOINTS
+              </span>
             </div>
 
             <div className="stat-card">
               <strong>3</strong>
-              <span>PYTHON / FLASK APPS</span>
+              <span>
+                PYTHON / FLASK APPS
+              </span>
             </div>
 
             <div className="stat-card">
               <strong>3</strong>
-              <span>INTERNSHIP EXPERIENCES</span>
+              <span>
+                INTERNSHIP EXPERIENCES
+              </span>
             </div>
           </Reveal>
         </div>
@@ -489,7 +702,10 @@ function Skills() {
   ];
 
   return (
-    <section id="skills" className="section skills-section">
+    <section
+      id="skills"
+      className="section skills-section"
+    >
       <div className="section-container">
         <Reveal>
           <div className="section-kicker blue-kicker">
@@ -500,7 +716,9 @@ function Skills() {
           <h2 className="massive-title light-title">
             Tools I use to
             <br />
-            <span>ship software.</span>
+            <span>
+              ship software.
+            </span>
           </h2>
         </Reveal>
 
@@ -515,7 +733,9 @@ function Skills() {
               </div>
 
               <div className="skill-heading">
-                <h3>{group.title}</h3>
+                <h3>
+                  {group.title}
+                </h3>
 
                 <p>
                   {group.description}
@@ -523,11 +743,13 @@ function Skills() {
               </div>
 
               <div className="skill-items">
-                {group.items.map((skill) => (
-                  <span key={skill}>
-                    {skill}
-                  </span>
-                ))}
+                {group.items.map(
+                  (skill) => (
+                    <span key={skill}>
+                      {skill}
+                    </span>
+                  )
+                )}
               </div>
             </Reveal>
           ))}
@@ -546,7 +768,8 @@ function Experience() {
     {
       type: "WEB DEVELOPMENT INTERNSHIP",
       role: "Web Development Intern",
-      company: "MR Tech Lab · Bengaluru",
+      company:
+        "MR Tech Lab · Bengaluru",
       date: "JAN 2026 — MAY 2026",
       summary:
         "Worked on full-stack web development and independently delivered multiple web applications using modern frontend, backend and authentication technologies.",
@@ -612,59 +835,65 @@ function Experience() {
           <h2 className="massive-title">
             Where I learned
             <br />
-            <span>to build.</span>
+            <span>
+              to build.
+            </span>
           </h2>
         </Reveal>
 
         <div className="experience-list">
-          {experiences.map((experience) => (
-            <Reveal
-              key={`${experience.company}-${experience.date}`}
-              className="experience-main-card"
-            >
-              <div className="experience-top">
-                <div>
-                  <span className="experience-type">
-                    {experience.type}
-                  </span>
-
-                  <h3>
-                    {experience.role}
-                  </h3>
-
-                  <p className="experience-company">
-                    {experience.company}
-                  </p>
-
-                  {experience.id && (
-                    <span className="experience-id">
-                      ID: {experience.id}
+          {experiences.map(
+            (experience) => (
+              <Reveal
+                key={`${experience.company}-${experience.date}`}
+                className="experience-main-card"
+              >
+                <div className="experience-top">
+                  <div>
+                    <span className="experience-type">
+                      {experience.type}
                     </span>
-                  )}
+
+                    <h3>
+                      {experience.role}
+                    </h3>
+
+                    <p className="experience-company">
+                      {experience.company}
+                    </p>
+
+                    {experience.id && (
+                      <span className="experience-id">
+                        ID: {experience.id}
+                      </span>
+                    )}
+                  </div>
+
+                  <span className="experience-date">
+                    {experience.date}
+                  </span>
                 </div>
 
-                <span className="experience-date">
-                  {experience.date}
-                </span>
-              </div>
+                <div className="experience-divider" />
 
-              <div className="experience-divider" />
+                <div className="experience-content">
+                  <div className="experience-summary">
+                    {experience.summary}
+                  </div>
 
-              <div className="experience-content">
-                <div className="experience-summary">
-                  {experience.summary}
+                  <ul>
+                    {experience.points.map(
+                      (point) => (
+                        <li key={point}>
+                          {point}
+                        </li>
+                      )
+                    )}
+                  </ul>
                 </div>
-
-                <ul>
-                  {experience.points.map((point) => (
-                    <li key={point}>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            )
+          )}
         </div>
       </div>
     </section>
@@ -698,7 +927,8 @@ const PROJECTS = [
       },
       {
         label: "Backend",
-        url: "https://shopsphere-backend-5umn.onrender.com",
+        url:
+          "https://shopsphere-backend-5umn.onrender.com",
       },
     ],
 
@@ -726,11 +956,13 @@ const PROJECTS = [
     links: [
       {
         label: "Frontend",
-        url: "https://banksphere-frontend.vercel.app",
+        url:
+          "https://banksphere-frontend.vercel.app",
       },
       {
         label: "Backend",
-        url: "https://banksphere-backend-b96m.onrender.com",
+        url:
+          "https://banksphere-backend-b96m.onrender.com",
       },
     ],
 
@@ -757,7 +989,8 @@ const PROJECTS = [
     links: [
       {
         label: "Live App",
-        url: "https://life-decision-assistant-63pu.onrender.com",
+        url:
+          "https://life-decision-assistant-63pu.onrender.com",
       },
     ],
   },
@@ -781,7 +1014,8 @@ const PROJECTS = [
     links: [
       {
         label: "Live App",
-        url: "https://ai-exam-companion-ghzc.onrender.com",
+        url:
+          "https://ai-exam-companion-ghzc.onrender.com",
       },
     ],
   },
@@ -804,7 +1038,8 @@ const PROJECTS = [
     links: [
       {
         label: "Live App",
-        url: "https://digital-dashboard1.onrender.com",
+        url:
+          "https://digital-dashboard1.onrender.com",
       },
     ],
   },
@@ -834,7 +1069,9 @@ function Projects() {
           <h2 className="massive-title light-title">
             Things I've
             <br />
-            <span>actually built.</span>
+            <span>
+              actually built.
+            </span>
           </h2>
 
           <p className="projects-intro">
@@ -846,99 +1083,129 @@ function Projects() {
         </Reveal>
 
         <div className="projects-showcase">
-          {PROJECTS.map((project) => (
-            <Reveal
-              key={project.route}
-              className="project-showcase-card"
-            >
-              {/* ONLY PROJECT PREVIEW */}
-              <button
-                type="button"
-                className="project-visual"
-                onClick={() => openProject(project.route)}
-                aria-label={`Open ${project.name}`}
+          {PROJECTS.map(
+            (project) => (
+              <Reveal
+                key={project.route}
+                className="project-showcase-card"
               >
-                <img
-                  src={project.image}
-                  alt={`${project.name} project preview`}
-                  loading="lazy"
-                />
-
-                <div className="project-image-shade" />
-
-                <div className="project-image-top">
-                  <span>{project.number}</span>
-                  <span>{project.category}</span>
-                </div>
-
-                <div className="project-view">
-                  <span>VIEW PROJECT</span>
-
-                  <strong>↗</strong>
-                </div>
-              </button>
-
-              {/* PROJECT INFORMATION ONLY */}
-              <div className="project-information">
-                <div className="project-title-line">
-                  <h3>{project.name}</h3>
-
-                  <span>{project.number}</span>
-                </div>
-
-                <div className="project-tech-list">
-                  {project.tech.map((tech) => (
-                    <span key={tech}>
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* LIVE LINKS OUTSIDE IMAGE */}
-                <div className="project-live-links">
-                  <div className="live-label">
-                    LIVE LINKS
-                  </div>
-
-                  <div className="live-link-list">
-                    {project.links.map((link) => (
-                      <a
-                        key={link.url}
-                        href={link.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(event) =>
-                          event.stopPropagation()
-                        }
-                      >
-                        {link.label}
-                        <span>↗</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-
-                {project.backendNote && (
-                  <div className="backend-note">
-                    <span>!</span>
-
-                    <p>
-                      {project.backendNote}
-                    </p>
-                  </div>
-                )}
-
                 <button
                   type="button"
-                  className="project-open-button"
-                  onClick={() => openProject(project.route)}
+                  className="project-visual"
+                  onClick={() =>
+                    openProject(
+                      project.route
+                    )
+                  }
+                  aria-label={`Open ${project.name}`}
                 >
-                  View screenshots
-                  <span>→</span>
+                  <img
+                    src={project.image}
+                    alt={`${project.name} project preview`}
+                    loading="lazy"
+                  />
+
+                  <div className="project-image-shade" />
+
+                  <div className="project-image-top">
+                    <span>
+                      {project.number}
+                    </span>
+
+                    <span>
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="project-view">
+                    <span>
+                      VIEW PROJECT
+                    </span>
+
+                    <strong>
+                      ↗
+                    </strong>
+                  </div>
                 </button>
-              </div>
-            </Reveal>
-          ))}
+
+                <div className="project-information">
+                  <div className="project-title-line">
+                    <h3>
+                      {project.name}
+                    </h3>
+
+                    <span>
+                      {project.number}
+                    </span>
+                  </div>
+
+                  <div className="project-tech-list">
+                    {project.tech.map(
+                      (tech) => (
+                        <span key={tech}>
+                          {tech}
+                        </span>
+                      )
+                    )}
+                  </div>
+
+                  <div className="project-live-links">
+                    <div className="live-label">
+                      LIVE LINKS
+                    </div>
+
+                    <div className="live-link-list">
+                      {project.links.map(
+                        (link) => (
+                          <a
+                            key={link.url}
+                            href={link.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(event) =>
+                              event.stopPropagation()
+                            }
+                          >
+                            {link.label}
+                            <span>
+                              ↗
+                            </span>
+                          </a>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  {project.backendNote && (
+                    <div className="backend-note">
+                      <span>
+                        !
+                      </span>
+
+                      <p>
+                        {project.backendNote}
+                      </p>
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    className="project-open-button"
+                    onClick={() =>
+                      openProject(
+                        project.route
+                      )
+                    }
+                  >
+                    View screenshots
+                    <span>
+                      →
+                    </span>
+                  </button>
+                </div>
+              </Reveal>
+            )
+          )}
         </div>
       </div>
     </section>
@@ -965,7 +1232,9 @@ function Education() {
           <h2 className="massive-title">
             Foundation for
             <br />
-            <span>engineering.</span>
+            <span>
+              engineering.
+            </span>
           </h2>
         </Reveal>
 
@@ -975,7 +1244,9 @@ function Education() {
           </div>
 
           <div className="education-info">
-            <span>B.E.</span>
+            <span>
+              B.E.
+            </span>
 
             <h3>
               Computer Science and Engineering
@@ -999,18 +1270,28 @@ function Education() {
 
         <Reveal className="education-secondary">
           <div>
-            <span>2020 — 2023</span>
+            <span>
+              2020 — 2023
+            </span>
+
             <h3>
               Diploma in Computer Science and Engineering
             </h3>
+
             <p>
               PVP Polytechnic, Bangalore
             </p>
           </div>
 
           <div>
-            <span>2019 — 2020</span>
-            <h3>SSLC</h3>
+            <span>
+              2019 — 2020
+            </span>
+
+            <h3>
+              SSLC
+            </h3>
+
             <p>
               Vidya Priya English School, Bangalore
             </p>
@@ -1029,7 +1310,8 @@ function Certifications() {
   const certifications = [
     {
       number: "01",
-      title: "Green Skills & Artificial Intelligence",
+      title:
+        "Green Skills & Artificial Intelligence",
       organization:
         "Skills4Future Program · Edunet Foundation · AICTE · Shell India Markets Pvt Ltd",
       description:
@@ -1040,32 +1322,40 @@ function Certifications() {
 
     {
       number: "02",
-      title: "Java Full Stack Development",
-      organization: "Full-stack development",
+      title:
+        "Java Full Stack Development",
+      organization:
+        "Full-stack development",
       description:
         "Full-stack application development with Java ecosystem technologies.",
     },
 
     {
       number: "03",
-      title: "Spring Boot & REST APIs",
-      organization: "Backend engineering",
+      title:
+        "Spring Boot & REST APIs",
+      organization:
+        "Backend engineering",
       description:
         "Backend development, REST architecture and service design.",
     },
 
     {
       number: "04",
-      title: "React.js Development",
-      organization: "Frontend engineering",
+      title:
+        "React.js Development",
+      organization:
+        "Frontend engineering",
       description:
         "Modern component-based frontend development.",
     },
 
     {
       number: "05",
-      title: "SQL & Database Design",
-      organization: "Database engineering",
+      title:
+        "SQL & Database Design",
+      organization:
+        "Database engineering",
       description:
         "Relational modelling, normalization and database fundamentals.",
     },
@@ -1083,45 +1373,49 @@ function Certifications() {
           <h2 className="massive-title">
             Always
             <br />
-            <span>learning.</span>
+            <span>
+              learning.
+            </span>
           </h2>
         </Reveal>
 
         <div className="certification-grid">
-          {certifications.map((certificate) => (
-            <Reveal
-              key={certificate.number}
-              className="certificate-item"
-            >
-              <span className="certificate-number">
-                {certificate.number}
-              </span>
+          {certifications.map(
+            (certificate) => (
+              <Reveal
+                key={certificate.number}
+                className="certificate-item"
+              >
+                <span className="certificate-number">
+                  {certificate.number}
+                </span>
 
-              <div className="certificate-content">
-                <h3>
-                  {certificate.title}
-                </h3>
+                <div className="certificate-content">
+                  <h3>
+                    {certificate.title}
+                  </h3>
 
-                <strong>
-                  {certificate.organization}
-                </strong>
+                  <strong>
+                    {certificate.organization}
+                  </strong>
 
-                <p>
-                  {certificate.description}
-                </p>
+                  <p>
+                    {certificate.description}
+                  </p>
 
-                {certificate.details && (
-                  <span className="certificate-details">
-                    {certificate.details}
-                  </span>
-                )}
-              </div>
+                  {certificate.details && (
+                    <span className="certificate-details">
+                      {certificate.details}
+                    </span>
+                  )}
+                </div>
 
-              <span className="certificate-arrow">
-                ↗
-              </span>
-            </Reveal>
-          ))}
+                <span className="certificate-arrow">
+                  ↗
+                </span>
+              </Reveal>
+            )
+          )}
         </div>
       </div>
     </section>
@@ -1153,7 +1447,10 @@ function Contact() {
         <h2>
           Have a problem
           <br />
-          worth <span>building?</span>
+          worth{" "}
+          <span>
+            building?
+          </span>
         </h2>
 
         <p>
@@ -1167,7 +1464,9 @@ function Contact() {
           className="contact-email"
         >
           Srinivasrahul838@gmail.com
-          <span>↗</span>
+          <span>
+            ↗
+          </span>
         </a>
 
         <div className="contact-details">
@@ -1197,7 +1496,14 @@ function Contact() {
             LinkedIn ↗
           </a>
 
-          <a href="#projects">
+          <a
+            href="#projects"
+            onClick={(event) => {
+              event.preventDefault();
+              window.location.hash =
+                "#projects";
+            }}
+          >
             Projects ↗
           </a>
         </div>
@@ -1214,7 +1520,10 @@ function Footer() {
   return (
     <footer className="footer">
       <div>
-        RAHUL<span>.</span>
+        RAHUL
+        <span>
+          .
+        </span>
       </div>
 
       <p>
@@ -1227,3 +1536,4 @@ function Footer() {
     </footer>
   );
 }
+
