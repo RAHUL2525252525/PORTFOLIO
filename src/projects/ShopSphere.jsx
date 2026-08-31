@@ -19,6 +19,68 @@ const screenshots = [
   image8, image9, image10, image11, image12, image13
 ];
 
+/* =========================================================
+   PROJECT DATA
+   ========================================================= */
+
+const WORKFLOW_STEPS = [
+  {
+    title: "Layered Spring Boot architecture",
+    description:
+      "Controllers, services and repositories are kept in separate layers, so request validation, business rules (stock checks, pricing, order totals) and data access each live in one place instead of being tangled together.",
+  },
+  {
+    title: "MySQL schema via Spring Data JPA & Hibernate",
+    description:
+      "Products, users, carts, wishlists and orders are modeled as related JPA entities, with Hibernate handling the mapping to MySQL tables so relational integrity (e.g. an order's line items) is enforced at the database level.",
+  },
+  {
+    title: "Cart, wishlist & checkout modules",
+    description:
+      "Each module exposes its own set of REST endpoints for adding, updating and removing items, with checkout tying them together into a single order-creation flow that snapshots prices and quantities at purchase time.",
+  },
+  {
+    title: "React storefront",
+    description:
+      "The frontend consumes the REST APIs directly, rendering product listings, cart state and order history from whatever the backend currently reports, so the UI never gets out of sync with stored data.",
+  },
+];
+
+const FEATURES = [
+  { title: "Product catalog & search", description: "Browse and search across the full product catalog." },
+  { title: "Shopping cart", description: "Add, update and remove items with live total calculation." },
+  { title: "Wishlist", description: "Save products for later, separate from the active cart." },
+  { title: "Checkout & order placement", description: "Converts a cart into a persisted order in one flow." },
+  { title: "Order history", description: "Past orders are retrievable per user." },
+  { title: "Validated REST endpoints", description: "15+ endpoints across 6 modules, each with input validation." },
+];
+
+const CHALLENGES = [
+  {
+    title: "Modeling orders with variable line items",
+    challenge:
+      "An order can contain any number of products in any quantity, which doesn't map onto a single fixed-width table without either wasting columns or losing data.",
+    approach:
+      "Used JPA entity relationships (order → order items → product) with cascading persistence, so each order stores a consistent snapshot of what was purchased even if catalog prices change afterward.",
+  },
+  {
+    title: "Keeping cart and wishlist state consistent with the backend",
+    challenge:
+      "Cart and wishlist actions need to feel instant in the UI, but quantities and availability are ultimately governed by rules that only the server can enforce, like stock limits.",
+    approach:
+      "Gave each cart and wishlist action its own dedicated, validated endpoint, so the frontend always re-renders from the server's response rather than assuming an action succeeded.",
+  },
+];
+
+const TIMELINE = [
+  { title: "Schema design", description: "Modeled products, users, carts, wishlists and orders as related entities." },
+  { title: "Core product APIs", description: "Built CRUD endpoints for the product catalog." },
+  { title: "Cart & wishlist modules", description: "Added endpoints for managing cart and wishlist state." },
+  { title: "Checkout & order workflow", description: "Built the flow that converts a cart into a persisted order." },
+  { title: "React frontend integration", description: "Connected the storefront UI to the REST APIs." },
+  { title: "Endpoint testing", description: "Validated all 15+ endpoints across the 6 modules." },
+];
+
 export default function ShopSphere() {
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -175,6 +237,184 @@ export default function ShopSphere() {
           color: #081a3a;
         }
 
+        /* NEW CONTENT SECTIONS */
+
+        .project-section {
+          padding: 70px 0;
+          border-top: 1px solid #d8e2ef;
+        }
+
+        .section-eyebrow {
+          color: #123f91;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 2px;
+          margin-bottom: 14px;
+        }
+
+        .section-intro {
+          max-width: 680px;
+          margin-bottom: 40px;
+          color: #64748b;
+          font-size: 15px;
+          line-height: 1.8;
+        }
+
+        .workflow-list {
+          border-top: 1px solid #d8e2ef;
+        }
+
+        .workflow-step {
+          display: grid;
+          grid-template-columns: 56px 1fr;
+          gap: 26px;
+          padding: 28px 0;
+          border-bottom: 1px solid #d8e2ef;
+        }
+
+        .workflow-index {
+          color: #123f91;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: .5px;
+        }
+
+        .workflow-content h3 {
+          color: #081a3a;
+          font-size: 16px;
+          font-weight: 800;
+          margin-bottom: 8px;
+        }
+
+        .workflow-content p {
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.75;
+          max-width: 640px;
+        }
+
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+        }
+
+        .feature-card {
+          padding: 26px;
+          background: #f7faff;
+          border: 1px solid #d8e2ef;
+          border-radius: 22px;
+          transition: .3s ease;
+        }
+
+        .feature-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 30px rgba(18,63,145,.08);
+        }
+
+        .feature-card h3 {
+          color: #081a3a;
+          font-size: 15px;
+          font-weight: 800;
+          margin-bottom: 8px;
+        }
+
+        .feature-card p {
+          color: #64748b;
+          font-size: 13px;
+          line-height: 1.65;
+        }
+
+        .challenges-list {
+          display: grid;
+          gap: 14px;
+        }
+
+        .challenge-row {
+          padding: 26px;
+          background: #f7faff;
+          border: 1px solid #d8e2ef;
+          border-radius: 22px;
+        }
+
+        .challenge-row h3 {
+          color: #081a3a;
+          font-size: 16px;
+          font-weight: 800;
+          margin-bottom: 12px;
+        }
+
+        .challenge-row p {
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.75;
+          margin-bottom: 8px;
+        }
+
+        .challenge-row p:last-child {
+          margin-bottom: 0;
+        }
+
+        .challenge-row strong {
+          color: #081a3a;
+          font-weight: 800;
+        }
+
+        .timeline-list {
+          margin-top: 6px;
+        }
+
+        .timeline-step {
+          display: grid;
+          grid-template-columns: 44px 1fr;
+          gap: 24px;
+          position: relative;
+          padding-bottom: 32px;
+        }
+
+        .timeline-step:last-child {
+          padding-bottom: 0;
+        }
+
+        .timeline-number {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #081a3a;
+          color: #fffdf7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 13px;
+          font-weight: 800;
+          flex-shrink: 0;
+        }
+
+        .timeline-step:not(:last-child) .timeline-number::after {
+          content: "";
+          position: absolute;
+          top: 44px;
+          left: 19px;
+          width: 2px;
+          height: calc(100% - 12px);
+          background: #d8e2ef;
+        }
+
+        .timeline-content h3 {
+          color: #081a3a;
+          font-size: 15px;
+          font-weight: 800;
+          margin-bottom: 6px;
+          padding-top: 8px;
+        }
+
+        .timeline-content p {
+          color: #64748b;
+          font-size: 13px;
+          line-height: 1.65;
+        }
+
         /* FLIPKART STYLE IMAGE VIEWER */
 
         .image-viewer {
@@ -316,8 +556,8 @@ export default function ShopSphere() {
         }
 
         .project-footer {
-          margin-top: 80px;
-          padding: 40px 0 70px;
+          margin-top: 0;
+          padding: 45px 0 70px;
           border-top: 1px solid #d8e2ef;
           display: flex;
           justify-content: space-between;
@@ -346,6 +586,19 @@ export default function ShopSphere() {
           .project-title {
             font-size: clamp(48px, 15vw, 72px);
             letter-spacing: -3px;
+          }
+
+          .project-section {
+            padding: 50px 0;
+          }
+
+          .features-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .workflow-step {
+            grid-template-columns: 36px 1fr;
+            gap: 16px;
           }
 
           .image-viewer {
@@ -447,10 +700,90 @@ export default function ShopSphere() {
             </div>
           </section>
 
-          <section>
+          {/* HOW IT'S BUILT */}
+          <section className="project-section">
+            <div className="section-eyebrow">ARCHITECTURE & WORKFLOW</div>
+            <h2 className="section-heading">How it's built</h2>
+            <p className="section-intro">
+              The backend is organized into layered modules, so persistence,
+              business rules and the API surface can evolve independently of
+              one another.
+            </p>
 
+            <div className="workflow-list">
+              {WORKFLOW_STEPS.map((step, index) => (
+                <div className="workflow-step" key={step.title}>
+                  <div className="workflow-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  <div className="workflow-content">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* KEY FEATURES */}
+          <section className="project-section">
+            <div className="section-eyebrow">WHAT IT DOES</div>
+            <h2 className="section-heading">Key features</h2>
+            <p className="section-intro">
+              Covers the full shopping journey from browsing to order history.
+            </p>
+
+            <div className="features-grid">
+              {FEATURES.map((feature) => (
+                <div className="feature-card" key={feature.title}>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* CHALLENGES & LEARNINGS */}
+          <section className="project-section">
+            <div className="section-eyebrow">PROBLEM SOLVING</div>
+            <h2 className="section-heading">Challenges & learnings</h2>
+
+            <div className="challenges-list">
+              {CHALLENGES.map((item) => (
+                <div className="challenge-row" key={item.title}>
+                  <h3>{item.title}</h3>
+                  <p><strong>Challenge:</strong> {item.challenge}</p>
+                  <p><strong>Approach:</strong> {item.approach}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* DEVELOPMENT TIMELINE */}
+          <section className="project-section">
+            <div className="section-eyebrow">PROCESS</div>
+            <h2 className="section-heading">Development timeline</h2>
+
+            <div className="timeline-list">
+              {TIMELINE.map((step, index) => (
+                <div className="timeline-step" key={step.title}>
+                  <div className="timeline-number">{index + 1}</div>
+
+                  <div className="timeline-content">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SCREENSHOTS */}
+          <section className="project-section">
+            <div className="section-eyebrow">GALLERY</div>
             <h2 className="section-heading">
-              Project Screenshots
+              Project screenshots
             </h2>
 
             <div className="image-viewer">
@@ -536,4 +869,3 @@ export default function ShopSphere() {
     </>
   );
 }
-
