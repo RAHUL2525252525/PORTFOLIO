@@ -179,6 +179,7 @@ export default function App() {
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -197,11 +198,13 @@ function Navbar() {
   const handleNavClick = (event, sectionId) => {
     event.preventDefault();
 
-    if (
-      window.location.hash
-        .replace(/^#\/?/, "")
-        .toLowerCase() === sectionId
-    ) {
+    setMobileMenu(false);
+
+    const currentHash = window.location.hash
+      .replace(/^#\/?/, "")
+      .toLowerCase();
+
+    if (currentHash === sectionId) {
       scrollToSection(sectionId, true);
       return;
     }
@@ -222,6 +225,8 @@ function Navbar() {
           onClick={(event) => {
             event.preventDefault();
 
+            setMobileMenu(false);
+
             if (window.location.hash) {
               window.location.hash = "";
             } else {
@@ -236,7 +241,11 @@ function Navbar() {
           <span className="logo-dot">.</span>
         </a>
 
-        <div className="nav-links">
+        <div
+          className={`nav-links ${
+            mobileMenu ? "mobile-open" : ""
+          }`}
+        >
           <a
             href="#about"
             onClick={(event) =>
@@ -302,6 +311,22 @@ function Navbar() {
           Let's Talk
           <span>↗</span>
         </a>
+
+        <button
+          type="button"
+          className={`mobile-menu-button ${
+            mobileMenu ? "active" : ""
+          }`}
+          onClick={() =>
+            setMobileMenu((previous) => !previous)
+          }
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenu}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
     </nav>
   );
@@ -381,9 +406,7 @@ function Hero() {
                 Bengaluru, India
               </span>
 
-              <span>
-                Open to opportunities
-              </span>
+              <span>Open to opportunities</span>
             </div>
           </Reveal>
 
@@ -404,9 +427,7 @@ function Hero() {
               </div>
             </div>
 
-            <div className="profile-number">
-              01
-            </div>
+            <div className="profile-number">01</div>
           </Reveal>
         </div>
 
@@ -430,10 +451,7 @@ function Hero() {
 
 function About() {
   return (
-    <section
-      id="about"
-      className="section about-section"
-    >
+    <section id="about" className="section about-section">
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
@@ -630,10 +648,7 @@ function Skills() {
   ];
 
   return (
-    <section
-      id="skills"
-      className="section skills-section"
-    >
+    <section id="skills" className="section skills-section">
       <div className="section-container">
         <Reveal>
           <div className="section-kicker blue-kicker">
@@ -666,9 +681,7 @@ function Skills() {
 
               <div className="skill-items">
                 {group.items.map((skill) => (
-                  <span key={skill}>
-                    {skill}
-                  </span>
+                  <span key={skill}>{skill}</span>
                 ))}
               </div>
             </Reveal>
@@ -797,9 +810,7 @@ function Experience() {
 
                 <ul>
                   {experience.points.map((point) => (
-                    <li key={point}>
-                      {point}
-                    </li>
+                    <li key={point}>{point}</li>
                   ))}
                 </ul>
               </div>
@@ -994,7 +1005,9 @@ function Projects() {
               <button
                 type="button"
                 className="project-visual"
-                onClick={() => openProject(project.route)}
+                onClick={() =>
+                  openProject(project.route)
+                }
                 aria-label={`Open ${project.name}`}
               >
                 <img
@@ -1007,13 +1020,11 @@ function Projects() {
 
                 <div className="project-image-top">
                   <span>{project.number}</span>
-
                   <span>{project.category}</span>
                 </div>
 
                 <div className="project-view">
                   <span>VIEW PROJECT</span>
-
                   <strong>↗</strong>
                 </div>
               </button>
@@ -1027,9 +1038,7 @@ function Projects() {
 
                 <div className="project-tech-list">
                   {project.tech.map((tech) => (
-                    <span key={tech}>
-                      {tech}
-                    </span>
+                    <span key={tech}>{tech}</span>
                   ))}
                 </div>
 
@@ -1060,9 +1069,7 @@ function Projects() {
                   <div className="backend-note">
                     <span>!</span>
 
-                    <p>
-                      {project.backendNote}
-                    </p>
+                    <p>{project.backendNote}</p>
                   </div>
                 )}
 
@@ -1110,9 +1117,7 @@ function Education() {
         </Reveal>
 
         <Reveal className="education-main">
-          <div className="education-year">
-            2026
-          </div>
+          <div className="education-year">2026</div>
 
           <div className="education-info">
             <span>B.E.</span>
@@ -1126,13 +1131,9 @@ function Education() {
             </p>
 
             <div className="education-bottom">
-              <span>
-                Bengaluru, Karnataka
-              </span>
+              <span>Bengaluru, Karnataka</span>
 
-              <strong>
-                CGPA 8.00 / 10
-              </strong>
+              <strong>CGPA 8.00 / 10</strong>
             </div>
           </div>
         </Reveal>
@@ -1145,9 +1146,7 @@ function Education() {
               Diploma in Computer Science and Engineering
             </h3>
 
-            <p>
-              PVP Polytechnic, Bangalore
-            </p>
+            <p>PVP Polytechnic, Bangalore</p>
           </div>
 
           <div>
@@ -1155,9 +1154,7 @@ function Education() {
 
             <h3>SSLC</h3>
 
-            <p>
-              Vidya Priya English School, Bangalore
-            </p>
+            <p>Vidya Priya English School, Bangalore</p>
           </div>
         </Reveal>
       </div>
@@ -1173,52 +1170,42 @@ function Certifications() {
   const certifications = [
     {
       number: "01",
-      title:
-        "Green Skills & Artificial Intelligence",
+      title: "Green Skills & Artificial Intelligence",
       organization:
         "Skills4Future Program · Edunet Foundation · AICTE · Shell India Markets Pvt Ltd",
       description:
         "Advanced course on Green Skills and Artificial Intelligence completed at ACS College of Engineering from September 2025 to March 2026.",
-      details:
-        "Certificate ID: S4F25_195543",
+      details: "Certificate ID: S4F25_195543",
     },
 
     {
       number: "02",
-      title:
-        "Java Full Stack Development",
-      organization:
-        "Full-stack development",
+      title: "Java Full Stack Development",
+      organization: "Full-stack development",
       description:
         "Full-stack application development with Java ecosystem technologies.",
     },
 
     {
       number: "03",
-      title:
-        "Spring Boot & REST APIs",
-      organization:
-        "Backend engineering",
+      title: "Spring Boot & REST APIs",
+      organization: "Backend engineering",
       description:
         "Backend development, REST architecture and service design.",
     },
 
     {
       number: "04",
-      title:
-        "React.js Development",
-      organization:
-        "Frontend engineering",
+      title: "React.js Development",
+      organization: "Frontend engineering",
       description:
         "Modern component-based frontend development.",
     },
 
     {
       number: "05",
-      title:
-        "SQL & Database Design",
-      organization:
-        "Database engineering",
+      title: "SQL & Database Design",
+      organization: "Database engineering",
       description:
         "Relational modelling, normalization and database fundamentals.",
     },
@@ -1251,17 +1238,13 @@ function Certifications() {
               </span>
 
               <div className="certificate-content">
-                <h3>
-                  {certificate.title}
-                </h3>
+                <h3>{certificate.title}</h3>
 
                 <strong>
                   {certificate.organization}
                 </strong>
 
-                <p>
-                  {certificate.description}
-                </p>
+                <p>{certificate.description}</p>
 
                 {certificate.details && (
                   <span className="certificate-details">
@@ -1287,10 +1270,7 @@ function Certifications() {
 
 function Contact() {
   return (
-    <section
-      id="contact"
-      className="contact-section"
-    >
+    <section id="contact" className="contact-section">
       <div className="contact-background">
         <div />
         <div />
@@ -1306,8 +1286,7 @@ function Contact() {
         <h2>
           Have a problem
           <br />
-          worth{" "}
-          <span>building?</span>
+          worth <span>building?</span>
         </h2>
 
         <p>
@@ -1325,13 +1304,8 @@ function Contact() {
         </a>
 
         <div className="contact-details">
-          <span>
-            +91 7337634886
-          </span>
-
-          <span>
-            Bengaluru, India
-          </span>
+          <span>+91 7337634886</span>
+          <span>Bengaluru, India</span>
         </div>
 
         <div className="social-links">
