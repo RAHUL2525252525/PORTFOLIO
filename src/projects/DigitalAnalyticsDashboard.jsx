@@ -14,6 +14,66 @@ const screenshots = [
   image42,
 ];
 
+/* =========================================================
+   PROJECT DATA
+   ========================================================= */
+
+const WORKFLOW_STEPS = [
+  {
+    title: "Google OAuth sign-in",
+    description:
+      "Users authenticate through Firebase's Google OAuth provider, so access to the dashboard is tied to an actual Google account rather than a separate set of credentials.",
+  },
+  {
+    title: "Firebase-backed data layer",
+    description:
+      "Dashboard metrics are stored and synced through Firebase, giving each signed-in user their own data without a separate backend server to maintain.",
+  },
+  {
+    title: "Gemini API for narrative insights",
+    description:
+      "Aggregated metrics are sent to the Gemini API with a prompt asking for a short plain-language summary, so the dashboard surfaces what changed instead of just the raw numbers.",
+  },
+  {
+    title: "Chart.js visualization layer",
+    description:
+      "Chart.js renders the time series and breakdowns from whatever Firebase currently holds, so the visuals update as soon as the underlying data changes.",
+  },
+];
+
+const FEATURES = [
+  { title: "Google sign-in", description: "Authentication handled entirely through Firebase's OAuth flow." },
+  { title: "Real-time data sync", description: "Metrics stay current as Firebase data updates." },
+  { title: "AI-generated insights", description: "Gemini API turns raw metrics into a short written summary." },
+  { title: "Interactive charts", description: "Chart.js visualizations for trends and breakdowns." },
+  { title: "Historical views", description: "Past data remains browsable alongside the latest figures." },
+];
+
+const CHALLENGES = [
+  {
+    title: "Turning raw metrics into a plain-language summary",
+    challenge:
+      "Numbers on a dashboard don't explain themselves — knowing that a metric moved doesn't tell a user why it matters without someone manually interpreting it.",
+    approach:
+      "Sent the aggregated metrics to the Gemini API with a prompt asking for a short natural-language summary, so each chart is paired with a plain-English takeaway instead of numbers alone.",
+  },
+  {
+    title: "Keeping charts in sync with Firebase updates",
+    challenge:
+      "As underlying data changes, the charts need to reflect it without a full page reload or the UI falling out of sync with what's actually stored.",
+    approach:
+      "Subscribed to Firebase data listeners and fed updates directly into the Chart.js instances, so visualizations refresh automatically whenever the data does.",
+  },
+];
+
+const TIMELINE = [
+  { title: "Google OAuth + Firebase setup", description: "Configured authentication and the Firebase project." },
+  { title: "Data structure design", description: "Modeled how metrics are stored and synced per user." },
+  { title: "Chart.js dashboard views", description: "Built the core visualizations for trends and breakdowns." },
+  { title: "Gemini API integration", description: "Added the prompt flow that generates written insight summaries." },
+  { title: "Testing & polish", description: "Verified sync behavior and refined the dashboard UI." },
+];
+
 export default function DigitalAnalyticsDashboard() {
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -170,6 +230,184 @@ export default function DigitalAnalyticsDashboard() {
           color: #081a3a;
         }
 
+        /* NEW CONTENT SECTIONS */
+
+        .project-section {
+          padding: 70px 0;
+          border-top: 1px solid #d8e2ef;
+        }
+
+        .section-eyebrow {
+          color: #123f91;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 2px;
+          margin-bottom: 14px;
+        }
+
+        .section-intro {
+          max-width: 680px;
+          margin-bottom: 40px;
+          color: #64748b;
+          font-size: 15px;
+          line-height: 1.8;
+        }
+
+        .workflow-list {
+          border-top: 1px solid #d8e2ef;
+        }
+
+        .workflow-step {
+          display: grid;
+          grid-template-columns: 56px 1fr;
+          gap: 26px;
+          padding: 28px 0;
+          border-bottom: 1px solid #d8e2ef;
+        }
+
+        .workflow-index {
+          color: #123f91;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: .5px;
+        }
+
+        .workflow-content h3 {
+          color: #081a3a;
+          font-size: 16px;
+          font-weight: 800;
+          margin-bottom: 8px;
+        }
+
+        .workflow-content p {
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.75;
+          max-width: 640px;
+        }
+
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+        }
+
+        .feature-card {
+          padding: 26px;
+          background: #f7faff;
+          border: 1px solid #d8e2ef;
+          border-radius: 22px;
+          transition: .3s ease;
+        }
+
+        .feature-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 30px rgba(18,63,145,.08);
+        }
+
+        .feature-card h3 {
+          color: #081a3a;
+          font-size: 15px;
+          font-weight: 800;
+          margin-bottom: 8px;
+        }
+
+        .feature-card p {
+          color: #64748b;
+          font-size: 13px;
+          line-height: 1.65;
+        }
+
+        .challenges-list {
+          display: grid;
+          gap: 14px;
+        }
+
+        .challenge-row {
+          padding: 26px;
+          background: #f7faff;
+          border: 1px solid #d8e2ef;
+          border-radius: 22px;
+        }
+
+        .challenge-row h3 {
+          color: #081a3a;
+          font-size: 16px;
+          font-weight: 800;
+          margin-bottom: 12px;
+        }
+
+        .challenge-row p {
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.75;
+          margin-bottom: 8px;
+        }
+
+        .challenge-row p:last-child {
+          margin-bottom: 0;
+        }
+
+        .challenge-row strong {
+          color: #081a3a;
+          font-weight: 800;
+        }
+
+        .timeline-list {
+          margin-top: 6px;
+        }
+
+        .timeline-step {
+          display: grid;
+          grid-template-columns: 44px 1fr;
+          gap: 24px;
+          position: relative;
+          padding-bottom: 32px;
+        }
+
+        .timeline-step:last-child {
+          padding-bottom: 0;
+        }
+
+        .timeline-number {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #081a3a;
+          color: #fffdf7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 13px;
+          font-weight: 800;
+          flex-shrink: 0;
+        }
+
+        .timeline-step:not(:last-child) .timeline-number::after {
+          content: "";
+          position: absolute;
+          top: 44px;
+          left: 19px;
+          width: 2px;
+          height: calc(100% - 12px);
+          background: #d8e2ef;
+        }
+
+        .timeline-content h3 {
+          color: #081a3a;
+          font-size: 15px;
+          font-weight: 800;
+          margin-bottom: 6px;
+          padding-top: 8px;
+        }
+
+        .timeline-content p {
+          color: #64748b;
+          font-size: 13px;
+          line-height: 1.65;
+        }
+
         /* ==============================
            FLIPKART STYLE IMAGE VIEWER
            ============================== */
@@ -323,8 +561,8 @@ export default function DigitalAnalyticsDashboard() {
         }
 
         .project-footer {
-          margin-top: 80px;
-          padding: 40px 0 70px;
+          margin-top: 0;
+          padding: 45px 0 70px;
           border-top: 1px solid #d8e2ef;
           display: flex;
           justify-content: space-between;
@@ -362,6 +600,19 @@ export default function DigitalAnalyticsDashboard() {
           .project-title {
             font-size: clamp(42px, 13vw, 68px);
             letter-spacing: -3px;
+          }
+
+          .project-section {
+            padding: 50px 0;
+          }
+
+          .features-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .workflow-step {
+            grid-template-columns: 36px 1fr;
+            gap: 16px;
           }
 
           .image-viewer {
@@ -461,11 +712,90 @@ export default function DigitalAnalyticsDashboard() {
 
           </section>
 
-          {/* SCREENSHOTS */}
-          <section>
+          {/* HOW IT'S BUILT */}
+          <section className="project-section">
+            <div className="section-eyebrow">ARCHITECTURE & WORKFLOW</div>
+            <h2 className="section-heading">How it's built</h2>
+            <p className="section-intro">
+              Authentication, data storage and AI-generated insights each sit
+              behind Firebase and the Gemini API, so the dashboard stays a
+              thin visualization layer on top of them.
+            </p>
 
+            <div className="workflow-list">
+              {WORKFLOW_STEPS.map((step, index) => (
+                <div className="workflow-step" key={step.title}>
+                  <div className="workflow-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  <div className="workflow-content">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* KEY FEATURES */}
+          <section className="project-section">
+            <div className="section-eyebrow">WHAT IT DOES</div>
+            <h2 className="section-heading">Key features</h2>
+            <p className="section-intro">
+              Turns raw metrics into charts and plain-language takeaways.
+            </p>
+
+            <div className="features-grid">
+              {FEATURES.map((feature) => (
+                <div className="feature-card" key={feature.title}>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* CHALLENGES & LEARNINGS */}
+          <section className="project-section">
+            <div className="section-eyebrow">PROBLEM SOLVING</div>
+            <h2 className="section-heading">Challenges & learnings</h2>
+
+            <div className="challenges-list">
+              {CHALLENGES.map((item) => (
+                <div className="challenge-row" key={item.title}>
+                  <h3>{item.title}</h3>
+                  <p><strong>Challenge:</strong> {item.challenge}</p>
+                  <p><strong>Approach:</strong> {item.approach}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* DEVELOPMENT TIMELINE */}
+          <section className="project-section">
+            <div className="section-eyebrow">PROCESS</div>
+            <h2 className="section-heading">Development timeline</h2>
+
+            <div className="timeline-list">
+              {TIMELINE.map((step, index) => (
+                <div className="timeline-step" key={step.title}>
+                  <div className="timeline-number">{index + 1}</div>
+
+                  <div className="timeline-content">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SCREENSHOTS */}
+          <section className="project-section">
+            <div className="section-eyebrow">GALLERY</div>
             <h2 className="section-heading">
-              Project Screenshots
+              Project screenshots
             </h2>
 
             <div className="image-viewer">
@@ -566,4 +896,3 @@ export default function DigitalAnalyticsDashboard() {
     </>
   );
 }
-
