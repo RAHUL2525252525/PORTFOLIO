@@ -31,6 +31,13 @@ export default function ShopSphere() {
         "JUnit",
       ]}
       images={SHOPSPHERE_IMAGES}
+      liveLinks={[
+        { label: "Live Demo", url: "https://shopsphere-8m8f.vercel.app/" },
+        {
+          label: "API Backend",
+          url: "https://shopsphere-backend-5umn.onrender.com",
+        },
+      ]}
       overview={[
         "ShopSphere is a full-stack e-commerce platform built with Java and Spring Boot on the backend and React.js on the frontend, covering product catalog, cart and checkout flows.",
         "Role-based access control (RBAC) and JWT authentication separate customer and admin capabilities, with MySQL storing product, order and user data.",
