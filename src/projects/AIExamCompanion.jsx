@@ -28,6 +28,12 @@ export default function AIExamCompanion() {
         "Postman",
       ]}
       images={AIEXAM_IMAGES}
+      liveLinks={[
+        {
+          label: "Live Demo",
+          url: "https://ai-exam-companion-ghzc.onrender.com",
+        },
+      ]}
       overview={[
         "AI Exam Companion helps students prepare for exams faster by generating practice questions, explanations and quick summaries on demand, powered by LLM APIs behind a FastAPI backend.",
         "The React.js frontend gives a clean, distraction-free interface for practicing topic by topic, while the backend handles authentication, request throttling and persistence of past sessions in MySQL.",
