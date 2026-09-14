@@ -26,6 +26,12 @@ export default function LifeDecisionAssistant() {
         "Docker",
       ]}
       images={LIFEDECISION_IMAGES}
+      liveLinks={[
+        {
+          label: "Live Demo",
+          url: "https://life-decision-assistant-63pu.onrender.com",
+        },
+      ]}
       overview={[
         "Life Decision Assistant takes a decision a user is weighing — a job offer, a purchase, a life choice — and uses the Gemini API to generate a structured breakdown of considerations, trade-offs and a recommendation.",
         "A FastAPI backend manages user sessions and stores past decisions in PostgreSQL so users can revisit how they reasoned through earlier choices.",
