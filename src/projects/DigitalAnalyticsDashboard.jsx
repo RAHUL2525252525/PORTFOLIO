@@ -1,7 +1,14 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
-// Image lives in /public, served at site root on Vite — no import needed.
-const DIGITAL_ANALYTICS_IMAGE = "/38.png.png";
+import { sortGlobImages } from "./galleryUtils";
+
+// Screenshots live in src/assets/projects/digitalanalyticsdashboard/38.png.png .. 42.png.png
+// (the "0.png" placeholder file in that folder is ignored automatically).
+const digitalAnalyticsRaw = import.meta.glob(
+  "../assets/projects/digitalanalyticsdashboard/*.png.png",
+  { eager: true, import: "default" }
+);
+const DIGITALANALYTICS_IMAGES = sortGlobImages(digitalAnalyticsRaw);
 
 export default function DigitalAnalyticsDashboard() {
   return (
@@ -24,7 +31,7 @@ export default function DigitalAnalyticsDashboard() {
         "JUnit",
         "JWT Authentication",
       ]}
-      image={DIGITAL_ANALYTICS_IMAGE}
+      images={DIGITALANALYTICS_IMAGES}
       overview={[
         "Digital Analytics Dashboard is a Flask application backed by PostgreSQL that ingests CSV data and turns it into charts and summary views for quick business insight.",
         "Sign-in is handled through Firebase with Google and JWT-based authentication, and the Gemini API adds AI-generated insights on top of the raw analytics.",
