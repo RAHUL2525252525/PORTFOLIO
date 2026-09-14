@@ -32,6 +32,12 @@ export default function DigitalAnalyticsDashboard() {
         "JWT Authentication",
       ]}
       images={DIGITALANALYTICS_IMAGES}
+      liveLinks={[
+        {
+          label: "Live Demo",
+          url: "https://digital-dashboard1.onrender.com",
+        },
+      ]}
       overview={[
         "Digital Analytics Dashboard is a Flask application backed by PostgreSQL that ingests CSV data and turns it into charts and summary views for quick business insight.",
         "Sign-in is handled through Firebase with Google and JWT-based authentication, and the Gemini API adds AI-generated insights on top of the raw analytics.",
