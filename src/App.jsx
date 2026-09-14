@@ -7,23 +7,51 @@ import AIExamCompanion from "./projects/AIExamCompanion";
 import DigitalAnalyticsDashboard from "./projects/DigitalAnalyticsDashboard";
 import GymSync from "./projects/GymSync";
 
+import { sortGlobImages } from "./projects/galleryUtils";
+
 import "./index.css";
 
 /* =========================================================
    PROJECT PREVIEW IMAGES
    ========================================================= */
 
-// All project preview images live directly in the /public folder,
-// so on a Vite app we just reference them by absolute path (no import
-// needed) — e.g. "/1.png.png" resolves to public/1.png.png.
-// NOTE: GymSync doesn't have a screenshot in /public yet.
-// Once you add one (e.g. public/gymsync.png), set GYMSYNC_IMAGE below.
-const SHOPSPHERE_IMAGE = "/1.png.png";
-const BANKSPHERE_IMAGE = "/14.png.png";
-const LIFEDECISION_IMAGE = "/24.png.png";
-const AIEXAM_IMAGE = "/32.png.png";
-const DIGITALANALYTICS_IMAGE = "/38.png.png";
-const GYMSYNC_IMAGE = null; // e.g. "/gymsync.png" once uploaded
+// Screenshots live under src/assets/projects/<name>/, not /public,
+// so a plain absolute path like "/1.png.png" can't resolve them —
+// that mismatch is why only one card ever showed a real image.
+// We pull each folder in through Vite's import.meta.glob and use
+// the first (lowest-numbered) screenshot as the homepage card preview.
+
+const shopsphereRaw = import.meta.glob(
+  "./assets/projects/shopsphere/*.png.png",
+  { eager: true, import: "default" }
+);
+const banksphereRaw = import.meta.glob(
+  "./assets/projects/banksphere/*.png.png",
+  { eager: true, import: "default" }
+);
+const lifeDecisionRaw = import.meta.glob(
+  "./assets/projects/lifedecisionassistant/*.png.png",
+  { eager: true, import: "default" }
+);
+const aiExamRaw = import.meta.glob(
+  "./assets/projects/aiexamcompanion/*.png.png",
+  { eager: true, import: "default" }
+);
+const digitalAnalyticsRaw = import.meta.glob(
+  "./assets/projects/digitalanalyticsdashboard/*.png.png",
+  { eager: true, import: "default" }
+);
+const gymSyncRaw = import.meta.glob(
+  "./assets/projects/gymsync/*.png.png",
+  { eager: true, import: "default" }
+);
+
+const SHOPSPHERE_IMAGE = sortGlobImages(shopsphereRaw)[0] ?? null;
+const BANKSPHERE_IMAGE = sortGlobImages(banksphereRaw)[0] ?? null;
+const LIFEDECISION_IMAGE = sortGlobImages(lifeDecisionRaw)[0] ?? null;
+const AIEXAM_IMAGE = sortGlobImages(aiExamRaw)[0] ?? null;
+const DIGITALANALYTICS_IMAGE = sortGlobImages(digitalAnalyticsRaw)[0] ?? null;
+const GYMSYNC_IMAGE = sortGlobImages(gymSyncRaw)[0] ?? null;
 
 /* =========================================================
    PROJECT ROUTES
