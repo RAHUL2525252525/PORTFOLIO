@@ -1,7 +1,14 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
-// Image lives in /public, served at site root on Vite — no import needed.
-const AI_EXAM_IMAGE = "/32.png.png";
+import { sortGlobImages } from "./galleryUtils";
+
+// Screenshots live in src/assets/projects/aiexamcompanion/32.png.png .. 37.png.png
+// (the "0.png" placeholder file in that folder is ignored automatically).
+const aiExamRaw = import.meta.glob(
+  "../assets/projects/aiexamcompanion/*.png.png",
+  { eager: true, import: "default" }
+);
+const AIEXAM_IMAGES = sortGlobImages(aiExamRaw);
 
 export default function AIExamCompanion() {
   return (
@@ -20,7 +27,7 @@ export default function AIExamCompanion() {
         "Docker",
         "Postman",
       ]}
-      image={AI_EXAM_IMAGE}
+      images={AIEXAM_IMAGES}
       overview={[
         "AI Exam Companion helps students prepare for exams faster by generating practice questions, explanations and quick summaries on demand, powered by LLM APIs behind a FastAPI backend.",
         "The React.js frontend gives a clean, distraction-free interface for practicing topic by topic, while the backend handles authentication, request throttling and persistence of past sessions in MySQL.",
