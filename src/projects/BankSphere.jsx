@@ -29,6 +29,16 @@ export default function BankSphere() {
         "JUnit",
       ]}
       images={BANKSPHERE_IMAGES}
+      liveLinks={[
+        {
+          label: "Live Demo",
+          url: "https://banksphere-frontend.vercel.app",
+        },
+        {
+          label: "API Backend",
+          url: "https://banksphere-backend-b96m.onrender.com",
+        },
+      ]}
       overview={[
         "BankSphere is an online banking system built with Java and Spring Boot, covering core banking flows like account creation, balance management and transaction history.",
         "Spring Security and JWT handle authentication and access control, with a React.js frontend for customers and MySQL storing account and transaction data.",
