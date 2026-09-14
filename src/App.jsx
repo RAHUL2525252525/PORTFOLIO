@@ -863,6 +863,12 @@ const PROJECTS = [
     ],
     backendNote:
       "AI-assisted study tool that generates practice questions and explanations using LLM APIs, backed by a FastAPI service.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://ai-exam-companion-ghzc.onrender.com",
+      },
+    ],
   },
   {
     id: "lifedecisionassistant",
@@ -881,6 +887,12 @@ const PROJECTS = [
     ],
     backendNote:
       "Helps users reason through everyday decisions with structured, AI-generated pros/cons and recommendations.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://life-decision-assistant-63pu.onrender.com",
+      },
+    ],
   },
   {
     id: "digitalanalyticsdashboard",
@@ -905,6 +917,12 @@ const PROJECTS = [
     ],
     backendNote:
       "Flask dashboard backed by PostgreSQL that ingests CSV data and turns it into charts and summary views, with Firebase/JWT sign-in and Gemini API insights.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://digital-dashboard1.onrender.com",
+      },
+    ],
   },
   {
     id: "banksphere",
@@ -927,6 +945,16 @@ const PROJECTS = [
     ],
     backendNote:
       "Online banking system built in Java/Spring Boot with secure authentication, account and transaction management, and a React.js frontend.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://banksphere-frontend.vercel.app",
+      },
+      {
+        label: "API Backend",
+        url: "https://banksphere-backend-b96m.onrender.com",
+      },
+    ],
   },
   {
     id: "shopsphere",
@@ -949,6 +977,16 @@ const PROJECTS = [
     ],
     backendNote:
       "Full-stack e-commerce platform built in Java/Spring Boot with role-based access control and a React.js storefront.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://shopsphere-8m8f.vercel.app/",
+      },
+      {
+        label: "API Backend",
+        url: "https://shopsphere-backend-5umn.onrender.com",
+      },
+    ],
   },
   {
     id: "gymsync",
@@ -972,7 +1010,16 @@ const PROJECTS = [
     ],
     backendNote:
       "Gym tracking app with a FastAPI backend and a React (Vite) frontend, built and deployed end-to-end on Render.",
-    liveLinks: [{ label: "Live on Render", url: "#" }],
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://gymsync-f4v7.onrender.com",
+      },
+      {
+        label: "API Backend",
+        url: "https://gym-tracker-api-be9c.onrender.com",
+      },
+    ],
   },
 ];
 
@@ -1045,7 +1092,7 @@ function Projects() {
                   ))}
                 </div>
 
-                {project.liveLinks && (
+                {project.liveLinks && project.liveLinks.length > 0 && (
                   <div className="project-live-links">
                     <span className="live-label">LIVE</span>
 
@@ -1056,6 +1103,7 @@ function Projects() {
                           href={link.url}
                           target="_blank"
                           rel="noreferrer"
+                          onClick={(event) => event.stopPropagation()}
                         >
                           {link.label}
                           <span>↗</span>
@@ -1249,11 +1297,34 @@ function Certifications() {
 
 /* =========================================================
    CERTIFICATE BOOK (FLIP PAGES)
+
+   Rebuilt so that:
+   - Every certificate image is preloaded up front, so turning a
+     page never has to wait on the network — the "2 second load"
+     was the browser fetching the image for the first time on
+     click. Now it's already in memory before the flip starts.
+   - The page underneath (the one being revealed) sits in the DOM
+     the whole time, fully loaded, while only the top page rotates
+     away — a real two-layer page-turn instead of a crossfade.
+   - The certificate image uses object-fit: contain inside a
+     matted frame, so the full certificate is always visible
+     instead of being cropped to "top half" by object-fit: cover.
    ========================================================= */
 
 function CertificateBook({ certificates }) {
   const [index, setIndex] = useState(0);
   const [flipDirection, setFlipDirection] = useState(null);
+
+  // Preload every certificate image as soon as the book mounts,
+  // so later page turns are instant regardless of connection speed.
+  useEffect(() => {
+    certificates.forEach((cert) => {
+      const preloadImage = new Image();
+      preloadImage.src = cert.image;
+    });
+  }, [certificates]);
+
+  const FLIP_DURATION_MS = 620;
 
   const goToIndex = (nextIndex, direction) => {
     if (
@@ -1269,7 +1340,7 @@ function CertificateBook({ certificates }) {
     setTimeout(() => {
       setIndex(nextIndex);
       setFlipDirection(null);
-    }, 380);
+    }, FLIP_DURATION_MS);
   };
 
   const handlePrev = () => goToIndex(index - 1, "prev");
@@ -1277,41 +1348,40 @@ function CertificateBook({ certificates }) {
 
   const current = certificates[index];
 
+  const incoming =
+    flipDirection === "next"
+      ? certificates[index + 1]
+      : flipDirection === "prev"
+      ? certificates[index - 1]
+      : null;
+
   return (
     <div className="certificate-book">
       <button
         type="button"
         className="book-arrow book-arrow-left"
         onClick={handlePrev}
-        disabled={index === 0}
+        disabled={index === 0 || Boolean(flipDirection)}
         aria-label="Previous certificate"
       >
         ‹
       </button>
 
       <div className="book-frame">
+        {/* The page being revealed sits underneath, already loaded */}
+        {incoming && (
+          <div className="book-page book-page-under">
+            <CertificatePage cert={incoming} />
+          </div>
+        )}
+
+        {/* The current page flips away on top to reveal it */}
         <div
-          className={`book-page ${
+          className={`book-page book-page-top ${
             flipDirection === "next" ? "flip-next" : ""
           } ${flipDirection === "prev" ? "flip-prev" : ""}`}
         >
-          <div className="book-page-inner">
-            <img
-              src={current.image}
-              alt={current.title}
-              onError={(event) => {
-                event.target.style.display = "none";
-                event.target.parentElement.classList.add(
-                  "book-page-missing"
-                );
-              }}
-            />
-
-            <div className="book-page-caption">
-              <h4>{current.title}</h4>
-              <p>{current.subtitle}</p>
-            </div>
-          </div>
+          <CertificatePage cert={current} />
         </div>
 
         <div className="book-spine" />
@@ -1321,7 +1391,9 @@ function CertificateBook({ certificates }) {
         type="button"
         className="book-arrow book-arrow-right"
         onClick={handleNext}
-        disabled={index === certificates.length - 1}
+        disabled={
+          index === certificates.length - 1 || Boolean(flipDirection)
+        }
         aria-label="Next certificate"
       >
         ›
@@ -1333,12 +1405,10 @@ function CertificateBook({ certificates }) {
             <span
               key={cert.title}
               className={dotIndex === index ? "active" : ""}
-              onClick={() =>
-                goToIndex(
-                  dotIndex,
-                  dotIndex > index ? "next" : "prev"
-                )
-              }
+              onClick={() => {
+                if (flipDirection || dotIndex === index) return;
+                goToIndex(dotIndex, dotIndex > index ? "next" : "prev");
+              }}
             />
           ))}
         </div>
@@ -1346,6 +1416,30 @@ function CertificateBook({ certificates }) {
         <p className="book-page-count">
           Page {index + 1} of {certificates.length}
         </p>
+      </div>
+    </div>
+  );
+}
+
+function CertificatePage({ cert }) {
+  return (
+    <div className="book-page-inner">
+      <div className="book-page-image-wrap">
+        <img
+          src={cert.image}
+          alt={cert.title}
+          onError={(event) => {
+            event.target.style.display = "none";
+            event.target.parentElement.classList.add(
+              "book-page-missing"
+            );
+          }}
+        />
+      </div>
+
+      <div className="book-page-caption">
+        <h4>{cert.title}</h4>
+        <p>{cert.subtitle}</p>
       </div>
     </div>
   );
