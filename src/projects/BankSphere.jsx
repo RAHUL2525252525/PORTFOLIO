@@ -1,6 +1,7 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
-import bankSphereImage from "../assets/projects/banksphere/14.png.png";
+// Image lives in /public, served at site root on Vite — no import needed.
+const BANKSPHERE_IMAGE = "/14.png.png";
 
 export default function BankSphere() {
   return (
@@ -21,7 +22,7 @@ export default function BankSphere() {
         "Postman",
         "JUnit",
       ]}
-      image={bankSphereImage}
+      image={BANKSPHERE_IMAGE}
       overview={[
         "BankSphere is an online banking system built with Java and Spring Boot, covering core banking flows like account creation, balance management and transaction history.",
         "Spring Security and JWT handle authentication and access control, with a React.js frontend for customers and MySQL storing account and transaction data.",
