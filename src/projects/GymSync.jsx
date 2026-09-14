@@ -31,7 +31,13 @@ export default function GymSync() {
         "JUnit",
       ]}
       images={GYMSYNC_IMAGES}
-      liveLinks={[{ label: "Live on Render", url: "#" }]}
+      liveLinks={[
+        { label: "Live Demo", url: "https://gymsync-f4v7.onrender.com" },
+        {
+          label: "API Backend",
+          url: "https://gym-tracker-api-be9c.onrender.com",
+        },
+      ]}
       overview={[
         "GymSync is a gym tracker that lets users log workouts, track progress over time and stay consistent with their training, built end-to-end — frontend and backend.",
         "The backend is built with Python and FastAPI, backed by MySQL, with JWT-based authentication; the frontend is a React app scaffolded with Vite. Both are deployed on Render.",
