@@ -1,6 +1,7 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
-import shopSphereImage from "../assets/projects/shopsphere/1.png.png";
+// Image lives in /public, served at site root on Vite — no import needed.
+const SHOPSPHERE_IMAGE = "/1.png.png";
 
 export default function ShopSphere() {
   return (
@@ -21,7 +22,7 @@ export default function ShopSphere() {
         "Postman",
         "JUnit",
       ]}
-      image={shopSphereImage}
+      image={SHOPSPHERE_IMAGE}
       overview={[
         "ShopSphere is a full-stack e-commerce platform built with Java and Spring Boot on the backend and React.js on the frontend, covering product catalog, cart and checkout flows.",
         "Role-based access control (RBAC) and JWT authentication separate customer and admin capabilities, with MySQL storing product, order and user data.",
