@@ -6,6 +6,7 @@ import LifeDecisionAssistant from "./projects/LifeDecisionAssistant";
 import AIExamCompanion from "./projects/AIExamCompanion";
 import DigitalAnalyticsDashboard from "./projects/DigitalAnalyticsDashboard";
 import GymSync from "./projects/GymSync";
+import ResumeIQ from "./projects/ResumeIQ";
 
 import { sortGlobImages } from "./projects/galleryUtils";
 
@@ -77,6 +78,19 @@ const gymSyncRaw = import.meta.glob(
   }
 );
 
+/*
+  ResumeIQ's screenshots are named 52.png.png .. 56.png.png,
+  but "*.png" still matches them fine here since it's only used
+  to grab a single preview thumbnail for the projects grid.
+*/
+const resumeiqRaw = import.meta.glob(
+  "./assets/projects/ResumeIQ/*.png",
+  {
+    eager: true,
+    import: "default",
+  }
+);
+
 const SHOPSPHERE_IMAGE =
   sortGlobImages(shopsphereRaw)[0] ?? null;
 
@@ -95,6 +109,9 @@ const DIGITALANALYTICS_IMAGE =
 const GYMSYNC_IMAGE =
   sortGlobImages(gymSyncRaw)[0] ?? null;
 
+const RESUMEIQ_IMAGE =
+  sortGlobImages(resumeiqRaw)[0] ?? null;
+
 /* =========================================================
    PROJECT ROUTES
    ========================================================= */
@@ -106,6 +123,7 @@ const ROUTES = {
   aiexamcompanion: AIExamCompanion,
   digitalanalyticsdashboard: DigitalAnalyticsDashboard,
   gymsync: GymSync,
+  resumeiq: ResumeIQ,
 };
 
 /* =========================================================
@@ -682,7 +700,7 @@ function About() {
           <Reveal className="about-stats">
 
             <div className="stat-card">
-              <strong>6</strong>
+              <strong>7</strong>
               <span>
                 FULL-STACK PROJECTS SHIPPED
               </span>
@@ -696,7 +714,7 @@ function About() {
             </div>
 
             <div className="stat-card">
-              <strong>3</strong>
+              <strong>4</strong>
               <span>
                 PYTHON FULL-STACK APPS
               </span>
@@ -748,6 +766,7 @@ function Skills() {
         "Structured backend systems with secure API design.",
       items: [
         "Django",
+        "Django REST Framework",
         "FastAPI",
         "Flask",
         "Pydantic",
@@ -1076,8 +1095,40 @@ const PROJECTS = [
   },
 
   {
-    id: "lifedecisionassistant",
+    id: "resumeiq",
     number: "02",
+    category: "AI-POWERED APPLICATION",
+    title: "ResumeIQ",
+    image: RESUMEIQ_IMAGE,
+    tech: [
+      "Python",
+      "Django",
+      "Django REST Framework",
+      "React.js",
+      "PostgreSQL",
+      "JWT Authentication",
+      "Gemini API",
+      "Docker",
+    ],
+    backendNote:
+      "AI resume analyzer that scores a resume against a job description using the Gemini API, built on a Django REST Framework backend with a React.js frontend.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url:
+          "https://resume-iq-blue-mu.vercel.app/",
+      },
+      {
+        label: "API Backend",
+        url:
+          "https://resumeiq-backend-98ga.onrender.com",
+      },
+    ],
+  },
+
+  {
+    id: "lifedecisionassistant",
+    number: "03",
     category: "AI-POWERED APPLICATION",
     title: "Life Decision Assistant",
     image: LIFEDECISION_IMAGE,
@@ -1105,7 +1156,7 @@ const PROJECTS = [
 
   {
     id: "digitalanalyticsdashboard",
-    number: "03",
+    number: "04",
     category: "PYTHON FULL-STACK APPLICATION",
     title: "Digital Analytics Dashboard",
     image: DIGITALANALYTICS_IMAGE,
@@ -1137,7 +1188,7 @@ const PROJECTS = [
 
   {
     id: "banksphere",
-    number: "04",
+    number: "05",
     category: "JAVA FULL-STACK APPLICATION",
     title: "BankSphere",
     image: BANKSPHERE_IMAGE,
@@ -1172,7 +1223,7 @@ const PROJECTS = [
 
   {
     id: "shopsphere",
-    number: "05",
+    number: "06",
     category: "JAVA FULL-STACK APPLICATION",
     title: "ShopSphere",
     image: SHOPSPHERE_IMAGE,
@@ -1207,7 +1258,7 @@ const PROJECTS = [
 
   {
     id: "gymsync",
-    number: "06",
+    number: "07",
     category: "PYTHON FULL-STACK APPLICATION",
     title: "GymSync",
     image: GYMSYNC_IMAGE,
@@ -1240,6 +1291,10 @@ const PROJECTS = [
     ],
   },
 ];
+
+const PROJECT_COUNT_LABEL = String(
+  PROJECTS.length
+).padStart(2, "0");
 
 function openProject(projectId) {
   window.location.hash = `#${projectId}`;
@@ -1319,7 +1374,7 @@ function Projects() {
                   </span>
 
                   <span>
-                    {project.number} / 06
+                    {project.number} / {PROJECT_COUNT_LABEL}
                   </span>
 
                 </div>
@@ -1999,4 +2054,3 @@ function Footer() {
     </footer>
   );
 }
-
