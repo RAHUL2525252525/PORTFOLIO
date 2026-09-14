@@ -18,12 +18,15 @@ export default function AIExamCompanion() {
       tagline="An AI-assisted study tool that turns any topic into practice questions, instant explanations, and a focused revision plan."
       tech={[
         "Python",
-        "FastAPI",
-        "React.js",
+        "Flask",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Firebase",
+        "Firebase Authentication",
         "Groq API",
         "Gemini API",
         "MySQL",
-        "JWT Authentication",
         "Docker",
         "Postman",
       ]}
@@ -35,16 +38,16 @@ export default function AIExamCompanion() {
         },
       ]}
       overview={[
-        "AI Exam Companion helps students prepare for exams faster by generating practice questions, explanations and quick summaries on demand, powered by LLM APIs behind a FastAPI backend.",
-        "The React.js frontend gives a clean, distraction-free interface for practicing topic by topic, while the backend handles authentication, request throttling and persistence of past sessions in MySQL.",
+        "AI Exam Companion helps students prepare for exams faster by generating practice questions, explanations and quick summaries on demand, powered by LLM APIs behind a Python Flask backend.",
+        "The frontend is built with plain HTML, CSS and JavaScript for a fast, distraction-free interface, while Firebase handles user sign-in and Flask handles request throttling and session persistence in MySQL.",
       ]}
       features={[
         "AI-generated practice questions and answer explanations using the Groq and Gemini APIs",
-        "JWT-secured user accounts to save progress and revisit past sessions",
+        "Firebase-authenticated user accounts to save progress and revisit past sessions",
         "Topic-wise history stored in MySQL for quick review",
         "Dockerized backend for consistent local and deployment environments",
       ]}
-      architecture="FastAPI exposes REST endpoints (documented with Swagger/OpenAPI and tested via Postman) that call the Groq/Gemini APIs, persist session data in MySQL, and are consumed by a React.js single-page frontend."
+      architecture="A Python Flask backend exposes REST endpoints (tested via Postman) that call the Groq/Gemini APIs and persist session data in MySQL, with Firebase handling authentication. The frontend is a lightweight HTML/CSS/JavaScript client consuming those endpoints. It uses the same Gemini API setup as Life Decision Assistant."
     />
   );
 }
