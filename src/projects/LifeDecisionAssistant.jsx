@@ -18,11 +18,14 @@ export default function LifeDecisionAssistant() {
       tagline="An AI assistant that helps break everyday decisions down into structured pros, cons and recommendations."
       tech={[
         "Python",
-        "FastAPI",
-        "React.js",
+        "Flask",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Firebase",
+        "Firebase Authentication",
         "Gemini API",
         "PostgreSQL",
-        "JWT Authentication",
         "Docker",
       ]}
       images={LIFEDECISION_IMAGES}
@@ -34,15 +37,15 @@ export default function LifeDecisionAssistant() {
       ]}
       overview={[
         "Life Decision Assistant takes a decision a user is weighing — a job offer, a purchase, a life choice — and uses the Gemini API to generate a structured breakdown of considerations, trade-offs and a recommendation.",
-        "A FastAPI backend manages user sessions and stores past decisions in PostgreSQL so users can revisit how they reasoned through earlier choices.",
+        "A Python Flask backend manages user sessions and stores past decisions in PostgreSQL, with Firebase handling sign-in, so users can revisit how they reasoned through earlier choices.",
       ]}
       features={[
         "Structured AI-generated pros/cons breakdowns via the Gemini API",
-        "JWT-authenticated accounts with decision history stored in PostgreSQL",
-        "React.js interface for a guided, conversational decision-making flow",
+        "Firebase-authenticated accounts with decision history stored in PostgreSQL",
+        "Lightweight HTML/CSS/JavaScript interface for a guided, conversational decision-making flow",
         "Dockerized backend for consistent deployment",
       ]}
-      architecture="A FastAPI service handles auth and persistence against PostgreSQL, calls the Gemini API for reasoning, and serves a React.js frontend that walks the user through each decision step by step."
+      architecture="A Python Flask service handles auth (via Firebase) and persistence against PostgreSQL, calls the Gemini API for reasoning, and serves a plain HTML/CSS/JavaScript frontend that walks the user through each decision step by step. It shares the same Gemini API setup as AI Exam Companion."
     />
   );
 }
