@@ -1,8 +1,14 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
+import { sortGlobImages } from "./galleryUtils";
 
-// No screenshot yet — drop one at ../assets/projects/gymsync/1.png
-// and import it here, then pass it as `image` below.
+// Screenshots live in src/assets/projects/gymsync/43.png.png .. 51.png.png
+// (the stray "o.o" file in that folder is ignored automatically).
+const gymSyncRaw = import.meta.glob(
+  "../assets/projects/gymsync/*.png.png",
+  { eager: true, import: "default" }
+);
+const GYMSYNC_IMAGES = sortGlobImages(gymSyncRaw);
 
 export default function GymSync() {
   return (
@@ -24,7 +30,7 @@ export default function GymSync() {
         "Postman",
         "JUnit",
       ]}
-      image={null}
+      images={GYMSYNC_IMAGES}
       liveLinks={[{ label: "Live on Render", url: "#" }]}
       overview={[
         "GymSync is a gym tracker that lets users log workouts, track progress over time and stay consistent with their training, built end-to-end — frontend and backend.",
