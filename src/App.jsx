@@ -853,16 +853,18 @@ const PROJECTS = [
     image: AIEXAM_IMAGE,
     tech: [
       "Python",
-      "FastAPI",
-      "React.js",
+      "Flask",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Firebase",
       "Groq API",
       "Gemini API",
       "MySQL",
-      "JWT Authentication",
       "Docker",
     ],
     backendNote:
-      "AI-assisted study tool that generates practice questions and explanations using LLM APIs, backed by a FastAPI service.",
+      "AI-assisted study tool that generates practice questions and explanations using LLM APIs, backed by a Python Flask service with Firebase auth.",
     liveLinks: [
       {
         label: "Live Demo",
@@ -878,15 +880,17 @@ const PROJECTS = [
     image: LIFEDECISION_IMAGE,
     tech: [
       "Python",
-      "FastAPI",
-      "React.js",
+      "Flask",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Firebase",
       "Gemini API",
       "PostgreSQL",
-      "JWT Authentication",
       "Docker",
     ],
     backendNote:
-      "Helps users reason through everyday decisions with structured, AI-generated pros/cons and recommendations.",
+      "Helps users reason through everyday decisions with structured, AI-generated pros/cons and recommendations, on a Flask + Firebase backend.",
     liveLinks: [
       {
         label: "Live Demo",
