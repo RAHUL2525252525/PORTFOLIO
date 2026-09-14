@@ -1,6 +1,7 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
-import lifeDecisionImage from "../assets/projects/lifedecisionassistant/24.png.png";
+// Image lives in /public, served at site root on Vite — no import needed.
+const LIFE_DECISION_IMAGE = "/24.png.png";
 
 export default function LifeDecisionAssistant() {
   return (
@@ -17,7 +18,7 @@ export default function LifeDecisionAssistant() {
         "JWT Authentication",
         "Docker",
       ]}
-      image={lifeDecisionImage}
+      image={LIFE_DECISION_IMAGE}
       overview={[
         "Life Decision Assistant takes a decision a user is weighing — a job offer, a purchase, a life choice — and uses the Gemini API to generate a structured breakdown of considerations, trade-offs and a recommendation.",
         "A FastAPI backend manages user sessions and stores past decisions in PostgreSQL so users can revisit how they reasoned through earlier choices.",
