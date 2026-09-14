@@ -1,7 +1,15 @@
 import React from "react";
 import ProjectDetailLayout from "./ProjectDetailLayout";
-// Image lives in /public, served at site root on Vite — no import needed.
-const SHOPSPHERE_IMAGE = "/1.png.png";
+import { sortGlobImages } from "./galleryUtils";
+
+// Screenshots live in src/assets/projects/shopsphere/1.png.png .. 13.png.png
+// (that folder also has a couple of extra numbered files beyond 9, which
+// is fine — we just show everything Vite finds there, in order).
+const shopsphereRaw = import.meta.glob(
+  "../assets/projects/shopsphere/*.png.png",
+  { eager: true, import: "default" }
+);
+const SHOPSPHERE_IMAGES = sortGlobImages(shopsphereRaw);
 
 export default function ShopSphere() {
   return (
@@ -22,7 +30,7 @@ export default function ShopSphere() {
         "Postman",
         "JUnit",
       ]}
-      image={SHOPSPHERE_IMAGE}
+      images={SHOPSPHERE_IMAGES}
       overview={[
         "ShopSphere is a full-stack e-commerce platform built with Java and Spring Boot on the backend and React.js on the frontend, covering product catalog, cart and checkout flows.",
         "Role-based access control (RBAC) and JWT authentication separate customer and admin capabilities, with MySQL storing product, order and user data.",
