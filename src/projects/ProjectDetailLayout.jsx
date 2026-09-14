@@ -1,9 +1,15 @@
 import React from "react";
+import Gallery from "../components/Gallery";
 
 /* =========================================================
    SHARED PROJECT DETAIL LAYOUT
    Used by every project page (ShopSphere, BankSphere, etc.)
    so all detail pages share the exact same theme/structure.
+
+   Pass `images` (an array of image URLs) to show the full
+   Gallery (main image + thumbnail filmstrip). The old single
+   `image` prop still works as a fallback for any project that
+   only has one screenshot.
    ========================================================= */
 
 export default function ProjectDetailLayout({
@@ -12,6 +18,7 @@ export default function ProjectDetailLayout({
   tagline,
   tech = [],
   image = null,
+  images = null,
   liveLinks = [],
   overview,
   features = [],
@@ -20,6 +27,8 @@ export default function ProjectDetailLayout({
   const goBack = () => {
     window.location.hash = "#projects";
   };
+
+  const hasGallery = Array.isArray(images) && images.length > 0;
 
   return (
     <div className="project-detail-page">
@@ -70,7 +79,9 @@ export default function ProjectDetailLayout({
           )}
 
           <div className="project-detail-image">
-            {image ? (
+            {hasGallery ? (
+              <Gallery images={images} projectName={title} />
+            ) : image ? (
               <img src={image} alt={title} />
             ) : (
               <div className="project-detail-image-placeholder">
