@@ -1788,30 +1788,36 @@ img {
 }
 
 .book-frame {
-  width: min(520px, 100%);
-  perspective: 1800px;
-
-  position: relative;
-}
-
-.book-page {
-  width: 100%;
+  width: min(560px, 100%);
   aspect-ratio: 4 / 3;
 
   position: relative;
 
+  perspective: 2200px;
+}
+
+.book-page {
+  position: absolute;
+  inset: 0;
+
   transform-style: preserve-3d;
   transform-origin: left center;
-
-  transition: transform 0.38s ease;
 }
 
-.book-page.flip-next {
-  animation: flipNext 0.38s ease forwards;
+.book-page-under {
+  z-index: 1;
 }
 
-.book-page.flip-prev {
-  animation: flipPrev 0.38s ease forwards;
+.book-page-top {
+  z-index: 2;
+}
+
+.book-page-top.flip-next {
+  animation: flipNext 0.62s cubic-bezier(0.45, 0.05, 0.35, 1) forwards;
+}
+
+.book-page-top.flip-prev {
+  animation: flipPrev 0.62s cubic-bezier(0.45, 0.05, 0.35, 1) forwards;
 }
 
 @keyframes flipNext {
@@ -1819,7 +1825,7 @@ img {
     transform: rotateY(0deg);
   }
   100% {
-    transform: rotateY(-140deg);
+    transform: rotateY(-180deg);
   }
 }
 
@@ -1828,7 +1834,7 @@ img {
     transform: rotateY(0deg);
   }
   100% {
-    transform: rotateY(140deg);
+    transform: rotateY(180deg);
   }
 }
 
@@ -1849,19 +1855,70 @@ img {
   box-shadow: var(--shadow-heavy);
 
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.book-page-inner img {
-  width: 100%;
-  height: 100%;
+/* A subtle shadow that sweeps across the page while it turns,
+   giving the flip a sense of depth instead of a flat plane. */
+.book-page-top.flip-next .book-page-inner,
+.book-page-top.flip-prev .book-page-inner {
+  position: relative;
+}
 
+.book-page-top.flip-next .book-page-inner::after,
+.book-page-top.flip-prev .book-page-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(7, 26, 51, 0.28),
+    transparent 55%
+  );
+  animation: pageShade 0.62s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes pageShade {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.book-page-image-wrap {
   flex: 1;
+  min-height: 0;
 
-  object-fit: cover;
-  object-position: top center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  background: var(--cream-dark);
 }
 
-.book-page-missing {
+.book-page-image-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 6px;
+
+  box-shadow: 0 8px 22px rgba(7, 26, 51, 0.14);
+}
+
+.book-page-image-wrap.book-page-missing {
   align-items: center;
   justify-content: center;
 
@@ -1876,7 +1933,7 @@ img {
     var(--cream-dark);
 }
 
-.book-page-missing::before {
+.book-page-image-wrap.book-page-missing::before {
   content: "Certificate image not added yet";
 
   color: var(--text-soft);
@@ -1886,6 +1943,8 @@ img {
 }
 
 .book-page-caption {
+  flex-shrink: 0;
+
   padding: 16px 20px;
 
   background: var(--navy);
@@ -1914,6 +1973,8 @@ img {
   bottom: 6%;
 
   width: 10px;
+
+  z-index: 3;
 
   background: linear-gradient(
     to right,
@@ -3209,6 +3270,10 @@ img {
     height: 42px;
 
     font-size: 1.2rem;
+  }
+
+  .book-page-image-wrap {
+    padding: 10px;
   }
 
   .book-page-caption h4 {
