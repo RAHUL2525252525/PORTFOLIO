@@ -13,15 +13,17 @@ import "./index.css";
    PROJECT PREVIEW IMAGES
    ========================================================= */
 
-import shopSphereImage from "./assets/projects/shopsphere/1.png.png";
-import bankSphereImage from "./assets/projects/banksphere/14.png.png";
-import lifeDecisionImage from "./assets/projects/lifedecisionassistant/24.png.png";
-import aiExamImage from "./assets/projects/aiexamcompanion/32.png.png";
-import digitalAnalyticsImage from "./assets/projects/digitalanalyticsdashboard/38.png.png";
-// NOTE: GymSync doesn't have a screenshot yet.
-// Drop one at ./assets/projects/gymsync/1.png and uncomment the import below,
-// then swap the placeholder in the PROJECTS array further down.
-// import gymSyncImage from "./assets/projects/gymsync/1.png";
+// All project preview images live directly in the /public folder,
+// so on a Vite app we just reference them by absolute path (no import
+// needed) — e.g. "/1.png.png" resolves to public/1.png.png.
+// NOTE: GymSync doesn't have a screenshot in /public yet.
+// Once you add one (e.g. public/gymsync.png), set GYMSYNC_IMAGE below.
+const SHOPSPHERE_IMAGE = "/1.png.png";
+const BANKSPHERE_IMAGE = "/14.png.png";
+const LIFEDECISION_IMAGE = "/24.png.png";
+const AIEXAM_IMAGE = "/32.png.png";
+const DIGITALANALYTICS_IMAGE = "/38.png.png";
+const GYMSYNC_IMAGE = null; // e.g. "/gymsync.png" once uploaded
 
 /* =========================================================
    PROJECT ROUTES
@@ -820,7 +822,7 @@ const PROJECTS = [
     number: "01",
     category: "AI-POWERED APPLICATION",
     title: "AI Exam Companion",
-    image: aiExamImage,
+    image: AIEXAM_IMAGE,
     tech: [
       "Python",
       "FastAPI",
@@ -839,7 +841,7 @@ const PROJECTS = [
     number: "02",
     category: "AI-POWERED APPLICATION",
     title: "Life Decision Assistant",
-    image: lifeDecisionImage,
+    image: LIFEDECISION_IMAGE,
     tech: [
       "Python",
       "FastAPI",
@@ -857,7 +859,7 @@ const PROJECTS = [
     number: "03",
     category: "PYTHON FULL-STACK APPLICATION",
     title: "Digital Analytics Dashboard",
-    image: digitalAnalyticsImage,
+    image: DIGITALANALYTICS_IMAGE,
     tech: [
       "Python",
       "Flask",
@@ -881,7 +883,7 @@ const PROJECTS = [
     number: "04",
     category: "JAVA FULL-STACK APPLICATION",
     title: "BankSphere",
-    image: bankSphereImage,
+    image: BANKSPHERE_IMAGE,
     tech: [
       "Java",
       "Spring Boot",
@@ -903,7 +905,7 @@ const PROJECTS = [
     number: "05",
     category: "JAVA FULL-STACK APPLICATION",
     title: "ShopSphere",
-    image: shopSphereImage,
+    image: SHOPSPHERE_IMAGE,
     tech: [
       "Java",
       "Spring Boot",
@@ -925,7 +927,7 @@ const PROJECTS = [
     number: "06",
     category: "PYTHON FULL-STACK APPLICATION",
     title: "GymSync",
-    image: null,
+    image: GYMSYNC_IMAGE,
     tech: [
       "Python",
       "FastAPI",
