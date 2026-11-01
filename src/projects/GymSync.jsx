@@ -15,41 +15,37 @@ export default function GymSync() {
     <ProjectDetailLayout
       category="PYTHON FULL-STACK APPLICATION"
       title="GymSync"
-      tagline="A gym tracking app with a FastAPI backend and a React (Vite) frontend, built and deployed end-to-end on Render."
+      tagline="A containerised gym tracker with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed through a GitHub Actions CI/CD pipeline."
       tech={[
         "Python",
         "FastAPI",
-        "HTML",
-        "CSS",
+        "Async Programming",
         "JavaScript",
-        "React (Vite)",
-        "MySQL",
-        "Maven",
+        "React.js (Vite)",
+        "PostgreSQL",
         "Docker",
         "JWT Authentication",
+        "GitHub Actions (CI/CD)",
         "Postman",
-        "JUnit",
+        "Pytest",
       ]}
       images={GYMSYNC_IMAGES}
       liveLinks={[
-        { label: "Live Demo", url: "https://gymsync-f4v7.onrender.com" },
-        {
-          label: "API Backend",
-          url: "https://gym-tracker-api-be9c.onrender.com",
-        },
+        { label: "Live Demo", url: "https://gymsync-app.onrender.com" },
       ]}
       overview={[
         "GymSync is a gym tracker that lets users log workouts, track progress over time and stay consistent with their training, built end-to-end — frontend and backend.",
-        "The backend is built with Python and FastAPI, backed by MySQL, with JWT-based authentication; the frontend is a React app scaffolded with Vite. Both are deployed on Render.",
+        "The backend is an asynchronous FastAPI service backed by PostgreSQL with JWT-based authentication, containerised with Docker. The frontend is a React.js app scaffolded with Vite. Deployment to Vercel and Render is automated with a GitHub Actions CI/CD pipeline.",
       ]}
       features={[
-        "Workout logging and progress tracking backed by MySQL",
+        "Workout logging and progress tracking backed by PostgreSQL",
         "JWT-secured user accounts",
-        "React (Vite) frontend for a fast, lightweight experience",
-        "REST endpoints tested with Postman and JUnit",
-        "Dockerized and deployed end-to-end on Render",
+        "Asynchronous FastAPI endpoints for fast responses",
+        "React.js (Vite) frontend for a fast, lightweight experience",
+        "REST endpoints tested with Postman and Pytest",
+        "Dockerized, with automated deployment through GitHub Actions CI/CD",
       ]}
-      architecture="A FastAPI backend exposes JWT-secured REST APIs backed by MySQL, containerized with Docker; the React (Vite) frontend and the backend are both deployed on Render."
+      architecture="An asynchronous FastAPI backend exposes JWT-secured REST APIs backed by PostgreSQL and is containerised with Docker. The React.js (Vite) frontend consumes the API, and a GitHub Actions CI/CD pipeline automates deployment to Vercel and Render."
     />
   );
 }
