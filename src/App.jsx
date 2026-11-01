@@ -1098,6 +1098,7 @@ const PROJECTS = [
       "React.js",
       "MySQL",
       "JWT Authentication",
+      "Gemini API",
       "Postman",
       "Docker",
     ],
