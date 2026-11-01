@@ -16,7 +16,7 @@ export default function ShopSphere() {
     <ProjectDetailLayout
       category="JAVA FULL-STACK APPLICATION"
       title="ShopSphere"
-      tagline="A full-stack e-commerce platform built in Java with role-based access control and a React.js storefront."
+      tagline="A full-featured e-commerce platform built in Java with role-based access control and a React.js storefront."
       tech={[
         "Java",
         "Spring Boot",
@@ -32,11 +32,7 @@ export default function ShopSphere() {
       ]}
       images={SHOPSPHERE_IMAGES}
       liveLinks={[
-        { label: "Live Demo", url: "https://shopsphere-8m8f.vercel.app/" },
-        {
-          label: "API Backend",
-          url: "https://shopsphere-backend-5umn.onrender.com",
-        },
+        { label: "Live Demo", url: "https://shopsphere-c109.onrender.com" },
       ]}
       overview={[
         "ShopSphere is a full-stack e-commerce platform built with Java and Spring Boot on the backend and React.js on the frontend, covering product catalog, cart and checkout flows.",
@@ -47,9 +43,9 @@ export default function ShopSphere() {
         "Role-based access control for customers vs. admin users",
         "JWT-secured REST APIs, documented and tested with Postman and JUnit",
         "React.js storefront consuming the Spring Boot backend",
-        "Maven build with Docker packaging for deployment",
+        "Maven build with Docker packaging, deployed on Render",
       ]}
-      architecture="A Java / Spring Boot backend exposes RBAC- and JWT-secured REST APIs backed by MySQL, built with Maven and containerized with Docker; a React.js frontend serves the storefront experience."
+      architecture="A Java / Spring Boot backend exposes RBAC- and JWT-secured REST APIs backed by MySQL, built with Maven and containerized with Docker; a React.js frontend serves the storefront experience. The app is deployed on Render."
     />
   );
 }
