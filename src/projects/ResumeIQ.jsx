@@ -16,13 +16,13 @@ export default function ResumeIQ() {
     <ProjectDetailLayout
       category="AI-POWERED APPLICATION"
       title="ResumeIQ"
-      tagline="An AI-powered resume analyzer that compares a resume against a target job description and returns an instant match score with actionable feedback."
+      tagline="An AI resume analyzer and matcher that parses a resume and scores it against a target job description."
       tech={[
         "Python",
         "Django",
         "Django REST Framework",
         "React.js",
-        "PostgreSQL",
+        "MySQL",
         "JWT Authentication",
         "Gemini API",
         "Docker",
@@ -32,25 +32,21 @@ export default function ResumeIQ() {
       liveLinks={[
         {
           label: "Live Demo",
-          url: "https://resume-iq-blue-mu.vercel.app/",
-        },
-        {
-          label: "API Backend",
-          url: "https://resumeiq-backend-98ga.onrender.com",
+          url: "https://resumeiq-wxje.onrender.com/app",
         },
       ]}
       overview={[
-        "ResumeIQ helps job seekers tailor their resume to a specific role. Users upload a resume and paste in a job description, and the app uses the Gemini API to score how well the resume matches the role and surface concrete gaps to fix.",
-        "The backend is built with Django and Django REST Framework, exposing authenticated REST endpoints that parse the resume, call the Gemini API for analysis, and persist results in PostgreSQL. The frontend is a separate React.js single-page app that handles uploads, displays the match score, and walks the user through the suggested improvements.",
+        "ResumeIQ helps job seekers tailor their resume to a specific role. Users upload a resume and paste in a job description, and the app parses the resume and scores how well it matches the role.",
+        "The backend is built with Django and Django REST Framework, exposing JWT-secured REST endpoints that parse the resume, run the analysis with the Gemini API, and persist results in MySQL. The React.js frontend handles uploads and displays the match score and feedback.",
       ]}
       features={[
-        "AI-driven resume vs job description matching using the Gemini API",
-        "Match score plus a breakdown of missing skills, keywords, and experience gaps",
+        "Resume parsing and scoring against a job description",
+        "AI-driven matching and feedback using the Gemini API",
         "JWT-authenticated accounts so users can revisit past analyses",
-        "Django REST Framework API tested and documented with Postman",
-        "Dockerized backend deployed independently from the React frontend",
+        "Django REST Framework API tested with Postman",
+        "Containerised with Docker and deployed on Render",
       ]}
-      architecture="A Django + Django REST Framework backend exposes JWT-authenticated REST endpoints that parse uploaded resumes, call the Gemini API for scoring and feedback, and store results in PostgreSQL. It's deployed separately from the React.js frontend, which consumes the API to drive the upload, scoring, and feedback screens."
+      architecture="A Django + Django REST Framework backend exposes JWT-secured REST endpoints that parse uploaded resumes, score them against job descriptions using the Gemini API, and store results in MySQL. A React.js frontend consumes the API, and the app is containerised with Docker and deployed on Render."
     />
   );
 }
