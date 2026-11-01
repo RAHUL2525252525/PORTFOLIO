@@ -20,9 +20,10 @@ export default function BankSphere() {
         "Spring Boot",
         "Spring Security",
         "React.js",
-        "MySQL",
+        "PostgreSQL",
         "REST APIs",
         "JWT Authentication",
+        "RBAC",
         "Maven",
         "Docker",
         "Postman",
@@ -32,25 +33,22 @@ export default function BankSphere() {
       liveLinks={[
         {
           label: "Live Demo",
-          url: "https://banksphere-frontend.vercel.app",
-        },
-        {
-          label: "API Backend",
-          url: "https://banksphere-backend-b96m.onrender.com",
+          url: "https://online-banking-system-17od.onrender.com",
         },
       ]}
       overview={[
         "BankSphere is an online banking system built with Java and Spring Boot, covering core banking flows like account creation, balance management and transaction history.",
-        "Spring Security and JWT handle authentication and access control, with a React.js frontend for customers and MySQL storing account and transaction data.",
+        "Spring Security and JWT handle authentication and role-based access (user and admin), with PostgreSQL storing account and transaction data. The React.js frontend is built into the same Docker image as the backend, so one Render service serves both the website and the API.",
       ]}
       features={[
-        "Secure sign-in and session handling with Spring Security and JWT",
-        "Account and transaction management backed by MySQL",
+        "Secure sign-in with Spring Security and JWT",
+        "Role-based access for customers and administrators",
+        "Account and transaction management backed by PostgreSQL",
         "REST APIs documented and tested with Postman, with JUnit test coverage",
         "React.js frontend for account holders",
-        "Maven-based build with Docker packaging for consistent deployment",
+        "Single Docker deployment on Render serving the UI and the API",
       ]}
-      architecture="A Java / Spring Boot backend exposes REST APIs secured with Spring Security and JWT, backed by MySQL for persistence, built with Maven and containerized with Docker; a React.js frontend consumes the APIs."
+      architecture="A Java / Spring Boot backend exposes REST APIs secured with Spring Security and JWT, backed by PostgreSQL (hosted on Neon) and built with Maven. A multi-stage Docker build compiles the React.js frontend and packages it with the backend, so a single Render service serves both the UI and the API."
     />
   );
 }
