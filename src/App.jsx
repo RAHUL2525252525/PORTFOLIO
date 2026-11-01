@@ -504,7 +504,7 @@ function Hero() {
 
         <Reveal className="hero-topline">
           <span className="hero-line" />
-          <span>PYTHON FULL-STACK DEVELOPER</span>
+          <span>PYTHON DEVELOPER</span>
         </Reveal>
 
         <div className="hero-main">
@@ -512,7 +512,7 @@ function Hero() {
           <Reveal className="hero-copy">
 
             <p className="hero-eyebrow">
-              PYTHON · FASTAPI · DJANGO · REACT
+              FASTAPI · FLASK · DJANGO REST · DOCKER
             </p>
 
             <h1>
@@ -522,18 +522,19 @@ function Hero() {
             </h1>
 
             <p className="hero-title">
-              Python Full-Stack Developer
+              Python Developer
             </p>
 
             <p className="hero-description">
-              I build and ship full-stack applications with
+              B.E. Computer Science graduate (2026) who builds and
+              deploys full-stack applications with
               <strong>
-                {" "}Python, FastAPI, Django and React.js
+                {" "}FastAPI, Flask, Django REST Framework and React.js
               </strong>{" "}
-              — from REST APIs and database design to
-              Dockerized deployments and production-ready
-              workflows. I also bring hands-on Java
-              experience from full-stack projects like
+              — JWT authentication, Docker containerisation,
+              GitHub Actions CI/CD and LLM APIs (Gemini, Groq,
+              OpenRouter) integrated into working products. I also
+              have hands-on Java experience from projects like
               BankSphere and ShopSphere.
             </p>
 
@@ -660,39 +661,40 @@ function About() {
           <Reveal className="about-main">
 
             <p className="about-lead">
-              I'm a Python full-stack developer with
-              internship experience building and shipping
-              real-world applications.
+              I'm a Python developer with hands-on experience
+              building and deploying full-stack applications.
             </p>
 
             <p>
-              My hands-on experience spans REST APIs with
-              FastAPI, Flask and Django, React.js frontends,
-              relational databases and Dockerized
-              deployments. I'm comfortable working across
-              the stack — from database design to API
-              integration and deployment — and I pick up
-              new tools quickly on the job.
+              My work spans REST APIs with FastAPI, Flask and
+              Django REST Framework, React.js frontends,
+              PostgreSQL and MySQL databases, JWT authentication
+              and Docker containerisation. I automate deployments
+              with GitHub Actions CI/CD and host apps on Render
+              and Vercel.
             </p>
 
             <p>
-              During my internships I worked on full-stack
-              applications including GymSync and Digital
-              Analytics Dashboard, with authentication,
-              API integration, database workflows and
-              Docker-based deployment. I also have
-              internship experience in Artificial
-              Intelligence, Machine Learning and Deep
-              Learning using Python, Keras, TensorFlow
-              and CNN-based models.
+              During my AI internship at MR. TechLab LLP
+              (AppMind AI) I built and deployed three full-stack
+              web apps — AI Exam Companion, Life Decision
+              Assistant and Digital Analytics Dashboard — using
+              Flask, Firebase and Google Authentication, and
+              integrated LLM APIs including Gemini, Groq and
+              OpenRouter. I also completed two AI &amp; Data
+              Science internship phases at Knowx Innovations,
+              working with Python, SQL, machine learning, OpenCV,
+              Keras and TensorFlow.
             </p>
 
             <p>
-              While Python and full-stack development are
-              where I currently focus, I also have
-              hands-on experience building Java applications
-              including a banking system and an e-commerce
-              platform.
+              For my B.E. major project I trained a CNN on a
+              1.5 GB crop-leaf image dataset to detect plant
+              diseases, reaching 90% accuracy, with a Streamlit
+              interface for live predictions and downloadable PDF
+              reports. I also have hands-on experience building
+              Java applications, including a banking system and
+              an e-commerce platform.
             </p>
 
           </Reveal>
@@ -702,19 +704,19 @@ function About() {
             <div className="stat-card">
               <strong>7</strong>
               <span>
-                FULL-STACK PROJECTS SHIPPED
+                LIVE DEPLOYED APPLICATIONS
               </span>
             </div>
 
             <div className="stat-card">
-              <strong>15+</strong>
+              <strong>90%</strong>
               <span>
-                REST API ENDPOINTS
+                CNN ACCURACY ON MAJOR PROJECT
               </span>
             </div>
 
             <div className="stat-card">
-              <strong>4</strong>
+              <strong>5</strong>
               <span>
                 PYTHON FULL-STACK APPS
               </span>
@@ -745,17 +747,16 @@ function Skills() {
       number: "01",
       title: "LANGUAGES & FRONTEND",
       description:
-        "Core language and interfaces for full-stack applications.",
+        "Core languages and interfaces for full-stack applications.",
       items: [
         "Python",
+        "SQL",
         "JavaScript",
+        "Java",
         "React.js",
-        "Vite",
         "HTML5",
         "CSS3",
-        "Tailwind CSS",
-        "Axios",
-        "React Router",
+        "Streamlit",
       ],
     },
 
@@ -765,15 +766,13 @@ function Skills() {
       description:
         "Structured backend systems with secure API design.",
       items: [
-        "Django",
-        "Django REST Framework",
         "FastAPI",
         "Flask",
-        "Pydantic",
-        "SQLAlchemy",
+        "Django REST Framework",
+        "Spring Boot",
         "REST APIs",
-        "RBAC",
         "JWT Authentication",
+        "Async Programming",
       ],
     },
 
@@ -781,11 +780,11 @@ function Skills() {
       number: "03",
       title: "DATABASES",
       description:
-        "Relational database design and management.",
+        "Relational and cloud database design and management.",
       items: [
-        "MySQL",
         "PostgreSQL",
-        "MySQL Workbench",
+        "MySQL",
+        "Firebase",
       ],
     },
 
@@ -793,13 +792,10 @@ function Skills() {
       number: "04",
       title: "API & TESTING",
       description:
-        "API documentation and quality-focused development.",
+        "API testing and quality-focused development.",
       items: [
         "Postman",
-        "Swagger / OpenAPI",
-        "Pytest",
-        "JUnit",
-        "Mockito",
+        "Unit Testing",
       ],
     },
 
@@ -809,45 +805,41 @@ function Skills() {
       description:
         "Data cleaning and business intelligence tooling.",
       items: [
-        "Tableau",
+        "Pandas",
         "Power BI",
+        "Tableau",
         "Data Cleaning",
       ],
     },
 
     {
       number: "06",
-      title: "DEVOPS & PRACTICES",
+      title: "DEVOPS & CLOUD",
       description:
         "Deployment, containerization and development workflows.",
       items: [
         "Docker",
-        "Docker Compose",
-        "Maven",
         "Git",
-        "GitHub Actions",
-        "CI/CD",
-        "Agile",
+        "GitHub Actions (CI/CD)",
         "Render",
         "Vercel",
+        "AWS (EC2, S3 – basic)",
       ],
     },
 
     {
       number: "07",
-      title: "AI & DATA SCIENCE",
+      title: "AI & ML",
       description:
-        "Additional hands-on experience from internships and AI projects.",
+        "LLM integrations and deep learning from internships and projects.",
       items: [
-        "Artificial Intelligence",
-        "Machine Learning",
-        "Deep Learning",
-        "OpenCV",
-        "Keras",
-        "TensorFlow",
-        "Firebase",
-        "Groq API",
         "Gemini API",
+        "Groq API",
+        "OpenRouter API",
+        "TensorFlow",
+        "Keras",
+        "CNN",
+        "OpenCV",
       ],
     },
   ];
@@ -930,14 +922,14 @@ function Experience() {
       type: "AI INTERNSHIP",
       role: "AI Intern",
       company:
-        "AppMind AI (MR.TechLab LLP) · Bengaluru",
+        "MR. TechLab LLP (AppMind AI) · Bengaluru",
       date: "JAN 2026 — MAY 2026",
       summary:
-        "Built two full-stack applications end-to-end, working with a small team from requirements through deployment.",
+        "Built and deployed three full-stack web apps using Flask, Firebase and Google Authentication, hosted on Vercel and Render.",
       points: [
-        "Built two full-stack applications end-to-end (GymSync and Digital Analytics Dashboard), working with a small team from requirements through deployment.",
-        "Picked up Firebase Auth, FastAPI and Docker on the job.",
-        "Wrote and reviewed API documentation with Swagger/OpenAPI for frontend integration.",
+        "Built and deployed 3 full-stack web apps using Flask, Firebase and Google Authentication; containerised with Docker and hosted on Vercel (frontend) and Render (backend).",
+        "Developed an AI Exam Companion: a Groq-powered chatbot with a performance dashboard and mock tests.",
+        "Built a Life Decision Assistant integrating the Gemini and OpenRouter APIs, and a Digital Analytics Dashboard with a Gemini-powered chatbot.",
       ],
     },
 
@@ -946,13 +938,13 @@ function Experience() {
       role:
         "AI & Data Science Intern — Software Dev Project",
       company:
-        "Knowx Innovations (P) Ltd · Vijayanagar, Bangalore",
+        "Knowx Innovations (P) Ltd · Bengaluru",
       date: "MAR 2023 — JUN 2023",
       summary:
-        "Completed an advanced internship and software development project program focused on Artificial Intelligence, Machine Learning, Deep Learning and Data Science.",
+        "Second internship phase (during Diploma): training and a software development project in Artificial Intelligence, Machine Learning, Deep Learning and Data Science.",
       points: [
-        "Built and evaluated CNN-based deep learning models in Keras and TensorFlow, including a VGG16 implementation, across multiple layer configurations.",
-        "Applied core machine learning workflows including data preprocessing, training and evaluation as part of a guided software development project.",
+        "Worked hands-on with Python, SQL, machine learning algorithms, OpenCV, Keras, TensorFlow and data visualisation.",
+        "Applied CNNs and VGG16 in sample projects on deep learning and image classification.",
       ],
     },
 
@@ -961,13 +953,13 @@ function Experience() {
       role:
         "AI & Data Science Intern — Training",
       company:
-        "Knowx Innovations (P) Ltd · Vijayanagar, Bangalore",
+        "Knowx Innovations (P) Ltd · Bengaluru",
       date: "OCT 2022 — JAN 2023",
       summary:
-        "Completed an internship focused on Artificial Intelligence, Data Science, Python programming, machine learning and cloud technologies.",
+        "First internship phase (during Diploma): structured training in Artificial Intelligence, Data Science, Python programming and machine learning.",
       points: [
-        "Completed structured training in Python, SQL, machine learning algorithms, cloud computing basics, OpenCV, Keras and TensorFlow.",
-        "Applied statistics and linear algebra fundamentals to explore and interpret real-world datasets.",
+        "Completed training in Python, SQL, machine learning algorithms, OpenCV, Keras and TensorFlow.",
+        "Received an internship certificate from Knowx Innovations for each phase of the program.",
       ],
     },
   ];
@@ -1078,13 +1070,12 @@ const PROJECTS = [
       "CSS",
       "JavaScript",
       "Firebase",
+      "Google Authentication",
       "Groq API",
-      "Gemini API",
-      "MySQL",
       "Docker",
     ],
     backendNote:
-      "AI-assisted study tool that generates practice questions and explanations using LLM APIs, backed by a Python Flask service with Firebase authentication.",
+      "Groq-powered exam preparation chatbot with a performance dashboard and mock tests, built on a Flask backend with Firebase and Google authentication.",
     liveLinks: [
       {
         label: "Live Demo",
@@ -1105,23 +1096,18 @@ const PROJECTS = [
       "Django",
       "Django REST Framework",
       "React.js",
-      "PostgreSQL",
+      "MySQL",
       "JWT Authentication",
-      "Gemini API",
+      "Postman",
       "Docker",
     ],
     backendNote:
-      "AI resume analyzer that scores a resume against a job description using the Gemini API, built on a Django REST Framework backend with a React.js frontend.",
+      "AI resume analyzer that parses resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
     liveLinks: [
       {
         label: "Live Demo",
         url:
-          "https://resume-iq-blue-mu.vercel.app/",
-      },
-      {
-        label: "API Backend",
-        url:
-          "https://resumeiq-backend-98ga.onrender.com",
+          "https://resumeiq-wxje.onrender.com/app",
       },
     ],
   },
@@ -1139,12 +1125,13 @@ const PROJECTS = [
       "CSS",
       "JavaScript",
       "Firebase",
+      "Google Authentication",
       "Gemini API",
-      "PostgreSQL",
+      "OpenRouter API",
       "Docker",
     ],
     backendNote:
-      "Helps users reason through everyday decisions with structured AI-generated pros, cons and recommendations using a Flask backend.",
+      "AI decision-support assistant that helps users reason through everyday decisions, integrating the Gemini and OpenRouter APIs on a Flask backend.",
     liveLinks: [
       {
         label: "Live Demo",
@@ -1166,7 +1153,6 @@ const PROJECTS = [
       "HTML",
       "CSS",
       "JavaScript",
-      "PostgreSQL",
       "Firebase",
       "Google Authentication",
       "Gemini API",
@@ -1176,7 +1162,7 @@ const PROJECTS = [
       "JWT Authentication",
     ],
     backendNote:
-      "Flask dashboard backed by PostgreSQL that ingests CSV data and turns it into charts and summary views, with authentication and Gemini API insights.",
+      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with a Gemini-powered chatbot that answers questions about the uploaded data.",
     liveLinks: [
       {
         label: "Live Demo",
@@ -1197,26 +1183,22 @@ const PROJECTS = [
       "Spring Boot",
       "Spring Security",
       "React.js",
-      "MySQL",
+      "PostgreSQL",
       "REST APIs",
       "JWT Authentication",
+      "RBAC",
       "Maven",
       "Docker",
       "Postman",
       "JUnit",
     ],
     backendNote:
-      "Online banking system built in Java/Spring Boot with secure authentication, account and transaction management, and a React.js frontend.",
+      "Online banking system built in Java/Spring Boot with JWT authentication, role-based access (user and admin), account and transaction management, and a React.js frontend served from the same Dockerized service.",
     liveLinks: [
       {
         label: "Live Demo",
         url:
-          "https://banksphere-frontend.vercel.app",
-      },
-      {
-        label: "API Backend",
-        url:
-          "https://banksphere-backend-b96m.onrender.com",
+          "https://online-banking-system-17od.onrender.com",
       },
     ],
   },
@@ -1241,17 +1223,12 @@ const PROJECTS = [
       "JUnit",
     ],
     backendNote:
-      "Full-stack e-commerce platform built in Java/Spring Boot with role-based access control and a React.js storefront.",
+      "Full-featured e-commerce platform built in Java/Spring Boot with role-based access control and a React.js storefront.",
     liveLinks: [
       {
         label: "Live Demo",
         url:
-          "https://shopsphere-8m8f.vercel.app/",
-      },
-      {
-        label: "API Backend",
-        url:
-          "https://shopsphere-backend-5umn.onrender.com",
+          "https://shopsphere-c109.onrender.com",
       },
     ],
   },
@@ -1265,28 +1242,22 @@ const PROJECTS = [
     tech: [
       "Python",
       "FastAPI",
-      "HTML",
-      "CSS",
       "JavaScript",
       "React + Vite",
-      "MySQL",
+      "PostgreSQL",
       "Docker",
       "JWT Authentication",
+      "GitHub Actions",
       "Postman",
       "Pytest",
     ],
     backendNote:
-      "Gym tracking application with a FastAPI backend and React/Vite frontend, built and deployed end-to-end on Render.",
+      "Containerised gym tracking application with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed to Vercel and Render through a GitHub Actions CI/CD pipeline.",
     liveLinks: [
       {
         label: "Live Demo",
         url:
-          "https://gymsync-f4v7.onrender.com",
-      },
-      {
-        label: "API Backend",
-        url:
-          "https://gym-tracker-api-be9c.onrender.com",
+          "https://gymsync-app.onrender.com",
       },
     ],
   },
@@ -1322,10 +1293,11 @@ function Projects() {
           </h2>
 
           <p className="projects-intro">
-            A mix of Python full-stack applications and
-            Java full-stack projects — REST APIs,
-            relational databases, authentication and
-            Dockerized deployments, end to end.
+            Seven deployed applications — Python full-stack
+            apps with LLM integrations and Java full-stack
+            projects — covering REST APIs, relational
+            databases, authentication and Dockerized
+            deployments, end to end.
           </p>
 
         </Reveal>
@@ -1527,9 +1499,11 @@ function Education() {
 
             <p>
               Bachelor of Engineering in Computer
-              Science & Engineering, focused on
-              software development, databases
-              and applied programming.
+              Science & Engineering (2023 – 2026).
+              Preceded by a Diploma in Information
+              Science at PVP Polytechnic, Bengaluru
+              (2020 – 2023), completed with First
+              Class with Distinction.
             </p>
 
             <div className="education-bottom">
@@ -1559,28 +1533,29 @@ function Education() {
 
 const CERTIFICATIONS = [
   {
-    title: "Data Analytics Training",
-    issuer:
-      "Tableau · Power BI · Data Cleaning",
-    description:
-      "Hands-on training covering data cleaning workflows and building dashboards and visualizations in Tableau and Power BI.",
-  },
-
-  {
     title:
       "Green Skills & Artificial Intelligence",
     issuer:
-      "Skills4Future Program — Edunet Foundation, AICTE & Shell India Markets Pvt. Ltd.",
+      "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
     description:
-      "Program covering sustainability-focused Green Skills alongside foundational and applied Artificial Intelligence concepts.",
+      "Program covering Green Skills and Artificial Intelligence, with hands-on training in Power BI, Tableau and Data Cleaning.",
   },
 
   {
     title:
-      "Python Full Stack Development",
-    issuer: "Qspiders",
+      "Python Full Stack Software Development",
+    issuer: "Qspiders Training Institute",
     description:
       "Structured training in full-stack Python development — from backend APIs to frontend integration.",
+  },
+
+  {
+    title:
+      "AI & Data Science Internship Certificates",
+    issuer:
+      "Knowx Innovations (P) Ltd.",
+    description:
+      "Two internship certificates covering Python, SQL, machine learning, OpenCV, Keras, TensorFlow and deep learning.",
   },
 ];
 
@@ -1588,7 +1563,7 @@ const INTERNSHIP_CERTIFICATES = [
   {
     title: "AI Internship",
     subtitle:
-      "AppMind AI (MR.TechLab LLP) · Jan 2026 – May 2026",
+      "MR. TechLab LLP (AppMind AI) · Jan 2026 – May 2026",
     image:
       "/certificates/appmind-ai-internship.jpg",
   },
@@ -1977,8 +1952,7 @@ function Contact() {
           </h2>
 
           <p>
-            Open to Python full-stack and
-            full-stack developer roles. Whether
+            Open to Python Developer roles. Whether
             it's a quick question or a project
             idea, my inbox is open.
           </p>
@@ -1994,20 +1968,19 @@ function Contact() {
           <div className="contact-details">
 
             <span>
-              Bengaluru, India
+              Bengaluru, Karnataka, India
             </span>
 
             <span>
-              +91 7337634886
+              +91 73376 34886
             </span>
 
           </div>
 
           <div className="social-links">
 
-            {/* Replace these with your actual profile URLs */}
             <a
-              href="https://www.linkedin.com/"
+              href="https://www.linkedin.com/in/rahul-s-6460b1238"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -2015,7 +1988,7 @@ function Contact() {
             </a>
 
             <a
-              href="https://github.com/"
+              href="https://github.com/RAHUL2525252525"
               target="_blank"
               rel="noopener noreferrer"
             >
