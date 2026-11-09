@@ -2001,9 +2001,13 @@ img {
   gap: 8px;
 }
 
-.book-dots span {
+/* The dots are <button> elements in the JSX (not <span>),
+   so they are styled here as buttons. */
+.book-dots button {
   width: 9px;
   height: 9px;
+
+  padding: 0;
 
   border-radius: 50%;
 
@@ -2014,7 +2018,7 @@ img {
   transition: background 0.25s ease, transform 0.25s ease;
 }
 
-.book-dots span.active {
+.book-dots button.active {
   background: var(--blue);
   transform: scale(1.2);
 }
@@ -3652,6 +3656,7 @@ img {
     height: 48px;
   }
 }
+
 /* =========================================================
    PROJECT DETAIL — FEATURES LIST
    ========================================================= */
