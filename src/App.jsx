@@ -7,6 +7,7 @@ import AIExamCompanion from "./projects/AIExamCompanion";
 import DigitalAnalyticsDashboard from "./projects/DigitalAnalyticsDashboard";
 import GymSync from "./projects/GymSync";
 import ResumeIQ from "./projects/ResumeIQ";
+import PlantDiseaseDetection from "./projects/PlantDiseaseDetection";
 
 import { sortGlobImages } from "./projects/galleryUtils";
 
@@ -22,60 +23,36 @@ import "./index.css";
 
   Vite cannot resolve these using a plain "/image.png" path,
   so import.meta.glob is used.
-
-  IMPORTANT:
-  This pattern expects normal .png files.
-  Example:
-    src/assets/projects/shopsphere/1.png
-    src/assets/projects/shopsphere/2.png
 */
 
 const shopsphereRaw = import.meta.glob(
   "./assets/projects/shopsphere/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
 const banksphereRaw = import.meta.glob(
   "./assets/projects/banksphere/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
 const lifeDecisionRaw = import.meta.glob(
   "./assets/projects/lifedecisionassistant/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
 const aiExamRaw = import.meta.glob(
   "./assets/projects/aiexamcompanion/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
 const digitalAnalyticsRaw = import.meta.glob(
   "./assets/projects/digitalanalyticsdashboard/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
 const gymSyncRaw = import.meta.glob(
   "./assets/projects/gymsync/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
 /*
@@ -85,32 +62,27 @@ const gymSyncRaw = import.meta.glob(
 */
 const resumeiqRaw = import.meta.glob(
   "./assets/projects/ResumeIQ/*.png",
-  {
-    eager: true,
-    import: "default",
-  }
+  { eager: true, import: "default" }
 );
 
-const SHOPSPHERE_IMAGE =
-  sortGlobImages(shopsphereRaw)[0] ?? null;
+/*
+  Plant Disease Detection screenshots live in:
+  src/assets/projects/plantdiseasedetection/
+  png, jpg, jpeg and webp are all accepted.
+*/
+const plantDiseaseRaw = import.meta.glob(
+  "./assets/projects/plantdiseasedetection/*.{png,jpg,jpeg,webp}",
+  { eager: true, import: "default" }
+);
 
-const BANKSPHERE_IMAGE =
-  sortGlobImages(banksphereRaw)[0] ?? null;
-
-const LIFEDECISION_IMAGE =
-  sortGlobImages(lifeDecisionRaw)[0] ?? null;
-
-const AIEXAM_IMAGE =
-  sortGlobImages(aiExamRaw)[0] ?? null;
-
-const DIGITALANALYTICS_IMAGE =
-  sortGlobImages(digitalAnalyticsRaw)[0] ?? null;
-
-const GYMSYNC_IMAGE =
-  sortGlobImages(gymSyncRaw)[0] ?? null;
-
-const RESUMEIQ_IMAGE =
-  sortGlobImages(resumeiqRaw)[0] ?? null;
+const SHOPSPHERE_IMAGE = sortGlobImages(shopsphereRaw)[0] ?? null;
+const BANKSPHERE_IMAGE = sortGlobImages(banksphereRaw)[0] ?? null;
+const LIFEDECISION_IMAGE = sortGlobImages(lifeDecisionRaw)[0] ?? null;
+const AIEXAM_IMAGE = sortGlobImages(aiExamRaw)[0] ?? null;
+const DIGITALANALYTICS_IMAGE = sortGlobImages(digitalAnalyticsRaw)[0] ?? null;
+const GYMSYNC_IMAGE = sortGlobImages(gymSyncRaw)[0] ?? null;
+const RESUMEIQ_IMAGE = sortGlobImages(resumeiqRaw)[0] ?? null;
+const PLANTDISEASE_IMAGE = sortGlobImages(plantDiseaseRaw)[0] ?? null;
 
 /* =========================================================
    PROJECT ROUTES
@@ -124,6 +96,7 @@ const ROUTES = {
   digitalanalyticsdashboard: DigitalAnalyticsDashboard,
   gymsync: GymSync,
   resumeiq: ResumeIQ,
+  plantdiseasedetection: PlantDiseaseDetection,
 };
 
 /* =========================================================
@@ -131,9 +104,7 @@ const ROUTES = {
    ========================================================= */
 
 function getHashRoute() {
-  return window.location.hash
-    .replace(/^#\/?/, "")
-    .toLowerCase();
+  return window.location.hash.replace(/^#\/?/, "").toLowerCase();
 }
 
 function scrollToSection(route, smooth = true) {
@@ -142,7 +113,6 @@ function scrollToSection(route, smooth = true) {
       top: 0,
       behavior: smooth ? "smooth" : "auto",
     });
-
     return;
   }
 
@@ -171,12 +141,7 @@ function useHashRoute() {
       */
       if (ROUTES[newRoute]) {
         setRoute(newRoute);
-
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
 
@@ -190,17 +155,11 @@ function useHashRoute() {
           scrollToSection(newRoute, true);
         });
       } else {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     };
 
-    window.addEventListener(
-      "hashchange",
-      handleHashChange
-    );
+    window.addEventListener("hashchange", handleHashChange);
 
     const initialRoute = getHashRoute();
 
@@ -213,10 +172,7 @@ function useHashRoute() {
     }
 
     return () => {
-      window.removeEventListener(
-        "hashchange",
-        handleHashChange
-      );
+      window.removeEventListener("hashchange", handleHashChange);
 
       if (initialScrollTimeout) {
         clearTimeout(initialScrollTimeout);
@@ -231,12 +187,7 @@ function useHashRoute() {
    SCROLL REVEAL
    ========================================================= */
 
-function Reveal({
-  children,
-  as: Tag = "div",
-  className = "",
-  ...rest
-}) {
+function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
 
@@ -252,9 +203,7 @@ function Reveal({
           observer.disconnect();
         }
       },
-      {
-        threshold: 0.12,
-      }
+      { threshold: 0.12 }
     );
 
     observer.observe(element);
@@ -267,9 +216,7 @@ function Reveal({
   return (
     <Tag
       ref={ref}
-      className={`reveal ${
-        inView ? "in-view" : ""
-      } ${className}`}
+      className={`reveal ${inView ? "in-view" : ""} ${className}`}
       {...rest}
     >
       {children}
@@ -319,15 +266,10 @@ function Navbar() {
       setScrolled(window.scrollY > 30);
     };
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -356,21 +298,13 @@ function Navbar() {
     if (window.location.hash) {
       window.location.hash = "";
     } else {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   return (
-    <nav
-      className={`navbar ${
-        scrolled ? "navbar-scrolled" : ""
-      }`}
-    >
+    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
       <div className="nav-container">
-
         <a
           href="#"
           className="nav-logo"
@@ -382,73 +316,43 @@ function Navbar() {
         </a>
 
         <div
-          className={`nav-links ${
-            mobileMenu ? "mobile-open" : ""
-          }`}
+          id="main-navigation"
+          className={`nav-links ${mobileMenu ? "mobile-open" : ""}`}
         >
-          <a
-            href="#about"
-            onClick={(event) =>
-              handleNavClick(event, "about")
-            }
-          >
+          <a href="#about" onClick={(e) => handleNavClick(e, "about")}>
             About
           </a>
 
-          <a
-            href="#skills"
-            onClick={(event) =>
-              handleNavClick(event, "skills")
-            }
-          >
+          <a href="#skills" onClick={(e) => handleNavClick(e, "skills")}>
             Skills
           </a>
 
           <a
             href="#experience"
-            onClick={(event) =>
-              handleNavClick(event, "experience")
-            }
+            onClick={(e) => handleNavClick(e, "experience")}
           >
             Experience
           </a>
 
-          <a
-            href="#projects"
-            onClick={(event) =>
-              handleNavClick(event, "projects")
-            }
-          >
+          <a href="#projects" onClick={(e) => handleNavClick(e, "projects")}>
             Projects
           </a>
 
           <a
             href="#education"
-            onClick={(event) =>
-              handleNavClick(event, "education")
-            }
+            onClick={(e) => handleNavClick(e, "education")}
           >
             Education
           </a>
 
           <a
             href="#certifications"
-            onClick={(event) =>
-              handleNavClick(
-                event,
-                "certifications"
-              )
-            }
+            onClick={(e) => handleNavClick(e, "certifications")}
           >
             Certifications
           </a>
 
-          <a
-            href="#contact"
-            onClick={(event) =>
-              handleNavClick(event, "contact")
-            }
-          >
+          <a href="#contact" onClick={(e) => handleNavClick(e, "contact")}>
             Contact
           </a>
         </div>
@@ -456,9 +360,7 @@ function Navbar() {
         <a
           href="#contact"
           className="nav-contact"
-          onClick={(event) =>
-            handleNavClick(event, "contact")
-          }
+          onClick={(e) => handleNavClick(e, "contact")}
         >
           Let's Talk
           <span>↗</span>
@@ -466,14 +368,8 @@ function Navbar() {
 
         <button
           type="button"
-          className={`mobile-menu-button ${
-            mobileMenu ? "active" : ""
-          }`}
-          onClick={() =>
-            setMobileMenu(
-              (previous) => !previous
-            )
-          }
+          className={`mobile-menu-button ${mobileMenu ? "active" : ""}`}
+          onClick={() => setMobileMenu((previous) => !previous)}
           aria-label="Toggle navigation menu"
           aria-expanded={mobileMenu}
           aria-controls="main-navigation"
@@ -482,7 +378,6 @@ function Navbar() {
           <span />
           <span />
         </button>
-
       </div>
     </nav>
   );
@@ -501,16 +396,13 @@ function Hero() {
       <div className="hero-glow hero-glow-two" />
 
       <div className="hero-content">
-
         <Reveal className="hero-topline">
           <span className="hero-line" />
           <span>PYTHON DEVELOPER</span>
         </Reveal>
 
         <div className="hero-main">
-
           <Reveal className="hero-copy">
-
             <p className="hero-eyebrow">
               FASTAPI · FLASK · DJANGO REST · DOCKER
             </p>
@@ -521,9 +413,7 @@ function Hero() {
               <span>S.</span>
             </h1>
 
-            <p className="hero-title">
-              Python Developer
-            </p>
+            <p className="hero-title">Python Developer</p>
 
             <p className="hero-description">
               B.E. Computer Science graduate (2026) who builds and
@@ -534,19 +424,18 @@ function Hero() {
               — JWT authentication, Docker containerisation,
               GitHub Actions CI/CD and LLM APIs (Gemini, Groq,
               OpenRouter) integrated into working products. I also
-              have hands-on Java experience from projects like
+              build deep learning models with CNNs, and have
+              hands-on Java experience from projects like
               BankSphere and ShopSphere.
             </p>
 
             <div className="hero-actions">
-
               <a
                 href="#projects"
                 className="hero-primary-button"
                 onClick={(event) => {
                   event.preventDefault();
-                  window.location.hash =
-                    "#projects";
+                  window.location.hash = "#projects";
                 }}
               >
                 View Projects
@@ -558,32 +447,24 @@ function Hero() {
                 className="hero-secondary-button"
                 onClick={(event) => {
                   event.preventDefault();
-                  window.location.hash =
-                    "#contact";
+                  window.location.hash = "#contact";
                 }}
               >
                 Contact Me
               </a>
-
             </div>
 
             <div className="hero-meta">
-
               <span>
                 <i />
                 Bengaluru, India
               </span>
 
-              <span>
-                Open to opportunities
-              </span>
-
+              <span>Open to opportunities</span>
             </div>
-
           </Reveal>
 
           <Reveal className="hero-profile-area">
-
             <div className="profile-orbit orbit-one" />
             <div className="profile-orbit orbit-two" />
 
@@ -591,29 +472,20 @@ function Hero() {
             <div className="profile-decoration profile-decoration-two" />
 
             <div className="profile-frame">
-
               <div className="profile-inner">
-
                 <img
                   src="/rahul-profile.jpg"
                   alt="Rahul S"
                   className="profile-image"
                 />
-
               </div>
-
             </div>
 
-            <div className="profile-number">
-              01
-            </div>
-
+            <div className="profile-number">01</div>
           </Reveal>
-
         </div>
 
         <div className="hero-bottom">
-
           <span>SCROLL TO EXPLORE</span>
 
           <div className="scroll-line">
@@ -621,9 +493,7 @@ function Hero() {
           </div>
 
           <span>2026</span>
-
         </div>
-
       </div>
     </section>
   );
@@ -635,14 +505,9 @@ function Hero() {
 
 function About() {
   return (
-    <section
-      id="about"
-      className="section about-section"
-    >
+    <section id="about" className="section about-section">
       <div className="section-container">
-
         <Reveal>
-
           <div className="section-kicker">
             <span>01</span>
             ABOUT ME
@@ -653,13 +518,10 @@ function About() {
             <br />
             <span>Builder always.</span>
           </h2>
-
         </Reveal>
 
         <div className="about-layout">
-
           <Reveal className="about-main">
-
             <p className="about-lead">
               I'm a Python developer with hands-on experience
               building and deploying full-stack applications.
@@ -688,49 +550,37 @@ function About() {
             </p>
 
             <p>
-              For my B.E. major project I trained a CNN on a
-              1.5 GB crop-leaf image dataset to detect plant
-              diseases, reaching 90% accuracy, with a Streamlit
-              interface for live predictions and downloadable PDF
-              reports. I also have hands-on experience building
-              Java applications, including a banking system and
-              an e-commerce platform.
+              For my B.E. major project, Plant Disease Detection,
+              I trained a CNN on a 1.5 GB Kaggle crop-leaf image
+              dataset to detect plant diseases, reaching over 90%
+              accuracy, with a Streamlit interface for live
+              predictions. I also have hands-on experience
+              building Java applications, including a banking
+              system and an e-commerce platform.
             </p>
-
           </Reveal>
 
           <Reveal className="about-stats">
-
             <div className="stat-card">
-              <strong>7</strong>
-              <span>
-                LIVE DEPLOYED APPLICATIONS
-              </span>
+              <strong>8</strong>
+              <span>LIVE DEPLOYED APPLICATIONS</span>
             </div>
 
             <div className="stat-card">
-              <strong>90%</strong>
-              <span>
-                CNN ACCURACY ON MAJOR PROJECT
-              </span>
+              <strong>90%+</strong>
+              <span>CNN ACCURACY ON MAJOR PROJECT</span>
             </div>
 
             <div className="stat-card">
-              <strong>5</strong>
-              <span>
-                PYTHON FULL-STACK APPS
-              </span>
+              <strong>6</strong>
+              <span>PYTHON &amp; ML APPLICATIONS</span>
             </div>
 
             <div className="stat-card">
               <strong>3</strong>
-              <span>
-                INTERNSHIP EXPERIENCES
-              </span>
+              <span>INTERNSHIP EXPERIENCES</span>
             </div>
-
           </Reveal>
-
         </div>
       </div>
     </section>
@@ -781,35 +631,21 @@ function Skills() {
       title: "DATABASES",
       description:
         "Relational and cloud database design and management.",
-      items: [
-        "PostgreSQL",
-        "MySQL",
-        "Firebase",
-      ],
+      items: ["PostgreSQL", "MySQL", "Firebase"],
     },
 
     {
       number: "04",
       title: "API & TESTING",
-      description:
-        "API testing and quality-focused development.",
-      items: [
-        "Postman",
-        "Unit Testing",
-      ],
+      description: "API testing and quality-focused development.",
+      items: ["Postman", "Unit Testing"],
     },
 
     {
       number: "05",
       title: "DATA & BI",
-      description:
-        "Data cleaning and business intelligence tooling.",
-      items: [
-        "Pandas",
-        "Power BI",
-        "Tableau",
-        "Data Cleaning",
-      ],
+      description: "Data cleaning and business intelligence tooling.",
+      items: ["Pandas", "Power BI", "Tableau", "Data Cleaning"],
     },
 
     {
@@ -845,14 +681,9 @@ function Skills() {
   ];
 
   return (
-    <section
-      id="skills"
-      className="section skills-section"
-    >
+    <section id="skills" className="section skills-section">
       <div className="section-container">
-
         <Reveal>
-
           <div className="section-kicker blue-kicker">
             <span>02</span>
             TECHNICAL SKILLS
@@ -863,50 +694,26 @@ function Skills() {
             <br />
             <span>ship software.</span>
           </h2>
-
         </Reveal>
 
         <div className="skills-list">
-
           {groups.map((group) => (
-
-            <Reveal
-              key={group.title}
-              className="skill-row"
-            >
-
-              <div className="skill-number">
-                {group.number}
-              </div>
+            <Reveal key={group.title} className="skill-row">
+              <div className="skill-number">{group.number}</div>
 
               <div className="skill-heading">
-
-                <h3>
-                  {group.title}
-                </h3>
-
-                <p>
-                  {group.description}
-                </p>
-
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
               </div>
 
               <div className="skill-items">
-
                 {group.items.map((skill) => (
-                  <span key={skill}>
-                    {skill}
-                  </span>
+                  <span key={skill}>{skill}</span>
                 ))}
-
               </div>
-
             </Reveal>
-
           ))}
-
         </div>
-
       </div>
     </section>
   );
@@ -921,8 +728,7 @@ function Experience() {
     {
       type: "AI INTERNSHIP",
       role: "AI Intern",
-      company:
-        "MR. TechLab LLP (AppMind AI) · Bengaluru",
+      company: "MR. TechLab LLP (AppMind AI) · Bengaluru",
       date: "JAN 2026 — MAY 2026",
       summary:
         "Built and deployed three full-stack web apps using Flask, Firebase and Google Authentication, hosted on Vercel and Render.",
@@ -935,10 +741,8 @@ function Experience() {
 
     {
       type: "AI & DATA SCIENCE INTERNSHIP",
-      role:
-        "AI & Data Science Intern — Software Dev Project",
-      company:
-        "Knowx Innovations (P) Ltd · Bengaluru",
+      role: "AI & Data Science Intern — Software Dev Project",
+      company: "Knowx Innovations (P) Ltd · Bengaluru",
       date: "MAR 2023 — JUN 2023",
       summary:
         "Second internship phase (during Diploma): training and a software development project in Artificial Intelligence, Machine Learning, Deep Learning and Data Science.",
@@ -950,10 +754,8 @@ function Experience() {
 
     {
       type: "AI & DATA SCIENCE INTERNSHIP",
-      role:
-        "AI & Data Science Intern — Training",
-      company:
-        "Knowx Innovations (P) Ltd · Bengaluru",
+      role: "AI & Data Science Intern — Training",
+      company: "Knowx Innovations (P) Ltd · Bengaluru",
       date: "OCT 2022 — JAN 2023",
       summary:
         "First internship phase (during Diploma): structured training in Artificial Intelligence, Data Science, Python programming and machine learning.",
@@ -965,14 +767,9 @@ function Experience() {
   ];
 
   return (
-    <section
-      id="experience"
-      className="section experience-section"
-    >
+    <section id="experience" className="section experience-section">
       <div className="section-container">
-
         <Reveal>
-
           <div className="section-kicker">
             <span>03</span>
             EXPERIENCE
@@ -983,70 +780,40 @@ function Experience() {
             <br />
             <span>to build.</span>
           </h2>
-
         </Reveal>
 
         <div className="experience-list">
-
           {experiences.map((experience) => (
-
             <Reveal
               key={`${experience.company}-${experience.date}`}
               className="experience-main-card"
             >
-
               <div className="experience-top">
-
                 <div>
+                  <span className="experience-type">{experience.type}</span>
 
-                  <span className="experience-type">
-                    {experience.type}
-                  </span>
+                  <h3>{experience.role}</h3>
 
-                  <h3>
-                    {experience.role}
-                  </h3>
-
-                  <p className="experience-company">
-                    {experience.company}
-                  </p>
-
+                  <p className="experience-company">{experience.company}</p>
                 </div>
 
-                <span className="experience-date">
-                  {experience.date}
-                </span>
-
+                <span className="experience-date">{experience.date}</span>
               </div>
 
               <div className="experience-divider" />
 
               <div className="experience-content">
-
-                <p className="experience-summary">
-                  {experience.summary}
-                </p>
+                <p className="experience-summary">{experience.summary}</p>
 
                 <ul>
-
-                  {experience.points.map(
-                    (point) => (
-                      <li key={point}>
-                        {point}
-                      </li>
-                    )
-                  )}
-
+                  {experience.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
                 </ul>
-
               </div>
-
             </Reveal>
-
           ))}
-
         </div>
-
       </div>
     </section>
   );
@@ -1079,8 +846,7 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://ai-exam-companion-ghzc.onrender.com",
+        url: "https://ai-exam-companion-ghzc.onrender.com",
       },
     ],
   },
@@ -1107,8 +873,7 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://resumeiq-wxje.onrender.com/app",
+        url: "https://resumeiq-wxje.onrender.com/app",
       },
     ],
   },
@@ -1136,8 +901,7 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://life-decision-assistant-63pu.onrender.com",
+        url: "https://life-decision-assistant-63pu.onrender.com",
       },
     ],
   },
@@ -1167,8 +931,7 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://digital-dashboard1.onrender.com",
+        url: "https://digital-dashboard1.onrender.com",
       },
     ],
   },
@@ -1198,8 +961,7 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://online-banking-system-17od.onrender.com",
+        url: "https://online-banking-system-17od.onrender.com",
       },
     ],
   },
@@ -1228,8 +990,7 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://shopsphere-c109.onrender.com",
+        url: "https://shopsphere-c109.onrender.com",
       },
     ],
   },
@@ -1257,16 +1018,37 @@ const PROJECTS = [
     liveLinks: [
       {
         label: "Live Demo",
-        url:
-          "https://gymsync-app.onrender.com",
+        url: "https://gymsync-app.onrender.com",
+      },
+    ],
+  },
+
+  {
+    id: "plantdiseasedetection",
+    number: "08",
+    category: "AI / ML APPLICATION",
+    title: "Plant Disease Detection",
+    image: PLANTDISEASE_IMAGE,
+    tech: [
+      "Python",
+      "Streamlit",
+      "Machine Learning",
+      "Artificial Intelligence",
+      "CNN",
+      "Kaggle Dataset",
+    ],
+    backendNote:
+      "CNN-based plant leaf disease classifier trained on a 1.5 GB Kaggle dataset, reaching over 90% accuracy, with a Streamlit interface for live predictions.",
+    liveLinks: [
+      {
+        label: "Live Demo",
+        url: "https://plant-disease-detection-hknuvzcullqcrg7mzcrtyv.streamlit.app/",
       },
     ],
   },
 ];
 
-const PROJECT_COUNT_LABEL = String(
-  PROJECTS.length
-).padStart(2, "0");
+const PROJECT_COUNT_LABEL = String(PROJECTS.length).padStart(2, "0");
 
 function openProject(projectId) {
   window.location.hash = `#${projectId}`;
@@ -1274,14 +1056,9 @@ function openProject(projectId) {
 
 function Projects() {
   return (
-    <section
-      id="projects"
-      className="section projects-section"
-    >
+    <section id="projects" className="section projects-section">
       <div className="section-container">
-
         <Reveal>
-
           <div className="section-kicker">
             <span>04</span>
             PROJECTS
@@ -1294,161 +1071,102 @@ function Projects() {
           </h2>
 
           <p className="projects-intro">
-            Seven deployed applications — Python full-stack
-            apps with LLM integrations and Java full-stack
-            projects — covering REST APIs, relational
-            databases, authentication and Dockerized
-            deployments, end to end.
+            Eight deployed applications — Python full-stack apps
+            with LLM integrations, a CNN-based plant disease
+            detector, and Java full-stack projects — covering
+            REST APIs, relational databases, authentication,
+            deep learning and Dockerized deployments, end to end.
           </p>
-
         </Reveal>
 
         <div className="projects-showcase">
-
           {PROJECTS.map((project) => (
-
-            <Reveal
-              key={project.id}
-              className="project-showcase-card"
-            >
-
+            <Reveal key={project.id} className="project-showcase-card">
               <button
                 type="button"
                 className="project-visual"
-                onClick={() =>
-                  openProject(project.id)
-                }
+                onClick={() => openProject(project.id)}
                 aria-label={`View ${project.title}`}
               >
-
                 {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                  />
+                  <img src={project.image} alt={project.title} />
                 ) : (
                   <div className="project-visual-placeholder">
-                    <span>
-                      {project.title}
-                    </span>
-
-                    <p>
-                      Screenshot coming soon
-                    </p>
+                    <span>{project.title}</span>
+                    <p>Screenshot coming soon</p>
                   </div>
                 )}
 
                 <div className="project-image-shade" />
 
                 <div className="project-image-top">
-
-                  <span>
-                    {project.category}
-                  </span>
+                  <span>{project.category}</span>
 
                   <span>
                     {project.number} / {PROJECT_COUNT_LABEL}
                   </span>
-
                 </div>
 
                 <div className="project-view">
-
                   <strong>↗</strong>
                   View Project
-
                 </div>
-
               </button>
 
               <div className="project-information">
-
                 <div className="project-title-line">
+                  <h3>{project.title}</h3>
 
-                  <h3>
-                    {project.title}
-                  </h3>
-
-                  <span>
-                    {project.number}
-                  </span>
-
+                  <span>{project.number}</span>
                 </div>
 
                 <div className="project-tech-list">
-
                   {project.tech.map((tech) => (
-                    <span key={tech}>
-                      {tech}
-                    </span>
+                    <span key={tech}>{tech}</span>
                   ))}
-
                 </div>
 
-                {project.liveLinks &&
-                  project.liveLinks.length > 0 && (
-                    <div className="project-live-links">
+                {project.liveLinks && project.liveLinks.length > 0 && (
+                  <div className="project-live-links">
+                    <span className="live-label">LIVE</span>
 
-                      <span className="live-label">
-                        LIVE
-                      </span>
-
-                      <div className="live-link-list">
-
-                        {project.liveLinks.map(
-                          (link) => (
-                            <a
-                              key={link.label}
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(event) =>
-                                event.stopPropagation()
-                              }
-                            >
-                              {link.label}
-                              <span>↗</span>
-                            </a>
-                          )
-                        )}
-
-                      </div>
+                    <div className="live-link-list">
+                      {project.liveLinks.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          {link.label}
+                          <span>↗</span>
+                        </a>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )}
 
                 {project.backendNote && (
                   <div className="backend-note">
+                    <span aria-hidden="true">i</span>
 
-                    <span aria-hidden="true">
-                      i
-                    </span>
-
-                    <p>
-                      {project.backendNote}
-                    </p>
-
+                    <p>{project.backendNote}</p>
                   </div>
                 )}
 
                 <button
                   type="button"
                   className="project-open-button"
-                  onClick={() =>
-                    openProject(project.id)
-                  }
+                  onClick={() => openProject(project.id)}
                 >
                   Open Project
                   <span>↗</span>
                 </button>
-
               </div>
-
             </Reveal>
-
           ))}
-
         </div>
-
       </div>
     </section>
   );
@@ -1460,14 +1178,9 @@ function Projects() {
 
 function Education() {
   return (
-    <section
-      id="education"
-      className="section education-section"
-    >
+    <section id="education" className="section education-section">
       <div className="section-container">
-
         <Reveal>
-
           <div className="section-kicker">
             <span>05</span>
             EDUCATION
@@ -1478,51 +1191,33 @@ function Education() {
             <br />
             <span>started.</span>
           </h2>
-
         </Reveal>
 
         <Reveal className="education-main">
-
-          <div className="education-year">
-            2026
-          </div>
+          <div className="education-year">2026</div>
 
           <div className="education-info">
+            <span>B.E. — COMPUTER SCIENCE & ENGINEERING</span>
 
-            <span>
-              B.E. — COMPUTER SCIENCE & ENGINEERING
-            </span>
-
-            <h3>
-              ACS College of Engineering,
-              Bengaluru
-            </h3>
+            <h3>ACS College of Engineering, Bengaluru</h3>
 
             <p>
-              Bachelor of Engineering in Computer
-              Science & Engineering (2023 – 2026).
-              Preceded by a Diploma in Information
-              Science at PVP Polytechnic, Bengaluru
-              (2020 – 2023), completed with First
-              Class with Distinction.
+              Bachelor of Engineering in Computer Science &
+              Engineering (2023 – 2026). Preceded by a Diploma in
+              Information Science at PVP Polytechnic, Bengaluru
+              (2020 – 2023), completed with First Class with
+              Distinction.
             </p>
 
             <div className="education-bottom">
-
               <span>
                 CGPA: <strong>8.00 / 10</strong>
               </span>
 
-              <span>
-                Bengaluru, India
-              </span>
-
+              <span>Bengaluru, India</span>
             </div>
-
           </div>
-
         </Reveal>
-
       </div>
     </section>
   );
@@ -1534,8 +1229,7 @@ function Education() {
 
 const CERTIFICATIONS = [
   {
-    title:
-      "Green Skills & Artificial Intelligence",
+    title: "Green Skills & Artificial Intelligence",
     issuer:
       "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
     description:
@@ -1543,18 +1237,15 @@ const CERTIFICATIONS = [
   },
 
   {
-    title:
-      "Python Full Stack Software Development",
+    title: "Python Full Stack Software Development",
     issuer: "Qspiders Training Institute",
     description:
       "Structured training in full-stack Python development — from backend APIs to frontend integration.",
   },
 
   {
-    title:
-      "AI & Data Science Internship Certificates",
-    issuer:
-      "Knowx Innovations (P) Ltd.",
+    title: "AI & Data Science Internship Certificates",
+    issuer: "Knowx Innovations (P) Ltd.",
     description:
       "Two internship certificates covering Python, SQL, machine learning, OpenCV, Keras, TensorFlow and deep learning.",
   },
@@ -1563,37 +1254,27 @@ const CERTIFICATIONS = [
 const INTERNSHIP_CERTIFICATES = [
   {
     title: "AI Internship",
-    subtitle:
-      "MR. TechLab LLP (AppMind AI) · Jan 2026 – May 2026",
-    image:
-      "/certificates/appmind-ai-internship.jpg",
+    subtitle: "MR. TechLab LLP (AppMind AI) · Jan 2026 – May 2026",
+    image: "/certificates/appmind-ai-internship.jpg",
   },
 
   {
-    title:
-      "AI & Data Science Internship — Software Dev Project",
-    subtitle:
-      "Knowx Innovations (P) Ltd. · Mar 2023 – Jun 2023",
-    image:
-      "/certificates/knowx-software-dev-internship.jpg",
+    title: "AI & Data Science Internship — Software Dev Project",
+    subtitle: "Knowx Innovations (P) Ltd. · Mar 2023 – Jun 2023",
+    image: "/certificates/knowx-software-dev-internship.jpg",
   },
 
   {
-    title:
-      "AI & Data Science Internship — Training",
-    subtitle:
-      "Knowx Innovations (P) Ltd. · Oct 2022 – Jan 2023",
-    image:
-      "/certificates/knowx-training-internship.jpg",
+    title: "AI & Data Science Internship — Training",
+    subtitle: "Knowx Innovations (P) Ltd. · Oct 2022 – Jan 2023",
+    image: "/certificates/knowx-training-internship.jpg",
   },
 
   {
-    title:
-      "Green Skills & Generative AI Training",
+    title: "Green Skills & Generative AI Training",
     subtitle:
       "Skills4Future — Edunet Foundation, AICTE & Shell India Markets Pvt. Ltd.",
-    image:
-      "/certificates/skills4future-genai.jpg",
+    image: "/certificates/skills4future-genai.jpg",
   },
 ];
 
@@ -1604,9 +1285,7 @@ function Certifications() {
       className="section certification-section"
     >
       <div className="section-container">
-
         <Reveal>
-
           <div className="section-kicker">
             <span>06</span>
             CERTIFICATIONS
@@ -1615,78 +1294,41 @@ function Certifications() {
           <h2 className="massive-title">
             Proof of
             <br />
-            <span>
-              continuous learning.
-            </span>
+            <span>continuous learning.</span>
           </h2>
-
         </Reveal>
 
         <div className="certification-grid">
+          {CERTIFICATIONS.map((cert, index) => (
+            <Reveal key={cert.title} className="certificate-item">
+              <div className="certificate-number">0{index + 1}</div>
 
-          {CERTIFICATIONS.map(
-            (cert, index) => (
+              <div className="certificate-content">
+                <h3>{cert.title}</h3>
 
-              <Reveal
-                key={cert.title}
-                className="certificate-item"
-              >
+                <strong>{cert.issuer}</strong>
 
-                <div className="certificate-number">
-                  0{index + 1}
-                </div>
+                <p>{cert.description}</p>
+              </div>
 
-                <div className="certificate-content">
-
-                  <h3>
-                    {cert.title}
-                  </h3>
-
-                  <strong>
-                    {cert.issuer}
-                  </strong>
-
-                  <p>
-                    {cert.description}
-                  </p>
-
-                </div>
-
-                <div className="certificate-arrow">
-                  ↗
-                </div>
-
-              </Reveal>
-
-            )
-          )}
-
+              <div className="certificate-arrow">↗</div>
+            </Reveal>
+          ))}
         </div>
 
         <Reveal className="certificate-book-heading">
-
-          <h3>
-            Flip through my internship
-            certificates
-          </h3>
+          <h3>Flip through my internship certificates</h3>
 
           <p>
-            My three internship certificates and
-            my Skills4Future Generative AI training
-            certificate — click the arrows to turn
-            the page.
+            My three internship certificates and my Skills4Future
+            Generative AI training certificate — click the arrows
+            to turn the page.
           </p>
-
         </Reveal>
 
         <Reveal>
-          <CertificateBook
-            certificates={
-              INTERNSHIP_CERTIFICATES
-            }
-          />
+          <CertificateBook certificates={INTERNSHIP_CERTIFICATES} />
         </Reveal>
-
       </div>
     </section>
   );
@@ -1698,8 +1340,7 @@ function Certifications() {
 
 function CertificateBook({ certificates }) {
   const [index, setIndex] = useState(0);
-  const [flipDirection, setFlipDirection] =
-    useState(null);
+  const [flipDirection, setFlipDirection] = useState(null);
 
   const flipTimeoutRef = useRef(null);
 
@@ -1715,19 +1356,14 @@ function CertificateBook({ certificates }) {
 
     return () => {
       if (flipTimeoutRef.current) {
-        clearTimeout(
-          flipTimeoutRef.current
-        );
+        clearTimeout(flipTimeoutRef.current);
       }
     };
   }, [certificates]);
 
   const FLIP_DURATION_MS = 620;
 
-  const goToIndex = (
-    nextIndex,
-    direction
-  ) => {
+  const goToIndex = (nextIndex, direction) => {
     if (
       flipDirection ||
       nextIndex < 0 ||
@@ -1738,12 +1374,11 @@ function CertificateBook({ certificates }) {
 
     setFlipDirection(direction);
 
-    flipTimeoutRef.current =
-      setTimeout(() => {
-        setIndex(nextIndex);
-        setFlipDirection(null);
-        flipTimeoutRef.current = null;
-      }, FLIP_DURATION_MS);
+    flipTimeoutRef.current = setTimeout(() => {
+      setIndex(nextIndex);
+      setFlipDirection(null);
+      flipTimeoutRef.current = null;
+    }, FLIP_DURATION_MS);
   };
 
   const handlePrev = () => {
@@ -1765,48 +1400,32 @@ function CertificateBook({ certificates }) {
 
   return (
     <div className="certificate-book">
-
       <button
         type="button"
         className="book-arrow book-arrow-left"
         onClick={handlePrev}
-        disabled={
-          index === 0 ||
-          Boolean(flipDirection)
-        }
+        disabled={index === 0 || Boolean(flipDirection)}
         aria-label="Previous certificate"
       >
         ‹
       </button>
 
       <div className="book-frame">
-
         {incoming && (
           <div className="book-page book-page-under">
-            <CertificatePage
-              cert={incoming}
-            />
+            <CertificatePage cert={incoming} />
           </div>
         )}
 
         <div
           className={`book-page book-page-top ${
-            flipDirection === "next"
-              ? "flip-next"
-              : ""
-          } ${
-            flipDirection === "prev"
-              ? "flip-prev"
-              : ""
-          }`}
+            flipDirection === "next" ? "flip-next" : ""
+          } ${flipDirection === "prev" ? "flip-prev" : ""}`}
         >
-          <CertificatePage
-            cert={current}
-          />
+          <CertificatePage cert={current} />
         </div>
 
         <div className="book-spine" />
-
       </div>
 
       <button
@@ -1814,9 +1433,7 @@ function CertificateBook({ certificates }) {
         className="book-arrow book-arrow-right"
         onClick={handleNext}
         disabled={
-          index ===
-            certificates.length - 1 ||
-          Boolean(flipDirection)
+          index === certificates.length - 1 || Boolean(flipDirection)
         }
         aria-label="Next certificate"
       >
@@ -1824,58 +1441,34 @@ function CertificateBook({ certificates }) {
       </button>
 
       <div className="book-footer">
-
         <div
           className="book-dots"
           role="tablist"
           aria-label="Certificate pages"
         >
-
-          {certificates.map(
-            (cert, dotIndex) => (
-
-              <button
-                key={cert.title}
-                type="button"
-                className={
-                  dotIndex === index
-                    ? "active"
-                    : ""
+          {certificates.map((cert, dotIndex) => (
+            <button
+              key={cert.title}
+              type="button"
+              className={dotIndex === index ? "active" : ""}
+              onClick={() => {
+                if (flipDirection || dotIndex === index) {
+                  return;
                 }
-                onClick={() => {
-                  if (
-                    flipDirection ||
-                    dotIndex === index
-                  ) {
-                    return;
-                  }
 
-                  goToIndex(
-                    dotIndex,
-                    dotIndex > index
-                      ? "next"
-                      : "prev"
-                  );
-                }}
-                aria-label={`Go to certificate ${dotIndex + 1}`}
-                aria-selected={
-                  dotIndex === index
-                }
-                role="tab"
-              />
-
-            )
-          )}
-
+                goToIndex(dotIndex, dotIndex > index ? "next" : "prev");
+              }}
+              aria-label={`Go to certificate ${dotIndex + 1}`}
+              aria-selected={dotIndex === index}
+              role="tab"
+            />
+          ))}
         </div>
 
         <p className="book-page-count">
-          Page {index + 1} of{" "}
-          {certificates.length}
+          Page {index + 1} of {certificates.length}
         </p>
-
       </div>
-
     </div>
   );
 }
@@ -1883,36 +1476,25 @@ function CertificateBook({ certificates }) {
 function CertificatePage({ cert }) {
   return (
     <div className="book-page-inner">
-
       <div className="book-page-image-wrap">
-
         <img
           src={cert.image}
           alt={cert.title}
           onError={(event) => {
-            event.currentTarget.style.display =
-              "none";
+            event.currentTarget.style.display = "none";
 
             event.currentTarget.parentElement?.classList.add(
               "book-page-missing"
             );
           }}
         />
-
       </div>
 
       <div className="book-page-caption">
+        <h4>{cert.title}</h4>
 
-        <h4>
-          {cert.title}
-        </h4>
-
-        <p>
-          {cert.subtitle}
-        </p>
-
+        <p>{cert.subtitle}</p>
       </div>
-
     </div>
   );
 }
@@ -1923,10 +1505,7 @@ function CertificatePage({ cert }) {
 
 function Contact() {
   return (
-    <section
-      id="contact"
-      className="section contact-section"
-    >
+    <section id="contact" className="section contact-section">
       <div className="contact-background">
         <div />
         <div />
@@ -1934,28 +1513,21 @@ function Contact() {
       </div>
 
       <div className="contact-inner">
-
         <Reveal>
-
           <div className="section-kicker contact-kicker">
-
             <span>07</span>
             CONTACT
-
           </div>
 
           <h2>
             Let's build
             <br />
-            <span>
-              something together.
-            </span>
+            <span>something together.</span>
           </h2>
 
           <p>
-            Open to Python Developer roles. Whether
-            it's a quick question or a project
-            idea, my inbox is open.
+            Open to Python Developer roles. Whether it's a quick
+            question or a project idea, my inbox is open.
           </p>
 
           <a
@@ -1967,19 +1539,12 @@ function Contact() {
           </a>
 
           <div className="contact-details">
+            <span>Bengaluru, Karnataka, India</span>
 
-            <span>
-              Bengaluru, Karnataka, India
-            </span>
-
-            <span>
-              +91 73376 34886
-            </span>
-
+            <span>+91 73376 34886</span>
           </div>
 
           <div className="social-links">
-
             <a
               href="https://www.linkedin.com/in/rahul-s-6460b1238"
               target="_blank"
@@ -1995,11 +1560,8 @@ function Contact() {
             >
               GitHub
             </a>
-
           </div>
-
         </Reveal>
-
       </div>
     </section>
   );
@@ -2012,19 +1574,13 @@ function Contact() {
 function Footer() {
   return (
     <footer className="footer">
-
       <div>
         RAHUL<span>.</span>
       </div>
 
-      <p>
-        Built with React.js
-      </p>
+      <p>Built with React.js</p>
 
-      <span>
-        © 2026 Rahul S. All rights reserved.
-      </span>
-
+      <span>© 2026 Rahul S. All rights reserved.</span>
     </footer>
   );
 }
