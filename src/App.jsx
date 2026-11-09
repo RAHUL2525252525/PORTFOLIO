@@ -112,7 +112,7 @@ function useHashRoute() {
 }
 
 /* =========================================================
-   3D HELPERS
+   SCROLL REVEAL (opacity + translate only, so it stays cheap)
    ========================================================= */
 
 function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
@@ -129,7 +129,7 @@ function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
           observer.disconnect();
         }
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
     observer.observe(element);
     return () => observer.disconnect();
@@ -139,92 +139,6 @@ function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
     <Tag ref={ref} className={`reveal ${inView ? "in-view" : ""} ${className}`} {...rest}>
       {children}
     </Tag>
-  );
-}
-
-/* Mouse-driven 3D tilt with a moving highlight */
-function Tilt({ as: Tag = "div", className = "", max = 9, children, ...rest }) {
-  const ref = useRef(null);
-
-  const onMove = (event) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (event.clientX - r.left) / r.width - 0.5;
-    const y = (event.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty("--ry", `${x * max * 2}deg`);
-    el.style.setProperty("--rx", `${-y * max * 2}deg`);
-    el.style.setProperty("--mx", `${(x + 0.5) * 100}%`);
-    el.style.setProperty("--my", `${(y + 0.5) * 100}%`);
-  };
-
-  const onLeave = () => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.setProperty("--ry", "0deg");
-    el.style.setProperty("--rx", "0deg");
-  };
-
-  return (
-    <Tag ref={ref} className={`tilt ${className}`} onMouseMove={onMove} onMouseLeave={onLeave} {...rest}>
-      {children}
-    </Tag>
-  );
-}
-
-/* A real CSS-3D cube */
-function Cube({ className = "", faces = [] }) {
-  return (
-    <div className={`cube ${className}`} aria-hidden="true">
-      <div className="cube-body">
-        {["front", "back", "right", "left", "top", "bottom"].map((side, i) => (
-          <span key={side} className={`cube-face face-${side}`}>
-            {faces[i] || ""}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* Page-wide pointer + scroll parallax feeding CSS variables */
-function usePointerFx() {
-  useEffect(() => {
-    const root = document.documentElement;
-    let raf = 0;
-
-    const onMove = (e) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        root.style.setProperty("--px", ((e.clientX / window.innerWidth) - 0.5).toFixed(3));
-        root.style.setProperty("--py", ((e.clientY / window.innerHeight) - 0.5).toFixed(3));
-        root.style.setProperty("--cx", `${e.clientX}px`);
-        root.style.setProperty("--cy", `${e.clientY}px`);
-      });
-    };
-    const onScroll = () => root.style.setProperty("--sy", String(window.scrollY));
-
-    window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-}
-
-function Scene() {
-  return (
-    <div className="scene" aria-hidden="true">
-      <div className="scene-floor" />
-      <div className="scene-orb orb-a" />
-      <div className="scene-orb orb-b" />
-      <div className="scene-orb orb-c" />
-      <div className="cursor-glow" />
-    </div>
   );
 }
 
@@ -240,17 +154,11 @@ export default function App() {
     return <ProjectPage />;
   }
 
-  return <Portfolio />;
-}
-
-function Portfolio() {
-  usePointerFx();
-
   return (
     <div className="portfolio">
-      <Scene />
       <Navbar />
       <Hero />
+      <Ticker />
       <About />
       <Skills />
       <Experience />
@@ -264,18 +172,11 @@ function Portfolio() {
 }
 
 /* =========================================================
-   NAVBAR — floating glass dock
+   NAVBAR
    ========================================================= */
 
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleNavClick = (event, sectionId) => {
     event.preventDefault();
@@ -301,12 +202,11 @@ function Navbar() {
   const links = ["about", "skills", "experience", "projects", "education", "certifications", "contact"];
 
   return (
-    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+    <nav className="navbar">
       <div className="nav-container">
         <a href="#" className="nav-logo" onClick={handleLogoClick} aria-label="Go to homepage">
-          <span className="logo-cube" />
-          <span className="logo-name">Rahul</span>
-          <span className="logo-dot">.</span>
+          <span className="logo-box">R</span>
+          <span className="logo-name">Rahul S.</span>
         </a>
 
         <div id="main-navigation" className={`nav-links ${mobileMenu ? "mobile-open" : ""}`}>
@@ -318,8 +218,7 @@ function Navbar() {
         </div>
 
         <a href="#contact" className="nav-contact" onClick={(e) => handleNavClick(e, "contact")}>
-          Let's Talk
-          <span>↗</span>
+          Let's Talk <span>↗</span>
         </a>
 
         <button
@@ -340,26 +239,164 @@ function Navbar() {
 }
 
 /* =========================================================
-   HERO — orbiting tech ring + floating cubes
+   HERO — a real 3D particle globe drawn on one <canvas>
+   Pauses when off-screen or when the tab is hidden.
    ========================================================= */
 
-const ORBIT_CHIPS = ["Python", "FastAPI", "Flask", "Django", "React", "Docker"];
+function Globe() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    const N = 480;
+    const pts = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      const y = 1 - (i / (N - 1)) * 2;
+      const r = Math.sqrt(1 - y * y);
+      const theta = i * 2.399963;
+      pts[i * 3] = Math.cos(theta) * r;
+      pts[i * 3 + 1] = y;
+      pts[i * 3 + 2] = Math.sin(theta) * r;
+    }
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let size = 0;
+    let dpr = 1;
+    let rotY = 0;
+    let rotX = 0.35;
+    let targetX = 0.35;
+    let targetY = 0;
+    let t = 0;
+    let raf = 0;
+    let visible = true;
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      size = canvas.clientWidth;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    };
+
+    const onMove = (e) => {
+      targetX = 0.35 + (e.clientY / window.innerHeight - 0.5) * 0.7;
+      targetY = (e.clientX / window.innerWidth - 0.5) * 1.2;
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, size, size);
+      const c = size / 2;
+      const R = size * 0.38;
+      const sinY = Math.sin(rotY);
+      const cosY = Math.cos(rotY);
+      const sinX = Math.sin(rotX);
+      const cosX = Math.cos(rotX);
+
+      const front = [];
+      const mid = [];
+      const back = [];
+
+      for (let i = 0; i < N; i++) {
+        const x = pts[i * 3];
+        const y = pts[i * 3 + 1];
+        const z = pts[i * 3 + 2];
+        const x1 = x * cosY + z * sinY;
+        const z1 = -x * sinY + z * cosY;
+        const y1 = y * cosX - z1 * sinX;
+        const z2 = y * sinX + z1 * cosX;
+        const p = 1 / (1 - z2 * 0.25);
+        const sx = c + x1 * R * p;
+        const sy = c + y1 * R * p;
+        const s = (z2 + 1.5) * 1.7;
+        const item = [sx, sy, s];
+        if (z2 > 0.35) front.push(item);
+        else if (z2 > -0.3) mid.push(item);
+        else back.push(item);
+      }
+
+      ctx.fillStyle = "rgba(255,248,231,0.35)";
+      for (const [x, y, s] of back) ctx.fillRect(x, y, s, s);
+      ctx.fillStyle = "rgba(255,248,231,0.8)";
+      for (const [x, y, s] of mid) ctx.fillRect(x, y, s, s);
+      ctx.fillStyle = "#ffe14d";
+      for (const [x, y, s] of front) ctx.fillRect(x, y, s * 1.2, s * 1.2);
+
+      /* orbit ring + satellite */
+      ctx.strokeStyle = "rgba(255,248,231,0.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(c, c, size * 0.47, size * 0.14, -0.35, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const sat = t * 0.9;
+      const ex = Math.cos(sat) * size * 0.47;
+      const ey = Math.sin(sat) * size * 0.14;
+      const sxp = c + ex * Math.cos(-0.35) - ey * Math.sin(-0.35);
+      const syp = c + ex * Math.sin(-0.35) + ey * Math.cos(-0.35);
+      ctx.fillStyle = "#ff8fd0";
+      ctx.fillRect(sxp - 7, syp - 7, 14, 14);
+    };
+
+    const loop = () => {
+      raf = 0;
+      if (!visible || document.hidden) return;
+      t += 0.016;
+      rotY += 0.004 + targetY * 0.02;
+      rotX += (targetX - rotX) * 0.05;
+      draw();
+      raf = requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      if (!raf && !reduce) raf = requestAnimationFrame(loop);
+    };
+
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) start();
+    });
+    io.observe(canvas);
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    const onVisibility = () => !document.hidden && start();
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("visibilitychange", onVisibility);
+    resize();
+    start();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      ro.disconnect();
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="globe-canvas" aria-hidden="true" />;
+}
+
+const STICKERS = ["Python", "FastAPI", "Django", "React", "Docker"];
 
 function Hero() {
   return (
     <section className="hero-section">
-      <Cube className="hero-cube hc-1" faces={["Py", "API", "SQL", "JWT", "AI", "CI"]} />
-      <Cube className="hero-cube hc-2" />
-      <Cube className="hero-cube hc-3" />
-
       <div className="hero-content">
         <div className="hero-main">
           <Reveal className="hero-copy">
             <p className="hero-eyebrow">Python developer · Bengaluru</p>
 
             <h1>
-              <span className="h1-line">Rahul</span>
-              <span className="h1-line h1-outline">S.</span>
+              Rahul
+              <br />
+              <span>S.</span>
             </h1>
 
             <p className="hero-title">Python Developer</p>
@@ -381,8 +418,7 @@ function Hero() {
                   window.location.hash = "#projects";
                 }}
               >
-                View Projects
-                <span>↗</span>
+                View Projects <span>↗</span>
               </a>
 
               <a
@@ -407,36 +443,20 @@ function Hero() {
           </Reveal>
 
           <Reveal className="hero-profile-area">
-            <div className="orbit-stage">
-              <div className="orbit-ring">
-                {ORBIT_CHIPS.map((chip, i) => (
-                  <span key={chip} className="orbit-chip" style={{ "--i": i }}>
-                    {chip}
-                  </span>
-                ))}
-              </div>
-              <div className="orbit-ring orbit-ring-b">
-                {ORBIT_CHIPS.map((chip, i) => (
-                  <span key={chip} className="orbit-dot" style={{ "--i": i }} />
-                ))}
+            <div className="globe-wrap">
+              <Globe />
+
+              <div className="profile-frame">
+                <img src="/rahul-profile.jpg" alt="Rahul S" className="profile-image" />
               </div>
 
-              <Tilt className="profile-frame" max={14}>
-                <div className="profile-inner">
-                  <img src="/rahul-profile.jpg" alt="Rahul S" className="profile-image" />
-                </div>
-                <div className="profile-shine" />
-              </Tilt>
+              {STICKERS.map((s, i) => (
+                <span key={s} className={`sticker sticker-${i}`}>
+                  {s}
+                </span>
+              ))}
             </div>
           </Reveal>
-        </div>
-
-        <div className="hero-bottom">
-          <span>Scroll to explore</span>
-          <div className="scroll-line">
-            <span />
-          </div>
-          <span>2026</span>
         </div>
       </div>
     </section>
@@ -444,10 +464,45 @@ function Hero() {
 }
 
 /* =========================================================
-   ABOUT
+   TICKER (CSS transform animation, GPU only)
+   ========================================================= */
+
+const TICKER_ITEMS = [
+  "Python", "FastAPI", "Flask", "Django REST", "React.js", "Spring Boot",
+  "PostgreSQL", "MySQL", "Docker", "GitHub Actions", "Gemini API", "TensorFlow",
+];
+
+function Ticker() {
+  return (
+    <div className="ticker" aria-hidden="true">
+      <div className="ticker-track">
+        {[0, 1].map((copy) => (
+          <div className="ticker-group" key={copy}>
+            {TICKER_ITEMS.map((item) => (
+              <span key={`${copy}-${item}`}>
+                {item}
+                <b>✦</b>
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   ABOUT — stat cards flip in CSS 3D (hover / tap / focus)
    ========================================================= */
 
 function About() {
+  const stats = [
+    ["8", "Live deployed applications", "Python, ML and Java projects running on Render, Vercel and Streamlit."],
+    ["90%+", "CNN accuracy on major project", "Plant Disease Detection, trained on a 1.5 GB Kaggle leaf dataset."],
+    ["6", "Python & ML applications", "AI Exam Companion, ResumeIQ, Life Decision Assistant, Analytics Dashboard, GymSync and Plant Disease Detection."],
+    ["3", "Internship experiences", "AppMind AI, plus two phases at Knowx Innovations."],
+  ];
+
   return (
     <section id="about" className="section about-section">
       <div className="section-container">
@@ -460,7 +515,7 @@ function About() {
           <h2 className="massive-title">
             Engineer first.
             <br />
-            <span>Builder always.</span>
+            <em>Builder always.</em>
           </h2>
         </Reveal>
 
@@ -493,16 +548,18 @@ function About() {
           </Reveal>
 
           <Reveal className="about-stats">
-            {[
-              ["8", "Live deployed applications"],
-              ["90%+", "CNN accuracy on major project"],
-              ["6", "Python & ML applications"],
-              ["3", "Internship experiences"],
-            ].map(([value, label]) => (
-              <Tilt key={label} className="stat-card">
-                <strong>{value}</strong>
-                <span>{label}</span>
-              </Tilt>
+            {stats.map(([value, label, more]) => (
+              <div key={label} className="flip" tabIndex={0}>
+                <div className="flip-inner">
+                  <div className="flip-face flip-front">
+                    <strong>{value}</strong>
+                    <span>{label}</span>
+                  </div>
+                  <div className="flip-face flip-back">
+                    <p>{more}</p>
+                  </div>
+                </div>
+              </div>
             ))}
           </Reveal>
         </div>
@@ -512,7 +569,7 @@ function About() {
 }
 
 /* =========================================================
-   SKILLS — tilting depth cards
+   SKILLS — bento grid
    ========================================================= */
 
 function Skills() {
@@ -573,27 +630,25 @@ function Skills() {
           <h2 className="massive-title">
             Tools I use to
             <br />
-            <span>ship software.</span>
+            <em>ship software.</em>
           </h2>
         </Reveal>
 
         <div className="skills-list">
           {groups.map((group) => (
-            <Reveal key={group.title} className="skill-wrap">
-              <Tilt className="skill-row" max={6}>
-                <div className="skill-number">{group.number}</div>
+            <Reveal key={group.title} className={`skill-row skill-${group.number}`}>
+              <div className="skill-number">{group.number}</div>
 
-                <div className="skill-heading">
-                  <h3>{group.title}</h3>
-                  <p>{group.description}</p>
-                </div>
+              <div className="skill-heading">
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
+              </div>
 
-                <div className="skill-items">
-                  {group.items.map((skill) => (
-                    <span key={skill}>{skill}</span>
-                  ))}
-                </div>
-              </Tilt>
+              <div className="skill-items">
+                {group.items.map((skill) => (
+                  <span key={skill}>{skill}</span>
+                ))}
+              </div>
             </Reveal>
           ))}
         </div>
@@ -603,7 +658,7 @@ function Skills() {
 }
 
 /* =========================================================
-   EXPERIENCE — a true sequence, so the timeline is numbered
+   EXPERIENCE — cards stack up as you scroll (sticky, CSS only)
    ========================================================= */
 
 function Experience() {
@@ -659,35 +714,37 @@ function Experience() {
           <h2 className="massive-title">
             Where I learned
             <br />
-            <span>to build.</span>
+            <em>to build.</em>
           </h2>
         </Reveal>
 
         <div className="experience-list">
-          {experiences.map((experience) => (
-            <Reveal key={`${experience.company}-${experience.date}`} className="experience-wrap">
-              <Tilt className="experience-main-card" max={4}>
-                <div className="experience-top">
-                  <div>
-                    <span className="experience-type">{experience.type}</span>
-                    <h3>{experience.role}</h3>
-                    <p className="experience-company">{experience.company}</p>
-                  </div>
-                  <span className="experience-date">{experience.date}</span>
+          {experiences.map((experience, i) => (
+            <article
+              key={`${experience.company}-${experience.date}`}
+              className="experience-main-card"
+              style={{ "--i": i }}
+            >
+              <div className="experience-top">
+                <div>
+                  <span className="experience-type">{experience.type}</span>
+                  <h3>{experience.role}</h3>
+                  <p className="experience-company">{experience.company}</p>
                 </div>
+                <span className="experience-date">{experience.date}</span>
+              </div>
 
-                <div className="experience-divider" />
+              <div className="experience-divider" />
 
-                <div className="experience-content">
-                  <p className="experience-summary">{experience.summary}</p>
-                  <ul>
-                    {experience.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Tilt>
-            </Reveal>
+              <div className="experience-content">
+                <p className="experience-summary">{experience.summary}</p>
+                <ul>
+                  {experience.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
           ))}
         </div>
       </div>
@@ -796,25 +853,137 @@ function openProject(projectId) {
   window.location.hash = `#${projectId}`;
 }
 
-/* 3D cylinder carousel: cards sit on a ring and the ring rotates */
+/*
+  Swipe deck: native scroll-snap does the swiping (momentum on touch,
+  trackpads and wheels). A rAF-throttled scroll handler writes the 3D
+  coverflow transform straight to the DOM, so React never re-renders
+  while you swipe. Mouse users can click-and-drag.
+*/
 function Projects() {
   const N = PROJECTS.length;
-  const [turn, setTurn] = useState(0);
-  const active = ((turn % N) + N) % N;
-  const project = PROJECTS[active];
-  const touchX = useRef(null);
+  const deckRef = useRef(null);
+  const cardRefs = useRef([]);
+  const activeRef = useRef(0);
+  const metrics = useRef({ w: 0, step: 1, vw: 0, lefts: [] });
+  const drag = useRef({ down: false, x: 0, left: 0, moved: false });
+  const [active, setActive] = useState(0);
 
-  const go = (index) => {
-    let d = index - active;
-    if (d > N / 2) d -= N;
-    if (d < -N / 2) d += N;
-    setTurn((t) => t + d);
+  useEffect(() => {
+    const deck = deckRef.current;
+    if (!deck) return;
+    let raf = 0;
+
+    const measure = () => {
+      const cards = cardRefs.current;
+      if (!cards[0]) return;
+      const w = cards[0].offsetWidth;
+      const gap = cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft - w : 0;
+      metrics.current = {
+        w,
+        step: w + gap,
+        vw: deck.clientWidth,
+        lefts: cards.map((c) => c.offsetLeft),
+      };
+    };
+
+    const update = () => {
+      raf = 0;
+      const { w, step, vw, lefts } = metrics.current;
+      const sl = deck.scrollLeft;
+      const mid = sl + vw / 2;
+      const cards = cardRefs.current;
+
+      for (let i = 0; i < cards.length; i++) {
+        const d = (lefts[i] + w / 2 - mid) / step;
+        const a = Math.min(Math.abs(d), 2);
+        const scale = 1 - Math.min(a, 1) * 0.12;
+        cards[i].style.transform = `perspective(1100px) translateZ(${(-a * 60).toFixed(1)}px) rotateY(${(-d * 24).toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        cards[i].style.opacity = (1 - a * 0.3).toFixed(2);
+        cards[i].style.zIndex = String(10 - Math.round(a * 4));
+      }
+
+      const idx = Math.max(0, Math.min(cards.length - 1, Math.round(sl / step)));
+      if (idx !== activeRef.current) {
+        activeRef.current = idx;
+        setActive(idx);
+      }
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    const onResize = () => {
+      measure();
+      update();
+    };
+
+    /* mouse drag-to-swipe (touch already swipes natively) */
+    const onDown = (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      drag.current = { down: true, x: e.clientX, left: deck.scrollLeft, moved: false };
+    };
+    const onMove = (e) => {
+      const d = drag.current;
+      if (!d.down) return;
+      const dx = e.clientX - d.x;
+      if (!d.moved && Math.abs(dx) > 5) {
+        d.moved = true;
+        deck.classList.add("dragging");
+      }
+      if (d.moved) deck.scrollLeft = d.left - dx;
+    };
+    const onUp = () => {
+      const d = drag.current;
+      if (!d.down) return;
+      d.down = false;
+      if (d.moved) {
+        deck.classList.remove("dragging");
+        const { step } = metrics.current;
+        deck.scrollTo({ left: Math.round(deck.scrollLeft / step) * step, behavior: "smooth" });
+        setTimeout(() => (d.moved = false), 0);
+      }
+    };
+
+    const ro = new ResizeObserver(onResize);
+    ro.observe(deck);
+    measure();
+    update();
+
+    deck.addEventListener("scroll", onScroll, { passive: true });
+    deck.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      deck.removeEventListener("scroll", onScroll);
+      deck.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, []);
+
+  const goTo = (index) => {
+    const deck = deckRef.current;
+    if (!deck) return;
+    const i = Math.max(0, Math.min(N - 1, index));
+    deck.scrollTo({ left: i * metrics.current.step, behavior: "smooth" });
   };
 
   const onKeyDown = (e) => {
-    if (e.key === "ArrowRight") setTurn((t) => t + 1);
-    if (e.key === "ArrowLeft") setTurn((t) => t - 1);
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      goTo(active + 1);
+    }
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      goTo(active - 1);
+    }
   };
+
+  const project = PROJECTS[active];
 
   return (
     <section id="projects" className="section projects-section">
@@ -828,79 +997,75 @@ function Projects() {
           <h2 className="massive-title">
             Things I've
             <br />
-            <span>built and shipped.</span>
+            <em>built and shipped.</em>
           </h2>
 
           <p className="projects-intro">
             Eight deployed applications — Python full-stack apps with LLM integrations, a CNN-based plant
             disease detector, and Java full-stack projects — covering REST APIs, relational databases,
-            authentication, deep learning and Dockerized deployments, end to end.
+            authentication, deep learning and Dockerized deployments, end to end. Swipe or drag to browse.
           </p>
         </Reveal>
+      </div>
 
+      <div className="deck-wrap">
         <div
-          className="ring-stage"
+          className="deck"
+          ref={deckRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
-          onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
-          onTouchEnd={(e) => {
-            if (touchX.current === null) return;
-            const dx = e.changedTouches[0].clientX - touchX.current;
-            if (Math.abs(dx) > 40) setTurn((t) => t + (dx < 0 ? 1 : -1));
-            touchX.current = null;
-          }}
-          aria-label="Project carousel. Use arrow keys to rotate."
+          aria-label="Project deck. Swipe, drag or use arrow keys."
         >
-          <div className="ring-floor" />
-
-          <div className="ring-track" style={{ "--theta": `${360 / N}deg`, "--turn": turn }}>
-            {PROJECTS.map((p, i) => (
-              <div
-                key={p.id}
-                className={`ring-card ${i === active ? "is-active" : ""}`}
-                style={{ "--i": i }}
-                role="button"
-                tabIndex={-1}
-                aria-label={i === active ? `View ${p.title}` : `Rotate to ${p.title}`}
-                onClick={() => (i === active ? openProject(p.id) : go(i))}
-              >
-                {p.image ? (
-                  <img src={p.image} alt={p.title} draggable="false" />
-                ) : (
-                  <div className="project-visual-placeholder">
-                    <span>{p.title}</span>
-                    <p>Screenshot coming soon</p>
-                  </div>
-                )}
-                <div className="ring-card-shade" />
-                <div className="ring-card-top">
-                  <span>{p.category}</span>
-                  <span>
-                    {p.number} / {PROJECT_COUNT_LABEL}
-                  </span>
+          {PROJECTS.map((p, i) => (
+            <div
+              key={p.id}
+              ref={(el) => (cardRefs.current[i] = el)}
+              className={`deck-card ${i === active ? "is-active" : ""}`}
+              role="button"
+              aria-label={i === active ? `View ${p.title}` : `Show ${p.title}`}
+              onClick={() => {
+                if (drag.current.moved) return;
+                if (i === active) openProject(p.id);
+                else goTo(i);
+              }}
+            >
+              {p.image ? (
+                <img src={p.image} alt={p.title} draggable="false" loading="lazy" decoding="async" />
+              ) : (
+                <div className="project-visual-placeholder">
+                  <span>{p.title}</span>
+                  <p>Screenshot coming soon</p>
                 </div>
-                <div className="ring-card-bottom">
-                  <h3>{p.title}</h3>
-                  {i === active && (
-                    <div className="project-view">
-                      <strong>↗</strong>
-                      View Project
-                    </div>
-                  )}
+              )}
+
+              <div className="deck-card-top">
+                <span>{p.category}</span>
+                <span>
+                  {p.number} / {PROJECT_COUNT_LABEL}
+                </span>
+              </div>
+
+              <div className="deck-card-bottom">
+                <h3>{p.title}</h3>
+                <div className="project-view">
+                  <strong>↗</strong>
+                  View Project
                 </div>
               </div>
-            ))}
-          </div>
-
-          <button type="button" className="ring-arrow ring-prev" onClick={() => setTurn((t) => t - 1)} aria-label="Previous project">
-            ‹
-          </button>
-          <button type="button" className="ring-arrow ring-next" onClick={() => setTurn((t) => t + 1)} aria-label="Next project">
-            ›
-          </button>
+            </div>
+          ))}
         </div>
 
-        <div className="ring-dots" role="tablist" aria-label="Projects">
+        <button type="button" className="deck-arrow deck-prev" onClick={() => goTo(active - 1)} disabled={active === 0} aria-label="Previous project">
+          ‹
+        </button>
+        <button type="button" className="deck-arrow deck-next" onClick={() => goTo(active + 1)} disabled={active === N - 1} aria-label="Next project">
+          ›
+        </button>
+      </div>
+
+      <div className="section-container">
+        <div className="deck-progress" role="tablist" aria-label="Projects">
           {PROJECTS.map((p, i) => (
             <button
               key={p.id}
@@ -909,12 +1074,12 @@ function Projects() {
               aria-selected={i === active}
               aria-label={p.title}
               className={i === active ? "active" : ""}
-              onClick={() => go(i)}
+              onClick={() => goTo(i)}
             />
           ))}
         </div>
 
-        <Tilt className="project-information" key={project.id} max={3}>
+        <div className="project-information" key={project.id}>
           <div className="project-title-line">
             <h3>{project.title}</h3>
             <span>{project.number}</span>
@@ -952,7 +1117,7 @@ function Projects() {
             Open Project
             <span>↗</span>
           </button>
-        </Tilt>
+        </div>
       </div>
     </section>
   );
@@ -975,33 +1140,31 @@ function Education() {
           <h2 className="massive-title">
             Where it
             <br />
-            <span>started.</span>
+            <em>started.</em>
           </h2>
         </Reveal>
 
-        <Reveal className="education-wrap">
-          <Tilt className="education-main" max={4}>
-            <div className="education-year">2026</div>
+        <Reveal className="education-main">
+          <div className="education-year">2026</div>
 
-            <div className="education-info">
-              <span>B.E. — Computer Science &amp; Engineering</span>
+          <div className="education-info">
+            <span>B.E. — Computer Science &amp; Engineering</span>
 
-              <h3>ACS College of Engineering, Bengaluru</h3>
+            <h3>ACS College of Engineering, Bengaluru</h3>
 
-              <p>
-                Bachelor of Engineering in Computer Science &amp; Engineering (2023 – 2026). Preceded by a
-                Diploma in Information Science at PVP Polytechnic, Bengaluru (2020 – 2023), completed with
-                First Class with Distinction.
-              </p>
+            <p>
+              Bachelor of Engineering in Computer Science &amp; Engineering (2023 – 2026). Preceded by a
+              Diploma in Information Science at PVP Polytechnic, Bengaluru (2020 – 2023), completed with
+              First Class with Distinction.
+            </p>
 
-              <div className="education-bottom">
-                <span>
-                  CGPA: <strong>8.00 / 10</strong>
-                </span>
-                <span>Bengaluru, India</span>
-              </div>
+            <div className="education-bottom">
+              <span>
+                CGPA: <strong>8.00 / 10</strong>
+              </span>
+              <span>Bengaluru, India</span>
             </div>
-          </Tilt>
+          </div>
         </Reveal>
       </div>
     </section>
@@ -1069,24 +1232,22 @@ function Certifications() {
           <h2 className="massive-title">
             Proof of
             <br />
-            <span>continuous learning.</span>
+            <em>continuous learning.</em>
           </h2>
         </Reveal>
 
         <div className="certification-grid">
           {CERTIFICATIONS.map((cert, index) => (
-            <Reveal key={cert.title} className="certificate-wrap">
-              <Tilt className="certificate-item" max={7}>
-                <div className="certificate-number">0{index + 1}</div>
+            <Reveal key={cert.title} className="certificate-item">
+              <div className="certificate-number">0{index + 1}</div>
 
-                <div className="certificate-content">
-                  <h3>{cert.title}</h3>
-                  <strong>{cert.issuer}</strong>
-                  <p>{cert.description}</p>
-                </div>
+              <div className="certificate-content">
+                <h3>{cert.title}</h3>
+                <strong>{cert.issuer}</strong>
+                <p>{cert.description}</p>
+              </div>
 
-                <div className="certificate-arrow">↗</div>
-              </Tilt>
+              <div className="certificate-arrow">↗</div>
             </Reveal>
           ))}
         </div>
@@ -1244,9 +1405,6 @@ function CertificatePage({ cert }) {
 function Contact() {
   return (
     <section id="contact" className="section contact-section">
-      <Cube className="contact-cube cc-1" faces={["Hi", "✉", "↗", "Py", "AI", "★"]} />
-      <Cube className="contact-cube cc-2" />
-
       <div className="contact-inner">
         <Reveal>
           <div className="section-kicker contact-kicker">
@@ -1257,7 +1415,7 @@ function Contact() {
           <h2>
             Let's build
             <br />
-            <span>something together.</span>
+            <em>something together.</em>
           </h2>
 
           <p>Open to Python Developer roles. Whether it's a quick question or a project idea, my inbox is open.</p>
