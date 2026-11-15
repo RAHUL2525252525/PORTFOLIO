@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import ShopSphere from "./projects/ShopSphere";
 import BankSphere from "./projects/BankSphere";
@@ -72,14 +72,8 @@ function useHashRoute() {
   return route;
 }
 
-const openProject = (id) => {
-  window.location.hash = `#${id}`;
-};
-
-const goTo = (id) => {
-  if (getHashRoute() === id) scrollToSection(id, true);
-  else window.location.hash = `#${id}`;
-};
+const openProject = (id) => { window.location.hash = `#${id}`; };
+const goTo = (id) => { if (getHashRoute() === id) scrollToSection(id, true); else window.location.hash = `#${id}`; };
 
 /* ---------- DATA ---------- */
 
@@ -87,7 +81,15 @@ const EMAIL = "srinivasrahul838@gmail.com";
 const GITHUB = "https://github.com/RAHUL2525252525";
 const LINKEDIN = "https://www.linkedin.com/in/rahul-s-6460b1238";
 const NAV = ["about", "skills", "experience", "projects", "education", "certifications", "contact"];
-const ROLES = ["Python Developer", "FastAPI · Flask · Django REST", "LLM-powered app builder", "CNN model trainer"];
+
+/* hero exploded view, bottom to top */
+const LAYERS = [
+  { name: "Deploy", sub: "ship it", chips: ["Docker", "GitHub Actions", "Render", "Vercel"] },
+  { name: "Data", sub: "store it", chips: ["PostgreSQL", "MySQL", "Firebase"] },
+  { name: "API", sub: "secure it", chips: ["FastAPI", "Flask", "Django REST", "JWT"] },
+  { name: "AI", sub: "make it smart", chips: ["Gemini", "Groq", "OpenRouter", "CNN"] },
+  { name: "Interface", sub: "show it", chips: ["React.js", "JavaScript", "Streamlit"] },
+];
 
 const SKILLS = [
   { title: "Languages & frontend", items: ["Python", "SQL", "JavaScript", "Java", "React.js", "HTML5", "CSS3", "Streamlit"] },
@@ -99,13 +101,9 @@ const SKILLS = [
   { title: "AI & ML", items: ["Gemini API", "Groq API", "OpenRouter API", "TensorFlow", "Keras", "CNN", "OpenCV"] },
 ];
 
-const MARQUEE = ["Python", "FastAPI", "Flask", "Django REST", "React.js", "PostgreSQL", "MySQL", "Docker", "GitHub Actions", "JWT", "Gemini API", "Groq", "TensorFlow", "Spring Boot", "Firebase", "OpenCV"];
-
 const EXPERIENCES = [
   {
-    date: "Jan – May 2026",
-    role: "AI Intern",
-    company: "MR. TechLab LLP (AppMind AI), Bengaluru",
+    date: "Jan – May 2026", role: "AI Intern", company: "MR. TechLab LLP (AppMind AI), Bengaluru",
     points: [
       "Built and deployed 3 full-stack web apps using Flask, Firebase and Google Authentication; containerised with Docker and hosted on Vercel (frontend) and Render (backend).",
       "Developed an AI Exam Companion: a Groq-powered chatbot with a performance dashboard and mock tests.",
@@ -113,18 +111,14 @@ const EXPERIENCES = [
     ],
   },
   {
-    date: "Mar – Jun 2023",
-    role: "AI & Data Science Intern, Software Dev Project",
-    company: "Knowx Innovations (P) Ltd, Bengaluru",
+    date: "Mar – Jun 2023", role: "AI & Data Science Intern, Software Dev Project", company: "Knowx Innovations (P) Ltd, Bengaluru",
     points: [
       "Worked hands-on with Python, SQL, machine learning algorithms, OpenCV, Keras, TensorFlow and data visualisation.",
       "Applied CNNs and VGG16 in sample projects on deep learning and image classification.",
     ],
   },
   {
-    date: "Oct 2022 – Jan 2023",
-    role: "AI & Data Science Intern, Training",
-    company: "Knowx Innovations (P) Ltd, Bengaluru",
+    date: "Oct 2022 – Jan 2023", role: "AI & Data Science Intern, Training", company: "Knowx Innovations (P) Ltd, Bengaluru",
     points: [
       "Completed training in Python, SQL, machine learning algorithms, OpenCV, Keras and TensorFlow.",
       "Received an internship certificate from Knowx Innovations for each phase of the program.",
@@ -196,26 +190,10 @@ const CERT_IMAGES = [
   { title: "Green Skills & Generative AI Training", sub: "Skills4Future, Edunet Foundation, AICTE & Shell India", image: "/certificates/skills4future-genai.jpg" },
 ];
 
-/* ---------- HOOKS ---------- */
+const ABOUT_TEXT =
+  "I build and deploy full-stack applications end to end, from the REST API and database to the Docker container and CI/CD pipeline that ship it, with LLMs and CNNs wired in where they make the product smarter.";
 
-function useTyped(words) {
-  const [text, setText] = useState("");
-  useEffect(() => {
-    let i = 0, j = 0, del = false, t;
-    const tick = () => {
-      const w = words[i];
-      j += del ? -1 : 1;
-      setText(w.slice(0, j));
-      let d = del ? 32 : 65;
-      if (!del && j === w.length) { del = true; d = 1500; }
-      else if (del && j === 0) { del = false; i = (i + 1) % words.length; d = 350; }
-      t = setTimeout(tick, d);
-    };
-    tick();
-    return () => clearTimeout(t);
-  }, [words]);
-  return text;
-}
+/* ---------- REVEAL (3D entrance) ---------- */
 
 function Reveal({ children, as: Tag = "div", className = "", delay = 0, ...rest }) {
   const ref = useRef(null);
@@ -225,7 +203,7 @@ function Reveal({ children, as: Tag = "div", className = "", delay = 0, ...rest 
     if (!el) return;
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setSeen(true); obs.disconnect(); }
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
@@ -236,10 +214,9 @@ function Reveal({ children, as: Tag = "div", className = "", delay = 0, ...rest 
   );
 }
 
-/* ---------- GLOBAL EFFECTS: cursor glow, spotlight, tilt, magnetic, progress ---------- */
+/* ---------- GLOBAL EFFECTS: progress, tilt + glare, magnetic ---------- */
 
 function Effects() {
-  const glow = useRef(null);
   const bar = useRef(null);
 
   useEffect(() => {
@@ -255,36 +232,28 @@ function Effects() {
 
   useEffect(() => {
     if (window.matchMedia("(hover: none)").matches) return;
-    let tx = -500, ty = -500, x = -500, y = -500, raf, lastTilt = null, lastMag = null;
+    let lastTilt = null, lastMag = null;
 
-    const loop = () => {
-      x += (tx - x) * 0.14;
-      y += (ty - y) * 0.14;
-      if (glow.current) glow.current.style.transform = `translate3d(${x}px,${y}px,0)`;
-      raf = requestAnimationFrame(loop);
+    const resetTilt = (el) => {
+      el.style.setProperty("--rx", "0deg");
+      el.style.setProperty("--ry", "0deg");
+      el.style.setProperty("--gl", "0");
     };
-    loop();
 
     const move = (e) => {
-      tx = e.clientX;
-      ty = e.clientY;
-
-      const spot = e.target.closest?.(".spot");
-      if (spot) {
-        const r = spot.getBoundingClientRect();
-        spot.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        spot.style.setProperty("--my", `${e.clientY - r.top}px`);
-      }
-
       const tilt = e.target.closest?.(".tilt");
-      if (lastTilt && lastTilt !== tilt) { lastTilt.style.setProperty("--rx", "0deg"); lastTilt.style.setProperty("--ry", "0deg"); }
+      if (lastTilt && lastTilt !== tilt) resetTilt(lastTilt);
       lastTilt = tilt;
       if (tilt) {
         const r = tilt.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        tilt.style.setProperty("--ry", `${(px * 10).toFixed(2)}deg`);
-        tilt.style.setProperty("--rx", `${(-py * 10).toFixed(2)}deg`);
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const max = Number(tilt.dataset.tilt || 9);
+        tilt.style.setProperty("--ry", `${((px - 0.5) * max * 2).toFixed(2)}deg`);
+        tilt.style.setProperty("--rx", `${(-(py - 0.5) * max * 2).toFixed(2)}deg`);
+        tilt.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+        tilt.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+        tilt.style.setProperty("--gl", "1");
       }
 
       const mag = e.target.closest?.(".magnetic");
@@ -292,165 +261,15 @@ function Effects() {
       lastMag = mag;
       if (mag) {
         const r = mag.getBoundingClientRect();
-        const dx = (e.clientX - (r.left + r.width / 2)) * 0.25;
-        const dy = (e.clientY - (r.top + r.height / 2)) * 0.35;
-        mag.style.transform = `translate(${dx}px, ${dy}px)`;
+        mag.style.transform = `translate(${((e.clientX - (r.left + r.width / 2)) * 0.22).toFixed(1)}px, ${((e.clientY - (r.top + r.height / 2)) * 0.32).toFixed(1)}px)`;
       }
     };
 
     window.addEventListener("mousemove", move, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("mousemove", move);
-    };
+    return () => window.removeEventListener("mousemove", move);
   }, []);
 
-  return (
-    <>
-      <div className="progress"><span ref={bar} /></div>
-      <div className="cursor-glow" ref={glow} aria-hidden="true" />
-    </>
-  );
-}
-
-/* ---------- PARTICLE NETWORK ---------- */
-
-function Particles() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const c = ref.current;
-    const ctx = c.getContext("2d");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let w = 0, h = 0, pts = [], raf, visible = true;
-    const m = { x: -999, y: -999 };
-
-    const init = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = c.clientWidth;
-      h = c.clientHeight;
-      c.width = w * dpr;
-      c.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.floor(Math.min(110, (w * h) / 13000));
-      pts = Array.from({ length: n }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
-        r: Math.random() * 1.4 + 0.6,
-      }));
-    };
-
-    const draw = () => {
-      raf = requestAnimationFrame(draw);
-      if (!visible) return;
-      ctx.clearRect(0, 0, w, h);
-      for (const p of pts) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
-        const dx = p.x - m.x, dy = p.y - m.y, d = Math.hypot(dx, dy);
-        if (d < 130 && d > 0) { p.x += (dx / d) * 1.1; p.y += (dy / d) * 1.1; }
-      }
-      for (let i = 0; i < pts.length; i++) {
-        const a = pts[i];
-        for (let j = i + 1; j < pts.length; j++) {
-          const b = pts[j], d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 125) {
-            ctx.strokeStyle = `rgba(139,124,255,${(1 - d / 125) * 0.35})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-          }
-        }
-        const dm = Math.hypot(a.x - m.x, a.y - m.y);
-        if (dm < 170) {
-          ctx.strokeStyle = `rgba(34,211,238,${(1 - dm / 170) * 0.6})`;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(m.x, m.y); ctx.stroke();
-        }
-        ctx.fillStyle = "rgba(200,205,255,.8)";
-        ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.283); ctx.fill();
-      }
-    };
-
-    const onMove = (e) => {
-      const r = c.getBoundingClientRect();
-      m.x = e.clientX - r.left;
-      m.y = e.clientY - r.top;
-    };
-    const onLeave = () => { m.x = m.y = -999; };
-
-    init();
-    if (reduce) { visible = true; draw(); cancelAnimationFrame(raf); } else draw();
-
-    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
-    io.observe(c);
-    window.addEventListener("resize", init);
-    window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("mouseleave", onLeave);
-    return () => {
-      cancelAnimationFrame(raf);
-      io.disconnect();
-      window.removeEventListener("resize", init);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
-
-  return <canvas ref={ref} className="particles" aria-hidden="true" />;
-}
-
-/* ---------- COMMAND PALETTE (Ctrl/Cmd + K) ---------- */
-
-function Palette({ open, setOpen }) {
-  const [q, setQ] = useState("");
-  const [idx, setIdx] = useState(0);
-
-  const items = useMemo(() => [
-    ...NAV.map((id) => ({ group: "Go to", label: id[0].toUpperCase() + id.slice(1), run: () => goTo(id) })),
-    ...PROJECTS.map((p) => ({ group: "Projects", label: p.title, hint: p.category, run: () => openProject(p.id) })),
-    { group: "Actions", label: "Copy email address", run: () => navigator.clipboard?.writeText(EMAIL) },
-    { group: "Actions", label: "Open GitHub", run: () => window.open(GITHUB, "_blank", "noopener") },
-    { group: "Actions", label: "Open LinkedIn", run: () => window.open(LINKEDIN, "_blank", "noopener") },
-  ], []);
-
-  const list = items.filter((i) => `${i.label} ${i.hint || ""} ${i.group}`.toLowerCase().includes(q.toLowerCase()));
-
-  useEffect(() => { setIdx(0); }, [q, open]);
-  useEffect(() => { if (!open) setQ(""); }, [open]);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setOpen((v) => !v); return; }
-      if (!open) return;
-      if (e.key === "Escape") setOpen(false);
-      if (e.key === "ArrowDown") { e.preventDefault(); setIdx((i) => Math.min(i + 1, list.length - 1)); }
-      if (e.key === "ArrowUp") { e.preventDefault(); setIdx((i) => Math.max(i - 1, 0)); }
-      if (e.key === "Enter" && list[idx]) { setOpen(false); list[idx].run(); }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, list, idx, setOpen]);
-
-  if (!open) return null;
-
-  return (
-    <div className="palette-overlay" onClick={() => setOpen(false)}>
-      <div className="palette" role="dialog" aria-modal="true" aria-label="Command palette" onClick={(e) => e.stopPropagation()}>
-        <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Jump to a section, open a project…" aria-label="Search" />
-        <ul>
-          {list.length === 0 && <li className="palette-empty">Nothing matches “{q}”. Try “projects” or “GitHub”.</li>}
-          {list.map((it, i) => (
-            <li key={`${it.group}-${it.label}`}>
-              <button type="button" className={i === idx ? "on" : ""} onMouseEnter={() => setIdx(i)} onClick={() => { setOpen(false); it.run(); }}>
-                <span className="palette-group">{it.group}</span>
-                <span className="palette-label">{it.label}</span>
-                {it.hint && <span className="palette-hint">{it.hint}</span>}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+  return <div className="progress"><span ref={bar} /></div>;
 }
 
 /* ---------- APP ---------- */
@@ -466,7 +285,6 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <Marquee />
         <About />
         <Skills />
         <Experience />
@@ -484,7 +302,6 @@ export default function App() {
 function Nav() {
   const [active, setActive] = useState("");
   const [menu, setMenu] = useState(false);
-  const [palette, setPalette] = useState(false);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -495,144 +312,194 @@ function Nav() {
     return () => obs.disconnect();
   }, []);
 
-  const click = (e, id) => { e.preventDefault(); setMenu(false); goTo(id); };
-
   return (
-    <>
-      <header className="nav glass">
-        <a href="#" className="nav-brand" aria-label="Go to top" onClick={(e) => { e.preventDefault(); setMenu(false); if (window.location.hash) window.location.hash = ""; else window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-          <span className="nav-mark">R</span>
-          <span>Rahul S.</span>
-        </a>
+    <header className="nav">
+      <a href="#" className="nav-brand" aria-label="Go to top" onClick={(e) => { e.preventDefault(); setMenu(false); if (window.location.hash) window.location.hash = ""; else window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+        <span className="nav-cube" aria-hidden="true"><i /><i /><i /></span>
+        Rahul S.
+      </a>
 
-        <nav id="nav-links" className={`nav-links ${menu ? "open" : ""}`}>
-          {NAV.map((id) => (
-            <a key={id} href={`#${id}`} className={active === id ? "on" : ""} onClick={(e) => click(e, id)}>{id}</a>
-          ))}
-        </nav>
+      <nav id="nav-links" className={`nav-links ${menu ? "open" : ""}`}>
+        {NAV.map((id) => (
+          <a key={id} href={`#${id}`} className={active === id ? "on" : ""} onClick={(e) => { e.preventDefault(); setMenu(false); goTo(id); }}>{id}</a>
+        ))}
+      </nav>
 
-        <button type="button" className="nav-search" onClick={() => setPalette(true)} aria-label="Open command palette">
-          Search <kbd>Ctrl K</kbd>
-        </button>
+      <a href="#contact" className="nav-cta magnetic" onClick={(e) => { e.preventDefault(); setMenu(false); goTo("contact"); }}>Hire me</a>
 
-        <button type="button" className="nav-toggle" onClick={() => setMenu((v) => !v)} aria-expanded={menu} aria-controls="nav-links">
-          {menu ? "Close" : "Menu"}
-        </button>
-      </header>
-      <Palette open={palette} setOpen={setPalette} />
-    </>
+      <button type="button" className="nav-toggle" onClick={() => setMenu((v) => !v)} aria-expanded={menu} aria-controls="nav-links">
+        {menu ? "Close" : "Menu"}
+      </button>
+    </header>
   );
 }
 
-/* ---------- HERO ---------- */
+/* ---------- HERO: exploded 3D full-stack ---------- */
 
 function Hero() {
-  const typed = useTyped(ROLES);
+  const hero = useRef(null);
+
+  useEffect(() => {
+    const el = hero.current;
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let tx = 0, ty = 0, mx = 0, my = 0, ts = 0, sp = 0, raf, visible = true;
+
+    const onMove = (e) => { tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5; };
+    const onScroll = () => { ts = Math.min(1, window.scrollY / (window.innerHeight * 0.85)); };
+
+    const loop = () => {
+      raf = requestAnimationFrame(loop);
+      if (!visible) return;
+      mx += (tx - mx) * 0.07;
+      my += (ty - my) * 0.07;
+      sp += (ts - sp) * 0.08;
+      el.style.setProperty("--mx", mx.toFixed(4));
+      el.style.setProperty("--my", my.toFixed(4));
+      el.style.setProperty("--sp", sp.toFixed(4));
+    };
+
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
+    io.observe(el);
+    onScroll();
+    if (!reduce) {
+      window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("scroll", onScroll, { passive: true });
+      loop();
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   return (
-    <section className="hero">
-      <div className="aurora" aria-hidden="true"><i /><i /><i /></div>
-      <Particles />
-
+    <section className="hero" ref={hero}>
       <div className="wrap hero-grid">
         <div className="hero-copy">
-          <p className="pill"><i /> Open to Python Developer roles · Bengaluru</p>
+          <p className="status"><i /> Open to Python Developer roles · Bengaluru</p>
 
-          <h1 className="hero-name">
-            <span>Hi, I'm</span>
-            <span className="grad">Rahul S.</span>
+          <h1>
+            <span className="h-line"><span>Full-stack,</span></span>
+            <span className="h-line"><span className="ink-grad">layer by layer.</span></span>
           </h1>
 
-          <p className="hero-role">
-            <span>{typed}</span><b className="caret" />
-          </p>
+          <p className="hero-who"><strong>Rahul S.</strong> Python Developer · B.E. Computer Science (2026)</p>
 
           <p className="hero-lede">
-            B.E. Computer Science graduate (2026) who builds and deploys full-stack apps with <strong>FastAPI, Flask, Django REST Framework and React.js</strong>,
-            with JWT auth, Docker, GitHub Actions CI/CD and LLM APIs (Gemini, Groq, OpenRouter) wired into working products. I also train CNNs and have
-            hands-on Java experience from BankSphere and ShopSphere.
+            I build and deploy apps with <strong>FastAPI, Flask, Django REST Framework and React.js</strong>, secured with JWT, packaged in Docker,
+            shipped through GitHub Actions, and wired up to LLM APIs like Gemini, Groq and OpenRouter. I also train CNNs, and I've written Java in
+            BankSphere and ShopSphere.
           </p>
 
           <div className="hero-actions">
-            <a href="#projects" className="btn btn-glow magnetic" onClick={(e) => { e.preventDefault(); goTo("projects"); }}>View live projects</a>
-            <a href="#contact" className="btn btn-glass magnetic" onClick={(e) => { e.preventDefault(); goTo("contact"); }}>Contact me</a>
+            <a href="#projects" className="btn btn-ink magnetic" onClick={(e) => { e.preventDefault(); goTo("projects"); }}>View live projects</a>
+            <a href="#contact" className="btn btn-soft magnetic" onClick={(e) => { e.preventDefault(); goTo("contact"); }}>Contact me</a>
           </div>
 
           <ul className="hero-stats">
-            <li><strong>8</strong> live apps</li>
-            <li><strong>90%+</strong> CNN accuracy</li>
-            <li><strong>3</strong> internships</li>
+            <li><strong>8</strong>live apps</li>
+            <li><strong>90%+</strong>CNN accuracy</li>
+            <li><strong>3</strong>internships</li>
           </ul>
         </div>
 
-        <div className="hero-visual tilt">
-          <div className="ring"><div className="ring-inner"><img src="/rahul-profile.jpg" alt="Rahul S" /></div></div>
-          <span className="float f1 glass">FastAPI</span>
-          <span className="float f2 glass">Docker</span>
-          <span className="float f3 glass">Gemini API</span>
-          <span className="float f4 glass">PostgreSQL</span>
+        <div className="stage" aria-hidden="true">
+          <div className="plate" />
+          <div className="stack">
+            {LAYERS.map((l, i) => (
+              <div key={l.name} className={`layer l${i}`} style={{ "--z": i * 74 }}>
+                <div className="face">
+                  <div className="face-head"><b>{l.name}</b><span>{l.sub}</span></div>
+                  <ul>{l.chips.map((c) => <li key={c}>{c}</li>)}</ul>
+                </div>
+              </div>
+            ))}
+          </div>
+          <figure className="portrait">
+            <img src="/rahul-profile.jpg" alt="" />
+          </figure>
         </div>
       </div>
 
-      <div className="scroll-cue" aria-hidden="true"><span /></div>
+      <p className="hero-hint">Move your mouse to rotate. Scroll to pull the layers apart.</p>
     </section>
   );
 }
 
-function Marquee() {
-  const row = [...MARQUEE, ...MARQUEE];
+/* ---------- ABOUT ---------- */
+
+function ScrollText({ text }) {
+  const ref = useRef(null);
+  const words = text.split(" ");
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const spans = el.querySelectorAll("span");
+    const on = () => {
+      const r = el.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (window.innerHeight * 0.85 - r.top) / (r.height + window.innerHeight * 0.3)));
+      const n = Math.round(p * spans.length * 1.08);
+      spans.forEach((s, i) => s.classList.toggle("lit", i < n));
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+
   return (
-    <div className="marquee" aria-hidden="true">
-      <div className="marquee-track">
-        {row.map((m, i) => <span key={i}>{m}</span>)}
-      </div>
-    </div>
+    <p ref={ref} className="scrolltext">
+      {words.map((w, i) => <span key={i}>{w}{" "}</span>)}
+    </p>
   );
 }
-
-/* ---------- ABOUT (bento) ---------- */
 
 function About() {
   return (
     <section id="about" className="section">
       <div className="wrap">
-        <Reveal as="h2" className="h2">Engineer first.<br /><span className="grad">Builder always.</span></Reveal>
+        <ScrollText text={ABOUT_TEXT} />
 
-        <div className="bento">
-          <Reveal className="bento-card b-wide spot">
-            <p className="b-lead">I've built and deployed full-stack applications end to end, from the REST API to the container it runs in.</p>
-            <p>
-              My work spans FastAPI, Flask and Django REST Framework APIs, React.js frontends, PostgreSQL and MySQL, JWT authentication and Docker.
-              I automate deployments with GitHub Actions and host on Render and Vercel.
-            </p>
+        <div className="about-cards">
+          <Reveal delay={0}>
+            <div className="depth tilt" data-tilt="10">
+              <strong className="big-n">8</strong>
+              <span className="depth-l">live deployed applications</span>
+            </div>
           </Reveal>
-
-          <Reveal className="bento-card b-stat spot" delay={80}>
-            <strong className="grad">8</strong><span>live deployed applications</span>
+          <Reveal delay={90}>
+            <div className="depth tilt" data-tilt="10">
+              <strong className="big-n">90%+</strong>
+              <span className="depth-l">CNN accuracy on my major project</span>
+            </div>
           </Reveal>
-
-          <Reveal className="bento-card b-stat spot" delay={140}>
-            <strong className="grad">90%+</strong><span>CNN accuracy on my major project</span>
+          <Reveal delay={180}>
+            <div className="depth tilt" data-tilt="10">
+              <strong className="big-n">6</strong>
+              <span className="depth-l">Python &amp; ML applications</span>
+            </div>
           </Reveal>
-
-          <Reveal className="bento-card b-tall spot" delay={60}>
-            <h3>AI internship</h3>
-            <p>
-              At MR. TechLab LLP (AppMind AI) I shipped three web apps (AI Exam Companion, Life Decision Assistant and Digital Analytics Dashboard)
-              with Flask, Firebase and Google Authentication, integrating Gemini, Groq and OpenRouter.
-            </p>
+          <Reveal delay={270}>
+            <div className="depth tilt" data-tilt="10">
+              <strong className="big-n">3</strong>
+              <span className="depth-l">internship experiences</span>
+            </div>
           </Reveal>
+        </div>
 
-          <Reveal className="bento-card b-wide2 spot" delay={100}>
-            <h3>Major project: Plant Disease Detection</h3>
-            <p>
-              I trained a CNN on a 1.5 GB Kaggle crop-leaf dataset to detect plant diseases with over 90% accuracy, and built a Streamlit interface for live predictions.
-              Two AI &amp; Data Science internship phases at Knowx Innovations gave me the base in Python, SQL, OpenCV, Keras and TensorFlow.
-            </p>
+        <div className="about-cols">
+          <Reveal as="p">
+            At MR. TechLab LLP (AppMind AI) I built and deployed three web apps (AI Exam Companion, Life Decision Assistant and Digital Analytics
+            Dashboard) with Flask, Firebase and Google Authentication, and integrated Gemini, Groq and OpenRouter. Two AI &amp; Data Science
+            internship phases at Knowx Innovations gave me the base in Python, SQL, machine learning, OpenCV, Keras and TensorFlow.
           </Reveal>
-
-          <Reveal className="bento-card b-stat spot" delay={160}>
-            <strong className="grad">6</strong><span>Python &amp; ML applications</span>
+          <Reveal as="p" delay={100}>
+            My B.E. major project, Plant Disease Detection, trains a CNN on a 1.5 GB Kaggle crop-leaf image dataset to detect plant diseases with
+            over 90% accuracy, with a Streamlit interface for live predictions. I also build Java applications, including a banking system and an
+            e-commerce platform.
           </Reveal>
         </div>
       </div>
@@ -640,32 +507,64 @@ function About() {
   );
 }
 
-/* ---------- SKILLS (tabs) ---------- */
+/* ---------- SKILLS: 3D coverflow ---------- */
 
 function Skills() {
-  const [tab, setTab] = useState(0);
-  const group = SKILLS[tab];
+  const [a, setA] = useState(0);
+  const drag = useRef(null);
+  const n = SKILLS.length;
+
+  const go = useCallback((v) => setA((cur) => Math.max(0, Math.min(n - 1, typeof v === "function" ? v(cur) : v))), [n]);
+
+  const onDown = (e) => { drag.current = e.clientX; };
+  const onUp = (e) => {
+    if (drag.current === null) return;
+    const dx = e.clientX - drag.current;
+    drag.current = null;
+    if (dx > 50) go((c) => c - 1);
+    else if (dx < -50) go((c) => c + 1);
+  };
 
   return (
-    <section id="skills" className="section">
+    <section id="skills" className="section skills">
       <div className="wrap">
-        <Reveal as="h2" className="h2">Tools I use to<br /><span className="grad">ship software.</span></Reveal>
+        <Reveal as="h2" className="h2">Tools I use to<br /><span className="ink-grad">ship software.</span></Reveal>
+      </div>
 
-        <Reveal className="skills glass spot">
-          <div className="skill-tabs" role="tablist" aria-label="Skill groups">
-            {SKILLS.map((g, i) => (
-              <button key={g.title} type="button" role="tab" aria-selected={tab === i} className={tab === i ? "on" : ""} onClick={() => setTab(i)}>
-                {g.title}
-              </button>
-            ))}
-          </div>
+      <div
+        className="flow"
+        tabIndex={0}
+        role="group"
+        aria-label="Skill groups. Use left and right arrow keys."
+        onKeyDown={(e) => { if (e.key === "ArrowRight") go((c) => c + 1); if (e.key === "ArrowLeft") go((c) => c - 1); }}
+        onPointerDown={onDown}
+        onPointerUp={onUp}
+        onPointerLeave={() => { drag.current = null; }}
+      >
+        {SKILLS.map((g, i) => {
+          const o = i - a;
+          return (
+            <article
+              key={g.title}
+              className={`flow-card c${i % 4} ${o === 0 ? "active" : ""}`}
+              style={{ "--o": o, "--abs": Math.abs(o) }}
+              onClick={() => go(i)}
+              aria-hidden={Math.abs(o) > 1 ? "true" : undefined}
+            >
+              <span className="flow-count">{String(g.items.length).padStart(2, "0")}</span>
+              <h3>{g.title}</h3>
+              <ul>{g.items.map((s) => <li key={s}>{s}</li>)}</ul>
+            </article>
+          );
+        })}
+      </div>
 
-          <div className="skill-panel" key={group.title} role="tabpanel">
-            {group.items.map((s, i) => (
-              <span key={s} style={{ "--i": i }}>{s}</span>
-            ))}
-          </div>
-        </Reveal>
+      <div className="flow-ctrl">
+        <button type="button" className="round" onClick={() => go((c) => c - 1)} disabled={a === 0} aria-label="Previous skill group">‹</button>
+        <div className="dots">
+          {SKILLS.map((g, i) => <button key={g.title} type="button" className={i === a ? "on" : ""} onClick={() => go(i)} aria-label={g.title} />)}
+        </div>
+        <button type="button" className="round" onClick={() => go((c) => c + 1)} disabled={a === n - 1} aria-label="Next skill group">›</button>
       </div>
     </section>
   );
@@ -674,35 +573,18 @@ function Skills() {
 /* ---------- EXPERIENCE ---------- */
 
 function Experience() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    const onScroll = () => {
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const p = (window.innerHeight * 0.6 - r.top) / r.height;
-      el.style.setProperty("--p", Math.max(0, Math.min(1, p)).toFixed(3));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <section id="experience" className="section">
       <div className="wrap">
-        <Reveal as="h2" className="h2">Where I learned<br /><span className="grad">to build.</span></Reveal>
+        <Reveal as="h2" className="h2">Where I learned<br /><span className="ink-grad">to build.</span></Reveal>
 
-        <ol className="timeline" ref={ref}>
-          <span className="timeline-line" aria-hidden="true" />
-          {EXPERIENCES.map((x) => (
-            <Reveal as="li" key={x.date} className="tl-item">
-              <i className="tl-dot" />
-              <div className="tl-card glass spot">
-                <time>{x.date}</time>
+        <ol className="xp">
+          {EXPERIENCES.map((x, i) => (
+            <Reveal as="li" key={x.date} className="xp-item" delay={i * 60}>
+              <time>{x.date}</time>
+              <div className="xp-card tilt" data-tilt="4">
                 <h3>{x.role}</h3>
-                <p className="tl-company">{x.company}</p>
+                <p className="xp-co">{x.company}</p>
                 <ul>{x.points.map((p) => <li key={p}>{p}</li>)}</ul>
               </div>
             </Reveal>
@@ -713,51 +595,42 @@ function Experience() {
   );
 }
 
-/* ---------- PROJECTS (showcase) ---------- */
+/* ---------- PROJECTS ---------- */
 
 function Projects() {
-  const [i, setI] = useState(0);
-  const p = PROJECTS[i];
-
   return (
     <section id="projects" className="section">
       <div className="wrap">
-        <Reveal as="h2" className="h2">Things I've<br /><span className="grad">built and shipped.</span></Reveal>
-        <Reveal as="p" className="lede">Eight deployed applications, from Python full-stack apps with LLM integrations to a CNN plant disease detector and Java full-stack projects. Pick one to preview it.</Reveal>
+        <Reveal as="h2" className="h2">Things I've<br /><span className="ink-grad">built and shipped.</span></Reveal>
+        <Reveal as="p" className="lede">
+          Eight deployed applications: Python full-stack apps with LLM integrations, a CNN plant disease detector, and Java full-stack projects.
+        </Reveal>
 
-        <div className="showcase">
-          <ul className="sc-list" role="tablist" aria-label="Projects">
-            {PROJECTS.map((x, n) => (
-              <li key={x.id}>
-                <button type="button" role="tab" aria-selected={n === i} className={n === i ? "on" : ""} onClick={() => setI(n)} onMouseEnter={() => window.matchMedia("(hover: hover)").matches && setI(n)}>
-                  <span className="sc-title">{x.title}</span>
-                  <span className="sc-cat">{x.category}</span>
+        <div className="pgrid">
+          {PROJECTS.map((p, i) => (
+            <Reveal key={p.id} className="pwrap" delay={(i % 2) * 90}>
+              <article className="pcard tilt" data-tilt="7">
+                <button type="button" className="pshot" onClick={() => openProject(p.id)} aria-label={`View ${p.title}`}>
+                  {p.image ? <img src={p.image} alt={p.title} loading="lazy" /> : <span className="pshot-empty">{p.title}</span>}
                 </button>
-              </li>
-            ))}
-          </ul>
+                <span className="pcat">{p.category}</span>
 
-          <div className="sc-stage" key={p.id}>
-            <div className="browser tilt">
-              <div className="browser-bar">
-                <span /><span /><span />
-                <em>{p.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}</em>
-              </div>
-              <button type="button" className="browser-shot" onClick={() => openProject(p.id)} aria-label={`View ${p.title}`}>
-                {p.image ? <img src={p.image} alt={p.title} /> : <span className="browser-empty">{p.title}</span>}
-              </button>
-            </div>
-
-            <div className="sc-info">
-              <h3>{p.title}</h3>
-              <p>{p.note}</p>
-              <ul className="chips">{p.tech.map((t) => <li key={t}>{t}</li>)}</ul>
-              <div className="sc-actions">
-                <a href={p.url} target="_blank" rel="noopener noreferrer" className="btn btn-glow magnetic">Open live demo</a>
-                <button type="button" className="btn btn-glass magnetic" onClick={() => openProject(p.id)}>Read the case study</button>
-              </div>
-            </div>
-          </div>
+                <div className="pbody">
+                  <h3>{p.title}</h3>
+                  <p>{p.note}</p>
+                  <ul className="chips">
+                    {p.tech.slice(0, 7).map((t) => <li key={t}>{t}</li>)}
+                    {p.tech.length > 7 && <li className="more">+{p.tech.length - 7} more</li>}
+                  </ul>
+                  <div className="pactions">
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="btn btn-ink">Open live demo</a>
+                    <button type="button" className="btn btn-soft" onClick={() => openProject(p.id)}>Case study</button>
+                  </div>
+                </div>
+                <span className="glare" aria-hidden="true" />
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -770,14 +643,17 @@ function Education() {
   return (
     <section id="education" className="section">
       <div className="wrap">
-        <Reveal as="h2" className="h2">Where it<br /><span className="grad">started.</span></Reveal>
+        <Reveal as="h2" className="h2">Where it<br /><span className="ink-grad">started.</span></Reveal>
 
-        <Reveal className="edu glass spot">
-          <p className="edu-year grad">2023 – 2026</p>
-          <div>
-            <h3>B.E. Computer Science &amp; Engineering</h3>
-            <p className="edu-school">ACS College of Engineering, Bengaluru</p>
-            <p>CGPA <strong>8.00 / 10</strong>. Preceded by a Diploma in Information Science at PVP Polytechnic, Bengaluru (2020 – 2023), completed with First Class with Distinction.</p>
+        <Reveal className="edu-wrap">
+          <div className="edu tilt" data-tilt="5">
+            <span className="edu-bg" aria-hidden="true">2026</span>
+            <div className="edu-body">
+              <p className="edu-tag">2023 – 2026</p>
+              <h3>B.E. Computer Science &amp; Engineering</h3>
+              <p className="edu-school">ACS College of Engineering, Bengaluru</p>
+              <p>CGPA <strong>8.00 / 10</strong>. Preceded by a Diploma in Information Science at PVP Polytechnic, Bengaluru (2020 – 2023), completed with First Class with Distinction.</p>
+            </div>
           </div>
         </Reveal>
       </div>
@@ -804,25 +680,29 @@ function Certifications() {
   return (
     <section id="certifications" className="section">
       <div className="wrap">
-        <Reveal as="h2" className="h2">Proof of<br /><span className="grad">continuous learning.</span></Reveal>
+        <Reveal as="h2" className="h2">Proof of<br /><span className="ink-grad">continuous learning.</span></Reveal>
 
         <div className="cert-grid">
-          {CERTIFICATIONS.map((c, n) => (
-            <Reveal key={c.title} className="cert glass spot" delay={n * 80}>
-              <h3>{c.title}</h3>
-              <p className="cert-issuer">{c.issuer}</p>
-              <p>{c.description}</p>
+          {CERTIFICATIONS.map((c, i) => (
+            <Reveal key={c.title} delay={i * 90}>
+              <div className="cert tilt" data-tilt="8">
+                <h3>{c.title}</h3>
+                <p className="cert-issuer">{c.issuer}</p>
+                <p>{c.description}</p>
+              </div>
             </Reveal>
           ))}
         </div>
 
         <h3 className="sub">The certificates themselves</h3>
         <div className="thumbs">
-          {CERT_IMAGES.map((c, n) => (
-            <button key={c.title} type="button" className="thumb glass tilt" onClick={() => setZoom(n)}>
-              <img src={c.image} alt={c.title} loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-              <span><strong>{c.title}</strong>{c.sub}</span>
-            </button>
+          {CERT_IMAGES.map((c, i) => (
+            <Reveal key={c.title} delay={i * 70}>
+              <button type="button" className="thumb tilt" data-tilt="9" onClick={() => setZoom(i)}>
+                <img src={c.image} alt={c.title} loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                <span><strong>{c.title}</strong>{c.sub}</span>
+              </button>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -833,10 +713,10 @@ function Certifications() {
             <img src={CERT_IMAGES[zoom].image} alt={CERT_IMAGES[zoom].title} />
             <p><strong>{CERT_IMAGES[zoom].title}</strong> · {CERT_IMAGES[zoom].sub}</p>
             <div className="lightbox-bar">
-              <button type="button" className="btn btn-glass" disabled={zoom === 0} onClick={() => setZoom(zoom - 1)}>Previous</button>
+              <button type="button" className="btn btn-soft" disabled={zoom === 0} onClick={() => setZoom(zoom - 1)}>Previous</button>
               <span>{zoom + 1} of {CERT_IMAGES.length}</span>
-              <button type="button" className="btn btn-glass" disabled={zoom === CERT_IMAGES.length - 1} onClick={() => setZoom(zoom + 1)}>Next</button>
-              <button type="button" className="btn btn-glow" onClick={() => setZoom(null)}>Close</button>
+              <button type="button" className="btn btn-soft" disabled={zoom === CERT_IMAGES.length - 1} onClick={() => setZoom(zoom + 1)}>Next</button>
+              <button type="button" className="btn btn-ink" onClick={() => setZoom(null)}>Close</button>
             </div>
           </div>
         </div>
@@ -845,10 +725,25 @@ function Certifications() {
   );
 }
 
-/* ---------- CONTACT ---------- */
+/* ---------- CONTACT: mouse-driven 3D cube ---------- */
+
+const CUBE_FACES = ["Python", "React", "Docker", "FastAPI", "SQL", "AI"];
 
 function Contact() {
+  const ref = useRef(null);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(hover: none)").matches) return;
+    const move = (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--cx", (((e.clientX - r.left) / r.width) - 0.5).toFixed(3));
+      el.style.setProperty("--cy", (((e.clientY - r.top) / r.height) - 0.5).toFixed(3));
+    };
+    el.addEventListener("mousemove", move, { passive: true });
+    return () => el.removeEventListener("mousemove", move);
+  }, []);
 
   const copy = useCallback(async () => {
     try {
@@ -861,29 +756,38 @@ function Contact() {
   }, []);
 
   return (
-    <section id="contact" className="section contact">
-      <div className="aurora aurora-soft" aria-hidden="true"><i /><i /><i /></div>
+    <section id="contact" className="section contact" ref={ref}>
+      <div className="wrap contact-grid">
+        <div>
+          <Reveal as="h2" className="contact-title">Let's build<br /><span className="ink-grad">something together.</span></Reveal>
+          <Reveal as="p" className="lede">Open to Python Developer roles. A quick question or a project idea, my inbox is open.</Reveal>
 
-      <div className="wrap contact-inner">
-        <Reveal as="h2" className="contact-title">Let's build<br /><span className="grad">something together.</span></Reveal>
-        <Reveal as="p" className="lede">Open to Python Developer roles. A quick question or a project idea, my inbox is open.</Reveal>
+          <Reveal className="contact-actions">
+            <a href={`mailto:${EMAIL}`} className="btn btn-ink btn-lg magnetic">{EMAIL}</a>
+            <button type="button" className="btn btn-soft btn-lg magnetic" onClick={copy} aria-live="polite">{copied ? "Copied to clipboard" : "Copy email"}</button>
+          </Reveal>
 
-        <Reveal className="contact-actions">
-          <a href={`mailto:${EMAIL}`} className="btn btn-glow btn-lg magnetic">{EMAIL}</a>
-          <button type="button" className="btn btn-glass btn-lg magnetic" onClick={copy} aria-live="polite">{copied ? "Copied to clipboard" : "Copy email"}</button>
-        </Reveal>
+          <Reveal className="contact-row">
+            <span>Bengaluru, Karnataka, India</span>
+            <span>+91 73376 34886</span>
+            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub</a>
+          </Reveal>
+        </div>
 
-        <Reveal className="contact-row">
-          <span>Bengaluru, Karnataka, India</span>
-          <span>+91 73376 34886</span>
-          <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub</a>
-        </Reveal>
+        <div className="cube-stage" aria-hidden="true">
+          <div className="cube-look">
+            <div className="cube">
+              {CUBE_FACES.map((f, i) => <span key={f} className={`cf f${i}`}>{f}</span>)}
+            </div>
+          </div>
+          <div className="cube-shadow" />
+        </div>
       </div>
 
       <footer className="foot">
         <span>© 2026 Rahul S. All rights reserved.</span>
-        <span>Built with React.js. Press <kbd>Ctrl K</kbd> to jump anywhere.</span>
+        <span>Built with React.js</span>
       </footer>
     </section>
   );
