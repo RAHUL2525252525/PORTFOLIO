@@ -328,6 +328,38 @@ function Nav() {
 /* ---------- HERO ---------- */
 
 function Hero() {
+  const stage = useRef(null);
+
+  useEffect(() => {
+    const el = stage.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let tx = 0, ty = 0, mx = 0, my = 0, raf, visible = true;
+
+    const onMove = (e) => {
+      tx = e.clientX / window.innerWidth - 0.5;
+      ty = e.clientY / window.innerHeight - 0.5;
+    };
+
+    const loop = () => {
+      raf = requestAnimationFrame(loop);
+      if (!visible) return;
+      mx += (tx - mx) * 0.06;
+      my += (ty - my) * 0.06;
+      el.style.setProperty("--mx", mx.toFixed(4));
+      el.style.setProperty("--my", my.toFixed(4));
+    };
+
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
+    io.observe(el);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    loop();
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener("mousemove", onMove);
+    };
+  }, []);
+
   return (
     <section className="hero">
       <div className="wrap hero-grid">
@@ -355,8 +387,28 @@ function Hero() {
           </ul>
         </div>
 
-        <div className="hero-photo tilt" data-tilt="4">
-          <img src="/rahul-profile.jpg" alt="Rahul S" />
+        <div className="stage" ref={stage}>
+          <div className="scene">
+            <span className="glow" aria-hidden="true" />
+
+            <i className="ring r1" aria-hidden="true"><b /></i>
+            <i className="ring r2" aria-hidden="true"><b /></i>
+            <i className="ring r3" aria-hidden="true" />
+
+            <div className="photo">
+              <img src="/rahul-profile.jpg" alt="Rahul S" />
+            </div>
+
+            <span className="orb o1" aria-hidden="true" />
+            <span className="orb o2" aria-hidden="true" />
+
+            <div className="cbw cbw1" aria-hidden="true">
+              <div className="cb"><span className="a" /><span className="b" /><span className="c" /><span className="d" /><span className="e" /><span className="f" /></div>
+            </div>
+            <div className="cbw cbw2" aria-hidden="true">
+              <div className="cb"><span className="a" /><span className="b" /><span className="c" /><span className="d" /><span className="e" /><span className="f" /></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
