@@ -1,6 +1,10 @@
+/* =========================================================
+   3D HERO SCENE (canvas behind the profile photo)
+   ========================================================= */
+
 .hero-scene {
   position: absolute;
-  inset: -14%;
+  inset: -25%;
   z-index: 1;
   pointer-events: none;
 }
@@ -10,52 +14,198 @@
   height: 100% !important;
 }
 
+/* Soft glow behind the photo */
+.hero-profile-area::before {
+  content: "";
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  max-width: 90%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 196, 0.35),
+    rgba(120, 183, 232, 0.12) 50%,
+    transparent 70%
+  );
+  filter: blur(30px);
+  z-index: 0;
+  pointer-events: none;
+  animation: glowPulse 5s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+
+/* =========================================================
+   PROFILE PHOTO + ORBITS
+   ========================================================= */
+
 .profile-frame {
   animation: profileFloat 6s ease-in-out infinite;
 }
 
 @keyframes profileFloat {
   0%, 100% { transform: rotate(3deg) translateY(0); }
-  50% { transform: rotate(1deg) translateY(-14px); }
+  50% { transform: rotate(1deg) translateY(-16px); }
 }
 
-.project-showcase-card.in-view {
-  transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.7s ease;
+.profile-orbit.orbit-one {
+  animation: orbitSpinOne 28s linear infinite;
 }
 
-.project-showcase-card.in-view:hover {
-  transform: perspective(1200px) rotateX(2deg) rotateY(-3deg) translateY(-8px);
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.35);
+.profile-orbit.orbit-two {
+  animation: orbitSpinTwo 36s linear infinite;
 }
 
-.about-stats { perspective: 900px; }
-
-.stat-card:hover {
-  transform: translateY(-8px) rotateX(6deg) rotateY(-6deg);
+@keyframes orbitSpinOne {
+  from { transform: rotate(-15deg); }
+  to { transform: rotate(345deg); }
 }
 
-.skill-items span:hover {
-  transform: translateY(-3px) scale(1.06);
+@keyframes orbitSpinTwo {
+  from { transform: rotate(25deg); }
+  to { transform: rotate(-335deg); }
 }
+
+.profile-decoration-one {
+  animation: decoFloatOne 7s ease-in-out infinite;
+}
+
+.profile-decoration-two {
+  animation: decoFloatTwo 5s ease-in-out infinite;
+}
+
+@keyframes decoFloatOne {
+  0%, 100% { transform: rotate(25deg) translateY(0); }
+  50% { transform: rotate(60deg) translateY(-18px); }
+}
+
+@keyframes decoFloatTwo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(16px); }
+}
+
+/* =========================================================
+   HERO NAME GRADIENT
+   ========================================================= */
 
 .hero-copy h1 span {
-  background: linear-gradient(90deg, #3b82c4, #78b7e8, #3b82c4);
-  background-size: 200% auto;
+  background: linear-gradient(90deg, #3b82c4, #78b7e8, #071a33, #3b82c4);
+  background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: shine 4s linear infinite;
+  animation: shine 5s linear infinite;
 }
 
 @keyframes shine {
-  to { background-position: 200% center; }
+  to { background-position: 250% center; }
+}
+
+/* =========================================================
+   3D HOVER EFFECTS
+   ========================================================= */
+
+/* Project cards */
+.projects-showcase {
+  perspective: 1400px;
+}
+
+.project-showcase-card.in-view {
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease,
+    opacity 0.7s ease;
+}
+
+.project-showcase-card.in-view:hover {
+  transform: perspective(1400px) rotateX(2deg) rotateY(-3deg) translateY(-10px) scale(1.01);
+  border-color: rgba(120, 183, 232, 0.45);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(59, 130, 196, 0.18);
+}
+
+/* About stat cards */
+.about-stats {
+  perspective: 900px;
+}
+
+.stat-card {
+  transform-style: preserve-3d;
+}
+
+.stat-card:hover {
+  transform: translateY(-10px) rotateX(8deg) rotateY(-8deg);
+  box-shadow: 0 28px 55px rgba(7, 26, 51, 0.18);
+}
+
+/* Skill chips */
+.skill-items span:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 10px 22px rgba(59, 130, 196, 0.25);
+}
+
+/* Experience and certificate cards */
+.experience-main-card {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    opacity 0.7s ease;
+}
+
+.experience-main-card.in-view:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 70px rgba(7, 26, 51, 0.14);
+}
+
+/* Buttons */
+.hero-primary-button:hover,
+.hero-secondary-button:hover,
+.project-open-button:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+  .hero-scene { inset: -12%; }
 }
 
 @media (max-width: 600px) {
-  .hero-scene { inset: -6%; }
+  .hero-scene { inset: -8%; }
+
+  .hero-profile-area::before {
+    width: 320px;
+    height: 320px;
+  }
+
+  .project-showcase-card.in-view:hover,
+  .stat-card:hover {
+    transform: none;
+  }
 }
+
+/* =========================================================
+   REDUCED MOTION
+   (only the CSS animations stop; the 3D canvas keeps running)
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .profile-frame,
-  .hero-copy h1 span { animation: none; }
+  .profile-orbit.orbit-one,
+  .profile-orbit.orbit-two,
+  .profile-decoration-one,
+  .profile-decoration-two,
+  .hero-profile-area::before,
+  .hero-copy h1 span {
+    animation: none;
+  }
 }
