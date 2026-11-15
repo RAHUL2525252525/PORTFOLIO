@@ -10,72 +10,21 @@ import ResumeIQ from "./projects/ResumeIQ";
 import PlantDiseaseDetection from "./projects/PlantDiseaseDetection";
 
 import { sortGlobImages } from "./projects/galleryUtils";
-
 import HeroScene from "./Scene3D";
+
 import "./index.css";
 import "./3d.css";
 
-/* =========================================================
-   PROJECT PREVIEW IMAGES
-   ========================================================= */
+/* ---------- PROJECT PREVIEW IMAGES ---------- */
 
-/*
-  Screenshots are stored under:
-  src/assets/projects/<project-name>/
-
-  Vite cannot resolve these using a plain "/image.png" path,
-  so import.meta.glob is used.
-*/
-
-const shopsphereRaw = import.meta.glob(
-  "./assets/projects/shopsphere/*.png",
-  { eager: true, import: "default" }
-);
-
-const banksphereRaw = import.meta.glob(
-  "./assets/projects/banksphere/*.png",
-  { eager: true, import: "default" }
-);
-
-const lifeDecisionRaw = import.meta.glob(
-  "./assets/projects/lifedecisionassistant/*.png",
-  { eager: true, import: "default" }
-);
-
-const aiExamRaw = import.meta.glob(
-  "./assets/projects/aiexamcompanion/*.png",
-  { eager: true, import: "default" }
-);
-
-const digitalAnalyticsRaw = import.meta.glob(
-  "./assets/projects/digitalanalyticsdashboard/*.png",
-  { eager: true, import: "default" }
-);
-
-const gymSyncRaw = import.meta.glob(
-  "./assets/projects/gymsync/*.png",
-  { eager: true, import: "default" }
-);
-
-/*
-  ResumeIQ's screenshots are named 52.png.png .. 56.png.png,
-  but "*.png" still matches them fine here since it's only used
-  to grab a single preview thumbnail for the projects grid.
-*/
-const resumeiqRaw = import.meta.glob(
-  "./assets/projects/ResumeIQ/*.png",
-  { eager: true, import: "default" }
-);
-
-/*
-  Plant Disease Detection screenshots live in:
-  src/assets/projects/plantdiseasedetection/
-  png, jpg, jpeg and webp are all accepted.
-*/
-const plantDiseaseRaw = import.meta.glob(
-  "./assets/projects/plantdiseasedetection/*.{png,jpg,jpeg,webp}",
-  { eager: true, import: "default" }
-);
+const shopsphereRaw = import.meta.glob("./assets/projects/shopsphere/*.png", { eager: true, import: "default" });
+const banksphereRaw = import.meta.glob("./assets/projects/banksphere/*.png", { eager: true, import: "default" });
+const lifeDecisionRaw = import.meta.glob("./assets/projects/lifedecisionassistant/*.png", { eager: true, import: "default" });
+const aiExamRaw = import.meta.glob("./assets/projects/aiexamcompanion/*.png", { eager: true, import: "default" });
+const digitalAnalyticsRaw = import.meta.glob("./assets/projects/digitalanalyticsdashboard/*.png", { eager: true, import: "default" });
+const gymSyncRaw = import.meta.glob("./assets/projects/gymsync/*.png", { eager: true, import: "default" });
+const resumeiqRaw = import.meta.glob("./assets/projects/ResumeIQ/*.png", { eager: true, import: "default" });
+const plantDiseaseRaw = import.meta.glob("./assets/projects/plantdiseasedetection/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
 
 const SHOPSPHERE_IMAGE = sortGlobImages(shopsphereRaw)[0] ?? null;
 const BANKSPHERE_IMAGE = sortGlobImages(banksphereRaw)[0] ?? null;
@@ -86,9 +35,7 @@ const GYMSYNC_IMAGE = sortGlobImages(gymSyncRaw)[0] ?? null;
 const RESUMEIQ_IMAGE = sortGlobImages(resumeiqRaw)[0] ?? null;
 const PLANTDISEASE_IMAGE = sortGlobImages(plantDiseaseRaw)[0] ?? null;
 
-/* =========================================================
-   PROJECT ROUTES
-   ========================================================= */
+/* ---------- PROJECT ROUTES ---------- */
 
 const ROUTES = {
   shopsphere: ShopSphere,
@@ -101,9 +48,7 @@ const ROUTES = {
   plantdiseasedetection: PlantDiseaseDetection,
 };
 
-/* =========================================================
-   HASH ROUTING
-   ========================================================= */
+/* ---------- HASH ROUTING ---------- */
 
 function getHashRoute() {
   return window.location.hash.replace(/^#\/?/, "").toLowerCase();
@@ -111,20 +56,12 @@ function getHashRoute() {
 
 function scrollToSection(route, smooth = true) {
   if (!route) {
-    window.scrollTo({
-      top: 0,
-      behavior: smooth ? "smooth" : "auto",
-    });
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
     return;
   }
-
   const section = document.getElementById(route);
-
   if (section) {
-    section.scrollIntoView({
-      behavior: smooth ? "smooth" : "auto",
-      block: "start",
-    });
+    section.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
   }
 }
 
@@ -137,25 +74,16 @@ function useHashRoute() {
     const handleHashChange = () => {
       const newRoute = getHashRoute();
 
-      /*
-        If the hash points to a project page,
-        render that project and move to the top.
-      */
       if (ROUTES[newRoute]) {
         setRoute(newRoute);
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
 
-      /*
-        Otherwise this is a normal portfolio section.
-      */
       setRoute("");
 
       if (newRoute) {
-        requestAnimationFrame(() => {
-          scrollToSection(newRoute, true);
-        });
+        requestAnimationFrame(() => scrollToSection(newRoute, true));
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -168,26 +96,19 @@ function useHashRoute() {
     if (ROUTES[initialRoute]) {
       setRoute(initialRoute);
     } else if (initialRoute) {
-      initialScrollTimeout = setTimeout(() => {
-        scrollToSection(initialRoute, false);
-      }, 50);
+      initialScrollTimeout = setTimeout(() => scrollToSection(initialRoute, false), 50);
     }
 
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
-
-      if (initialScrollTimeout) {
-        clearTimeout(initialScrollTimeout);
-      }
+      if (initialScrollTimeout) clearTimeout(initialScrollTimeout);
     };
   }, []);
 
   return route;
 }
 
-/* =========================================================
-   SCROLL REVEAL
-   ========================================================= */
+/* ---------- SCROLL REVEAL ---------- */
 
 function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
   const ref = useRef(null);
@@ -195,7 +116,6 @@ function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
 
   useEffect(() => {
     const element = ref.current;
-
     if (!element) return;
 
     const observer = new IntersectionObserver(
@@ -209,30 +129,20 @@ function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
     );
 
     observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <Tag
-      ref={ref}
-      className={`reveal ${inView ? "in-view" : ""} ${className}`}
-      {...rest}
-    >
+    <Tag ref={ref} className={`reveal ${inView ? "in-view" : ""} ${className}`} {...rest}>
       {children}
     </Tag>
   );
 }
 
-/* =========================================================
-   MAIN APP
-   ========================================================= */
+/* ---------- MAIN APP ---------- */
 
 export default function App() {
   const route = useHashRoute();
-
   const ProjectPage = ROUTES[route];
 
   if (ProjectPage) {
@@ -255,46 +165,33 @@ export default function App() {
   );
 }
 
-/* =========================================================
-   NAVBAR
-   ========================================================= */
+/* ---------- NAVBAR ---------- */
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleNavClick = (event, sectionId) => {
     event.preventDefault();
-
     setMobileMenu(false);
 
-    const currentHash = window.location.hash
-      .replace(/^#\/?/, "")
-      .toLowerCase();
+    const currentHash = window.location.hash.replace(/^#\/?/, "").toLowerCase();
 
     if (currentHash === sectionId) {
       scrollToSection(sectionId, true);
       return;
     }
-
     window.location.hash = `#${sectionId}`;
   };
 
   const handleLogoClick = (event) => {
     event.preventDefault();
-
     setMobileMenu(false);
 
     if (window.location.hash) {
@@ -307,63 +204,22 @@ function Navbar() {
   return (
     <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
       <div className="nav-container">
-        <a
-          href="#"
-          className="nav-logo"
-          onClick={handleLogoClick}
-          aria-label="Go to homepage"
-        >
+        <a href="#" className="nav-logo" onClick={handleLogoClick} aria-label="Go to homepage">
           <span className="logo-name">RAHUL</span>
           <span className="logo-dot">.</span>
         </a>
 
-        <div
-          id="main-navigation"
-          className={`nav-links ${mobileMenu ? "mobile-open" : ""}`}
-        >
-          <a href="#about" onClick={(e) => handleNavClick(e, "about")}>
-            About
-          </a>
-
-          <a href="#skills" onClick={(e) => handleNavClick(e, "skills")}>
-            Skills
-          </a>
-
-          <a
-            href="#experience"
-            onClick={(e) => handleNavClick(e, "experience")}
-          >
-            Experience
-          </a>
-
-          <a href="#projects" onClick={(e) => handleNavClick(e, "projects")}>
-            Projects
-          </a>
-
-          <a
-            href="#education"
-            onClick={(e) => handleNavClick(e, "education")}
-          >
-            Education
-          </a>
-
-          <a
-            href="#certifications"
-            onClick={(e) => handleNavClick(e, "certifications")}
-          >
-            Certifications
-          </a>
-
-          <a href="#contact" onClick={(e) => handleNavClick(e, "contact")}>
-            Contact
-          </a>
+        <div id="main-navigation" className={`nav-links ${mobileMenu ? "mobile-open" : ""}`}>
+          <a href="#about" onClick={(e) => handleNavClick(e, "about")}>About</a>
+          <a href="#skills" onClick={(e) => handleNavClick(e, "skills")}>Skills</a>
+          <a href="#experience" onClick={(e) => handleNavClick(e, "experience")}>Experience</a>
+          <a href="#projects" onClick={(e) => handleNavClick(e, "projects")}>Projects</a>
+          <a href="#education" onClick={(e) => handleNavClick(e, "education")}>Education</a>
+          <a href="#certifications" onClick={(e) => handleNavClick(e, "certifications")}>Certifications</a>
+          <a href="#contact" onClick={(e) => handleNavClick(e, "contact")}>Contact</a>
         </div>
 
-        <a
-          href="#contact"
-          className="nav-contact"
-          onClick={(e) => handleNavClick(e, "contact")}
-        >
+        <a href="#contact" className="nav-contact" onClick={(e) => handleNavClick(e, "contact")}>
           Let's Talk
           <span>↗</span>
         </a>
@@ -385,15 +241,12 @@ function Navbar() {
   );
 }
 
-/* =========================================================
-   HERO
-   ========================================================= */
+/* ---------- HERO ---------- */
 
 function Hero() {
   return (
     <section className="hero-section">
       <div className="hero-grid-background" />
-
       <div className="hero-glow hero-glow-one" />
       <div className="hero-glow hero-glow-two" />
 
@@ -405,9 +258,7 @@ function Hero() {
 
         <div className="hero-main">
           <Reveal className="hero-copy">
-            <p className="hero-eyebrow">
-              FASTAPI · FLASK · DJANGO REST · DOCKER
-            </p>
+            <p className="hero-eyebrow">FASTAPI · FLASK · DJANGO REST · DOCKER</p>
 
             <h1>
               Rahul
@@ -420,9 +271,7 @@ function Hero() {
             <p className="hero-description">
               B.E. Computer Science graduate (2026) who builds and
               deploys full-stack applications with
-              <strong>
-                {" "}FastAPI, Flask, Django REST Framework and React.js
-              </strong>{" "}
+              <strong>{" "}FastAPI, Flask, Django REST Framework and React.js</strong>{" "}
               — JWT authentication, Docker containerisation,
               GitHub Actions CI/CD and LLM APIs (Gemini, Groq,
               OpenRouter) integrated into working products. I also
@@ -461,12 +310,13 @@ function Hero() {
                 <i />
                 Bengaluru, India
               </span>
-
               <span>Open to opportunities</span>
             </div>
           </Reveal>
 
           <Reveal className="hero-profile-area">
+            <HeroScene />
+
             <div className="profile-orbit orbit-one" />
             <div className="profile-orbit orbit-two" />
 
@@ -475,11 +325,7 @@ function Hero() {
 
             <div className="profile-frame">
               <div className="profile-inner">
-                <img
-                  src="/rahul-profile.jpg"
-                  alt="Rahul S"
-                  className="profile-image"
-                />
+                <img src="/rahul-profile.jpg" alt="Rahul S" className="profile-image" />
               </div>
             </div>
 
@@ -489,11 +335,9 @@ function Hero() {
 
         <div className="hero-bottom">
           <span>SCROLL TO EXPLORE</span>
-
           <div className="scroll-line">
             <span />
           </div>
-
           <span>2026</span>
         </div>
       </div>
@@ -501,9 +345,7 @@ function Hero() {
   );
 }
 
-/* =========================================================
-   ABOUT
-   ========================================================= */
+/* ---------- ABOUT ---------- */
 
 function About() {
   return (
@@ -567,17 +409,14 @@ function About() {
               <strong>8</strong>
               <span>LIVE DEPLOYED APPLICATIONS</span>
             </div>
-
             <div className="stat-card">
               <strong>90%+</strong>
               <span>CNN ACCURACY ON MAJOR PROJECT</span>
             </div>
-
             <div className="stat-card">
               <strong>6</strong>
               <span>PYTHON &amp; ML APPLICATIONS</span>
             </div>
-
             <div className="stat-card">
               <strong>3</strong>
               <span>INTERNSHIP EXPERIENCES</span>
@@ -588,97 +427,51 @@ function About() {
     </section>
   );
 }
-
-/* =========================================================
-   SKILLS
-   ========================================================= */
+/* ---------- SKILLS ---------- */
 
 function Skills() {
   const groups = [
     {
       number: "01",
       title: "LANGUAGES & FRONTEND",
-      description:
-        "Core languages and interfaces for full-stack applications.",
-      items: [
-        "Python",
-        "SQL",
-        "JavaScript",
-        "Java",
-        "React.js",
-        "HTML5",
-        "CSS3",
-        "Streamlit",
-      ],
+      description: "Core languages and interfaces for full-stack applications.",
+      items: ["Python", "SQL", "JavaScript", "Java", "React.js", "HTML5", "CSS3", "Streamlit"],
     },
-
     {
       number: "02",
       title: "BACKEND",
-      description:
-        "Structured backend systems with secure API design.",
-      items: [
-        "FastAPI",
-        "Flask",
-        "Django REST Framework",
-        "Spring Boot",
-        "REST APIs",
-        "JWT Authentication",
-        "Async Programming",
-      ],
+      description: "Structured backend systems with secure API design.",
+      items: ["FastAPI", "Flask", "Django REST Framework", "Spring Boot", "REST APIs", "JWT Authentication", "Async Programming"],
     },
-
     {
       number: "03",
       title: "DATABASES",
-      description:
-        "Relational and cloud database design and management.",
+      description: "Relational and cloud database design and management.",
       items: ["PostgreSQL", "MySQL", "Firebase"],
     },
-
     {
       number: "04",
       title: "API & TESTING",
       description: "API testing and quality-focused development.",
       items: ["Postman", "Unit Testing"],
     },
-
     {
       number: "05",
       title: "DATA & BI",
       description: "Data cleaning and business intelligence tooling.",
       items: ["Pandas", "Power BI", "Tableau", "Data Cleaning"],
     },
-
     {
       number: "06",
       title: "DEVOPS & CLOUD",
-      description:
-        "Deployment, containerization and development workflows.",
-      items: [
-        "Docker",
-        "Git",
-        "GitHub Actions (CI/CD)",
-        "Render",
-        "Vercel",
-        "AWS (EC2, S3 – basic)",
-      ],
+      description: "Deployment, containerization and development workflows.",
+      items: ["Docker", "Git", "GitHub Actions (CI/CD)", "Render", "Vercel", "AWS (EC2, S3 – basic)"],
     },
-
     {
       number: "07",
       title: "AI & ML",
-      description:
-        "LLM integrations and deep learning from internships and projects.",
-      items: [
-        "Gemini API",
-        "Groq API",
-        "OpenRouter API",
-        "TensorFlow",
-        "Keras",
-        "CNN",
-        "OpenCV",
-      ],
+      description: "LLM integrations and deep learning from internships and projects.",
+      items: ["Gemini API", "Groq API", "OpenRouter API", "TensorFlow", "Keras", "CNN", "OpenCV"],
     },
   ];
 
@@ -721,9 +514,7 @@ function Skills() {
   );
 }
 
-/* =========================================================
-   EXPERIENCE
-   ========================================================= */
+/* ---------- EXPERIENCE ---------- */
 
 function Experience() {
   const experiences = [
@@ -740,7 +531,6 @@ function Experience() {
         "Built a Life Decision Assistant integrating the Gemini and OpenRouter APIs, and a Digital Analytics Dashboard with a Gemini-powered chatbot.",
       ],
     },
-
     {
       type: "AI & DATA SCIENCE INTERNSHIP",
       role: "AI & Data Science Intern — Software Dev Project",
@@ -753,7 +543,6 @@ function Experience() {
         "Applied CNNs and VGG16 in sample projects on deep learning and image classification.",
       ],
     },
-
     {
       type: "AI & DATA SCIENCE INTERNSHIP",
       role: "AI & Data Science Intern — Training",
@@ -793,9 +582,7 @@ function Experience() {
               <div className="experience-top">
                 <div>
                   <span className="experience-type">{experience.type}</span>
-
                   <h3>{experience.role}</h3>
-
                   <p className="experience-company">{experience.company}</p>
                 </div>
 
@@ -821,9 +608,7 @@ function Experience() {
   );
 }
 
-/* =========================================================
-   PROJECTS
-   ========================================================= */
+/* ---------- PROJECTS ---------- */
 
 const PROJECTS = [
   {
@@ -832,213 +617,84 @@ const PROJECTS = [
     category: "AI-POWERED APPLICATION",
     title: "AI Exam Companion",
     image: AIEXAM_IMAGE,
-    tech: [
-      "Python",
-      "Flask",
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "Firebase",
-      "Google Authentication",
-      "Groq API",
-      "Docker",
-    ],
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Groq API", "Docker"],
     backendNote:
       "Groq-powered exam preparation chatbot with a performance dashboard and mock tests, built on a Flask backend with Firebase and Google authentication.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://ai-exam-companion-ghzc.onrender.com",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://ai-exam-companion-ghzc.onrender.com" }],
   },
-
   {
     id: "resumeiq",
     number: "02",
     category: "AI-POWERED APPLICATION",
     title: "ResumeIQ",
     image: RESUMEIQ_IMAGE,
-    tech: [
-      "Python",
-      "Django",
-      "Django REST Framework",
-      "React.js",
-      "MySQL",
-      "JWT Authentication",
-      "Gemini API",
-      "Postman",
-      "Docker",
-    ],
+    tech: ["Python", "Django", "Django REST Framework", "React.js", "MySQL", "JWT Authentication", "Gemini API", "Postman", "Docker"],
     backendNote:
       "AI resume analyzer that parses resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://resumeiq-wxje.onrender.com/app",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://resumeiq-wxje.onrender.com/app" }],
   },
-
   {
     id: "lifedecisionassistant",
     number: "03",
     category: "AI-POWERED APPLICATION",
     title: "Life Decision Assistant",
     image: LIFEDECISION_IMAGE,
-    tech: [
-      "Python",
-      "Flask",
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "Firebase",
-      "Google Authentication",
-      "Gemini API",
-      "OpenRouter API",
-      "Docker",
-    ],
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "OpenRouter API", "Docker"],
     backendNote:
       "AI decision-support assistant that helps users reason through everyday decisions, integrating the Gemini and OpenRouter APIs on a Flask backend.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://life-decision-assistant-63pu.onrender.com",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://life-decision-assistant-63pu.onrender.com" }],
   },
-
   {
     id: "digitalanalyticsdashboard",
     number: "04",
     category: "PYTHON FULL-STACK APPLICATION",
     title: "Digital Analytics Dashboard",
     image: DIGITALANALYTICS_IMAGE,
-    tech: [
-      "Python",
-      "Flask",
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "Firebase",
-      "Google Authentication",
-      "Gemini API",
-      "Postman",
-      "Docker",
-      "Pytest",
-      "JWT Authentication",
-    ],
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Postman", "Docker", "Pytest", "JWT Authentication"],
     backendNote:
       "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with a Gemini-powered chatbot that answers questions about the uploaded data.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://digital-dashboard1.onrender.com",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://digital-dashboard1.onrender.com" }],
   },
-
   {
     id: "banksphere",
     number: "05",
     category: "JAVA FULL-STACK APPLICATION",
     title: "BankSphere",
     image: BANKSPHERE_IMAGE,
-    tech: [
-      "Java",
-      "Spring Boot",
-      "Spring Security",
-      "React.js",
-      "PostgreSQL",
-      "REST APIs",
-      "JWT Authentication",
-      "RBAC",
-      "Maven",
-      "Docker",
-      "Postman",
-      "JUnit",
-    ],
+    tech: ["Java", "Spring Boot", "Spring Security", "React.js", "PostgreSQL", "REST APIs", "JWT Authentication", "RBAC", "Maven", "Docker", "Postman", "JUnit"],
     backendNote:
       "Online banking system built in Java/Spring Boot with JWT authentication, role-based access (user and admin), account and transaction management, and a React.js frontend served from the same Dockerized service.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://online-banking-system-17od.onrender.com",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://online-banking-system-17od.onrender.com" }],
   },
-
   {
     id: "shopsphere",
     number: "06",
     category: "JAVA FULL-STACK APPLICATION",
     title: "ShopSphere",
     image: SHOPSPHERE_IMAGE,
-    tech: [
-      "Java",
-      "Spring Boot",
-      "React.js",
-      "MySQL",
-      "REST APIs",
-      "RBAC",
-      "JWT Authentication",
-      "Maven",
-      "Docker",
-      "Postman",
-      "JUnit",
-    ],
+    tech: ["Java", "Spring Boot", "React.js", "MySQL", "REST APIs", "RBAC", "JWT Authentication", "Maven", "Docker", "Postman", "JUnit"],
     backendNote:
       "Full-featured e-commerce platform built in Java/Spring Boot with role-based access control and a React.js storefront.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://shopsphere-c109.onrender.com",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://shopsphere-c109.onrender.com" }],
   },
-
   {
     id: "gymsync",
     number: "07",
     category: "PYTHON FULL-STACK APPLICATION",
     title: "GymSync",
     image: GYMSYNC_IMAGE,
-    tech: [
-      "Python",
-      "FastAPI",
-      "JavaScript",
-      "React + Vite",
-      "PostgreSQL",
-      "Docker",
-      "JWT Authentication",
-      "GitHub Actions",
-      "Postman",
-      "Pytest",
-    ],
+    tech: ["Python", "FastAPI", "JavaScript", "React + Vite", "PostgreSQL", "Docker", "JWT Authentication", "GitHub Actions", "Postman", "Pytest"],
     backendNote:
       "Containerised gym tracking application with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed to Vercel and Render through a GitHub Actions CI/CD pipeline.",
-    liveLinks: [
-      {
-        label: "Live Demo",
-        url: "https://gymsync-app.onrender.com",
-      },
-    ],
+    liveLinks: [{ label: "Live Demo", url: "https://gymsync-app.onrender.com" }],
   },
-
   {
     id: "plantdiseasedetection",
     number: "08",
     category: "AI / ML APPLICATION",
     title: "Plant Disease Detection",
     image: PLANTDISEASE_IMAGE,
-    tech: [
-      "Python",
-      "Streamlit",
-      "Machine Learning",
-      "Artificial Intelligence",
-      "CNN",
-      "Kaggle Dataset",
-    ],
+    tech: ["Python", "Streamlit", "Machine Learning", "Artificial Intelligence", "CNN", "Kaggle Dataset"],
     backendNote:
       "CNN-based plant leaf disease classifier trained on a 1.5 GB Kaggle dataset, reaching over 90% accuracy, with a Streamlit interface for live predictions.",
     liveLinks: [
@@ -1103,7 +759,6 @@ function Projects() {
 
                 <div className="project-image-top">
                   <span>{project.category}</span>
-
                   <span>
                     {project.number} / {PROJECT_COUNT_LABEL}
                   </span>
@@ -1118,7 +773,6 @@ function Projects() {
               <div className="project-information">
                 <div className="project-title-line">
                   <h3>{project.title}</h3>
-
                   <span>{project.number}</span>
                 </div>
 
@@ -1152,7 +806,6 @@ function Projects() {
                 {project.backendNote && (
                   <div className="backend-note">
                     <span aria-hidden="true">i</span>
-
                     <p>{project.backendNote}</p>
                   </div>
                 )}
@@ -1174,9 +827,7 @@ function Projects() {
   );
 }
 
-/* =========================================================
-   EDUCATION
-   ========================================================= */
+/* ---------- EDUCATION ---------- */
 
 function Education() {
   return (
@@ -1215,7 +866,6 @@ function Education() {
               <span>
                 CGPA: <strong>8.00 / 10</strong>
               </span>
-
               <span>Bengaluru, India</span>
             </div>
           </div>
@@ -1225,26 +875,21 @@ function Education() {
   );
 }
 
-/* =========================================================
-   CERTIFICATIONS
-   ========================================================= */
+/* ---------- CERTIFICATIONS ---------- */
 
 const CERTIFICATIONS = [
   {
     title: "Green Skills & Artificial Intelligence",
-    issuer:
-      "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
+    issuer: "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
     description:
       "Program covering Green Skills and Artificial Intelligence, with hands-on training in Power BI, Tableau and Data Cleaning.",
   },
-
   {
     title: "Python Full Stack Software Development",
     issuer: "Qspiders Training Institute",
     description:
       "Structured training in full-stack Python development — from backend APIs to frontend integration.",
   },
-
   {
     title: "AI & Data Science Internship Certificates",
     issuer: "Knowx Innovations (P) Ltd.",
@@ -1259,33 +904,26 @@ const INTERNSHIP_CERTIFICATES = [
     subtitle: "MR. TechLab LLP (AppMind AI) · Jan 2026 – May 2026",
     image: "/certificates/appmind-ai-internship.jpg",
   },
-
   {
     title: "AI & Data Science Internship — Software Dev Project",
     subtitle: "Knowx Innovations (P) Ltd. · Mar 2023 – Jun 2023",
     image: "/certificates/knowx-software-dev-internship.jpg",
   },
-
   {
     title: "AI & Data Science Internship — Training",
     subtitle: "Knowx Innovations (P) Ltd. · Oct 2022 – Jan 2023",
     image: "/certificates/knowx-training-internship.jpg",
   },
-
   {
     title: "Green Skills & Generative AI Training",
-    subtitle:
-      "Skills4Future — Edunet Foundation, AICTE & Shell India Markets Pvt. Ltd.",
+    subtitle: "Skills4Future — Edunet Foundation, AICTE & Shell India Markets Pvt. Ltd.",
     image: "/certificates/skills4future-genai.jpg",
   },
 ];
 
 function Certifications() {
   return (
-    <section
-      id="certifications"
-      className="section certification-section"
-    >
+    <section id="certifications" className="section certification-section">
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
@@ -1307,9 +945,7 @@ function Certifications() {
 
               <div className="certificate-content">
                 <h3>{cert.title}</h3>
-
                 <strong>{cert.issuer}</strong>
-
                 <p>{cert.description}</p>
               </div>
 
@@ -1336,9 +972,7 @@ function Certifications() {
   );
 }
 
-/* =========================================================
-   CERTIFICATE BOOK
-   ========================================================= */
+/* ---------- CERTIFICATE BOOK ---------- */
 
 function CertificateBook({ certificates }) {
   const [index, setIndex] = useState(0);
@@ -1346,10 +980,6 @@ function CertificateBook({ certificates }) {
 
   const flipTimeoutRef = useRef(null);
 
-  /*
-    Preload every certificate image so page turns
-    don't wait for the browser to download them.
-  */
   useEffect(() => {
     certificates.forEach((cert) => {
       const preloadImage = new Image();
@@ -1357,20 +987,14 @@ function CertificateBook({ certificates }) {
     });
 
     return () => {
-      if (flipTimeoutRef.current) {
-        clearTimeout(flipTimeoutRef.current);
-      }
+      if (flipTimeoutRef.current) clearTimeout(flipTimeoutRef.current);
     };
   }, [certificates]);
 
   const FLIP_DURATION_MS = 620;
 
   const goToIndex = (nextIndex, direction) => {
-    if (
-      flipDirection ||
-      nextIndex < 0 ||
-      nextIndex >= certificates.length
-    ) {
+    if (flipDirection || nextIndex < 0 || nextIndex >= certificates.length) {
       return;
     }
 
@@ -1383,13 +1007,8 @@ function CertificateBook({ certificates }) {
     }, FLIP_DURATION_MS);
   };
 
-  const handlePrev = () => {
-    goToIndex(index - 1, "prev");
-  };
-
-  const handleNext = () => {
-    goToIndex(index + 1, "next");
-  };
+  const handlePrev = () => goToIndex(index - 1, "prev");
+  const handleNext = () => goToIndex(index + 1, "next");
 
   const current = certificates[index];
 
@@ -1434,30 +1053,21 @@ function CertificateBook({ certificates }) {
         type="button"
         className="book-arrow book-arrow-right"
         onClick={handleNext}
-        disabled={
-          index === certificates.length - 1 || Boolean(flipDirection)
-        }
+        disabled={index === certificates.length - 1 || Boolean(flipDirection)}
         aria-label="Next certificate"
       >
         ›
       </button>
 
       <div className="book-footer">
-        <div
-          className="book-dots"
-          role="tablist"
-          aria-label="Certificate pages"
-        >
+        <div className="book-dots" role="tablist" aria-label="Certificate pages">
           {certificates.map((cert, dotIndex) => (
             <button
               key={cert.title}
               type="button"
               className={dotIndex === index ? "active" : ""}
               onClick={() => {
-                if (flipDirection || dotIndex === index) {
-                  return;
-                }
-
+                if (flipDirection || dotIndex === index) return;
                 goToIndex(dotIndex, dotIndex > index ? "next" : "prev");
               }}
               aria-label={`Go to certificate ${dotIndex + 1}`}
@@ -1484,26 +1094,20 @@ function CertificatePage({ cert }) {
           alt={cert.title}
           onError={(event) => {
             event.currentTarget.style.display = "none";
-
-            event.currentTarget.parentElement?.classList.add(
-              "book-page-missing"
-            );
+            event.currentTarget.parentElement?.classList.add("book-page-missing");
           }}
         />
       </div>
 
       <div className="book-page-caption">
         <h4>{cert.title}</h4>
-
         <p>{cert.subtitle}</p>
       </div>
     </div>
   );
 }
 
-/* =========================================================
-   CONTACT
-   ========================================================= */
+/* ---------- CONTACT ---------- */
 
 function Contact() {
   return (
@@ -1532,17 +1136,13 @@ function Contact() {
             question or a project idea, my inbox is open.
           </p>
 
-          <a
-            href="mailto:srinivasrahul838@gmail.com"
-            className="contact-email"
-          >
+          <a href="mailto:srinivasrahul838@gmail.com" className="contact-email">
             srinivasrahul838@gmail.com
             <span>↗</span>
           </a>
 
           <div className="contact-details">
             <span>Bengaluru, Karnataka, India</span>
-
             <span>+91 73376 34886</span>
           </div>
 
@@ -1569,9 +1169,7 @@ function Contact() {
   );
 }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
+/* ---------- FOOTER ---------- */
 
 function Footer() {
   return (
@@ -1586,14 +1184,3 @@ function Footer() {
     </footer>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
