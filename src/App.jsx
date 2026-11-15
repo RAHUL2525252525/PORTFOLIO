@@ -181,10 +181,19 @@ const CERT_IMAGES = [
   { title: "Green Skills & Generative AI Training", sub: "Skills4Future, Edunet Foundation, AICTE & Shell India", image: "/certificates/skills4future-genai.jpg" },
 ];
 
+const CUBE_FACES = [
+  ["Python", "Backend & ML"],
+  ["REST API", "JWT secured"],
+  ["FastAPI", "Async services"],
+  ["Docker", "Containers"],
+  ["SQL", "PostgreSQL, MySQL"],
+  ["React", "Frontend"],
+];
+
 const ABOUT_TEXT =
   "I build and deploy full-stack applications end to end, from the REST API and database to the Docker container and CI/CD pipeline that ship it, with LLMs and CNNs wired in where they make the product smarter.";
 
-/* ---------- REVEAL (3D entrance) ---------- */
+/* ---------- REVEAL (smooth entrance) ---------- */
 
 function Reveal({ children, as: Tag = "div", className = "", delay = 0, ...rest }) {
   const ref = useRef(null);
@@ -398,16 +407,6 @@ function Hero() {
             <div className="photo">
               <img src="/rahul-profile.jpg" alt="Rahul S" />
             </div>
-
-            <span className="orb o1" aria-hidden="true" />
-            <span className="orb o2" aria-hidden="true" />
-
-            <div className="cbw cbw1" aria-hidden="true">
-              <div className="cb"><span className="a" /><span className="b" /><span className="c" /><span className="d" /><span className="e" /><span className="f" /></div>
-            </div>
-            <div className="cbw cbw2" aria-hidden="true">
-              <div className="cb"><span className="a" /><span className="b" /><span className="c" /><span className="d" /><span className="e" /><span className="f" /></div>
-            </div>
           </div>
         </div>
       </div>
@@ -568,7 +567,7 @@ function Experience() {
           {EXPERIENCES.map((x, i) => (
             <Reveal as="li" key={x.date} className="xp-item" delay={i * 60}>
               <time>{x.date}</time>
-              <div className="xp-card tilt" data-tilt="4">
+              <div className="xp-card">
                 <h3>{x.role}</h3>
                 <p className="xp-co">{x.company}</p>
                 <ul>{x.points.map((p) => <li key={p}>{p}</li>)}</ul>
@@ -581,7 +580,7 @@ function Experience() {
   );
 }
 
-/* ---------- PROJECTS ---------- */
+/* ---------- PROJECTS (no hover animation) ---------- */
 
 function Projects() {
   return (
@@ -595,7 +594,7 @@ function Projects() {
         <div className="pgrid">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.id} className="pwrap" delay={(i % 2) * 90}>
-              <article className="pcard tilt" data-tilt="7">
+              <article className="pcard">
                 <button type="button" className="pshot" onClick={() => openProject(p.id)} aria-label={`View ${p.title}`}>
                   {p.image ? <img src={p.image} alt={p.title} loading="lazy" /> : <span className="pshot-empty">{p.title}</span>}
                 </button>
@@ -613,7 +612,6 @@ function Projects() {
                     <button type="button" className="btn btn-soft" onClick={() => openProject(p.id)}>Case study</button>
                   </div>
                 </div>
-                <span className="glare" aria-hidden="true" />
               </article>
             </Reveal>
           ))}
@@ -632,7 +630,7 @@ function Education() {
         <Reveal as="h2" className="h2">Where it<br /><span className="ink-grad">started.</span></Reveal>
 
         <Reveal className="edu-wrap">
-          <div className="edu tilt" data-tilt="5">
+          <div className="edu">
             <span className="edu-bg" aria-hidden="true">2026</span>
             <div className="edu-body">
               <p className="edu-tag">2023 – 2026</p>
@@ -647,22 +645,73 @@ function Education() {
   );
 }
 
-/* ---------- CERTIFICATIONS ---------- */
+/* ---------- CERTIFICATIONS: page-turning book ---------- */
+
+function CertBook({ items }) {
+  const [page, setPage] = useState(0);
+  const n = items.length;
+  const go = (v) => setPage(Math.max(0, Math.min(n, v)));
+
+  const clickLeaf = (i) => {
+    if (i === page) go(page + 1);
+    else if (i === page - 1) go(page - 1);
+  };
+
+  return (
+    <div className="book-wrap">
+      <div
+        className="book"
+        tabIndex={0}
+        role="group"
+        aria-label="Certificates book. Use left and right arrow keys to turn pages."
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") go(page + 1);
+          if (e.key === "ArrowLeft") go(page - 1);
+        }}
+      >
+        <div className="paper left">
+          <div>
+            <h4>Certificates</h4>
+            <p>Click the right page to turn it.</p>
+          </div>
+        </div>
+
+        <div className="paper right">
+          <div>
+            <h4>That's all</h4>
+            <button type="button" className="btn btn-soft" onClick={() => go(0)}>Back to first</button>
+          </div>
+        </div>
+
+        {items.map((c, i) => (
+          <div
+            key={c.title}
+            className={`leaf ${i < page ? "flipped" : ""}`}
+            style={{ zIndex: i < page ? i + 1 : n - i + 1 }}
+            onClick={() => clickLeaf(i)}
+          >
+            <div className="face front">
+              <img src={c.image} alt={c.title} loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+            </div>
+            <div className="face back">
+              <span>{i + 1} of {n}</span>
+              <h4>{c.title}</h4>
+              <p>{c.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="book-ctrl">
+        <button type="button" className="round" onClick={() => go(page - 1)} disabled={page === 0} aria-label="Previous certificate">‹</button>
+        <span>{Math.min(page + 1, n)} / {n}</span>
+        <button type="button" className="round" onClick={() => go(page + 1)} disabled={page === n} aria-label="Next certificate">›</button>
+      </div>
+    </div>
+  );
+}
 
 function Certifications() {
-  const [zoom, setZoom] = useState(null);
-
-  useEffect(() => {
-    if (zoom === null) return;
-    const onKey = (e) => {
-      if (e.key === "Escape") setZoom(null);
-      if (e.key === "ArrowRight") setZoom((z) => Math.min(z + 1, CERT_IMAGES.length - 1));
-      if (e.key === "ArrowLeft") setZoom((z) => Math.max(z - 1, 0));
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [zoom]);
-
   return (
     <section id="certifications" className="section">
       <div className="wrap">
@@ -671,7 +720,7 @@ function Certifications() {
         <div className="cert-grid">
           {CERTIFICATIONS.map((c, i) => (
             <Reveal key={c.title} delay={i * 90}>
-              <div className="cert tilt" data-tilt="8">
+              <div className="cert">
                 <h3>{c.title}</h3>
                 <p className="cert-issuer">{c.issuer}</p>
                 <p>{c.description}</p>
@@ -681,55 +730,16 @@ function Certifications() {
         </div>
 
         <h3 className="sub">The certificates themselves</h3>
-        <div className="thumbs">
-          {CERT_IMAGES.map((c, i) => (
-            <Reveal key={c.title} delay={i * 70}>
-              <button type="button" className="thumb tilt" data-tilt="9" onClick={() => setZoom(i)}>
-                <img src={c.image} alt={c.title} loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                <span><strong>{c.title}</strong>{c.sub}</span>
-              </button>
-            </Reveal>
-          ))}
-        </div>
+        <CertBook items={CERT_IMAGES} />
       </div>
-
-      {zoom !== null && (
-        <div className="lightbox" role="dialog" aria-modal="true" aria-label="Certificate viewer" onClick={() => setZoom(null)}>
-          <div className="lightbox-inner" onClick={(e) => e.stopPropagation()}>
-            <img src={CERT_IMAGES[zoom].image} alt={CERT_IMAGES[zoom].title} />
-            <p><strong>{CERT_IMAGES[zoom].title}</strong> · {CERT_IMAGES[zoom].sub}</p>
-            <div className="lightbox-bar">
-              <button type="button" className="btn btn-soft" disabled={zoom === 0} onClick={() => setZoom(zoom - 1)}>Previous</button>
-              <span>{zoom + 1} of {CERT_IMAGES.length}</span>
-              <button type="button" className="btn btn-soft" disabled={zoom === CERT_IMAGES.length - 1} onClick={() => setZoom(zoom + 1)}>Next</button>
-              <button type="button" className="btn btn-ink" onClick={() => setZoom(null)}>Close</button>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
 
-/* ---------- CONTACT: mouse-driven 3D cube ---------- */
-
-const CUBE_FACES = ["Python", "React", "Docker", "FastAPI", "SQL", "AI"];
+/* ---------- CONTACT: auto-turning skill cube ---------- */
 
 function Contact() {
-  const ref = useRef(null);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(hover: none)").matches) return;
-    const move = (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--cx", (((e.clientX - r.left) / r.width) - 0.5).toFixed(3));
-      el.style.setProperty("--cy", (((e.clientY - r.top) / r.height) - 0.5).toFixed(3));
-    };
-    el.addEventListener("mousemove", move, { passive: true });
-    return () => el.removeEventListener("mousemove", move);
-  }, []);
 
   const copy = useCallback(async () => {
     try {
@@ -742,7 +752,7 @@ function Contact() {
   }, []);
 
   return (
-    <section id="contact" className="section contact" ref={ref}>
+    <section id="contact" className="section contact">
       <div className="wrap contact-grid">
         <div>
           <Reveal as="h2" className="contact-title">Let's build<br /><span className="ink-grad">something together.</span></Reveal>
@@ -764,7 +774,9 @@ function Contact() {
         <div className="cube-stage" aria-hidden="true">
           <div className="cube-look">
             <div className="cube">
-              {CUBE_FACES.map((f, i) => <span key={f} className={`cf f${i}`}>{f}</span>)}
+              {CUBE_FACES.map(([name, sub], i) => (
+                <span key={name} className={`cf f${i}`}>{name}<small>{sub}</small></span>
+              ))}
             </div>
           </div>
           <div className="cube-shadow" />
