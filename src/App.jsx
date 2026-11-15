@@ -137,82 +137,6 @@ function Reveal({ children, as: Tag = "div", className = "", ...rest }) {
   );
 }
 
-/* ---------- PURE CSS 3D ---------- */
-
-function Cube({ className }) {
-  return (
-    <div className={`h3-cube ${className}`}>
-      <span className="f front" />
-      <span className="f back" />
-      <span className="f left" />
-      <span className="f right" />
-      <span className="f top" />
-      <span className="f bottom" />
-    </div>
-  );
-}
-
-function Hero3D() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const move = (e) => {
-      el.style.setProperty("--mx", (e.clientX / window.innerWidth - 0.5).toFixed(3));
-      el.style.setProperty("--my", (e.clientY / window.innerHeight - 0.5).toFixed(3));
-    };
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
-  return (
-    <div className="hero3d" ref={ref} aria-hidden="true">
-      <div className="h3-stage">
-        <div className="h3-ring r1" />
-        <div className="h3-ring r2" />
-        <div className="h3-ring r3" />
-        <div className="h3-orb o1" />
-        <div className="h3-orb o2" />
-        <div className="h3-orb o3" />
-        <Cube className="c1" />
-        <Cube className="c2" />
-        <Cube className="c3" />
-      </div>
-    </div>
-  );
-}
-
-function Effects3D() {
-  useEffect(() => {
-    if (window.matchMedia("(hover: none)").matches) return;
-    let last = null;
-
-    const reset = (el) => {
-      if (!el) return;
-      el.style.setProperty("--rx", "0deg");
-      el.style.setProperty("--ry", "0deg");
-    };
-
-    const move = (e) => {
-      const el = e.target.closest?.(".project-showcase-card, .stat-card");
-      if (last && last !== el) reset(last);
-      last = el;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      el.style.setProperty("--ry", `${(x * 8).toFixed(2)}deg`);
-      el.style.setProperty("--rx", `${(-y * 8).toFixed(2)}deg`);
-    };
-
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
-  return null;
-}
-
 /* ---------- MAIN APP ---------- */
 
 export default function App() {
@@ -225,7 +149,6 @@ export default function App() {
 
   return (
     <div className="portfolio">
-      <Effects3D />
       <Navbar />
       <Hero />
       <About />
@@ -390,15 +313,7 @@ function Hero() {
           </Reveal>
 
           <Reveal className="hero-profile-area">
-            <Hero3D />
-
-            <div className="profile-orbit orbit-one" />
-            <div className="profile-orbit orbit-two" />
-
-            <div className="profile-decoration profile-decoration-one" />
-            <div className="profile-decoration profile-decoration-two" />
-
-            <div className="profile-frame">
+<div className="profile-frame">
               <div className="profile-inner">
                 <img src="/rahul-profile.jpg" alt="Rahul S" className="profile-image" />
               </div>
