@@ -82,15 +82,6 @@ const GITHUB = "https://github.com/RAHUL2525252525";
 const LINKEDIN = "https://www.linkedin.com/in/rahul-s-6460b1238";
 const NAV = ["about", "skills", "experience", "projects", "education", "certifications", "contact"];
 
-/* hero exploded view, bottom to top */
-const LAYERS = [
-  { name: "Deploy", sub: "ship it", chips: ["Docker", "GitHub Actions", "Render", "Vercel"] },
-  { name: "Data", sub: "store it", chips: ["PostgreSQL", "MySQL", "Firebase"] },
-  { name: "API", sub: "secure it", chips: ["FastAPI", "Flask", "Django REST", "JWT"] },
-  { name: "AI", sub: "make it smart", chips: ["Gemini", "Groq", "OpenRouter", "CNN"] },
-  { name: "Interface", sub: "show it", chips: ["React.js", "JavaScript", "Streamlit"] },
-];
-
 const SKILLS = [
   { title: "Languages & frontend", items: ["Python", "SQL", "JavaScript", "Java", "React.js", "HTML5", "CSS3", "Streamlit"] },
   { title: "Backend", items: ["FastAPI", "Flask", "Django REST Framework", "Spring Boot", "REST APIs", "JWT Authentication", "Async Programming"] },
@@ -315,7 +306,7 @@ function Nav() {
   return (
     <header className="nav">
       <a href="#" className="nav-brand" aria-label="Go to top" onClick={(e) => { e.preventDefault(); setMenu(false); if (window.location.hash) window.location.hash = ""; else window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-        <span className="nav-cube" aria-hidden="true"><i /><i /><i /></span>
+        <span className="nav-mark" aria-hidden="true">R</span>
         Rahul S.
       </a>
 
@@ -334,64 +325,22 @@ function Nav() {
   );
 }
 
-/* ---------- HERO: exploded 3D full-stack ---------- */
+/* ---------- HERO ---------- */
 
 function Hero() {
-  const hero = useRef(null);
-
-  useEffect(() => {
-    const el = hero.current;
-    if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let tx = 0, ty = 0, mx = 0, my = 0, ts = 0, sp = 0, raf, visible = true;
-
-    const onMove = (e) => { tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5; };
-    const onScroll = () => { ts = Math.min(1, window.scrollY / (window.innerHeight * 0.85)); };
-
-    const loop = () => {
-      raf = requestAnimationFrame(loop);
-      if (!visible) return;
-      mx += (tx - mx) * 0.07;
-      my += (ty - my) * 0.07;
-      sp += (ts - sp) * 0.08;
-      el.style.setProperty("--mx", mx.toFixed(4));
-      el.style.setProperty("--my", my.toFixed(4));
-      el.style.setProperty("--sp", sp.toFixed(4));
-    };
-
-    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
-    io.observe(el);
-    onScroll();
-    if (!reduce) {
-      window.addEventListener("mousemove", onMove, { passive: true });
-      window.addEventListener("scroll", onScroll, { passive: true });
-      loop();
-    }
-    return () => {
-      cancelAnimationFrame(raf);
-      io.disconnect();
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
   return (
-    <section className="hero" ref={hero}>
+    <section className="hero">
       <div className="wrap hero-grid">
         <div className="hero-copy">
           <p className="status"><i /> Open to Python Developer roles · Bengaluru</p>
 
-          <h1>
-            <span className="h-line"><span>Full-stack,</span></span>
-            <span className="h-line"><span className="ink-grad">layer by layer.</span></span>
-          </h1>
-
-          <p className="hero-who"><strong>Rahul S.</strong> Python Developer · B.E. Computer Science (2026)</p>
+          <p className="hero-name">Rahul S.</p>
+          <h1>Python developer who builds and ships full-stack apps.</h1>
 
           <p className="hero-lede">
-            I build and deploy apps with <strong>FastAPI, Flask, Django REST Framework and React.js</strong>, secured with JWT, packaged in Docker,
-            shipped through GitHub Actions, and wired up to LLM APIs like Gemini, Groq and OpenRouter. I also train CNNs, and I've written Java in
-            BankSphere and ShopSphere.
+            B.E. Computer Science graduate (2026). I build and deploy apps with <strong>FastAPI, Flask, Django REST Framework and React.js</strong>,
+            secured with JWT, packaged in Docker, shipped through GitHub Actions, and connected to LLM APIs like Gemini, Groq and OpenRouter.
+            I also train CNNs, and I've written Java in BankSphere and ShopSphere.
           </p>
 
           <div className="hero-actions">
@@ -406,25 +355,10 @@ function Hero() {
           </ul>
         </div>
 
-        <div className="stage" aria-hidden="true">
-          <div className="plate" />
-          <div className="stack">
-            {LAYERS.map((l, i) => (
-              <div key={l.name} className={`layer l${i}`} style={{ "--z": i * 74 }}>
-                <div className="face">
-                  <div className="face-head"><b>{l.name}</b><span>{l.sub}</span></div>
-                  <ul>{l.chips.map((c) => <li key={c}>{c}</li>)}</ul>
-                </div>
-              </div>
-            ))}
-          </div>
-          <figure className="portrait">
-            <img src="/rahul-profile.jpg" alt="" />
-          </figure>
+        <div className="hero-photo tilt" data-tilt="4">
+          <img src="/rahul-profile.jpg" alt="Rahul S" />
         </div>
       </div>
-
-      <p className="hero-hint">Move your mouse to rotate. Scroll to pull the layers apart.</p>
     </section>
   );
 }
