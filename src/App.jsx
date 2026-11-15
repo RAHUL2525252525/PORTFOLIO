@@ -11,7 +11,9 @@ import PlantDiseaseDetection from "./projects/PlantDiseaseDetection";
 
 import { sortGlobImages } from "./projects/galleryUtils";
 
+import HeroScene from "./Scene3D";
 import "./index.css";
+import "./3d.css";
 
 /* =========================================================
    PROJECT PREVIEW IMAGES
