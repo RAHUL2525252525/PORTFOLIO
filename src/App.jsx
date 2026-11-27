@@ -47,13 +47,13 @@ const ROUTES = {
 };
 
 /* ---------- ROLE FILTERS ---------- */
-/* Hash links: #ai-ml, #python, #java (and #all) open the Projects
+/* Hash links: #python, #ai-ml, #java (and #all) open the Projects
    section with that tab already selected. */
 
 const ROLE_TABS = [
   { id: "all", label: "All" },
-  { id: "ai-ml", label: "AI & ML" },
   { id: "python", label: "Python" },
+  { id: "ai-ml", label: "AI & ML" },
   { id: "java", label: "Java" },
 ];
 
@@ -356,12 +356,12 @@ function Hero() {
       <div className="hero-content">
         <Reveal className="hero-topline">
           <span className="hero-line" />
-          <span>PYTHON · JAVA · AI &amp; ML</span>
+          <span>PYTHON SPECIALIST · JAVA · AI &amp; ML</span>
         </Reveal>
 
         <div className="hero-main">
           <Reveal className="hero-copy">
-            <p className="hero-eyebrow">FASTAPI · DJANGO · SPRING BOOT · TENSORFLOW · LLM APIS</p>
+            <p className="hero-eyebrow">FASTAPI · DJANGO · FLASK · SPRING BOOT · TENSORFLOW · LLM APIS</p>
 
             <h1>
               Rahul
@@ -370,19 +370,20 @@ function Hero() {
             </h1>
 
             <p className="hero-title">
-              Software &amp; AI Engineer | Building Scalable Backends &amp; Intelligent Systems
+              Python Developer | Backend, AI &amp; ML Engineering, with Java Full-Stack Experience
             </p>
 
             <p className="hero-description">
-              I bridge backend engineering and production AI. I build
-              scalable, secure services in
-              <strong>{" "}Java (Spring Boot) and Python (FastAPI, Django REST, Flask)</strong>{" "}
-              and then ship the intelligent layer on top:
+              Python is my core specialization. I build scalable, secure
+              services with
+              <strong>{" "}FastAPI, Django REST and Flask</strong>{" "}
+              and ship the intelligent layer on top:
               <strong>{" "}CNN models and multi-LLM applications</strong>{" "}
-              built with TensorFlow, Gemini, Groq and OpenRouter. Every
-              project goes live with JWT authentication, Docker and
-              GitHub Actions CI/CD. Use the tabs in Projects to see my
-              work by role.
+              built with TensorFlow, Gemini, Groq and OpenRouter. I have
+              also built production systems in
+              <strong>{" "}Java (Spring Boot)</strong>.
+              Every project goes live with JWT authentication, Docker and
+              GitHub Actions CI/CD.
             </p>
 
             <div className="hero-actions">
@@ -401,7 +402,7 @@ function Hero() {
                 <i />
                 Bengaluru, India
               </span>
-              <span>Open to opportunities</span>
+              <span>Open to Python, Java &amp; AI/ML roles</span>
             </div>
           </Reveal>
 
@@ -449,7 +450,7 @@ function About() {
           </div>
 
           <h2 className="massive-title">
-            Engineer first.
+            Python first.
             <br />
             <span>Builder always.</span>
           </h2>
@@ -458,18 +459,19 @@ function About() {
         <div className="about-layout">
           <Reveal className="about-main">
             <p className="about-lead">
-              I'm a developer who ships complete products in Python,
-              Java and AI/ML — from database design to live deployment.
+              I'm a Python developer who ships complete products — from
+              database design to live deployment — with hands-on Java and
+              AI/ML experience behind it.
             </p>
 
             <p>
-              My Python work spans REST APIs with FastAPI, Flask and
-              Django REST Framework, React.js frontends, PostgreSQL
-              and MySQL, JWT authentication and Docker. My Java work
-              covers Spring Boot, Spring Security and Spring Data JPA
-              in projects like BankSphere and ShopSphere. I automate
+              My core work is in Python: REST APIs with FastAPI, Flask
+              and Django REST Framework, React.js frontends, PostgreSQL
+              and MySQL, JWT authentication and Docker. I automate
               deployments with GitHub Actions CI/CD and host apps on
-              Render and Vercel.
+              Render and Vercel. On the Java side, I have built
+              Spring Boot systems with Spring Security and Spring Data
+              JPA in projects like BankSphere and ShopSphere.
             </p>
 
             <p>
@@ -505,7 +507,7 @@ function About() {
             </div>
             <div className="stat-card">
               <strong>3</strong>
-              <span>SPECIALIST TRACKS: PYTHON, JAVA, AI/ML</span>
+              <span>ROLES: PYTHON, JAVA, AI/ML</span>
             </div>
             <div className="stat-card">
               <strong>3</strong>
@@ -523,10 +525,10 @@ function About() {
 const SPECIALIZATIONS = [
   {
     id: "python",
-    label: "Python Developer",
+    label: "Python Developer · Core",
     headline: "Python full-stack, APIs and automation",
     blurb:
-      "Async and relational backends with FastAPI, Django REST Framework and Flask, paired with React.js frontends and containerised CI/CD deployments.",
+      "My primary specialization: async and relational backends with FastAPI, Django REST Framework and Flask, paired with React.js frontends and containerised CI/CD deployments.",
     stack: ["FastAPI", "Django REST", "Flask", "React.js", "PostgreSQL", "MySQL", "JWT", "Docker", "GitHub Actions"],
     projects: ["GymSync", "ResumeIQ", "Digital Analytics Dashboard"],
     resumeId: "python",
@@ -543,7 +545,7 @@ const SPECIALIZATIONS = [
   },
   {
     id: "aiml",
-    label: "AI & ML Specialist",
+    label: "AI & ML Engineer",
     headline: "Deep learning, computer vision and multi-LLM apps",
     blurb:
       "CNNs and transfer learning with TensorFlow and Keras, plus LLM applications that route across Gemini, Groq and OpenRouter, including RAG workflows with LangChain.",
@@ -560,18 +562,19 @@ function Specializations() {
         <Reveal>
           <div className="section-kicker">
             <span>02</span>
-            SPECIALIZATIONS
+            ROLES
           </div>
 
           <h2 className="massive-title">
-            One engineer.
+            Python at the core.
             <br />
-            <span>Three specialist tracks.</span>
+            <span>Open to three roles.</span>
           </h2>
 
           <p className="spec-intro">
-            Each track has its own focused resume, so you can see
-            the skills and projects that matter most for the role.
+            Python is my main specialization, backed by real Java and
+            AI/ML projects. Each role has its own focused resume, so you
+            can see the skills and projects that matter most.
           </p>
         </Reveal>
 
@@ -598,7 +601,11 @@ function Specializations() {
                 className="spec-link"
                 onClick={(event) => {
                   event.preventDefault();
-                  window.sessionStorage?.setItem("resumeTab", spec.resumeId);
+                  try {
+                    window.sessionStorage.setItem("resumeTab", spec.resumeId);
+                  } catch {
+                    /* sessionStorage unavailable */
+                  }
                   window.dispatchEvent(new CustomEvent("select-resume", { detail: spec.resumeId }));
                   if (window.location.hash === "#resumes") {
                     scrollToSection("resumes", true);
@@ -607,7 +614,7 @@ function Specializations() {
                   }
                 }}
               >
-                See {spec.label} resume
+                See {spec.label.replace(" · Core", "")} resume
                 <span>↗</span>
               </a>
             </Reveal>
@@ -623,10 +630,34 @@ function Specializations() {
 const SKILL_GROUPS = [
   {
     number: "01",
+    title: "PYTHON ECOSYSTEM (CORE)",
+    description: "My primary stack: async and relational Python backends with secure API design.",
+    items: [
+      "Python",
+      "FastAPI",
+      "Django REST Framework",
+      "Flask",
+      "REST APIs",
+      "JWT Authentication",
+      "Async Programming",
+      "React.js",
+      "JavaScript (ES6+)",
+      "PostgreSQL",
+      "MySQL",
+      "Firebase (Firestore & Auth)",
+      "Docker",
+      "GitHub Actions (CI/CD)",
+      "Pytest",
+      "Postman",
+      "Render",
+      "Vercel",
+    ],
+  },
+  {
+    number: "02",
     title: "AI & MACHINE LEARNING",
     description: "Deep learning, computer vision, LLM integrations and data tooling.",
     items: [
-      "Python",
       "TensorFlow",
       "Keras",
       "CNN",
@@ -647,31 +678,6 @@ const SKILL_GROUPS = [
       "EDA & Data Cleaning",
       "Streamlit",
       "Flutter",
-    ],
-  },
-  {
-    number: "02",
-    title: "PYTHON ECOSYSTEM",
-    description: "Async and relational Python backends with secure API design.",
-    items: [
-      "Python",
-      "FastAPI",
-      "Django REST Framework",
-      "Flask",
-      "REST APIs",
-      "JWT Authentication",
-      "Async Programming",
-      "React.js",
-      "JavaScript (ES6+)",
-      "PostgreSQL",
-      "MySQL",
-      "Firebase (Firestore & Auth)",
-      "Docker",
-      "GitHub Actions (CI/CD)",
-      "Pytest",
-      "Postman",
-      "Render",
-      "Vercel",
     ],
   },
   {
@@ -746,14 +752,14 @@ function Skills() {
 function Experience() {
   const experiences = [
     {
-      type: "AI & FULL-STACK INTERNSHIP",
+      type: "PYTHON, AI & FULL-STACK INTERNSHIP",
       role: "AI Engineering Intern",
       company: "MR. TechLab LLP (AppMind AI) · Bengaluru",
       date: "JAN 2026 — MAY 2026",
       summary:
-        "Built and deployed three production full-stack web apps and a companion Flutter Android APK using Flask, Firebase and Docker.",
+        "Built and deployed three production full-stack web apps and a companion Flutter Android APK using Python, Flask, Firebase and Docker.",
       points: [
-        "Built and deployed 3 full-stack web apps using Flask, Firebase and Google Authentication; containerised with Docker and hosted on Vercel (frontend) and Render (backend).",
+        "Built and deployed 3 full-stack web apps using Python, Flask, Firebase and Google Authentication; containerised with Docker and hosted on Vercel (frontend) and Render (backend).",
         "Architected multi-LLM pipelines across the Groq, Gemini and OpenRouter APIs for automated reasoning, study assistance and data analytics.",
         "Developed AI Exam Companion, Life Decision Assistant and Digital Analytics Dashboard, with GitHub Actions CI/CD to Render and Vercel.",
       ],
@@ -764,7 +770,7 @@ function Experience() {
       company: "Knowx Innovations (P) Ltd · Bengaluru",
       date: "MAR 2023 — JUN 2023",
       summary:
-        "Second internship phase (during Diploma): training and a software development project in Artificial Intelligence, Machine Learning, Deep Learning and Data Science.",
+        "Second internship phase: training and a software development project in Python-based Artificial Intelligence, Machine Learning, Deep Learning and Data Science.",
       points: [
         "Built, trained and evaluated CNNs and fine-tuned VGG16 image classification models using TensorFlow and Keras.",
         "Developed computer vision pipelines with OpenCV across applied AI projects.",
@@ -776,7 +782,7 @@ function Experience() {
       company: "Knowx Innovations (P) Ltd · Bengaluru",
       date: "OCT 2022 — JAN 2023",
       summary:
-        "First internship phase (during Diploma): structured training in Artificial Intelligence, Data Science, Python programming and machine learning.",
+        "First internship phase: structured training in Artificial Intelligence, Data Science, Python programming and machine learning.",
       points: [
         "Completed training in Python, SQL, machine learning algorithms, cloud computing, OpenCV, Keras and TensorFlow.",
         "Applied regression, linear algebra and data preprocessing to analyse structured datasets.",
@@ -836,25 +842,44 @@ function Experience() {
 }
 
 /* ---------- PROJECTS ---------- */
-/* `category` is the filter key:
-     "flagship" -> shown under every tab (cross-stack: Java + Python + AI/ML)
-     "ai-ml" | "python" | "java" -> shown under All and its own tab
+/* `category` is the filter key: "python" | "ai-ml" | "java".
+   Projects are listed Python first, then AI/ML, then Java.
    `label` is the text shown on the card image.
-   Numbers (01 / 06) are generated from the filtered list.
-   Entries with `placeholder: true` have no detail page or live demo yet. */
+   Numbers (01 / 08) are generated from the filtered list. */
 
 const PROJECTS = [
   {
-    id: "flagship-cross-stack",
-    category: "flagship",
-    label: "FLAGSHIP · JAVA + PYTHON + AI/ML",
-    title: "Flagship Cross-Stack Project",
-    image: null,
-    placeholder: true,
-    tech: ["Java", "Spring Boot", "Python", "FastAPI", "React.js", "TensorFlow", "LLM APIs", "PostgreSQL", "Docker", "GitHub Actions"],
+    id: "gymsync",
+    category: "python",
+    label: "PYTHON FULL-STACK APPLICATION",
+    title: "GymSync",
+    image: GYMSYNC_IMAGE,
+    tech: ["Python", "FastAPI", "JavaScript", "React + Vite", "PostgreSQL", "Docker", "JWT Authentication", "GitHub Actions", "Postman", "Pytest"],
     backendNote:
-      "Placeholder: a Spring Boot core service paired with a Python AI/ML inference service behind one React.js frontend. Replace this text with the real project summary.",
-    liveLinks: [],
+      "Containerised gym tracking application with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed to Vercel and Render through a GitHub Actions CI/CD pipeline.",
+    liveLinks: [{ label: "Live Demo", url: "https://gymsync-app.onrender.com" }],
+  },
+  {
+    id: "resumeiq",
+    category: "python",
+    label: "PYTHON FULL-STACK APPLICATION",
+    title: "ResumeIQ",
+    image: RESUMEIQ_IMAGE,
+    tech: ["Python", "Django", "Django REST Framework", "React.js", "MySQL", "JWT Authentication", "Gemini API", "Postman", "Docker"],
+    backendNote:
+      "AI resume analyzer that parses PDF resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
+    liveLinks: [{ label: "Live Demo", url: "https://resumeiq-wxje.onrender.com/app" }],
+  },
+  {
+    id: "digitalanalyticsdashboard",
+    category: "python",
+    label: "PYTHON FULL-STACK APPLICATION",
+    title: "Digital Analytics Dashboard",
+    image: DIGITALANALYTICS_IMAGE,
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Postman", "Docker", "Pytest", "JWT Authentication"],
+    backendNote:
+      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with an AI chatbot that answers questions about the uploaded data.",
+    liveLinks: [{ label: "Live Demo", url: "https://digital-dashboard1.onrender.com" }],
   },
   {
     id: "aiexamcompanion",
@@ -895,39 +920,6 @@ const PROJECTS = [
     ],
   },
   {
-    id: "resumeiq",
-    category: "python",
-    label: "PYTHON FULL-STACK APPLICATION",
-    title: "ResumeIQ",
-    image: RESUMEIQ_IMAGE,
-    tech: ["Python", "Django", "Django REST Framework", "React.js", "MySQL", "JWT Authentication", "Gemini API", "Postman", "Docker"],
-    backendNote:
-      "AI resume analyzer that parses PDF resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
-    liveLinks: [{ label: "Live Demo", url: "https://resumeiq-wxje.onrender.com/app" }],
-  },
-  {
-    id: "digitalanalyticsdashboard",
-    category: "python",
-    label: "PYTHON FULL-STACK APPLICATION",
-    title: "Digital Analytics Dashboard",
-    image: DIGITALANALYTICS_IMAGE,
-    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Postman", "Docker", "Pytest", "JWT Authentication"],
-    backendNote:
-      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with an AI chatbot that answers questions about the uploaded data.",
-    liveLinks: [{ label: "Live Demo", url: "https://digital-dashboard1.onrender.com" }],
-  },
-  {
-    id: "gymsync",
-    category: "python",
-    label: "PYTHON FULL-STACK APPLICATION",
-    title: "GymSync",
-    image: GYMSYNC_IMAGE,
-    tech: ["Python", "FastAPI", "JavaScript", "React + Vite", "PostgreSQL", "Docker", "JWT Authentication", "GitHub Actions", "Postman", "Pytest"],
-    backendNote:
-      "Containerised gym tracking application with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed to Vercel and Render through a GitHub Actions CI/CD pipeline.",
-    liveLinks: [{ label: "Live Demo", url: "https://gymsync-app.onrender.com" }],
-  },
-  {
     id: "banksphere",
     category: "java",
     label: "JAVA FULL-STACK APPLICATION",
@@ -953,9 +945,7 @@ const PROJECTS = [
 
 function filterProjects(projects, role) {
   if (role === "all") return projects;
-  return projects.filter(
-    (project) => project.category === role || project.category === "flagship"
-  );
+  return projects.filter((project) => project.category === role);
 }
 
 function openProject(projectId) {
@@ -978,7 +968,7 @@ function getInitialRole() {
 function Projects() {
   const [activeRole, setActiveRole] = useState(getInitialRole);
 
-  // Keep the selected tab in sync with the URL hash (#ai-ml, #python, #java, #all)
+  // Keep the selected tab in sync with the URL hash (#python, #ai-ml, #java, #all)
   useEffect(() => {
     const syncFromHash = () => {
       const route = getHashRoute();
@@ -1024,11 +1014,11 @@ function Projects() {
           </h2>
 
           <p className="projects-intro">
-            Eight deployed applications across three tracks — Python
-            full-stack apps, Java/Spring Boot systems, and AI/ML
-            projects with CNNs and multi-LLM integrations — covering
-            REST APIs, relational databases, authentication and
-            Dockerized deployments, end to end.
+            Eight deployed applications led by Python full-stack work,
+            alongside AI/ML projects with CNNs and multi-LLM
+            integrations and Java/Spring Boot systems — covering REST
+            APIs, relational databases, authentication and Dockerized
+            deployments, end to end.
           </p>
         </Reveal>
 
@@ -1064,7 +1054,7 @@ function Projects() {
                 ) : (
                   <div className="project-visual-placeholder">
                     <span>{project.title}</span>
-                    <p>{project.placeholder ? "Coming soon" : "Screenshot coming soon"}</p>
+                    <p>Live demo available</p>
                   </div>
                 )}
 
@@ -1214,10 +1204,10 @@ function Education() {
 
 const CERTIFICATIONS = [
   {
-    title: "Green Skills & Artificial Intelligence",
-    issuer: "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
+    title: "Python Full Stack Software Development",
+    issuer: "Qspiders Training Institute",
     description:
-      "Program covering Green Skills and Artificial Intelligence, with hands-on training in Python, Power BI, Tableau and Data Cleaning.",
+      "Structured training in full-stack Python development — from backend APIs to frontend integration.",
   },
   {
     title: "Python Programming & Cloud Computing Fundamentals",
@@ -1226,10 +1216,10 @@ const CERTIFICATIONS = [
       "Core Python scripting, object-oriented principles and cloud deployment models.",
   },
   {
-    title: "Python Full Stack Software Development",
-    issuer: "Qspiders Training Institute",
+    title: "Green Skills & Artificial Intelligence",
+    issuer: "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
     description:
-      "Structured training in full-stack Python development — from backend APIs to frontend integration.",
+      "Program covering Green Skills and Artificial Intelligence, with hands-on training in Python, Power BI, Tableau and Data Cleaning.",
   },
   {
     title: "AI & Data Science Internship Certificates",
@@ -1263,6 +1253,28 @@ const INTERNSHIP_CERTIFICATES = [
 ];
 
 function Certifications() {
+  // Certificates whose image file is missing are skipped, so visitors
+  // never see an empty "image not added" page.
+  const [failed, setFailed] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    INTERNSHIP_CERTIFICATES.forEach((cert) => {
+      const probe = new Image();
+      probe.onerror = () => {
+        if (!cancelled) setFailed((previous) => [...previous, cert.image]);
+      };
+      probe.src = cert.image;
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const availableCertificates = INTERNSHIP_CERTIFICATES.filter(
+    (cert) => !failed.includes(cert.image)
+  );
+
   return (
     <section id="certifications" className="section certification-section">
       <div className="section-container">
@@ -1295,19 +1307,22 @@ function Certifications() {
           ))}
         </div>
 
-        <Reveal className="certificate-book-heading">
-          <h3>Flip through my internship certificates</h3>
+        {availableCertificates.length > 0 && (
+          <>
+            <Reveal className="certificate-book-heading">
+              <h3>Flip through my certificates</h3>
 
-          <p>
-            My three internship certificates and my Skills4Future
-            Generative AI training certificate — click the arrows
-            to turn the page.
-          </p>
-        </Reveal>
+              <p>
+                My internship certificates and Skills4Future training
+                certificate — click the arrows to turn the page.
+              </p>
+            </Reveal>
 
-        <Reveal>
-          <CertificateBook certificates={INTERNSHIP_CERTIFICATES} />
-        </Reveal>
+            <Reveal>
+              <CertificateBook certificates={availableCertificates} />
+            </Reveal>
+          </>
+        )}
       </div>
     </section>
   );
@@ -1334,6 +1349,9 @@ function CertificateBook({ certificates }) {
 
   const FLIP_DURATION_MS = 620;
 
+  // Keep the page index valid if a certificate is removed from the list
+  const safeIndex = Math.min(index, certificates.length - 1);
+
   const goToIndex = (nextIndex, direction) => {
     if (flipDirection || nextIndex < 0 || nextIndex >= certificates.length) {
       return;
@@ -1348,16 +1366,16 @@ function CertificateBook({ certificates }) {
     }, FLIP_DURATION_MS);
   };
 
-  const handlePrev = () => goToIndex(index - 1, "prev");
-  const handleNext = () => goToIndex(index + 1, "next");
+  const handlePrev = () => goToIndex(safeIndex - 1, "prev");
+  const handleNext = () => goToIndex(safeIndex + 1, "next");
 
-  const current = certificates[index];
+  const current = certificates[safeIndex];
 
   const incoming =
     flipDirection === "next"
-      ? certificates[index + 1]
+      ? certificates[safeIndex + 1]
       : flipDirection === "prev"
-      ? certificates[index - 1]
+      ? certificates[safeIndex - 1]
       : null;
 
   return (
@@ -1366,7 +1384,7 @@ function CertificateBook({ certificates }) {
         type="button"
         className="book-arrow book-arrow-left"
         onClick={handlePrev}
-        disabled={index === 0 || Boolean(flipDirection)}
+        disabled={safeIndex === 0 || Boolean(flipDirection)}
         aria-label="Previous certificate"
       >
         ‹
@@ -1394,7 +1412,7 @@ function CertificateBook({ certificates }) {
         type="button"
         className="book-arrow book-arrow-right"
         onClick={handleNext}
-        disabled={index === certificates.length - 1 || Boolean(flipDirection)}
+        disabled={safeIndex === certificates.length - 1 || Boolean(flipDirection)}
         aria-label="Next certificate"
       >
         ›
@@ -1406,20 +1424,20 @@ function CertificateBook({ certificates }) {
             <button
               key={cert.title}
               type="button"
-              className={dotIndex === index ? "active" : ""}
+              className={dotIndex === safeIndex ? "active" : ""}
               onClick={() => {
-                if (flipDirection || dotIndex === index) return;
-                goToIndex(dotIndex, dotIndex > index ? "next" : "prev");
+                if (flipDirection || dotIndex === safeIndex) return;
+                goToIndex(dotIndex, dotIndex > safeIndex ? "next" : "prev");
               }}
               aria-label={`Go to certificate ${dotIndex + 1}`}
-              aria-selected={dotIndex === index}
+              aria-selected={dotIndex === safeIndex}
               role="tab"
             />
           ))}
         </div>
 
         <p className="book-page-count">
-          Page {index + 1} of {certificates.length}
+          Page {safeIndex + 1} of {certificates.length}
         </p>
       </div>
     </div>
@@ -1430,14 +1448,7 @@ function CertificatePage({ cert }) {
   return (
     <div className="book-page-inner">
       <div className="book-page-image-wrap">
-        <img
-          src={cert.image}
-          alt={cert.title}
-          onError={(event) => {
-            event.currentTarget.style.display = "none";
-            event.currentTarget.parentElement?.classList.add("book-page-missing");
-          }}
-        />
+        <img src={cert.image} alt={cert.title} />
       </div>
 
       <div className="book-page-caption">
@@ -1453,28 +1464,28 @@ function CertificatePage({ cert }) {
 
 const RESUMES = [
   {
-    id: "aiml",
-    tab: "AI & ML",
-    role: "AI & Machine Learning Specialist",
-    headline: "Generative AI, multi-LLM orchestration and deep learning",
-    file: "/resumes/Rahul_S_AI_ML.pdf",
-    summary:
-      "Deep learning computer vision models, RAG workflows and multi-LLM web and mobile applications, built with Python, TensorFlow, Keras, LangChain and the Gemini, Groq and OpenRouter APIs.",
-    focus: ["TensorFlow", "Keras", "CNN & VGG16", "OpenCV", "LangChain", "RAG", "Multi-LLM routing", "Flutter"],
-    projects: ["Plant Disease Detection System", "Life Decision Assistant", "AI Exam Companion", "Digital Marketing Analytics Dashboard"],
-    target: "AI/ML Engineer, Generative AI Specialist",
-  },
-  {
     id: "python",
     tab: "Python",
-    role: "Python Full Stack Developer",
+    role: "Python Developer",
     headline: "FastAPI, Django REST, Flask and React.js",
     file: "/resumes/Rahul_S_Resume.pdf",
     summary:
       "End-to-end web applications from relational database design to cloud deployment, with JWT authentication, Docker, GitHub Actions CI/CD and LLM API integration.",
     focus: ["FastAPI", "Django REST Framework", "Flask", "React.js", "PostgreSQL", "MySQL", "Docker", "CI/CD"],
-    projects: ["GymSync", "ResumeIQ", "Digital Marketing Analytics Dashboard", "Plant Disease Detection"],
+    projects: ["GymSync", "ResumeIQ", "Digital Analytics Dashboard"],
     target: "Python Developer, Backend Developer, Full Stack Developer",
+  },
+  {
+    id: "aiml",
+    tab: "AI & ML",
+    role: "AI & Machine Learning Engineer",
+    headline: "Generative AI, multi-LLM orchestration and deep learning",
+    file: "/resumes/Rahul_S_AI_ML.pdf",
+    summary:
+      "Deep learning computer vision models, RAG workflows and multi-LLM web and mobile applications, built with Python, TensorFlow, Keras, LangChain and the Gemini, Groq and OpenRouter APIs.",
+    focus: ["TensorFlow", "Keras", "CNN & VGG16", "OpenCV", "LangChain", "RAG", "Multi-LLM routing", "Flutter"],
+    projects: ["Plant Disease Detection", "Life Decision Assistant", "AI Exam Companion"],
+    target: "AI/ML Engineer, Generative AI Developer",
   },
   {
     id: "java",
@@ -1488,38 +1499,14 @@ const RESUMES = [
     projects: ["BankSphere — Online Banking System", "ShopSphere — E-Commerce Platform"],
     target: "Java Full Stack Developer, Software Engineer",
   },
-  {
-    id: "react",
-    tab: "React",
-    role: "Full-Stack Web Developer & React Specialist",
-    headline: "Frontend architecture and REST APIs",
-    file: "/resumes/Rahul_S_React.pdf",
-    summary:
-      "Responsive single-page applications and modular UI components backed by scalable REST APIs, with JWT authentication and deployments on Vercel and Render.",
-    focus: ["React.js", "JavaScript (ES6+)", "Tailwind CSS", "State Management", "REST integration", "FastAPI", "Vercel"],
-    projects: ["Developer Portfolio Website", "ResumeIQ", "Life Decision Assistant", "Plant Disease Detection Web Platform"],
-    target: "React Developer, Frontend Developer",
-  },
-  {
-    id: "data",
-    tab: "Data Analyst",
-    role: "Data Analyst",
-    headline: "SQL, Python, Power BI and Tableau",
-    file: "/resumes/Rahul_S_Data_Analyst.pdf",
-    summary:
-      "SQL querying, Python data processing, statistical analysis and interactive dashboards that turn raw datasets into business insights.",
-    focus: ["SQL", "Pandas", "Power BI", "Tableau", "Advanced Excel", "EDA", "Data Cleaning", "Scikit-learn"],
-    projects: ["Life Decision Assistant", "AI Exam Companion", "Plant Disease Detection & Diagnostic Analytics"],
-    target: "Data Analyst, Business Intelligence Analyst",
-  },
 ];
 
 function Resumes() {
   const [activeId, setActiveId] = useState(() => {
     try {
-      return window.sessionStorage.getItem("resumeTab") || "aiml";
+      return window.sessionStorage.getItem("resumeTab") || "python";
     } catch {
-      return "aiml";
+      return "python";
     }
   });
   const [showPreview, setShowPreview] = useState(false);
