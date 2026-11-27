@@ -46,6 +46,23 @@ const ROUTES = {
   plantdiseasedetection: PlantDiseaseDetection,
 };
 
+/* ---------- ROLE FILTERS ---------- */
+/* Hash links: #ai-ml, #python, #java (and #all) open the Projects
+   section with that tab already selected. */
+
+const ROLE_TABS = [
+  { id: "all", label: "All" },
+  { id: "ai-ml", label: "AI & ML" },
+  { id: "python", label: "Python" },
+  { id: "java", label: "Java" },
+];
+
+const ROLE_IDS = ROLE_TABS.map((tab) => tab.id);
+
+function isRoleHash(route) {
+  return ROLE_IDS.includes(route);
+}
+
 /* ---------- HASH ROUTING ---------- */
 
 function getHashRoute() {
@@ -57,7 +74,9 @@ function scrollToSection(route, smooth = true) {
     window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
     return;
   }
-  const section = document.getElementById(route);
+  // Role hashes (#python, #java, #ai-ml, #all) land on the Projects section
+  const targetId = isRoleHash(route) ? "projects" : route;
+  const section = document.getElementById(targetId);
   if (section) {
     section.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
   }
@@ -350,15 +369,20 @@ function Hero() {
               <span>S.</span>
             </h1>
 
-            <p className="hero-title">Python Developer · Java Developer · AI/ML Specialist</p>
+            <p className="hero-title">
+              Software &amp; AI Engineer | Building Scalable Backends &amp; Intelligent Systems
+            </p>
 
             <p className="hero-description">
-              B.E. Computer Science graduate (2026) who builds and
-              deploys full-stack applications in three stacks:
-              <strong>{" "}Python (FastAPI, Flask, Django REST), Java (Spring Boot) and AI/ML (CNNs, TensorFlow, multi-LLM apps)</strong>{" "}
-              — all with React.js frontends, JWT authentication,
-              Docker containerisation and GitHub Actions CI/CD.
-              Pick the resume that fits your role below.
+              I bridge backend engineering and production AI. I build
+              scalable, secure services in
+              <strong>{" "}Java (Spring Boot) and Python (FastAPI, Django REST, Flask)</strong>{" "}
+              and then ship the intelligent layer on top:
+              <strong>{" "}CNN models and multi-LLM applications</strong>{" "}
+              built with TensorFlow, Gemini, Groq and OpenRouter. Every
+              project goes live with JWT authentication, Docker and
+              GitHub Actions CI/CD. Use the tabs in Projects to see my
+              work by role.
             </p>
 
             <div className="hero-actions">
@@ -596,52 +620,88 @@ function Specializations() {
 
 /* ---------- SKILLS ---------- */
 
-function Skills() {
-  const groups = [
-    {
-      number: "01",
-      title: "LANGUAGES & FRONTEND",
-      description: "Core languages and interfaces for full-stack applications.",
-      items: ["Python", "Java", "SQL", "JavaScript (ES6+)", "Dart", "React.js", "HTML5", "CSS3", "Tailwind CSS", "Streamlit", "Flutter"],
-    },
-    {
-      number: "02",
-      title: "PYTHON BACKEND",
-      description: "Structured Python backends with secure API design.",
-      items: ["FastAPI", "Flask", "Django REST Framework", "REST APIs", "JWT Authentication", "Async Programming"],
-    },
-    {
-      number: "03",
-      title: "JAVA BACKEND",
-      description: "Enterprise-style Java services and security.",
-      items: ["Core & Advanced Java", "Spring Boot", "Spring Security", "Spring Data JPA", "JDBC", "Maven", "JUnit", "OOP & DSA"],
-    },
-    {
-      number: "04",
-      title: "DATABASES",
-      description: "Relational and cloud database design and management.",
-      items: ["PostgreSQL", "MySQL", "Firebase (Firestore & Auth)", "Schema Design", "Joins, Subqueries & Indexing"],
-    },
-    {
-      number: "05",
-      title: "AI, ML & GENERATIVE AI",
-      description: "Deep learning, computer vision and LLM integrations.",
-      items: ["TensorFlow", "Keras", "CNN", "Transfer Learning (VGG16)", "OpenCV", "Scikit-learn", "LangChain", "RAG", "Gemini API", "Groq API", "OpenRouter API", "Prompt Engineering"],
-    },
-    {
-      number: "06",
-      title: "DATA & BI",
-      description: "Data cleaning and business intelligence tooling.",
-      items: ["Pandas", "NumPy", "Matplotlib", "Power BI", "Tableau", "Data Cleaning", "EDA"],
-    },
-    {
-      number: "07",
-      title: "DEVOPS, CLOUD & TESTING",
-      description: "Deployment, containerisation, testing and workflows.",
-      items: ["Docker", "Git", "GitHub Actions (CI/CD)", "Render", "Vercel", "Postman", "Pytest", "Unit Testing", "AWS (EC2, S3 – basic)"],
-    },
-  ];
+const SKILL_GROUPS = [
+  {
+    number: "01",
+    title: "AI & MACHINE LEARNING",
+    description: "Deep learning, computer vision, LLM integrations and data tooling.",
+    items: [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "CNN",
+      "Transfer Learning (VGG16)",
+      "OpenCV",
+      "Scikit-learn",
+      "LangChain",
+      "RAG",
+      "Gemini API",
+      "Groq API",
+      "OpenRouter API",
+      "Prompt Engineering",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Power BI",
+      "Tableau",
+      "EDA & Data Cleaning",
+      "Streamlit",
+      "Flutter",
+    ],
+  },
+  {
+    number: "02",
+    title: "PYTHON ECOSYSTEM",
+    description: "Async and relational Python backends with secure API design.",
+    items: [
+      "Python",
+      "FastAPI",
+      "Django REST Framework",
+      "Flask",
+      "REST APIs",
+      "JWT Authentication",
+      "Async Programming",
+      "React.js",
+      "JavaScript (ES6+)",
+      "PostgreSQL",
+      "MySQL",
+      "Firebase (Firestore & Auth)",
+      "Docker",
+      "GitHub Actions (CI/CD)",
+      "Pytest",
+      "Postman",
+      "Render",
+      "Vercel",
+    ],
+  },
+  {
+    number: "03",
+    title: "JAVA ECOSYSTEM",
+    description: "Enterprise-style Java services, security and testing.",
+    items: [
+      "Core & Advanced Java",
+      "Spring Boot",
+      "Spring Security",
+      "Spring Data JPA",
+      "JDBC",
+      "REST APIs",
+      "JWT Authentication",
+      "RBAC",
+      "Maven",
+      "JUnit",
+      "OOP & DSA",
+      "React.js",
+      "PostgreSQL",
+      "MySQL",
+      "Schema Design & Indexing",
+      "Docker",
+      "Git",
+      "Postman",
+    ],
+  },
+];
 
+function Skills() {
   return (
     <section id="skills" className="section skills-section">
       <div className="section-container">
@@ -659,7 +719,7 @@ function Skills() {
         </Reveal>
 
         <div className="skills-list">
-          {groups.map((group) => (
+          {SKILL_GROUPS.map((group) => (
             <Reveal key={group.title} className="skill-row">
               <div className="skill-number">{group.number}</div>
 
@@ -776,12 +836,30 @@ function Experience() {
 }
 
 /* ---------- PROJECTS ---------- */
+/* `category` is the filter key:
+     "flagship" -> shown under every tab (cross-stack: Java + Python + AI/ML)
+     "ai-ml" | "python" | "java" -> shown under All and its own tab
+   `label` is the text shown on the card image.
+   Numbers (01 / 06) are generated from the filtered list.
+   Entries with `placeholder: true` have no detail page or live demo yet. */
 
 const PROJECTS = [
   {
+    id: "flagship-cross-stack",
+    category: "flagship",
+    label: "FLAGSHIP · JAVA + PYTHON + AI/ML",
+    title: "Flagship Cross-Stack Project",
+    image: null,
+    placeholder: true,
+    tech: ["Java", "Spring Boot", "Python", "FastAPI", "React.js", "TensorFlow", "LLM APIs", "PostgreSQL", "Docker", "GitHub Actions"],
+    backendNote:
+      "Placeholder: a Spring Boot core service paired with a Python AI/ML inference service behind one React.js frontend. Replace this text with the real project summary.",
+    liveLinks: [],
+  },
+  {
     id: "aiexamcompanion",
-    number: "01",
-    category: "AI / ML APPLICATION",
+    category: "ai-ml",
+    label: "AI / ML APPLICATION",
     title: "AI Exam Companion",
     image: AIEXAM_IMAGE,
     tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Groq API", "OpenRouter API", "Docker"],
@@ -790,20 +868,9 @@ const PROJECTS = [
     liveLinks: [{ label: "Live Demo", url: "https://ai-exam-companion-ghzc.onrender.com" }],
   },
   {
-    id: "resumeiq",
-    number: "02",
-    category: "PYTHON FULL-STACK APPLICATION",
-    title: "ResumeIQ",
-    image: RESUMEIQ_IMAGE,
-    tech: ["Python", "Django", "Django REST Framework", "React.js", "MySQL", "JWT Authentication", "Gemini API", "Postman", "Docker"],
-    backendNote:
-      "AI resume analyzer that parses PDF resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
-    liveLinks: [{ label: "Live Demo", url: "https://resumeiq-wxje.onrender.com/app" }],
-  },
-  {
     id: "lifedecisionassistant",
-    number: "03",
-    category: "AI / ML APPLICATION",
+    category: "ai-ml",
+    label: "AI / ML APPLICATION",
     title: "Life Decision Assistant",
     image: LIFEDECISION_IMAGE,
     tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Groq API", "OpenRouter API", "Flutter", "Docker"],
@@ -812,53 +879,9 @@ const PROJECTS = [
     liveLinks: [{ label: "Live Demo", url: "https://life-decision-assistant-63pu.onrender.com" }],
   },
   {
-    id: "digitalanalyticsdashboard",
-    number: "04",
-    category: "PYTHON FULL-STACK APPLICATION",
-    title: "Digital Analytics Dashboard",
-    image: DIGITALANALYTICS_IMAGE,
-    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Postman", "Docker", "Pytest", "JWT Authentication"],
-    backendNote:
-      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with an AI chatbot that answers questions about the uploaded data.",
-    liveLinks: [{ label: "Live Demo", url: "https://digital-dashboard1.onrender.com" }],
-  },
-  {
-    id: "banksphere",
-    number: "05",
-    category: "JAVA FULL-STACK APPLICATION",
-    title: "BankSphere",
-    image: BANKSPHERE_IMAGE,
-    tech: ["Java", "Spring Boot", "Spring Security", "Spring Data JPA", "React.js", "PostgreSQL", "REST APIs", "JWT Authentication", "RBAC", "Maven", "Docker", "Postman", "JUnit"],
-    backendNote:
-      "Online banking system built in Java/Spring Boot with JWT authentication, role-based access (user and admin), account and transaction management, and a React.js frontend served from the same Dockerized service.",
-    liveLinks: [{ label: "Live Demo", url: "https://online-banking-system-17od.onrender.com" }],
-  },
-  {
-    id: "shopsphere",
-    number: "06",
-    category: "JAVA FULL-STACK APPLICATION",
-    title: "ShopSphere",
-    image: SHOPSPHERE_IMAGE,
-    tech: ["Java", "Spring Boot", "Spring Data JPA", "React.js", "MySQL", "REST APIs", "RBAC", "JWT Authentication", "Maven", "Docker", "Postman", "JUnit"],
-    backendNote:
-      "Full-featured e-commerce platform built in Java/Spring Boot with product catalogs, cart and order workflows, role-based access control and a React.js storefront.",
-    liveLinks: [{ label: "Live Demo", url: "https://shopsphere-c109.onrender.com" }],
-  },
-  {
-    id: "gymsync",
-    number: "07",
-    category: "PYTHON FULL-STACK APPLICATION",
-    title: "GymSync",
-    image: GYMSYNC_IMAGE,
-    tech: ["Python", "FastAPI", "JavaScript", "React + Vite", "PostgreSQL", "Docker", "JWT Authentication", "GitHub Actions", "Postman", "Pytest"],
-    backendNote:
-      "Containerised gym tracking application with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed to Vercel and Render through a GitHub Actions CI/CD pipeline.",
-    liveLinks: [{ label: "Live Demo", url: "https://gymsync-app.onrender.com" }],
-  },
-  {
     id: "plantdiseasedetection",
-    number: "08",
-    category: "AI / ML APPLICATION",
+    category: "ai-ml",
+    label: "AI / ML APPLICATION",
     title: "Plant Disease Detection",
     image: PLANTDISEASE_IMAGE,
     tech: ["Python", "TensorFlow", "Keras", "CNN", "Streamlit", "Machine Learning", "Kaggle Dataset"],
@@ -871,15 +894,120 @@ const PROJECTS = [
       },
     ],
   },
+  {
+    id: "resumeiq",
+    category: "python",
+    label: "PYTHON FULL-STACK APPLICATION",
+    title: "ResumeIQ",
+    image: RESUMEIQ_IMAGE,
+    tech: ["Python", "Django", "Django REST Framework", "React.js", "MySQL", "JWT Authentication", "Gemini API", "Postman", "Docker"],
+    backendNote:
+      "AI resume analyzer that parses PDF resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
+    liveLinks: [{ label: "Live Demo", url: "https://resumeiq-wxje.onrender.com/app" }],
+  },
+  {
+    id: "digitalanalyticsdashboard",
+    category: "python",
+    label: "PYTHON FULL-STACK APPLICATION",
+    title: "Digital Analytics Dashboard",
+    image: DIGITALANALYTICS_IMAGE,
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Postman", "Docker", "Pytest", "JWT Authentication"],
+    backendNote:
+      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with an AI chatbot that answers questions about the uploaded data.",
+    liveLinks: [{ label: "Live Demo", url: "https://digital-dashboard1.onrender.com" }],
+  },
+  {
+    id: "gymsync",
+    category: "python",
+    label: "PYTHON FULL-STACK APPLICATION",
+    title: "GymSync",
+    image: GYMSYNC_IMAGE,
+    tech: ["Python", "FastAPI", "JavaScript", "React + Vite", "PostgreSQL", "Docker", "JWT Authentication", "GitHub Actions", "Postman", "Pytest"],
+    backendNote:
+      "Containerised gym tracking application with an asynchronous FastAPI backend, PostgreSQL and a React.js frontend, deployed to Vercel and Render through a GitHub Actions CI/CD pipeline.",
+    liveLinks: [{ label: "Live Demo", url: "https://gymsync-app.onrender.com" }],
+  },
+  {
+    id: "banksphere",
+    category: "java",
+    label: "JAVA FULL-STACK APPLICATION",
+    title: "BankSphere",
+    image: BANKSPHERE_IMAGE,
+    tech: ["Java", "Spring Boot", "Spring Security", "Spring Data JPA", "React.js", "PostgreSQL", "REST APIs", "JWT Authentication", "RBAC", "Maven", "Docker", "Postman", "JUnit"],
+    backendNote:
+      "Online banking system built in Java/Spring Boot with JWT authentication, role-based access (user and admin), account and transaction management, and a React.js frontend served from the same Dockerized service.",
+    liveLinks: [{ label: "Live Demo", url: "https://online-banking-system-17od.onrender.com" }],
+  },
+  {
+    id: "shopsphere",
+    category: "java",
+    label: "JAVA FULL-STACK APPLICATION",
+    title: "ShopSphere",
+    image: SHOPSPHERE_IMAGE,
+    tech: ["Java", "Spring Boot", "Spring Data JPA", "React.js", "MySQL", "REST APIs", "RBAC", "JWT Authentication", "Maven", "Docker", "Postman", "JUnit"],
+    backendNote:
+      "Full-featured e-commerce platform built in Java/Spring Boot with product catalogs, cart and order workflows, role-based access control and a React.js storefront.",
+    liveLinks: [{ label: "Live Demo", url: "https://shopsphere-c109.onrender.com" }],
+  },
 ];
 
-const PROJECT_COUNT_LABEL = String(PROJECTS.length).padStart(2, "0");
+function filterProjects(projects, role) {
+  if (role === "all") return projects;
+  return projects.filter(
+    (project) => project.category === role || project.category === "flagship"
+  );
+}
 
 function openProject(projectId) {
   window.location.hash = `#${projectId}`;
 }
 
+function getInitialRole() {
+  const fromHash = getHashRoute();
+  if (isRoleHash(fromHash)) return fromHash;
+
+  try {
+    const stored = window.sessionStorage.getItem("activeRole");
+    if (stored && isRoleHash(stored)) return stored;
+  } catch {
+    /* sessionStorage unavailable */
+  }
+  return "all";
+}
+
 function Projects() {
+  const [activeRole, setActiveRole] = useState(getInitialRole);
+
+  // Keep the selected tab in sync with the URL hash (#ai-ml, #python, #java, #all)
+  useEffect(() => {
+    const syncFromHash = () => {
+      const route = getHashRoute();
+      if (isRoleHash(route)) setActiveRole(route);
+    };
+
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  const selectRole = (roleId) => {
+    setActiveRole(roleId);
+
+    try {
+      window.sessionStorage.setItem("activeRole", roleId);
+    } catch {
+      /* ignore */
+    }
+
+    // Update the URL so the filtered view can be shared, without
+    // triggering a hashchange scroll jump.
+    const nextHash = roleId === "all" ? "#projects" : `#${roleId}`;
+    window.history.replaceState(null, "", nextHash);
+  };
+
+  const visibleProjects = filterProjects(PROJECTS, activeRole);
+  const countLabel = String(visibleProjects.length).padStart(2, "0");
+
   return (
     <section id="projects" className="section projects-section">
       <div className="section-container">
@@ -904,90 +1032,131 @@ function Projects() {
           </p>
         </Reveal>
 
-        <div className="projects-showcase">
-          {PROJECTS.map((project) => (
-            <Reveal key={project.id} className="project-showcase-card">
-              <button
-                type="button"
-                className="project-visual"
-                onClick={() => openProject(project.id)}
-                aria-label={`View ${project.title}`}
-              >
+        <div
+          className="resume-tabs"
+          role="tablist"
+          aria-label="Filter projects by role"
+          style={{ padding: 0, marginTop: "40px", borderBottom: "none" }}
+        >
+          {ROLE_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={tab.id === activeRole}
+              className={`resume-tab ${tab.id === activeRole ? "active" : ""}`}
+              onClick={() => selectRole(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="projects-showcase" style={{ marginTop: "40px" }}>
+          {visibleProjects.map((project, projectIndex) => {
+            const number = String(projectIndex + 1).padStart(2, "0");
+            const hasPage = Boolean(ROUTES[project.id]);
+
+            const visualContent = (
+              <>
                 {project.image ? (
                   <img src={project.image} alt={project.title} />
                 ) : (
                   <div className="project-visual-placeholder">
                     <span>{project.title}</span>
-                    <p>Screenshot coming soon</p>
+                    <p>{project.placeholder ? "Coming soon" : "Screenshot coming soon"}</p>
                   </div>
                 )}
 
                 <div className="project-image-shade" />
 
                 <div className="project-image-top">
-                  <span>{project.category}</span>
+                  <span>{project.label}</span>
                   <span>
-                    {project.number} / {PROJECT_COUNT_LABEL}
+                    {number} / {countLabel}
                   </span>
                 </div>
 
-                <div className="project-view">
-                  <strong>↗</strong>
-                  View Project
-                </div>
-              </button>
+                {hasPage && (
+                  <div className="project-view">
+                    <strong>↗</strong>
+                    View Project
+                  </div>
+                )}
+              </>
+            );
 
-              <div className="project-information">
-                <div className="project-title-line">
-                  <h3>{project.title}</h3>
-                  <span>{project.number}</span>
-                </div>
+            return (
+              <Reveal key={project.id} className="project-showcase-card">
+                {hasPage ? (
+                  <button
+                    type="button"
+                    className="project-visual"
+                    onClick={() => openProject(project.id)}
+                    aria-label={`View ${project.title}`}
+                  >
+                    {visualContent}
+                  </button>
+                ) : (
+                  <div className="project-visual" style={{ cursor: "default" }}>
+                    {visualContent}
+                  </div>
+                )}
 
-                <div className="project-tech-list">
-                  {project.tech.map((tech) => (
-                    <span key={tech}>{tech}</span>
-                  ))}
-                </div>
+                <div className="project-information">
+                  <div className="project-title-line">
+                    <h3>{project.title}</h3>
+                    <span>{number}</span>
+                  </div>
 
-                {project.liveLinks && project.liveLinks.length > 0 && (
-                  <div className="project-live-links">
-                    <span className="live-label">LIVE</span>
+                  <div className="project-tech-list">
+                    {project.tech.map((tech) => (
+                      <span key={tech}>{tech}</span>
+                    ))}
+                  </div>
 
-                    <div className="live-link-list">
-                      {project.liveLinks.map((link) => (
-                        <a
-                          key={link.label}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(event) => event.stopPropagation()}
-                        >
-                          {link.label}
-                          <span>↗</span>
-                        </a>
-                      ))}
+                  {project.liveLinks && project.liveLinks.length > 0 && (
+                    <div className="project-live-links">
+                      <span className="live-label">LIVE</span>
+
+                      <div className="live-link-list">
+                        {project.liveLinks.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(event) => event.stopPropagation()}
+                          >
+                            {link.label}
+                            <span>↗</span>
+                          </a>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {project.backendNote && (
-                  <div className="backend-note">
-                    <span aria-hidden="true">i</span>
-                    <p>{project.backendNote}</p>
-                  </div>
-                )}
+                  {project.backendNote && (
+                    <div className="backend-note">
+                      <span aria-hidden="true">i</span>
+                      <p>{project.backendNote}</p>
+                    </div>
+                  )}
 
-                <button
-                  type="button"
-                  className="project-open-button"
-                  onClick={() => openProject(project.id)}
-                >
-                  Open Project
-                  <span>↗</span>
-                </button>
-              </div>
-            </Reveal>
-          ))}
+                  {hasPage && (
+                    <button
+                      type="button"
+                      className="project-open-button"
+                      onClick={() => openProject(project.id)}
+                    >
+                      Open Project
+                      <span>↗</span>
+                    </button>
+                  )}
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
