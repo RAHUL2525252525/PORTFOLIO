@@ -229,11 +229,13 @@ export default function App() {
       <Navbar />
       <Hero />
       <About />
+      <Specializations />
       <Skills />
       <Experience />
       <Projects />
       <Education />
       <Certifications />
+      <Resumes />
       <Contact />
       <Footer />
     </div>
@@ -286,16 +288,18 @@ function Navbar() {
 
         <div id="main-navigation" className={`nav-links ${mobileMenu ? "mobile-open" : ""}`}>
           <a href="#about" onClick={(e) => handleNavClick(e, "about")}>About</a>
+          <a href="#specializations" onClick={(e) => handleNavClick(e, "specializations")}>Roles</a>
           <a href="#skills" onClick={(e) => handleNavClick(e, "skills")}>Skills</a>
           <a href="#experience" onClick={(e) => handleNavClick(e, "experience")}>Experience</a>
           <a href="#projects" onClick={(e) => handleNavClick(e, "projects")}>Projects</a>
           <a href="#education" onClick={(e) => handleNavClick(e, "education")}>Education</a>
           <a href="#certifications" onClick={(e) => handleNavClick(e, "certifications")}>Certifications</a>
+          <a href="#resumes" onClick={(e) => handleNavClick(e, "resumes")}>Resumes</a>
           <a href="#contact" onClick={(e) => handleNavClick(e, "contact")}>Contact</a>
         </div>
 
-        <a href="#contact" className="nav-contact" onClick={(e) => handleNavClick(e, "contact")}>
-          Let's Talk
+        <a href="#resumes" className="nav-contact" onClick={(e) => handleNavClick(e, "resumes")}>
+          Get Resume
           <span>↗</span>
         </a>
 
@@ -319,6 +323,11 @@ function Navbar() {
 /* ---------- HERO ---------- */
 
 function Hero() {
+  const goTo = (hash) => (event) => {
+    event.preventDefault();
+    window.location.hash = hash;
+  };
+
   return (
     <section className="hero-section">
       <div className="hero-grid-background" />
@@ -328,12 +337,12 @@ function Hero() {
       <div className="hero-content">
         <Reveal className="hero-topline">
           <span className="hero-line" />
-          <span>PYTHON DEVELOPER</span>
+          <span>PYTHON · JAVA · AI &amp; ML</span>
         </Reveal>
 
         <div className="hero-main">
           <Reveal className="hero-copy">
-            <p className="hero-eyebrow">FASTAPI · FLASK · DJANGO REST · DOCKER</p>
+            <p className="hero-eyebrow">FASTAPI · DJANGO · SPRING BOOT · TENSORFLOW · LLM APIS</p>
 
             <h1>
               Rahul
@@ -341,42 +350,25 @@ function Hero() {
               <span>S.</span>
             </h1>
 
-            <p className="hero-title">Python Developer</p>
+            <p className="hero-title">Python Developer · Java Developer · AI/ML Specialist</p>
 
             <p className="hero-description">
               B.E. Computer Science graduate (2026) who builds and
-              deploys full-stack applications with
-              <strong>{" "}FastAPI, Flask, Django REST Framework and React.js</strong>{" "}
-              — JWT authentication, Docker containerisation,
-              GitHub Actions CI/CD and LLM APIs (Gemini, Groq,
-              OpenRouter) integrated into working products. I also
-              build deep learning models with CNNs, and have
-              hands-on Java experience from projects like
-              BankSphere and ShopSphere.
+              deploys full-stack applications in three stacks:
+              <strong>{" "}Python (FastAPI, Flask, Django REST), Java (Spring Boot) and AI/ML (CNNs, TensorFlow, multi-LLM apps)</strong>{" "}
+              — all with React.js frontends, JWT authentication,
+              Docker containerisation and GitHub Actions CI/CD.
+              Pick the resume that fits your role below.
             </p>
 
             <div className="hero-actions">
-              <a
-                href="#projects"
-                className="hero-primary-button"
-                onClick={(event) => {
-                  event.preventDefault();
-                  window.location.hash = "#projects";
-                }}
-              >
+              <a href="#projects" className="hero-primary-button" onClick={goTo("#projects")}>
                 View Projects
                 <span>↗</span>
               </a>
 
-              <a
-                href="#contact"
-                className="hero-secondary-button"
-                onClick={(event) => {
-                  event.preventDefault();
-                  window.location.hash = "#contact";
-                }}
-              >
-                Contact Me
+              <a href="#resumes" className="hero-secondary-button" onClick={goTo("#resumes")}>
+                Download Resume
               </a>
             </div>
 
@@ -442,17 +434,18 @@ function About() {
         <div className="about-layout">
           <Reveal className="about-main">
             <p className="about-lead">
-              I'm a Python developer with hands-on experience
-              building and deploying full-stack applications.
+              I'm a developer who ships complete products in Python,
+              Java and AI/ML — from database design to live deployment.
             </p>
 
             <p>
-              My work spans REST APIs with FastAPI, Flask and
-              Django REST Framework, React.js frontends,
-              PostgreSQL and MySQL databases, JWT authentication
-              and Docker containerisation. I automate deployments
-              with GitHub Actions CI/CD and host apps on Render
-              and Vercel.
+              My Python work spans REST APIs with FastAPI, Flask and
+              Django REST Framework, React.js frontends, PostgreSQL
+              and MySQL, JWT authentication and Docker. My Java work
+              covers Spring Boot, Spring Security and Spring Data JPA
+              in projects like BankSphere and ShopSphere. I automate
+              deployments with GitHub Actions CI/CD and host apps on
+              Render and Vercel.
             </p>
 
             <p>
@@ -460,22 +453,20 @@ function About() {
               (AppMind AI) I built and deployed three full-stack
               web apps — AI Exam Companion, Life Decision
               Assistant and Digital Analytics Dashboard — using
-              Flask, Firebase and Google Authentication, and
-              integrated LLM APIs including Gemini, Groq and
-              OpenRouter. I also completed two AI &amp; Data
-              Science internship phases at Knowx Innovations,
-              working with Python, SQL, machine learning, OpenCV,
-              Keras and TensorFlow.
+              Flask, Firebase and Google Authentication, plus a
+              companion Flutter Android APK. I orchestrated multi-LLM
+              pipelines across Gemini, Groq and OpenRouter. I also
+              completed two AI &amp; Data Science internship phases at
+              Knowx Innovations, working with Python, SQL, machine
+              learning, OpenCV, Keras and TensorFlow.
             </p>
 
             <p>
               For my B.E. major project, Plant Disease Detection,
               I trained a CNN on a 1.5 GB Kaggle crop-leaf image
-              dataset to detect plant diseases, reaching over 90%
+              dataset to detect plant diseases, reaching 90% validation
               accuracy, with a Streamlit interface for live
-              predictions. I also have hands-on experience
-              building Java applications, including a banking
-              system and an e-commerce platform.
+              predictions and downloadable PDF reports.
             </p>
           </Reveal>
 
@@ -485,18 +476,118 @@ function About() {
               <span>LIVE DEPLOYED APPLICATIONS</span>
             </div>
             <div className="stat-card">
-              <strong>90%+</strong>
-              <span>CNN ACCURACY ON MAJOR PROJECT</span>
+              <strong>90%</strong>
+              <span>CNN VALIDATION ACCURACY</span>
             </div>
             <div className="stat-card">
-              <strong>6</strong>
-              <span>PYTHON &amp; ML APPLICATIONS</span>
+              <strong>3</strong>
+              <span>SPECIALIST TRACKS: PYTHON, JAVA, AI/ML</span>
             </div>
             <div className="stat-card">
               <strong>3</strong>
               <span>INTERNSHIP EXPERIENCES</span>
             </div>
           </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- SPECIALIZATIONS ---------- */
+
+const SPECIALIZATIONS = [
+  {
+    id: "python",
+    label: "Python Developer",
+    headline: "Python full-stack, APIs and automation",
+    blurb:
+      "Async and relational backends with FastAPI, Django REST Framework and Flask, paired with React.js frontends and containerised CI/CD deployments.",
+    stack: ["FastAPI", "Django REST", "Flask", "React.js", "PostgreSQL", "MySQL", "JWT", "Docker", "GitHub Actions"],
+    projects: ["GymSync", "ResumeIQ", "Digital Analytics Dashboard"],
+    resumeId: "python",
+  },
+  {
+    id: "java",
+    label: "Java Developer",
+    headline: "Java full-stack with Spring Boot",
+    blurb:
+      "Secure, role-based REST backends with Spring Boot, Spring Security and Spring Data JPA, backed by PostgreSQL or MySQL and a React.js UI.",
+    stack: ["Java", "Spring Boot", "Spring Security", "Spring Data JPA", "React.js", "PostgreSQL", "MySQL", "Maven", "JUnit"],
+    projects: ["BankSphere", "ShopSphere"],
+    resumeId: "java",
+  },
+  {
+    id: "aiml",
+    label: "AI & ML Specialist",
+    headline: "Deep learning, computer vision and multi-LLM apps",
+    blurb:
+      "CNNs and transfer learning with TensorFlow and Keras, plus LLM applications that route across Gemini, Groq and OpenRouter, including RAG workflows with LangChain.",
+    stack: ["TensorFlow", "Keras", "CNN", "VGG16", "OpenCV", "LangChain", "RAG", "Gemini", "Groq", "OpenRouter"],
+    projects: ["Plant Disease Detection", "Life Decision Assistant", "AI Exam Companion"],
+    resumeId: "aiml",
+  },
+];
+
+function Specializations() {
+  return (
+    <section id="specializations" className="section spec-section">
+      <div className="section-container">
+        <Reveal>
+          <div className="section-kicker">
+            <span>02</span>
+            SPECIALIZATIONS
+          </div>
+
+          <h2 className="massive-title">
+            One engineer.
+            <br />
+            <span>Three specialist tracks.</span>
+          </h2>
+
+          <p className="spec-intro">
+            Each track has its own focused resume, so you can see
+            the skills and projects that matter most for the role.
+          </p>
+        </Reveal>
+
+        <div className="spec-grid">
+          {SPECIALIZATIONS.map((spec) => (
+            <Reveal key={spec.id} className="spec-card">
+              <span className="spec-label">{spec.label}</span>
+              <h3>{spec.headline}</h3>
+              <p>{spec.blurb}</p>
+
+              <div className="spec-stack">
+                {spec.stack.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+
+              <div className="spec-projects">
+                <strong>Best examples</strong>
+                <p>{spec.projects.join(", ")}</p>
+              </div>
+
+              <a
+                href="#resumes"
+                className="spec-link"
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.sessionStorage?.setItem("resumeTab", spec.resumeId);
+                  window.dispatchEvent(new CustomEvent("select-resume", { detail: spec.resumeId }));
+                  if (window.location.hash === "#resumes") {
+                    scrollToSection("resumes", true);
+                  } else {
+                    window.location.hash = "#resumes";
+                  }
+                }}
+              >
+                See {spec.label} resume
+                <span>↗</span>
+              </a>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -511,43 +602,43 @@ function Skills() {
       number: "01",
       title: "LANGUAGES & FRONTEND",
       description: "Core languages and interfaces for full-stack applications.",
-      items: ["Python", "SQL", "JavaScript", "Java", "React.js", "HTML5", "CSS3", "Streamlit"],
+      items: ["Python", "Java", "SQL", "JavaScript (ES6+)", "Dart", "React.js", "HTML5", "CSS3", "Tailwind CSS", "Streamlit", "Flutter"],
     },
     {
       number: "02",
-      title: "BACKEND",
-      description: "Structured backend systems with secure API design.",
-      items: ["FastAPI", "Flask", "Django REST Framework", "Spring Boot", "REST APIs", "JWT Authentication", "Async Programming"],
+      title: "PYTHON BACKEND",
+      description: "Structured Python backends with secure API design.",
+      items: ["FastAPI", "Flask", "Django REST Framework", "REST APIs", "JWT Authentication", "Async Programming"],
     },
     {
       number: "03",
-      title: "DATABASES",
-      description: "Relational and cloud database design and management.",
-      items: ["PostgreSQL", "MySQL", "Firebase"],
+      title: "JAVA BACKEND",
+      description: "Enterprise-style Java services and security.",
+      items: ["Core & Advanced Java", "Spring Boot", "Spring Security", "Spring Data JPA", "JDBC", "Maven", "JUnit", "OOP & DSA"],
     },
     {
       number: "04",
-      title: "API & TESTING",
-      description: "API testing and quality-focused development.",
-      items: ["Postman", "Unit Testing"],
+      title: "DATABASES",
+      description: "Relational and cloud database design and management.",
+      items: ["PostgreSQL", "MySQL", "Firebase (Firestore & Auth)", "Schema Design", "Joins, Subqueries & Indexing"],
     },
     {
       number: "05",
-      title: "DATA & BI",
-      description: "Data cleaning and business intelligence tooling.",
-      items: ["Pandas", "Power BI", "Tableau", "Data Cleaning"],
+      title: "AI, ML & GENERATIVE AI",
+      description: "Deep learning, computer vision and LLM integrations.",
+      items: ["TensorFlow", "Keras", "CNN", "Transfer Learning (VGG16)", "OpenCV", "Scikit-learn", "LangChain", "RAG", "Gemini API", "Groq API", "OpenRouter API", "Prompt Engineering"],
     },
     {
       number: "06",
-      title: "DEVOPS & CLOUD",
-      description: "Deployment, containerization and development workflows.",
-      items: ["Docker", "Git", "GitHub Actions (CI/CD)", "Render", "Vercel", "AWS (EC2, S3 – basic)"],
+      title: "DATA & BI",
+      description: "Data cleaning and business intelligence tooling.",
+      items: ["Pandas", "NumPy", "Matplotlib", "Power BI", "Tableau", "Data Cleaning", "EDA"],
     },
     {
       number: "07",
-      title: "AI & ML",
-      description: "LLM integrations and deep learning from internships and projects.",
-      items: ["Gemini API", "Groq API", "OpenRouter API", "TensorFlow", "Keras", "CNN", "OpenCV"],
+      title: "DEVOPS, CLOUD & TESTING",
+      description: "Deployment, containerisation, testing and workflows.",
+      items: ["Docker", "Git", "GitHub Actions (CI/CD)", "Render", "Vercel", "Postman", "Pytest", "Unit Testing", "AWS (EC2, S3 – basic)"],
     },
   ];
 
@@ -556,7 +647,7 @@ function Skills() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker blue-kicker">
-            <span>02</span>
+            <span>03</span>
             TECHNICAL SKILLS
           </div>
 
@@ -595,16 +686,16 @@ function Skills() {
 function Experience() {
   const experiences = [
     {
-      type: "AI INTERNSHIP",
-      role: "AI Intern",
+      type: "AI & FULL-STACK INTERNSHIP",
+      role: "AI Engineering Intern",
       company: "MR. TechLab LLP (AppMind AI) · Bengaluru",
       date: "JAN 2026 — MAY 2026",
       summary:
-        "Built and deployed three full-stack web apps using Flask, Firebase and Google Authentication, hosted on Vercel and Render.",
+        "Built and deployed three production full-stack web apps and a companion Flutter Android APK using Flask, Firebase and Docker.",
       points: [
         "Built and deployed 3 full-stack web apps using Flask, Firebase and Google Authentication; containerised with Docker and hosted on Vercel (frontend) and Render (backend).",
-        "Developed an AI Exam Companion: a Groq-powered chatbot with a performance dashboard and mock tests.",
-        "Built a Life Decision Assistant integrating the Gemini and OpenRouter APIs, and a Digital Analytics Dashboard with a Gemini-powered chatbot.",
+        "Architected multi-LLM pipelines across the Groq, Gemini and OpenRouter APIs for automated reasoning, study assistance and data analytics.",
+        "Developed AI Exam Companion, Life Decision Assistant and Digital Analytics Dashboard, with GitHub Actions CI/CD to Render and Vercel.",
       ],
     },
     {
@@ -615,8 +706,8 @@ function Experience() {
       summary:
         "Second internship phase (during Diploma): training and a software development project in Artificial Intelligence, Machine Learning, Deep Learning and Data Science.",
       points: [
-        "Worked hands-on with Python, SQL, machine learning algorithms, OpenCV, Keras, TensorFlow and data visualisation.",
-        "Applied CNNs and VGG16 in sample projects on deep learning and image classification.",
+        "Built, trained and evaluated CNNs and fine-tuned VGG16 image classification models using TensorFlow and Keras.",
+        "Developed computer vision pipelines with OpenCV across applied AI projects.",
       ],
     },
     {
@@ -627,8 +718,8 @@ function Experience() {
       summary:
         "First internship phase (during Diploma): structured training in Artificial Intelligence, Data Science, Python programming and machine learning.",
       points: [
-        "Completed training in Python, SQL, machine learning algorithms, OpenCV, Keras and TensorFlow.",
-        "Received an internship certificate from Knowx Innovations for each phase of the program.",
+        "Completed training in Python, SQL, machine learning algorithms, cloud computing, OpenCV, Keras and TensorFlow.",
+        "Applied regression, linear algebra and data preprocessing to analyse structured datasets.",
       ],
     },
   ];
@@ -638,7 +729,7 @@ function Experience() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>03</span>
+            <span>04</span>
             EXPERIENCE
           </div>
 
@@ -690,34 +781,34 @@ const PROJECTS = [
   {
     id: "aiexamcompanion",
     number: "01",
-    category: "AI-POWERED APPLICATION",
+    category: "AI / ML APPLICATION",
     title: "AI Exam Companion",
     image: AIEXAM_IMAGE,
-    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Groq API", "Docker"],
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Groq API", "OpenRouter API", "Docker"],
     backendNote:
-      "Groq-powered exam preparation chatbot with a performance dashboard and mock tests, built on a Flask backend with Firebase and Google authentication.",
+      "AI exam preparation chatbot with 10-stage mock tests and a real-time performance dashboard, built on a Flask backend with Firebase and Google authentication.",
     liveLinks: [{ label: "Live Demo", url: "https://ai-exam-companion-ghzc.onrender.com" }],
   },
   {
     id: "resumeiq",
     number: "02",
-    category: "AI-POWERED APPLICATION",
+    category: "PYTHON FULL-STACK APPLICATION",
     title: "ResumeIQ",
     image: RESUMEIQ_IMAGE,
     tech: ["Python", "Django", "Django REST Framework", "React.js", "MySQL", "JWT Authentication", "Gemini API", "Postman", "Docker"],
     backendNote:
-      "AI resume analyzer that parses resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
+      "AI resume analyzer that parses PDF resumes and scores them against job descriptions, built on a JWT-secured Django REST Framework backend with a React.js frontend.",
     liveLinks: [{ label: "Live Demo", url: "https://resumeiq-wxje.onrender.com/app" }],
   },
   {
     id: "lifedecisionassistant",
     number: "03",
-    category: "AI-POWERED APPLICATION",
+    category: "AI / ML APPLICATION",
     title: "Life Decision Assistant",
     image: LIFEDECISION_IMAGE,
-    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "OpenRouter API", "Docker"],
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Groq API", "OpenRouter API", "Flutter", "Docker"],
     backendNote:
-      "AI decision-support assistant that helps users reason through everyday decisions, integrating the Gemini and OpenRouter APIs on a Flask backend.",
+      "Multi-LLM decision-support platform with a companion Flutter Android app, routing across the Groq, Gemini and OpenRouter APIs for comparisons, goal planning and risk scoring.",
     liveLinks: [{ label: "Live Demo", url: "https://life-decision-assistant-63pu.onrender.com" }],
   },
   {
@@ -728,7 +819,7 @@ const PROJECTS = [
     image: DIGITALANALYTICS_IMAGE,
     tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "Firebase", "Google Authentication", "Gemini API", "Postman", "Docker", "Pytest", "JWT Authentication"],
     backendNote:
-      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with a Gemini-powered chatbot that answers questions about the uploaded data.",
+      "Users upload CSV files that an automated pipeline cleans and turns into interactive charts, with an AI chatbot that answers questions about the uploaded data.",
     liveLinks: [{ label: "Live Demo", url: "https://digital-dashboard1.onrender.com" }],
   },
   {
@@ -737,7 +828,7 @@ const PROJECTS = [
     category: "JAVA FULL-STACK APPLICATION",
     title: "BankSphere",
     image: BANKSPHERE_IMAGE,
-    tech: ["Java", "Spring Boot", "Spring Security", "React.js", "PostgreSQL", "REST APIs", "JWT Authentication", "RBAC", "Maven", "Docker", "Postman", "JUnit"],
+    tech: ["Java", "Spring Boot", "Spring Security", "Spring Data JPA", "React.js", "PostgreSQL", "REST APIs", "JWT Authentication", "RBAC", "Maven", "Docker", "Postman", "JUnit"],
     backendNote:
       "Online banking system built in Java/Spring Boot with JWT authentication, role-based access (user and admin), account and transaction management, and a React.js frontend served from the same Dockerized service.",
     liveLinks: [{ label: "Live Demo", url: "https://online-banking-system-17od.onrender.com" }],
@@ -748,9 +839,9 @@ const PROJECTS = [
     category: "JAVA FULL-STACK APPLICATION",
     title: "ShopSphere",
     image: SHOPSPHERE_IMAGE,
-    tech: ["Java", "Spring Boot", "React.js", "MySQL", "REST APIs", "RBAC", "JWT Authentication", "Maven", "Docker", "Postman", "JUnit"],
+    tech: ["Java", "Spring Boot", "Spring Data JPA", "React.js", "MySQL", "REST APIs", "RBAC", "JWT Authentication", "Maven", "Docker", "Postman", "JUnit"],
     backendNote:
-      "Full-featured e-commerce platform built in Java/Spring Boot with role-based access control and a React.js storefront.",
+      "Full-featured e-commerce platform built in Java/Spring Boot with product catalogs, cart and order workflows, role-based access control and a React.js storefront.",
     liveLinks: [{ label: "Live Demo", url: "https://shopsphere-c109.onrender.com" }],
   },
   {
@@ -770,9 +861,9 @@ const PROJECTS = [
     category: "AI / ML APPLICATION",
     title: "Plant Disease Detection",
     image: PLANTDISEASE_IMAGE,
-    tech: ["Python", "Streamlit", "Machine Learning", "Artificial Intelligence", "CNN", "Kaggle Dataset"],
+    tech: ["Python", "TensorFlow", "Keras", "CNN", "Streamlit", "Machine Learning", "Kaggle Dataset"],
     backendNote:
-      "CNN-based plant leaf disease classifier trained on a 1.5 GB Kaggle dataset, reaching over 90% accuracy, with a Streamlit interface for live predictions.",
+      "CNN-based plant leaf disease classifier trained on a 1.5 GB Kaggle dataset, reaching 90% validation accuracy, with a Streamlit interface for live predictions and PDF reports.",
     liveLinks: [
       {
         label: "Live Demo",
@@ -794,7 +885,7 @@ function Projects() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>04</span>
+            <span>05</span>
             PROJECTS
           </div>
 
@@ -805,11 +896,11 @@ function Projects() {
           </h2>
 
           <p className="projects-intro">
-            Eight deployed applications — Python full-stack apps
-            with LLM integrations, a CNN-based plant disease
-            detector, and Java full-stack projects — covering
-            REST APIs, relational databases, authentication,
-            deep learning and Dockerized deployments, end to end.
+            Eight deployed applications across three tracks — Python
+            full-stack apps, Java/Spring Boot systems, and AI/ML
+            projects with CNNs and multi-LLM integrations — covering
+            REST APIs, relational databases, authentication and
+            Dockerized deployments, end to end.
           </p>
         </Reveal>
 
@@ -911,7 +1002,7 @@ function Education() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>05</span>
+            <span>06</span>
             EDUCATION
           </div>
 
@@ -932,10 +1023,9 @@ function Education() {
 
             <p>
               Bachelor of Engineering in Computer Science &
-              Engineering (2023 – 2026). Preceded by a Diploma in
-              Information Science at PVP Polytechnic, Bengaluru
-              (2020 – 2023), completed with First Class with
-              Distinction.
+              Engineering (2023 – 2026). Preceded by a Diploma at
+              PVP Polytechnic, Bengaluru (2020 – 2023), completed
+              with First Class with Distinction.
             </p>
 
             <div className="education-bottom">
@@ -958,7 +1048,13 @@ const CERTIFICATIONS = [
     title: "Green Skills & Artificial Intelligence",
     issuer: "Skills4Future Program — Edunet Foundation, AICTE & Shell India (2026)",
     description:
-      "Program covering Green Skills and Artificial Intelligence, with hands-on training in Power BI, Tableau and Data Cleaning.",
+      "Program covering Green Skills and Artificial Intelligence, with hands-on training in Python, Power BI, Tableau and Data Cleaning.",
+  },
+  {
+    title: "Python Programming & Cloud Computing Fundamentals",
+    issuer: "Infosys Springboard (2025)",
+    description:
+      "Core Python scripting, object-oriented principles and cloud deployment models.",
   },
   {
     title: "Python Full Stack Software Development",
@@ -1003,7 +1099,7 @@ function Certifications() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>06</span>
+            <span>07</span>
             CERTIFICATIONS
           </div>
 
@@ -1183,6 +1279,209 @@ function CertificatePage({ cert }) {
   );
 }
 
+/* ---------- RESUMES ---------- */
+/* Put the PDFs in  public/resumes/  with exactly these file names. */
+
+const RESUMES = [
+  {
+    id: "aiml",
+    tab: "AI & ML",
+    role: "AI & Machine Learning Specialist",
+    headline: "Generative AI, multi-LLM orchestration and deep learning",
+    file: "/resumes/Rahul_S_AI_ML.pdf",
+    summary:
+      "Deep learning computer vision models, RAG workflows and multi-LLM web and mobile applications, built with Python, TensorFlow, Keras, LangChain and the Gemini, Groq and OpenRouter APIs.",
+    focus: ["TensorFlow", "Keras", "CNN & VGG16", "OpenCV", "LangChain", "RAG", "Multi-LLM routing", "Flutter"],
+    projects: ["Plant Disease Detection System", "Life Decision Assistant", "AI Exam Companion", "Digital Marketing Analytics Dashboard"],
+    target: "AI/ML Engineer, Generative AI Specialist",
+  },
+  {
+    id: "python",
+    tab: "Python",
+    role: "Python Full Stack Developer",
+    headline: "FastAPI, Django REST, Flask and React.js",
+    file: "/resumes/Rahul_S_Resume.pdf",
+    summary:
+      "End-to-end web applications from relational database design to cloud deployment, with JWT authentication, Docker, GitHub Actions CI/CD and LLM API integration.",
+    focus: ["FastAPI", "Django REST Framework", "Flask", "React.js", "PostgreSQL", "MySQL", "Docker", "CI/CD"],
+    projects: ["GymSync", "ResumeIQ", "Digital Marketing Analytics Dashboard", "Plant Disease Detection"],
+    target: "Python Developer, Backend Developer, Full Stack Developer",
+  },
+  {
+    id: "java",
+    tab: "Java",
+    role: "Java Full Stack Developer",
+    headline: "Spring Boot, React.js, PostgreSQL and MySQL",
+    file: "/resumes/Rahul_S_Java.pdf",
+    summary:
+      "Secure RESTful APIs and full-stack systems in Core and Advanced Java, with Spring Security, Spring Data JPA, role-based access control and automated CI/CD.",
+    focus: ["Java", "Spring Boot", "Spring Security", "Spring Data JPA", "React.js", "PostgreSQL", "Maven", "DSA & OOP"],
+    projects: ["BankSphere — Online Banking System", "ShopSphere — E-Commerce Platform"],
+    target: "Java Full Stack Developer, Software Engineer",
+  },
+  {
+    id: "react",
+    tab: "React",
+    role: "Full-Stack Web Developer & React Specialist",
+    headline: "Frontend architecture and REST APIs",
+    file: "/resumes/Rahul_S_React.pdf",
+    summary:
+      "Responsive single-page applications and modular UI components backed by scalable REST APIs, with JWT authentication and deployments on Vercel and Render.",
+    focus: ["React.js", "JavaScript (ES6+)", "Tailwind CSS", "State Management", "REST integration", "FastAPI", "Vercel"],
+    projects: ["Developer Portfolio Website", "ResumeIQ", "Life Decision Assistant", "Plant Disease Detection Web Platform"],
+    target: "React Developer, Frontend Developer",
+  },
+  {
+    id: "data",
+    tab: "Data Analyst",
+    role: "Data Analyst",
+    headline: "SQL, Python, Power BI and Tableau",
+    file: "/resumes/Rahul_S_Data_Analyst.pdf",
+    summary:
+      "SQL querying, Python data processing, statistical analysis and interactive dashboards that turn raw datasets into business insights.",
+    focus: ["SQL", "Pandas", "Power BI", "Tableau", "Advanced Excel", "EDA", "Data Cleaning", "Scikit-learn"],
+    projects: ["Life Decision Assistant", "AI Exam Companion", "Plant Disease Detection & Diagnostic Analytics"],
+    target: "Data Analyst, Business Intelligence Analyst",
+  },
+];
+
+function Resumes() {
+  const [activeId, setActiveId] = useState(() => {
+    try {
+      return window.sessionStorage.getItem("resumeTab") || "aiml";
+    } catch {
+      return "aiml";
+    }
+  });
+  const [showPreview, setShowPreview] = useState(false);
+
+  useEffect(() => {
+    const handler = (event) => {
+      setActiveId(event.detail);
+      setShowPreview(false);
+    };
+    window.addEventListener("select-resume", handler);
+    return () => window.removeEventListener("select-resume", handler);
+  }, []);
+
+  const active = RESUMES.find((resume) => resume.id === activeId) ?? RESUMES[0];
+
+  return (
+    <section id="resumes" className="section resumes-section">
+      <div className="section-container">
+        <Reveal>
+          <div className="section-kicker blue-kicker">
+            <span>08</span>
+            RESUMES
+          </div>
+
+          <h2 className="massive-title light-title">
+            The right resume
+            <br />
+            <span>for the right role.</span>
+          </h2>
+
+          <p className="resumes-intro">
+            Choose a role to see what that resume focuses on, then
+            preview it or download the PDF.
+          </p>
+        </Reveal>
+
+        <Reveal className="resume-panel">
+          <div className="resume-tabs" role="tablist" aria-label="Resume roles">
+            {RESUMES.map((resume) => (
+              <button
+                key={resume.id}
+                type="button"
+                role="tab"
+                aria-selected={resume.id === active.id}
+                className={`resume-tab ${resume.id === active.id ? "active" : ""}`}
+                onClick={() => {
+                  setActiveId(resume.id);
+                  setShowPreview(false);
+                }}
+              >
+                {resume.tab}
+              </button>
+            ))}
+          </div>
+
+          <div className="resume-body" role="tabpanel">
+            <div className="resume-details">
+              <h3>{active.role}</h3>
+              <p className="resume-headline">{active.headline}</p>
+              <p className="resume-summary">{active.summary}</p>
+
+              <div className="resume-block">
+                <strong>Key skills</strong>
+                <div className="resume-chips">
+                  {active.focus.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="resume-block">
+                <strong>Featured projects</strong>
+                <ul>
+                  {active.projects.map((project) => (
+                    <li key={project}>{project}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="resume-block">
+                <strong>Best for</strong>
+                <p>{active.target}</p>
+              </div>
+
+              <div className="resume-actions">
+                <a
+                  href={active.file}
+                  download
+                  className="resume-download"
+                >
+                  Download PDF
+                  <span>↓</span>
+                </a>
+
+                <button
+                  type="button"
+                  className="resume-preview-toggle"
+                  onClick={() => setShowPreview((previous) => !previous)}
+                  aria-expanded={showPreview}
+                >
+                  {showPreview ? "Hide preview" : "Preview resume"}
+                </button>
+
+                <a
+                  href={active.file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="resume-open"
+                >
+                  Open in new tab
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+
+            {showPreview && (
+              <div className="resume-preview">
+                <iframe
+                  key={active.file}
+                  src={`${active.file}#view=FitH`}
+                  title={`${active.role} resume preview`}
+                />
+              </div>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- CONTACT ---------- */
 
 function Contact() {
@@ -1197,7 +1496,7 @@ function Contact() {
       <div className="contact-inner">
         <Reveal>
           <div className="section-kicker contact-kicker">
-            <span>07</span>
+            <span>09</span>
             CONTACT
           </div>
 
@@ -1208,8 +1507,9 @@ function Contact() {
           </h2>
 
           <p>
-            Open to Python Developer roles. Whether it's a quick
-            question or a project idea, my inbox is open.
+            Open to Python Developer, Java Developer and AI/ML
+            roles. Whether it's a quick question or a project idea,
+            my inbox is open.
           </p>
 
           <a href="mailto:srinivasrahul838@gmail.com" className="contact-email">
