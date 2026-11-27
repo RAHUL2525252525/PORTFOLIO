@@ -248,7 +248,6 @@ export default function App() {
       <Navbar />
       <Hero />
       <About />
-      <Specializations />
       <Skills />
       <Experience />
       <Projects />
@@ -307,7 +306,6 @@ function Navbar() {
 
         <div id="main-navigation" className={`nav-links ${mobileMenu ? "mobile-open" : ""}`}>
           <a href="#about" onClick={(e) => handleNavClick(e, "about")}>About</a>
-          <a href="#specializations" onClick={(e) => handleNavClick(e, "specializations")}>Roles</a>
           <a href="#skills" onClick={(e) => handleNavClick(e, "skills")}>Skills</a>
           <a href="#experience" onClick={(e) => handleNavClick(e, "experience")}>Experience</a>
           <a href="#projects" onClick={(e) => handleNavClick(e, "projects")}>Projects</a>
@@ -356,12 +354,12 @@ function Hero() {
       <div className="hero-content">
         <Reveal className="hero-topline">
           <span className="hero-line" />
-          <span>PYTHON SPECIALIST · JAVA · AI &amp; ML</span>
+          <span>PYTHON · AI &amp; ML ENGINEER</span>
         </Reveal>
 
         <div className="hero-main">
           <Reveal className="hero-copy">
-            <p className="hero-eyebrow">FASTAPI · DJANGO · FLASK · SPRING BOOT · TENSORFLOW · LLM APIS</p>
+            <p className="hero-eyebrow">FASTAPI · DJANGO · FLASK · TENSORFLOW · LLM APIS</p>
 
             <h1>
               Rahul
@@ -370,17 +368,16 @@ function Hero() {
             </h1>
 
             <p className="hero-title">
-              Python Developer | Backend, AI &amp; ML Engineering, with Java Full-Stack Experience
+              Python &amp; AI/ML Engineer | Scalable Backends &amp; Intelligent Systems
             </p>
 
             <p className="hero-description">
-              Python is my core specialization. I build scalable, secure
-              services with
+              I build scalable, secure backends with
               <strong>{" "}FastAPI, Django REST and Flask</strong>{" "}
               and ship the intelligent layer on top:
               <strong>{" "}CNN models and multi-LLM applications</strong>{" "}
-              built with TensorFlow, Gemini, Groq and OpenRouter. I have
-              also built production systems in
+              built with TensorFlow, Gemini, Groq and OpenRouter. I also
+              bring side experience in
               <strong>{" "}Java (Spring Boot)</strong>.
               Every project goes live with JWT authentication, Docker and
               GitHub Actions CI/CD.
@@ -402,7 +399,7 @@ function Hero() {
                 <i />
                 Bengaluru, India
               </span>
-              <span>Open to Python, Java &amp; AI/ML roles</span>
+              <span>Open to Python &amp; AI/ML roles</span>
             </div>
           </Reveal>
 
@@ -459,9 +456,9 @@ function About() {
         <div className="about-layout">
           <Reveal className="about-main">
             <p className="about-lead">
-              I'm a Python developer who ships complete products — from
-              database design to live deployment — with hands-on Java and
-              AI/ML experience behind it.
+              I'm a Python and AI/ML developer who ships complete
+              products — from database design to live deployment — with
+              Java full-stack experience on the side.
             </p>
 
             <p>
@@ -469,9 +466,9 @@ function About() {
               and Django REST Framework, React.js frontends, PostgreSQL
               and MySQL, JWT authentication and Docker. I automate
               deployments with GitHub Actions CI/CD and host apps on
-              Render and Vercel. On the Java side, I have built
-              Spring Boot systems with Spring Security and Spring Data
-              JPA in projects like BankSphere and ShopSphere.
+              Render and Vercel. On the side, I have also built
+              Java Spring Boot systems with Spring Security and Spring
+              Data JPA in BankSphere and ShopSphere.
             </p>
 
             <p>
@@ -507,7 +504,7 @@ function About() {
             </div>
             <div className="stat-card">
               <strong>3</strong>
-              <span>ROLES: PYTHON, JAVA, AI/ML</span>
+              <span>CORE TRACKS: PYTHON, AI/ML</span>
             </div>
             <div className="stat-card">
               <strong>3</strong>
@@ -520,118 +517,13 @@ function About() {
   );
 }
 
-/* ---------- SPECIALIZATIONS ---------- */
-
-const SPECIALIZATIONS = [
-  {
-    id: "python",
-    label: "Python Developer · Core",
-    headline: "Python full-stack, APIs and automation",
-    blurb:
-      "My primary specialization: async and relational backends with FastAPI, Django REST Framework and Flask, paired with React.js frontends and containerised CI/CD deployments.",
-    stack: ["FastAPI", "Django REST", "Flask", "React.js", "PostgreSQL", "MySQL", "JWT", "Docker", "GitHub Actions"],
-    projects: ["GymSync", "ResumeIQ", "Digital Analytics Dashboard"],
-    resumeId: "python",
-  },
-  {
-    id: "java",
-    label: "Java Developer",
-    headline: "Java full-stack with Spring Boot",
-    blurb:
-      "Secure, role-based REST backends with Spring Boot, Spring Security and Spring Data JPA, backed by PostgreSQL or MySQL and a React.js UI.",
-    stack: ["Java", "Spring Boot", "Spring Security", "Spring Data JPA", "React.js", "PostgreSQL", "MySQL", "Maven", "JUnit"],
-    projects: ["BankSphere", "ShopSphere"],
-    resumeId: "java",
-  },
-  {
-    id: "aiml",
-    label: "AI & ML Engineer",
-    headline: "Deep learning, computer vision and multi-LLM apps",
-    blurb:
-      "CNNs and transfer learning with TensorFlow and Keras, plus LLM applications that route across Gemini, Groq and OpenRouter, including RAG workflows with LangChain.",
-    stack: ["TensorFlow", "Keras", "CNN", "VGG16", "OpenCV", "LangChain", "RAG", "Gemini", "Groq", "OpenRouter"],
-    projects: ["Plant Disease Detection", "Life Decision Assistant", "AI Exam Companion"],
-    resumeId: "aiml",
-  },
-];
-
-function Specializations() {
-  return (
-    <section id="specializations" className="section spec-section">
-      <div className="section-container">
-        <Reveal>
-          <div className="section-kicker">
-            <span>02</span>
-            ROLES
-          </div>
-
-          <h2 className="massive-title">
-            Python at the core.
-            <br />
-            <span>Open to three roles.</span>
-          </h2>
-
-          <p className="spec-intro">
-            Python is my main specialization, backed by real Java and
-            AI/ML projects. Each role has its own focused resume, so you
-            can see the skills and projects that matter most.
-          </p>
-        </Reveal>
-
-        <div className="spec-grid">
-          {SPECIALIZATIONS.map((spec) => (
-            <Reveal key={spec.id} className="spec-card">
-              <span className="spec-label">{spec.label}</span>
-              <h3>{spec.headline}</h3>
-              <p>{spec.blurb}</p>
-
-              <div className="spec-stack">
-                {spec.stack.map((item) => (
-                  <span key={item}>{item}</span>
-                ))}
-              </div>
-
-              <div className="spec-projects">
-                <strong>Best examples</strong>
-                <p>{spec.projects.join(", ")}</p>
-              </div>
-
-              <a
-                href="#resumes"
-                className="spec-link"
-                onClick={(event) => {
-                  event.preventDefault();
-                  try {
-                    window.sessionStorage.setItem("resumeTab", spec.resumeId);
-                  } catch {
-                    /* sessionStorage unavailable */
-                  }
-                  window.dispatchEvent(new CustomEvent("select-resume", { detail: spec.resumeId }));
-                  if (window.location.hash === "#resumes") {
-                    scrollToSection("resumes", true);
-                  } else {
-                    window.location.hash = "#resumes";
-                  }
-                }}
-              >
-                See {spec.label.replace(" · Core", "")} resume
-                <span>↗</span>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------- SKILLS ---------- */
 
 const SKILL_GROUPS = [
   {
     number: "01",
-    title: "PYTHON ECOSYSTEM (CORE)",
-    description: "My primary stack: async and relational Python backends with secure API design.",
+    title: "PYTHON ECOSYSTEM",
+    description: "Async and relational Python backends with secure API design.",
     items: [
       "Python",
       "FastAPI",
@@ -682,8 +574,8 @@ const SKILL_GROUPS = [
   },
   {
     number: "03",
-    title: "JAVA ECOSYSTEM",
-    description: "Enterprise-style Java services, security and testing.",
+    title: "JAVA (ADDITIONAL EXPERIENCE)",
+    description: "Spring Boot services, security and testing from full-stack projects.",
     items: [
       "Core & Advanced Java",
       "Spring Boot",
@@ -713,7 +605,7 @@ function Skills() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker blue-kicker">
-            <span>03</span>
+            <span>02</span>
             TECHNICAL SKILLS
           </div>
 
@@ -795,7 +687,7 @@ function Experience() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>04</span>
+            <span>03</span>
             EXPERIENCE
           </div>
 
@@ -1003,7 +895,7 @@ function Projects() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>05</span>
+            <span>04</span>
             PROJECTS
           </div>
 
@@ -1014,10 +906,10 @@ function Projects() {
           </h2>
 
           <p className="projects-intro">
-            Eight deployed applications led by Python full-stack work,
-            alongside AI/ML projects with CNNs and multi-LLM
-            integrations and Java/Spring Boot systems — covering REST
-            APIs, relational databases, authentication and Dockerized
+            Eight deployed applications led by Python full-stack work
+            and AI/ML projects with CNNs and multi-LLM integrations,
+            plus two Java/Spring Boot systems — covering REST APIs,
+            relational databases, authentication and Dockerized
             deployments, end to end.
           </p>
         </Reveal>
@@ -1161,7 +1053,7 @@ function Education() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>06</span>
+            <span>05</span>
             EDUCATION
           </div>
 
@@ -1280,7 +1172,7 @@ function Certifications() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker">
-            <span>07</span>
+            <span>06</span>
             CERTIFICATIONS
           </div>
 
@@ -1490,7 +1382,7 @@ const RESUMES = [
   {
     id: "java",
     tab: "Java",
-    role: "Java Full Stack Developer",
+    role: "Java Full Stack Developer (Additional)",
     headline: "Spring Boot, React.js, PostgreSQL and MySQL",
     file: "/resumes/Rahul_S_Java.pdf",
     summary:
@@ -1502,23 +1394,8 @@ const RESUMES = [
 ];
 
 function Resumes() {
-  const [activeId, setActiveId] = useState(() => {
-    try {
-      return window.sessionStorage.getItem("resumeTab") || "python";
-    } catch {
-      return "python";
-    }
-  });
+  const [activeId, setActiveId] = useState("python");
   const [showPreview, setShowPreview] = useState(false);
-
-  useEffect(() => {
-    const handler = (event) => {
-      setActiveId(event.detail);
-      setShowPreview(false);
-    };
-    window.addEventListener("select-resume", handler);
-    return () => window.removeEventListener("select-resume", handler);
-  }, []);
 
   const active = RESUMES.find((resume) => resume.id === activeId) ?? RESUMES[0];
 
@@ -1527,7 +1404,7 @@ function Resumes() {
       <div className="section-container">
         <Reveal>
           <div className="section-kicker blue-kicker">
-            <span>08</span>
+            <span>07</span>
             RESUMES
           </div>
 
@@ -1652,7 +1529,7 @@ function Contact() {
       <div className="contact-inner">
         <Reveal>
           <div className="section-kicker contact-kicker">
-            <span>09</span>
+            <span>08</span>
             CONTACT
           </div>
 
@@ -1663,8 +1540,8 @@ function Contact() {
           </h2>
 
           <p>
-            Open to Python Developer, Java Developer and AI/ML
-            roles. Whether it's a quick question or a project idea,
+            Open to Python Developer and AI/ML Engineer roles,
+            with Java full-stack experience as an added strength. Whether it's a quick question or a project idea,
             my inbox is open.
           </p>
 
